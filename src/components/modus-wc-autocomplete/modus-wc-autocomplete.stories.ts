@@ -1389,23 +1389,123 @@ export const CustomEventHandlers: Story = {
       // Shift+Tab is key "Tab" plus shiftKey, not a separate key string.
       const key = e.key === 'Tab' ? (e.shiftKey ? 'Shift+Tab' : 'Tab') : e.key;
 
-      // Prevent default for navigation keys
-      if (
-        [
-          'ArrowDown',
-          'ArrowUp',
-          'Enter',
-          'Escape',
-          'Tab',
-          'Shift+Tab',
-        ].includes(key)
-      ) {
+      // Tab stays with the browser unless this handler moves between options.
+      if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(key)) {
         e.preventDefault();
       }
 
       const visibleItems = args.items.filter(
         (item) => item.visibleInMenu && !item.disabled
       );
+
+      // NOTE: these selectors reach into the internal DOM/class names of the
+      // text-input (single select) and the "Clear all" button (multi select).
+      // They are demo-only hooks and may break if those components change.
+      const clearControl = (): HTMLElement | SVGElement | null => {
+        const clear = autocomplete.querySelector(
+          '.modus-wc-clear-icon-visible .modus-wc-text-input-icon-clear'
+        );
+        if (clear instanceof SVGElement || clear instanceof HTMLElement) {
+          return clear;
+        }
+
+        const button = autocomplete.querySelector(
+          'modus-wc-button[aria-label="Clear all"] button'
+        );
+        return button instanceof HTMLElement ? button : null;
+      };
+
+      const optionRow = (value: string) => {
+        const host = Array.from(
+          autocomplete.querySelectorAll('modus-wc-menu-item')
+        ).find(
+          (el) => (el as HTMLElement & { value?: string }).value === value
+        );
+        const row = host?.querySelector('li');
+        return row instanceof HTMLElement ? row : null;
+      };
+
+      // Double rAF: wait for the menu to re-render after setFocused() before
+      // moving DOM focus, otherwise the target <li> may not exist yet.
+      const focusOption = (value: string) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => optionRow(value)?.focus());
+        });
+      };
+
+      // Arrow keys normally only move the programmatic "focused" flag. Once the
+      // user has Tabbed into the list, DOM focus sits on an <li>, so we must
+      // move real focus with the flag; otherwise the :focus-visible ring and
+      // the flag outline land on different rows (two highlights at once).
+      const syncListFocus = (value: string) => {
+        if ((e.target as HTMLElement | null)?.closest('modus-wc-menu-item')) {
+          focusOption(value);
+        }
+      };
+
+      const optionIndexFromKey = () => {
+        const host = (e.target as HTMLElement | null)?.closest(
+          'modus-wc-menu-item'
+        ) as (HTMLElement & { value?: string }) | null;
+        if (!host) return -1;
+        return visibleItems.findIndex((item) => item.value === host.value);
+      };
+
+      const onClear = () => {
+        const clear = clearControl();
+        const target = e.target as Node | null;
+        return (
+          !!clear && !!target && (clear === target || clear.contains(target))
+        );
+      };
+
+      // Step one, then jump one more when another option remains.
+      const skipIndex = (direction: 1 | -1, currentIndex: number) => {
+        if (direction > 0) {
+          const nextIndex =
+            currentIndex < 0
+              ? 0
+              : Math.min(currentIndex + 1, visibleItems.length - 1);
+          return nextIndex + 1 < visibleItems.length
+            ? nextIndex + 1
+            : nextIndex;
+        }
+
+        const prevIndex =
+          currentIndex < 0
+            ? visibleItems.length - 1
+            : Math.max(currentIndex - 1, 0);
+        return prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
+      };
+
+      const setFocused = (value: string | null) => {
+        args.items = args.items.map((item) => ({
+          ...item,
+          focused: value != null && item.value === value,
+        }));
+        autocomplete.items = [...args.items];
+      };
+
+      const enterList = () => {
+        if (!visibleItems.length) return;
+        e.preventDefault();
+        requestMenu(autocomplete, true);
+        const target = visibleItems[skipIndex(1, -1)];
+        if (!target) return;
+        setFocused(target.value);
+        focusOption(target.value);
+      };
+
+      const leaveList = () => {
+        e.preventDefault();
+        setFocused(null);
+        const clear = clearControl();
+        if (clear) {
+          clear.focus();
+          return;
+        }
+        autocomplete.querySelector('input')?.focus();
+      };
 
       switch (key) {
         case 'Escape':
@@ -1422,44 +1522,85 @@ export const CustomEventHandlers: Story = {
           }, 200);
           break;
 
-        case 'ArrowDown':
-        case 'Tab': {
+        case 'ArrowDown': {
           // Open menu if not already open
           requestMenu(autocomplete, true);
-
-          const currentIndex = visibleItems.findIndex((item) => item.focused);
-          const nextIndex =
-            currentIndex < 0
-              ? 0
-              : Math.min(currentIndex + 1, visibleItems.length - 1);
-
-          // Custom: Skip every other item for faster navigation
-          const skipIndex =
-            nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
-
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: visibleItems[skipIndex]?.value === item.value,
-          }));
-          break;
+          const target =
+            visibleItems[
+              skipIndex(
+                1,
+                visibleItems.findIndex((item) => item.focused)
+              )
+            ];
+          if (target) {
+            setFocused(target.value);
+            syncListFocus(target.value);
+          }
+          return;
         }
 
-        case 'ArrowUp':
+        case 'ArrowUp': {
+          const target =
+            visibleItems[
+              skipIndex(
+                -1,
+                visibleItems.findIndex((item) => item.focused)
+              )
+            ];
+          if (target) {
+            setFocused(target.value);
+            syncListFocus(target.value);
+          }
+          return;
+        }
+
+        case 'Tab': {
+          // Input → Clear (when shown) stays native: the clear control is a
+          // focusable element right after the input, so let the browser move
+          // to it. Only the next Tab (Clear → list) and Tab between options
+          // need the custom skip. With no clear control, jump straight in.
+          if (e.target instanceof HTMLInputElement) {
+            if (clearControl()) return;
+            enterList();
+            return;
+          }
+          if (onClear()) {
+            enterList();
+            return;
+          }
+
+          const currentIndex = optionIndexFromKey();
+          if (currentIndex < 0 || !visibleItems.length) return;
+
+          const next = skipIndex(1, currentIndex);
+          if (next === currentIndex) return;
+
+          e.preventDefault();
+          const target = visibleItems[next];
+          if (!target) return;
+          setFocused(target.value);
+          focusOption(target.value);
+          return;
+        }
+
         case 'Shift+Tab': {
-          const currentIndex = visibleItems.findIndex((item) => item.focused);
-          const prevIndex =
-            currentIndex < 0
-              ? visibleItems.length - 1
-              : Math.max(currentIndex - 1, 0);
+          // Clear and the input keep the browser's reverse order. From an
+          // option, skip backward, then return to Clear or the input.
+          const currentIndex = optionIndexFromKey();
+          if (currentIndex < 0) return;
 
-          // Custom: Skip every other item for faster navigation
-          const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
+          const next = skipIndex(-1, currentIndex);
+          if (next === currentIndex) {
+            leaveList();
+            return;
+          }
 
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: visibleItems[skipIndex]?.value === item.value,
-          }));
-          break;
+          e.preventDefault();
+          const target = visibleItems[next];
+          if (!target) return;
+          setFocused(target.value);
+          focusOption(target.value);
+          return;
         }
 
         case 'Enter': {
@@ -1661,18 +1802,56 @@ export const CustomEventHandlers: Story = {
         //
         // const customKeyDown = (e) => {
         //   if (!autocomplete) return;
-        //   if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
+        //   const key = e.key === 'Tab' ? (e.shiftKey ? 'Shift+Tab' : 'Tab') : e.key;
+        //   if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(key)) {
         //     e.preventDefault();
         //   }
         //   const visibleItems = autocomplete.items.filter(
         //     (item) => item.visibleInMenu && !item.disabled
         //   );
-        //   switch (e.key) {
+        //   const clearControl = () =>
+        //     autocomplete.querySelector(
+        //       '.modus-wc-clear-icon-visible .modus-wc-text-input-icon-clear'
+        //     );
+        //   const focusOption = (value) => {
+        //     const host = [...autocomplete.querySelectorAll('modus-wc-menu-item')].find(
+        //       (el) => el.value === value
+        //     );
+        //     requestAnimationFrame(() => host?.querySelector('li')?.focus());
+        //   };
+        //   // Keep DOM focus with the flag once Tabbed into the list so the
+        //   // :focus-visible ring and the flag outline stay on the same row.
+        //   const syncListFocus = (value) => {
+        //     if (e.target?.closest?.('modus-wc-menu-item')) focusOption(value);
+        //   };
+        //   const optionIndex = () => {
+        //     const host = e.target?.closest?.('modus-wc-menu-item');
+        //     if (!host) return -1;
+        //     return visibleItems.findIndex((item) => item.value === host.value);
+        //   };
+        //   const skipFrom = (direction, currentIndex) => {
+        //     if (direction > 0) {
+        //       const nextIndex =
+        //         currentIndex < 0
+        //           ? 0
+        //           : Math.min(currentIndex + 1, visibleItems.length - 1);
+        //       return nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
+        //     }
+        //     const prevIndex =
+        //       currentIndex < 0
+        //         ? visibleItems.length - 1
+        //         : Math.max(currentIndex - 1, 0);
+        //     return prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
+        //   };
+        //   const setFocused = (value) => {
+        //     autocomplete.items = autocomplete.items.map((item) => ({
+        //       ...item,
+        //       focused: value != null && item.value === value,
+        //     }));
+        //   };
+        //   switch (key) {
         //     case 'Escape':
-        //       autocomplete.items = autocomplete.items.map((item) => ({
-        //         ...item,
-        //         focused: false,
-        //       }));
+        //       setFocused(null);
         //       requestMenu(false);
         //       autocomplete.style.transform = 'scale(0.98)';
         //       setTimeout(() => {
@@ -1681,31 +1860,61 @@ export const CustomEventHandlers: Story = {
         //       break;
         //     case 'ArrowDown': {
         //       requestMenu(true);
-        //       const currentIndex = visibleItems.findIndex((item) => item.focused);
-        //       const nextIndex =
-        //         currentIndex < 0
-        //           ? 0
-        //           : Math.min(currentIndex + 1, visibleItems.length - 1);
-        //       const skipIndex =
-        //         nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
-        //       autocomplete.items = autocomplete.items.map((item) => ({
-        //         ...item,
-        //         focused: visibleItems[skipIndex]?.value === item.value,
-        //       }));
-        //       break;
+        //       const target =
+        //         visibleItems[skipFrom(1, visibleItems.findIndex((item) => item.focused))];
+        //       if (target) {
+        //         setFocused(target.value);
+        //         syncListFocus(target.value);
+        //       }
+        //       return;
         //     }
         //     case 'ArrowUp': {
-        //       const currentIndex = visibleItems.findIndex((item) => item.focused);
-        //       const prevIndex =
-        //         currentIndex < 0
-        //           ? visibleItems.length - 1
-        //           : Math.max(currentIndex - 1, 0);
-        //       const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
-        //       autocomplete.items = autocomplete.items.map((item) => ({
-        //         ...item,
-        //         focused: visibleItems[skipIndex]?.value === item.value,
-        //       }));
-        //       break;
+        //       const target =
+        //         visibleItems[skipFrom(-1, visibleItems.findIndex((item) => item.focused))];
+        //       if (target) {
+        //         setFocused(target.value);
+        //         syncListFocus(target.value);
+        //       }
+        //       return;
+        //     }
+        //     case 'Tab': {
+        //       const clear = clearControl();
+        //       const fromInput = e.target instanceof HTMLInputElement;
+        //       // Input → Clear (when shown) stays native; let the browser move.
+        //       if (fromInput && clear) return;
+        //       if (fromInput || (clear && (e.target === clear || clear.contains(e.target)))) {
+        //         e.preventDefault();
+        //         requestMenu(true);
+        //         const target = visibleItems[skipFrom(1, -1)];
+        //         if (target) {
+        //           setFocused(target.value);
+        //           focusOption(target.value);
+        //         }
+        //         return;
+        //       }
+        //       const currentIndex = optionIndex();
+        //       if (currentIndex < 0) return;
+        //       const next = skipFrom(1, currentIndex);
+        //       if (next === currentIndex) return;
+        //       e.preventDefault();
+        //       setFocused(visibleItems[next].value);
+        //       focusOption(visibleItems[next].value);
+        //       return;
+        //     }
+        //     case 'Shift+Tab': {
+        //       const currentIndex = optionIndex();
+        //       if (currentIndex < 0) return;
+        //       const next = skipFrom(-1, currentIndex);
+        //       if (next === currentIndex) {
+        //         e.preventDefault();
+        //         setFocused(null);
+        //         (clearControl() || autocomplete.querySelector('input'))?.focus();
+        //         return;
+        //       }
+        //       e.preventDefault();
+        //       setFocused(visibleItems[next].value);
+        //       focusOption(visibleItems[next].value);
+        //       return;
         //     }
         //     case 'Enter': {
         //       const focusedItem = visibleItems.find((item) => item.focused);
