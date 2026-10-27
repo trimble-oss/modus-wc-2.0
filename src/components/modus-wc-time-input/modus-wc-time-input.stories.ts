@@ -113,14 +113,6 @@ const Template: Story = {
 
 export const Default: Story = { ...Template };
 
-export const Format12Hour: Story = {
-  ...Template,
-  args: {
-    format: '12hrs',
-    value: '21:45',
-  },
-};
-
 export const Datalist: Story = {
   ...Template,
   args: {
