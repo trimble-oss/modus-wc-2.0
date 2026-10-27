@@ -8,7 +8,7 @@ modus-wc-text-input .modus-wc-input {
   max-width: 100%;
   min-width: 0;
   overflow: clip;
-  overflow-clip-margin: 2px;
+  overflow-clip-margin: var(--modus-wc-border-width-sm);
 
   @include feedback-levels;
   @include sizing-tokens;
@@ -187,7 +187,8 @@ modus-wc-text-input {
           // so only this border shows (parent :focus-within is suppressed below).
           &:focus-visible {
             background-color: transparent;
-            border: 2px solid var(--modus-wc-color-base-content);
+            border: var(--modus-wc-border-width-sm) solid
+              var(--modus-wc-color-base-content);
             box-shadow: none;
             outline: none;
           }
