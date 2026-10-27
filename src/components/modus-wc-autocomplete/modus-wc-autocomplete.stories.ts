@@ -1379,250 +1379,15 @@ export const CustomEventHandlers: Story = {
       void (open ? autocomplete.openMenu() : autocomplete.closeMenu());
     };
 
-    // Custom keydown handler with skip navigation and escape animation
-    const customKeyDown = (e: KeyboardEvent) => {
-      const autocomplete = document.getElementById(
-        'autocomplete-custom-event-handlers'
-      ) as AutocompleteElement;
+    // Play a short scale animation when Escape is pressed.
+    const customEscapeKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      const autocomplete = e.currentTarget as HTMLElement | null;
       if (!autocomplete) return;
-
-      // Shift+Tab is key "Tab" plus shiftKey, not a separate key string.
-      const key = e.key === 'Tab' ? (e.shiftKey ? 'Shift+Tab' : 'Tab') : e.key;
-
-      // Tab stays with the browser unless this handler moves between options.
-      if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(key)) {
-        e.preventDefault();
-      }
-
-      const visibleItems = args.items.filter(
-        (item) => item.visibleInMenu && !item.disabled
-      );
-
-      // NOTE: these selectors reach into the internal DOM/class names of the
-      // text-input (single select) and the "Clear all" button (multi select).
-      // They are demo-only hooks and may break if those components change.
-      const clearControl = (): HTMLElement | SVGElement | null => {
-        const clear = autocomplete.querySelector(
-          '.modus-wc-clear-icon-visible .modus-wc-text-input-icon-clear'
-        );
-        if (clear instanceof SVGElement || clear instanceof HTMLElement) {
-          return clear;
-        }
-
-        const button = autocomplete.querySelector(
-          'modus-wc-button[aria-label="Clear all"] button'
-        );
-        return button instanceof HTMLElement ? button : null;
-      };
-
-      const optionRow = (value: string) => {
-        const host = Array.from(
-          autocomplete.querySelectorAll('modus-wc-menu-item')
-        ).find(
-          (el) => (el as HTMLElement & { value?: string }).value === value
-        );
-        const row = host?.querySelector('li');
-        return row instanceof HTMLElement ? row : null;
-      };
-
-      // Double rAF: wait for the menu to re-render after setFocused() before
-      // moving DOM focus, otherwise the target <li> may not exist yet.
-      const focusOption = (value: string) => {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => optionRow(value)?.focus());
-        });
-      };
-
-      // Arrow keys normally only move the programmatic "focused" flag. Once the
-      // user has Tabbed into the list, DOM focus sits on an <li>, so we must
-      // move real focus with the flag; otherwise the :focus-visible ring and
-      // the flag outline land on different rows (two highlights at once).
-      const syncListFocus = (value: string) => {
-        if ((e.target as HTMLElement | null)?.closest('modus-wc-menu-item')) {
-          focusOption(value);
-        }
-      };
-
-      const optionIndexFromKey = () => {
-        const host = (e.target as HTMLElement | null)?.closest(
-          'modus-wc-menu-item'
-        ) as (HTMLElement & { value?: string }) | null;
-        if (!host) return -1;
-        return visibleItems.findIndex((item) => item.value === host.value);
-      };
-
-      const onClear = () => {
-        const clear = clearControl();
-        const target = e.target as Node | null;
-        return (
-          !!clear && !!target && (clear === target || clear.contains(target))
-        );
-      };
-
-      // Step one, then jump one more when another option remains.
-      const skipIndex = (direction: 1 | -1, currentIndex: number) => {
-        if (direction > 0) {
-          const nextIndex =
-            currentIndex < 0
-              ? 0
-              : Math.min(currentIndex + 1, visibleItems.length - 1);
-          return nextIndex + 1 < visibleItems.length
-            ? nextIndex + 1
-            : nextIndex;
-        }
-
-        const prevIndex =
-          currentIndex < 0
-            ? visibleItems.length - 1
-            : Math.max(currentIndex - 1, 0);
-        return prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
-      };
-
-      const setFocused = (value: string | null) => {
-        args.items = args.items.map((item) => ({
-          ...item,
-          focused: value != null && item.value === value,
-        }));
-        autocomplete.items = [...args.items];
-      };
-
-      const enterList = () => {
-        if (!visibleItems.length) return;
-        e.preventDefault();
-        requestMenu(autocomplete, true);
-        const target = visibleItems[skipIndex(1, -1)];
-        if (!target) return;
-        setFocused(target.value);
-        focusOption(target.value);
-      };
-
-      const leaveList = () => {
-        e.preventDefault();
-        setFocused(null);
-        const clear = clearControl();
-        if (clear) {
-          clear.focus();
-          return;
-        }
-        autocomplete.querySelector('input')?.focus();
-      };
-
-      switch (key) {
-        case 'Escape':
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: false,
-          }));
-          autocomplete.items = [...args.items];
-          requestMenu(autocomplete, false);
-          // Custom: Show escape animation
-          autocomplete.style.transform = 'scale(0.98)';
-          setTimeout(() => {
-            autocomplete.style.transform = '';
-          }, 200);
-          break;
-
-        case 'ArrowDown': {
-          // Open menu if not already open
-          requestMenu(autocomplete, true);
-          const target =
-            visibleItems[
-              skipIndex(
-                1,
-                visibleItems.findIndex((item) => item.focused)
-              )
-            ];
-          if (target) {
-            setFocused(target.value);
-            syncListFocus(target.value);
-          }
-          return;
-        }
-
-        case 'ArrowUp': {
-          const target =
-            visibleItems[
-              skipIndex(
-                -1,
-                visibleItems.findIndex((item) => item.focused)
-              )
-            ];
-          if (target) {
-            setFocused(target.value);
-            syncListFocus(target.value);
-          }
-          return;
-        }
-
-        case 'Tab': {
-          // Input → Clear (when shown) stays native: the clear control is a
-          // focusable element right after the input, so let the browser move
-          // to it. Only the next Tab (Clear → list) and Tab between options
-          // need the custom skip. With no clear control, jump straight in.
-          if (e.target instanceof HTMLInputElement) {
-            if (clearControl()) return;
-            enterList();
-            return;
-          }
-          if (onClear()) {
-            enterList();
-            return;
-          }
-
-          const currentIndex = optionIndexFromKey();
-          if (currentIndex < 0 || !visibleItems.length) return;
-
-          const next = skipIndex(1, currentIndex);
-          if (next === currentIndex) return;
-
-          e.preventDefault();
-          const target = visibleItems[next];
-          if (!target) return;
-          setFocused(target.value);
-          focusOption(target.value);
-          return;
-        }
-
-        case 'Shift+Tab': {
-          // Clear and the input keep the browser's reverse order. From an
-          // option, skip backward, then return to Clear or the input.
-          const currentIndex = optionIndexFromKey();
-          if (currentIndex < 0) return;
-
-          const next = skipIndex(-1, currentIndex);
-          if (next === currentIndex) {
-            leaveList();
-            return;
-          }
-
-          e.preventDefault();
-          const target = visibleItems[next];
-          if (!target) return;
-          setFocused(target.value);
-          focusOption(target.value);
-          return;
-        }
-
-        case 'Enter': {
-          const focusedItem = visibleItems.find((item) => item.focused);
-          if (focusedItem) {
-            // For single select, clear previous selection
-            args.items = args.items.map((item) => ({
-              ...item,
-              selected: item.value === focusedItem.value,
-              focused: false,
-            }));
-            autocomplete.value = focusedItem.label;
-            requestMenu(autocomplete, false);
-          }
-          break;
-        }
-
-        default:
-          return;
-      }
-
-      autocomplete.items = [...args.items];
+      autocomplete.style.transform = 'scale(0.98)';
+      setTimeout(() => {
+        autocomplete.style.transform = '';
+      }, 200);
     };
 
     // Custom input change handler with fuzzy character matching
@@ -1782,9 +1547,9 @@ export const CustomEventHandlers: Story = {
         ?show-spinner=${args['show-spinner']}
         size=${ifDefined(args.size)}
         value=${args.value}
-        .customKeyDown=${customKeyDown}
         .customInputChange=${customInputChange}
         .customItemSelect=${customItemSelect}
+        @keydown=${customEscapeKeyDown}
         @inputBlur=${() => { menuRequestedOpen = false; }}
       ></modus-wc-autocomplete>
       <script>
@@ -1800,139 +1565,14 @@ export const CustomEventHandlers: Story = {
         //   void (open ? autocomplete.openMenu() : autocomplete.closeMenu());
         // };
         //
-        // const customKeyDown = (e) => {
-        //   if (!autocomplete) return;
-        //   const key = e.key === 'Tab' ? (e.shiftKey ? 'Shift+Tab' : 'Tab') : e.key;
-        //   if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(key)) {
-        //     e.preventDefault();
-        //   }
-        //   const visibleItems = autocomplete.items.filter(
-        //     (item) => item.visibleInMenu && !item.disabled
-        //   );
-        //   const clearControl = () =>
-        //     autocomplete.querySelector(
-        //       '.modus-wc-clear-icon-visible .modus-wc-text-input-icon-clear'
-        //     );
-        //   const focusOption = (value) => {
-        //     const host = [...autocomplete.querySelectorAll('modus-wc-menu-item')].find(
-        //       (el) => el.value === value
-        //     );
-        //     requestAnimationFrame(() => host?.querySelector('li')?.focus());
-        //   };
-        //   // Keep DOM focus with the flag once Tabbed into the list so the
-        //   // :focus-visible ring and the flag outline stay on the same row.
-        //   const syncListFocus = (value) => {
-        //     if (e.target?.closest?.('modus-wc-menu-item')) focusOption(value);
-        //   };
-        //   const optionIndex = () => {
-        //     const host = e.target?.closest?.('modus-wc-menu-item');
-        //     if (!host) return -1;
-        //     return visibleItems.findIndex((item) => item.value === host.value);
-        //   };
-        //   const skipFrom = (direction, currentIndex) => {
-        //     if (direction > 0) {
-        //       const nextIndex =
-        //         currentIndex < 0
-        //           ? 0
-        //           : Math.min(currentIndex + 1, visibleItems.length - 1);
-        //       return nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
-        //     }
-        //     const prevIndex =
-        //       currentIndex < 0
-        //         ? visibleItems.length - 1
-        //         : Math.max(currentIndex - 1, 0);
-        //     return prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
-        //   };
-        //   const setFocused = (value) => {
-        //     autocomplete.items = autocomplete.items.map((item) => ({
-        //       ...item,
-        //       focused: value != null && item.value === value,
-        //     }));
-        //   };
-        //   switch (key) {
-        //     case 'Escape':
-        //       setFocused(null);
-        //       requestMenu(false);
-        //       autocomplete.style.transform = 'scale(0.98)';
-        //       setTimeout(() => {
-        //         autocomplete.style.transform = '';
-        //       }, 200);
-        //       break;
-        //     case 'ArrowDown': {
-        //       requestMenu(true);
-        //       const target =
-        //         visibleItems[skipFrom(1, visibleItems.findIndex((item) => item.focused))];
-        //       if (target) {
-        //         setFocused(target.value);
-        //         syncListFocus(target.value);
-        //       }
-        //       return;
-        //     }
-        //     case 'ArrowUp': {
-        //       const target =
-        //         visibleItems[skipFrom(-1, visibleItems.findIndex((item) => item.focused))];
-        //       if (target) {
-        //         setFocused(target.value);
-        //         syncListFocus(target.value);
-        //       }
-        //       return;
-        //     }
-        //     case 'Tab': {
-        //       const clear = clearControl();
-        //       const fromInput = e.target instanceof HTMLInputElement;
-        //       // Input → Clear (when shown) stays native; let the browser move.
-        //       if (fromInput && clear) return;
-        //       if (fromInput || (clear && (e.target === clear || clear.contains(e.target)))) {
-        //         e.preventDefault();
-        //         requestMenu(true);
-        //         const target = visibleItems[skipFrom(1, -1)];
-        //         if (target) {
-        //           setFocused(target.value);
-        //           focusOption(target.value);
-        //         }
-        //         return;
-        //       }
-        //       const currentIndex = optionIndex();
-        //       if (currentIndex < 0) return;
-        //       const next = skipFrom(1, currentIndex);
-        //       if (next === currentIndex) return;
-        //       e.preventDefault();
-        //       setFocused(visibleItems[next].value);
-        //       focusOption(visibleItems[next].value);
-        //       return;
-        //     }
-        //     case 'Shift+Tab': {
-        //       const currentIndex = optionIndex();
-        //       if (currentIndex < 0) return;
-        //       const next = skipFrom(-1, currentIndex);
-        //       if (next === currentIndex) {
-        //         e.preventDefault();
-        //         setFocused(null);
-        //         (clearControl() || autocomplete.querySelector('input'))?.focus();
-        //         return;
-        //       }
-        //       e.preventDefault();
-        //       setFocused(visibleItems[next].value);
-        //       focusOption(visibleItems[next].value);
-        //       return;
-        //     }
-        //     case 'Enter': {
-        //       const focusedItem = visibleItems.find((item) => item.focused);
-        //       if (focusedItem) {
-        //         autocomplete.items = autocomplete.items.map((item) => ({
-        //           ...item,
-        //           selected: item.value === focusedItem.value,
-        //           focused: false,
-        //         }));
-        //         autocomplete.value = focusedItem.label;
-        //         requestMenu(false);
-        //       }
-        //       break;
-        //     }
-        //     default:
-        //       return;
-        //   }
-        // };
+        // // Play a short scale animation when Escape is pressed.
+        // autocomplete.addEventListener('keydown', (e) => {
+        //   if (e.key !== 'Escape') return;
+        //   autocomplete.style.transform = 'scale(0.98)';
+        //   setTimeout(() => {
+        //     autocomplete.style.transform = '';
+        //   }, 200);
+        // });
         //
         // const customInputChange = (value) => {
         //   if (!autocomplete) return;
@@ -2009,7 +1649,6 @@ export const CustomEventHandlers: Story = {
         //   }
         // };
         //
-        // autocomplete.customKeyDown = customKeyDown;
         // autocomplete.customInputChange = customInputChange;
         // autocomplete.customItemSelect = customItemSelect;
         // autocomplete.addEventListener('inputBlur', () => {
@@ -2043,11 +1682,10 @@ export const CustomEventHandlers: Story = {
   parameters: {
     docs: {
       description: {
-        story: `This example demonstrates custom event handlers with three specific behaviors:
+        story: `This example demonstrates custom event handlers:
 
-1. **Skip Navigation**: Arrow keys skip every other item for 2x faster navigation
-2. **Escape Animation**: Pressing Escape triggers a subtle scale animation
-3. **Fuzzy Character Search**: Instead of normal substring matching, this searches for items containing ALL typed characters in any order
+1. **Escape animation**: Pressing Escape still closes the menu, and also plays a short scale animation
+2. **Fuzzy Character Search**: Instead of normal substring matching, this searches for items containing ALL typed characters in any order
 
 The fuzzy search allows finding items with scattered characters:
 - Type "pae" to find Pine**a**ppl**e**
