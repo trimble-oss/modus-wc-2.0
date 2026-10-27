@@ -703,7 +703,7 @@ export namespace Components {
      */
     interface ModusWcContentTree {
         /**
-          * Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). After a successful drop the component emits `nodeMove` on `dragend`; the application applies it (e.g. via `moveNodeRelative`) and passes updated `nodes` back in.
+          * Enables reordering and reparenting. Pointer drag uses a per-row handle (shown on hover) and emits `nodeMove` on `dragend`. Keyboard users focus that handle and press Space or Enter to grab, move the drop indicator with the arrow keys, drop with Space or Enter, and cancel with Escape or Tab. The application applies the move (e.g. via `moveNodeRelative`) and passes updated `nodes` back in.
          */
         "allowDragDrop"?: boolean;
         /**
@@ -1177,7 +1177,7 @@ export namespace Components {
      */
     interface ModusWcHelpMenu {
         /**
-          * Clears the panel stack and returns to the root items.
+          * Clears the panel stack and returns to the root items. Resolves after the root level has rendered.
          */
         "reset": () => Promise<void>;
     }
@@ -1521,7 +1521,7 @@ export namespace Components {
          */
         "subLabel"?: string;
         /**
-          * The tooltip text to display when hovering over the menu item.
+          * The tooltip text to display when the menu item is hovered or receives keyboard focus.
          */
         "tooltipContent"?: string;
         /**
@@ -2807,7 +2807,7 @@ export namespace Components {
          */
         "subLabel"?: string;
         /**
-          * The tooltip text to display when hovering over the tree item.
+          * The tooltip text to display when the tree item is hovered or receives keyboard focus.
          */
         "tooltipContent"?: string;
         /**
@@ -5117,7 +5117,7 @@ declare namespace LocalJSX {
      */
     interface ModusWcContentTree {
         /**
-          * Enables drag-and-drop reordering and reparenting via a per-row drag handle (shown on hover). After a successful drop the component emits `nodeMove` on `dragend`; the application applies it (e.g. via `moveNodeRelative`) and passes updated `nodes` back in.
+          * Enables reordering and reparenting. Pointer drag uses a per-row handle (shown on hover) and emits `nodeMove` on `dragend`. Keyboard users focus that handle and press Space or Enter to grab, move the drop indicator with the arrow keys, drop with Space or Enter, and cancel with Escape or Tab. The application applies the move (e.g. via `moveNodeRelative`) and passes updated `nodes` back in.
          */
         "allowDragDrop"?: boolean;
         /**
@@ -5196,7 +5196,7 @@ declare namespace LocalJSX {
          */
         "onNodeLoadChildren"?: (event: ModusWcContentTreeCustomEvent<{ id: string }>) => void;
         /**
-          * Event emitted after a successful drag-and-drop, once the gesture ends (`dragend`). Emitting on `dragend` (not `drop`) keeps the drag source in the DOM until the browser finishes the gesture, so applying the move (e.g. via `moveNodeRelative`) cannot tear down the handle mid-drag. `position` is relative to `targetId`: `before`/`after` reorder among the target's siblings; `inside` nests the node as the target's first child.
+          * Event emitted after a successful move. Pointer drags emit on `dragend` (not `drop`) so applying the move cannot tear down the drag source mid-gesture. Keyboard drops emit when Space or Enter confirms the indicator on the reorder handle. `position` is relative to `targetId`: `before`/`after` reorder among the target's siblings; `inside` nests the node as the target's first child.
          */
         "onNodeMove"?: (event: ModusWcContentTreeCustomEvent<{
     id: string;
@@ -6075,7 +6075,7 @@ declare namespace LocalJSX {
          */
         "subLabel"?: string;
         /**
-          * The tooltip text to display when hovering over the menu item.
+          * The tooltip text to display when the menu item is hovered or receives keyboard focus.
          */
         "tooltipContent"?: string;
         /**
@@ -7597,7 +7597,7 @@ declare namespace LocalJSX {
          */
         "subLabel"?: string;
         /**
-          * The tooltip text to display when hovering over the tree item.
+          * The tooltip text to display when the tree item is hovered or receives keyboard focus.
          */
         "tooltipContent"?: string;
         /**

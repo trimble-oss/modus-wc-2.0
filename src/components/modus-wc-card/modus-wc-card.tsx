@@ -40,7 +40,7 @@ export class ModusWcCard {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-card modus-wc-rounded-card'];
+    const classList = ['modus-wc-card', 'moduswc:card', 'moduswc:rounded-box'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,

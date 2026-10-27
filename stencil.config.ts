@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import type { Config } from '@stencil/core';
 import { angularOutputTarget } from '@stencil/angular-output-target';
 import { reactOutputTarget } from '@stencil/react-output-target';
@@ -6,15 +8,27 @@ import angularValueAccessorBindings from './angular-value-accessor-bindings';
 import tailwind, {
   setPluginConfigurationDefaults,
 } from 'stencil-tailwind-plugin';
-import tailwindConfig from './tailwind.config';
 import { vueOutputTarget } from '@stencil/vue-output-target';
+
+const tailwindV4CorePath = join(__dirname, 'src/styles/tailwind-v4-core.css');
+const tailwindV4ThemesPath = join(
+  __dirname,
+  'src/styles/generated/daisyui-themes.css'
+);
+let tailwindV4CoreCss = readFileSync(tailwindV4CorePath, 'utf8');
+if (existsSync(tailwindV4ThemesPath)) {
+  const themesCss = readFileSync(tailwindV4ThemesPath, 'utf8');
+  tailwindV4CoreCss = tailwindV4CoreCss.replace(
+    "@import './generated/daisyui-themes.css';\n",
+    `${themesCss}\n`
+  );
+}
 
 const tailwindOpts = {
   // enableDebug: true,
   minify: false,
   stripComments: true,
-  tailwindConf: tailwindConfig,
-  tailwindCssPath: './src/styles/tailwind.css',
+  injectTailwindConfiguration: () => tailwindV4CoreCss,
 };
 
 setPluginConfigurationDefaults(tailwindOpts);
