@@ -10,10 +10,10 @@ modus-wc-chip .modus-wc-chip {
     border-color: transparent;
     box-sizing: border-box;
 
-    --rounded-btn: #{var(--modus-wc-border-radius-chip)};
+    --radius-field: #{var(--modus-wc-border-radius-chip)};
 
     &.modus-wc-chip--circle {
-      --rounded-btn: var(--modus-wc-border-radius-3xl);
+      --radius-field: var(--modus-wc-border-radius-3xl);
     }
 
     @include common-states;

@@ -49,6 +49,16 @@ function toCssColor(value) {
   return value.toLowerCase();
 }
 
+/**
+ * DaisyUI 5 defaults --size-field to 0.25rem, which makes .btn-md and .input
+ * 2.5rem. DaisyUI 4 (and current Modus buttons) use 3rem, which is
+ * size-field * 10. Lock every theme so the Daisy 5 default cannot shrink them.
+ * Checkbox, radio, and toggle use size-selector * 6; 0.25rem keeps them at
+ * 1.5rem, the same as DaisyUI 4's h-6.
+ */
+const SIZE_FIELD = '0.3rem';
+const SIZE_SELECTOR = '0.25rem';
+
 function themeBlock(name, palette, { defaultTheme = false, colorScheme }) {
   const lines = [];
   lines.push(`@plugin 'daisyui/theme' {`);
@@ -78,8 +88,20 @@ function themeBlock(name, palette, { defaultTheme = false, colorScheme }) {
   lines.push(`  --radius-selector: ${roundedBadge};`);
   lines.push(`  --border: ${borderBtn};`);
   lines.push(`  --depth: 0;`);
-  lines.push(`  --size-field: 0.25rem;`);
-  lines.push(`  --size-selector: 0.25rem;`);
+  lines.push(`  --size-field: ${SIZE_FIELD};`);
+  lines.push(`  --size-selector: ${SIZE_SELECTOR};`);
+
+  // DaisyUI 5 removed *-focus channels. Publish them as full colors for Modus SCSS.
+  for (const [key, value] of Object.entries(palette)) {
+    if (!/^[a-z]+-focus$/.test(key)) {
+      continue;
+    }
+    const color = toCssColor(value);
+    if (color) {
+      lines.push(`  --color-${key}: ${color};`);
+    }
+  }
+
   lines.push('}');
   return lines.join('\n');
 }

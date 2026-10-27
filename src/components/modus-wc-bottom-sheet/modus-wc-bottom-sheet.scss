@@ -1,5 +1,5 @@
 modus-wc-bottom-sheet.modus-wc-bottom-sheet {
-  border-radius: var(--rounded-box) var(--rounded-box) 0 0;
+  border-radius: var(--radius-box) var(--radius-box) 0 0;
   bottom: 0;
   box-shadow:
     0 -20px 50px -8px
@@ -51,7 +51,7 @@ modus-wc-bottom-sheet.modus-wc-bottom-sheet {
   }
 
   .modus-wc-panel {
-    border-radius: var(--rounded-box) var(--rounded-box) 0 0;
+    border-radius: var(--radius-box) var(--radius-box) 0 0;
 
     .modus-wc-bottom-sheet-handle {
       cursor: grab;

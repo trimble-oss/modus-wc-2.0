@@ -5,6 +5,16 @@
  * Contains ONLY CSS variables, theme definitions, and font declarations.
  * No Tailwind reset, no DaisyUI classes, no utility classes.
  *
+ * BREAKING (DaisyUI 5): theme tokens are full colors, not OKLCH channels.
+ *   --p: 48% 0.12 247        →  --color-primary: #0063a3
+ *   --rounded-btn: 0.5rem    →  --radius-field: 0.5rem
+ *   --rounded-box            →  --radius-box
+ *   --rounded-badge          →  --radius-selector
+ *   --border-btn             →  --border
+ *   --btn-focus-scale        →  removed (press scale lives in component SCSS)
+ * oklch(var(--p) / <alpha>) is invalid against these values.
+ * Use color-mix(in oklab, var(--color-primary) <percent>, transparent).
+ *
  * Use this when:
  * - Your app uses Modus components inside Shadow DOM
  * - You want to avoid the Tailwind Preflight reset causing style regressions
@@ -742,8 +752,12 @@
   --radius-selector: 0.25rem;
   --border: 1px;
   --depth: 0;
-  --size-field: 0.25rem;
+  --size-field: 0.3rem;
   --size-selector: 0.25rem;
+  --color-primary-focus: #004f83;
+  --color-secondary-focus: #e49325;
+  --color-accent-focus: #464b52;
+  --color-neutral-focus: #a3a6b1;
 }
 
 [data-theme='modus-modern-dark']:root {
@@ -781,8 +795,12 @@
   --radius-selector: 0.25rem;
   --border: 1px;
   --depth: 0;
-  --size-field: 0.25rem;
+  --size-field: 0.3rem;
   --size-selector: 0.25rem;
+  --color-primary-focus: #004f83;
+  --color-secondary-focus: #e49325;
+  --color-accent-focus: #464b52;
+  --color-neutral-focus: #171c1e;
 }
 
 /* Modus Classic Themes */
@@ -823,8 +841,12 @@
   --radius-selector: 0.25rem;
   --border: 1px;
   --depth: 0;
-  --size-field: 0.25rem;
+  --size-field: 0.3rem;
   --size-selector: 0.25rem;
+  --color-primary-focus: #004f83;
+  --color-secondary-focus: #464b52;
+  --color-accent-focus: #464b52;
+  --color-neutral-focus: #a3a6b1;
 }
 
 [data-theme='modus-classic-dark']:root {
@@ -864,8 +886,12 @@
   --radius-selector: 0.25rem;
   --border: 1px;
   --depth: 0;
-  --size-field: 0.25rem;
+  --size-field: 0.3rem;
   --size-selector: 0.25rem;
+  --color-primary-focus: #004f83;
+  --color-secondary-focus: #e49325;
+  --color-accent-focus: #464b52;
+  --color-neutral-focus: #171c1e;
 }
 
 /* Connect Themes */
@@ -902,8 +928,12 @@
   --radius-selector: 2px;
   --border: 1px;
   --depth: 0;
-  --size-field: 0.25rem;
+  --size-field: 0.3rem;
   --size-selector: 0.25rem;
+  --color-primary-focus: #00437b;
+  --color-secondary-focus: #474655;
+  --color-accent-focus: #464b52;
+  --color-neutral-focus: #a3a6b1;
 }
 
 [data-theme='connect-dark']:root {
@@ -939,6 +969,10 @@
   --radius-selector: 2px;
   --border: 1px;
   --depth: 0;
-  --size-field: 0.25rem;
+  --size-field: 0.3rem;
   --size-selector: 0.25rem;
+  --color-primary-focus: #004f83;
+  --color-secondary-focus: #e49325;
+  --color-accent-focus: #464b52;
+  --color-neutral-focus: #171c1e;
 }

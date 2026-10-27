@@ -4,7 +4,7 @@
 */
 
 modus-wc-switch.modus-wc-switch-host {
-  --rounded-badge: 32px;
+  --radius-selector: 32px;
 
   align-items: center;
   display: flex;
@@ -16,7 +16,7 @@ modus-wc-switch.modus-wc-switch-host {
 }
 
 modus-wc-switch .modus-wc-toggle {
-  border-radius: var(--rounded-badge);
+  border-radius: var(--radius-selector);
 
   &:focus {
     border-color: var(--modus-wc-color-base-200);
@@ -31,7 +31,7 @@ modus-wc-switch .modus-wc-toggle {
   outline-color: var(--modus-wc-color-highlight-blue);
 
   // Set default colors
-  --fallback-b1: var(--modus-wc-color-gray-4);
+  --input-color: var(--modus-wc-color-gray-4);
 
   // Sizes
   &.modus-wc-toggle-xs {
@@ -68,7 +68,7 @@ modus-wc-switch .modus-wc-toggle {
   }
 
   &:checked {
-    --fallback-b1: var(--modus-wc-color-blue-light);
+    --input-color: var(--modus-wc-color-blue-light);
 
     color: var(--modus-wc-color-blue-light);
   }
@@ -83,7 +83,7 @@ modus-wc-switch .modus-wc-toggle {
     &:hover:checked {
       background-color: var(--modus-wc-color-white);
 
-      --fallback-b1: var(--modus-wc-color-trimble-blue);
+      --input-color: var(--modus-wc-color-trimble-blue);
     }
 
     &:focus-visible {
@@ -96,7 +96,7 @@ modus-wc-switch .modus-wc-toggle {
     background-color: var(--modus-wc-color-white);
 
     &:not(:checked) {
-      --fallback-b1: var(--modus-wc-color-base-300);
+      --input-color: var(--modus-wc-color-base-300);
 
       opacity: 0.5;
     }
@@ -105,7 +105,7 @@ modus-wc-switch .modus-wc-toggle {
 
 [data-theme='modus-classic-dark'] modus-wc-switch .modus-wc-toggle {
   &:checked {
-    --fallback-b1: var(--modus-wc-color-highlight-blue);
+    --input-color: var(--modus-wc-color-highlight-blue);
 
     color: var(--modus-wc-color-highlight-blue);
   }
@@ -120,7 +120,7 @@ modus-wc-switch .modus-wc-toggle {
     &:hover:checked {
       background-color: var(--modus-wc-color-white);
 
-      --fallback-b1: var(--modus-wc-color-blue-light);
+      --input-color: var(--modus-wc-color-blue-light);
     }
   }
 }
@@ -133,7 +133,7 @@ modus-wc-switch .modus-wc-toggle {
   outline-color: var(--modus-wc-color-highlight-blue);
 
   // Set default colors
-  --fallback-b1: var(--modus-wc-color-gray-4);
+  --input-color: var(--modus-wc-color-gray-4);
 
   // Sizes
   &.modus-wc-toggle-xs {
@@ -170,7 +170,7 @@ modus-wc-switch .modus-wc-toggle {
   }
 
   &:checked {
-    --fallback-b1: var(--modus-wc-color-blue-light);
+    --input-color: var(--modus-wc-color-blue-light);
 
     color: var(--modus-wc-color-blue-light);
   }
@@ -185,7 +185,7 @@ modus-wc-switch .modus-wc-toggle {
     &:hover:checked {
       background-color: var(--modus-wc-color-white);
 
-      --fallback-b1: var(--modus-wc-color-trimble-blue);
+      --input-color: var(--modus-wc-color-trimble-blue);
     }
 
     &:focus-visible {
@@ -198,7 +198,7 @@ modus-wc-switch .modus-wc-toggle {
     background-color: var(--modus-wc-color-white);
 
     &:not(:checked) {
-      --fallback-b1: var(--modus-wc-color-base-300);
+      --input-color: var(--modus-wc-color-base-300);
 
       opacity: 0.5;
     }
@@ -207,7 +207,7 @@ modus-wc-switch .modus-wc-toggle {
 
 [data-theme='connect-dark'] modus-wc-switch .modus-wc-toggle {
   &:checked {
-    --fallback-b1: var(--modus-wc-color-highlight-blue);
+    --input-color: var(--modus-wc-color-highlight-blue);
 
     color: var(--modus-wc-color-highlight-blue);
   }
@@ -222,7 +222,7 @@ modus-wc-switch .modus-wc-toggle {
     &:hover:checked {
       background-color: var(--modus-wc-color-white);
 
-      --fallback-b1: var(--modus-wc-color-blue-light);
+      --input-color: var(--modus-wc-color-blue-light);
     }
   }
 }
@@ -235,26 +235,26 @@ modus-wc-switch .modus-wc-toggle {
   }
 
   .modus-wc-toggle {
-    --fallback-b1: var(--modus-wc-color-gray-0);
+    --input-color: var(--modus-wc-color-gray-0);
 
     border: none;
     box-shadow:
       var(--handleoffsetcalculator) 0 0 var(--modus-wc-border-width-md)
-        var(--fallback-b1) inset,
-      0 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset;
+        var(--input-color) inset,
+      0 0 0 var(--modus-wc-border-width-md) var(--input-color) inset;
     color: var(--modus-wc-color-white);
 
     &:indeterminate {
       box-shadow:
         calc(var(--handleoffset) / 2) 0 0 var(--modus-wc-border-width-md)
-          var(--fallback-b1) inset,
+          var(--input-color) inset,
         calc(var(--handleoffset) / -2) 0 0 var(--modus-wc-border-width-md)
-          var(--fallback-b1) inset,
-        0 0 0 var(--modus-wc-border-width-md) var(--fallback-b1) inset;
+          var(--input-color) inset,
+        0 0 0 var(--modus-wc-border-width-md) var(--input-color) inset;
     }
 
     &:checked {
-      --fallback-b1: var(--modus-wc-color-primary);
+      --input-color: var(--modus-wc-color-primary);
     }
 
     &:focus-visible {
@@ -316,7 +316,7 @@ modus-wc-switch .modus-wc-toggle {
 
 [data-theme='modus-modern-light'] modus-wc-switch .modus-wc-toggle {
   &:disabled:not(:checked) {
-    --fallback-b1: var(--modus-wc-color-base-300);
+    --input-color: var(--modus-wc-color-base-300);
   }
 }
 
@@ -326,10 +326,10 @@ modus-wc-switch .modus-wc-toggle {
   }
 
   .modus-wc-toggle {
-    --fallback-b1: var(--modus-wc-color-gray-9);
+    --input-color: var(--modus-wc-color-gray-9);
 
     &:disabled:not(:checked) {
-      --fallback-b1: var(--modus-wc-color-base-300);
+      --input-color: var(--modus-wc-color-base-300);
 
       opacity: 0.8;
     }
