@@ -18,8 +18,8 @@ const targetPath = join(root, 'src/styles/modus-wc-variables.css');
 
 const read = (path, label) => {
   if (!existsSync(path)) {
-    console.error(`Missing required file: ${label} (${path})`); // eslint-disable-line no-undef
-    process.exit(1); // eslint-disable-line no-undef
+    console.error(`Missing required file: ${label} (${path})`);
+    process.exit(1);
   }
   return readFileSync(path, 'utf8');
 };
@@ -29,8 +29,59 @@ const fontsCSS = read(fontsPath, 'fonts.css');
 const globalCSS = read(globalPath, 'global.css');
 const outputCSS = read(outputCSSPath, 'output.css');
 
-// Extract [data-theme] blocks from output.css (DaisyUI oklch tokens + config vars per theme)
+// Extract DaisyUI v5 theme blocks from output.css.
+// Values are full colors (--color-primary: #0063a3), not OKLCH channels (--p).
 // output.css uses unquoted selectors e.g. [data-theme=connect-light]{...}
+const DROPPED_TOKENS = new Set([
+  '--p',
+  '--pc',
+  '--s',
+  '--sc',
+  '--a',
+  '--ac',
+  '--n',
+  '--nc',
+  '--b1',
+  '--b2',
+  '--b3',
+  '--bc',
+  '--in',
+  '--inc',
+  '--su',
+  '--suc',
+  '--wa',
+  '--wac',
+  '--er',
+  '--erc',
+  '--btn-focus-scale',
+  '--animation-btn',
+]);
+
+const isFullColorDeclaration = (decl) => {
+  const match = decl.match(/^(--[^:]+):\s*(.+)$/);
+  if (!match) {
+    return false;
+  }
+  const [, name, value] = match;
+  if (
+    DROPPED_TOKENS.has(name) ||
+    name.startsWith('--rounded-') ||
+    name.startsWith('--fallback-')
+  ) {
+    return false;
+  }
+  if (/^oklch\(\s*var\(--/.test(value)) {
+    return false;
+  }
+  return (
+    name.startsWith('--color-') ||
+    name.startsWith('--radius-') ||
+    name.startsWith('--size-') ||
+    name === '--border' ||
+    name === '--depth'
+  );
+};
+
 const extractOutputThemeBlocks = (css) => {
   const themeNames = [
     'modus-modern-light',
@@ -44,19 +95,32 @@ const extractOutputThemeBlocks = (css) => {
   const result = {};
 
   for (const theme of themeNames) {
-    // Match minified [data-theme=theme-name]{...} blocks
+    // Match minified [data-theme=theme-name]{...} blocks (not [data-theme=name]:root).
     const regex = new RegExp(`\\[data-theme=${theme}\\]\\{([^}]*)\\}`, 'g');
-    const match = regex.exec(css);
-    if (match) {
-      // Extract only CSS custom property declarations
-      const vars = match[1]
+    let vars = '';
+    let match = regex.exec(css);
+    while (match) {
+      const candidate = match[1]
         .split(';')
         .map((s) => s.trim())
         .filter((s) => s.startsWith('--'))
+        .filter(isFullColorDeclaration)
         .map((s) => `  ${s};`)
         .join('\n');
-      result[theme] = vars;
+      if (candidate.includes('--color-primary:')) {
+        vars = candidate;
+        break;
+      }
+      match = regex.exec(css);
     }
+    if (!vars) {
+      console.error(
+        `Theme ${theme} is missing --color-primary. ` +
+          'modus-wc-variables.css requires DaisyUI v5 full colors, not --p channels.'
+      );
+      process.exit(1);
+    }
+    result[theme] = vars;
   }
 
   return result;
@@ -135,6 +199,16 @@ const output = `/**
  * Contains ONLY CSS variables, theme definitions, and font declarations.
  * No Tailwind reset, no DaisyUI classes, no utility classes.
  *
+ * BREAKING (DaisyUI 5): theme tokens are full colors, not OKLCH channels.
+ *   --p: 48% 0.12 247        →  --color-primary: #0063a3
+ *   --rounded-btn: 0.5rem    →  --radius-field: 0.5rem
+ *   --rounded-box            →  --radius-box
+ *   --rounded-badge          →  --radius-selector
+ *   --border-btn             →  --border
+ *   --btn-focus-scale        →  removed (press scale lives in component SCSS)
+ * oklch(var(--p) / <alpha>) is invalid against these values.
+ * Use color-mix(in oklab, var(--color-primary) <percent>, transparent).
+ *
  * Use this when:
  * - Your app uses Modus components inside Shadow DOM
  * - You want to avoid the Tailwind Preflight reset causing style regressions
@@ -159,4 +233,4 @@ ${themeBlocks}
 
 writeFileSync(targetPath, output, 'utf8');
 
-console.log(`Generated: ${targetPath}`); // eslint-disable-line no-undef
+console.log(`Generated: ${targetPath}`);
