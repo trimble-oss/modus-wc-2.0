@@ -38,7 +38,7 @@ import {
   ITimeInputKeyboardContext,
   unbindBeforeInputListener,
 } from './utils/time-input-keyboard';
-import { scheduleWheelSelectionFocus } from './utils/time-listbox-keyboard';
+import { focusSelectedWheelOption } from './utils/time-listbox-keyboard';
 import {
   IWheelState,
   resolveWheelState,
@@ -112,6 +112,13 @@ export class ModusWcTimeInput {
   private pendingScrollToSelection = false;
   /** Move focus onto the selected hour when the picker first opens */
   private pendingFocusPickerOnOpen = false;
+  /**
+   * Listbox whose roving focus must move back onto the selected row after an
+   * Escape revert re-renders. Deferred to `componentDidUpdate` so the focus
+   * lands after Stencil repaints `.is-selected`, instead of racing the patch
+   * and leaving the ring on the row that was just clicked.
+   */
+  private pendingRefocusListbox: Element | null = null;
   /**
    * `value` as it stood when the dropdown opened. Escape restores it before
    * closing, so a picker session can be abandoned without keeping its edits.
@@ -347,12 +354,21 @@ export class ModusWcTimeInput {
               );
           focusTarget?.focus({ preventScroll: true });
         }
+        // Escape revert: now that the reverted `.is-selected` is painted, move
+        // the roving focus onto the restored row so the ring leaves the row the
+        // user had just clicked.
+        if (this.pendingRefocusListbox) {
+          const listbox = this.pendingRefocusListbox;
+          this.pendingRefocusListbox = null;
+          focusSelectedWheelOption(listbox);
+        }
       });
     } else {
       unbindCircularWheelListeners(this.wheelScrollCleanups);
       this.wheelScrollCleanups = [];
       this.pendingScrollToSelection = false;
       this.pendingFocusPickerOnOpen = false;
+      this.pendingRefocusListbox = null;
       this.valueAtDropdownOpen = null;
       this.pickerSeedValue = null;
       this.wheelScrollPositions.clear();
@@ -544,7 +560,10 @@ export class ModusWcTimeInput {
     this.emitChange(restored);
     this.pendingScrollToSelection = true;
     if (focusedListbox) {
-      scheduleWheelSelectionFocus(focusedListbox);
+      // Defer to `componentDidUpdate`: moving focus here would race Stencil's
+      // re-render and re-focus the just-clicked row (still `.is-selected` in the
+      // DOM), leaving the ring on it after the selection visually reverts.
+      this.pendingRefocusListbox = focusedListbox;
     }
   }
 

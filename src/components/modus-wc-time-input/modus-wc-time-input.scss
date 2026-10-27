@@ -296,7 +296,12 @@ modus-wc-time-input {
   }
 
   .time-datalist-option {
-    border-radius: var(--modus-wc-border-radius-lg);
+    // Rows sit flush (square) so stacked options read as one list; only the
+    // first and last rows round to the picker's radius (--rounded-box) so the
+    // outer focus ring and row corners align with the rounded dropdown border.
+    // Outlines are not clipped by the container's overflow, so the radius must
+    // live on the row itself.
+    border-radius: 0;
     color: var(--modus-wc-color-base-content);
     cursor: pointer;
     font-size: var(--modus-wc-font-size-sm);
@@ -304,6 +309,16 @@ modus-wc-time-input {
     padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-lg);
     white-space: nowrap;
     width: 100%;
+
+    &:first-child {
+      border-start-end-radius: var(--rounded-box);
+      border-start-start-radius: var(--rounded-box);
+    }
+
+    &:last-child {
+      border-end-end-radius: var(--rounded-box);
+      border-end-start-radius: var(--rounded-box);
+    }
 
     &:hover:not(.is-selected) {
       background-color: var(--modus-wc-color-base-200);
@@ -313,6 +328,10 @@ modus-wc-time-input {
       background-color: var(--modus-wc-color-primary-pale);
     }
 
+    // Matches the dropdown menu's focus border (modus-wc-menu-item): a 2px
+    // primary outline inset into the row. Programmatic focus (roving tabindex)
+    // does not match :focus-visible, so draw the ring whenever the row owns
+    // focus.
     &:focus {
       outline: var(--modus-wc-border-width-sm) solid
         var(--modus-wc-color-primary);
