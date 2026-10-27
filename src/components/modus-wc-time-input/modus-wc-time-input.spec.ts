@@ -2054,7 +2054,9 @@ describe('modus-wc-time-input', () => {
       configurable: true,
     });
     jest.spyOn(input, 'focus').mockImplementation(() => {
-      input.dispatchEvent(new FocusEvent('focus'));
+      input.dispatchEvent(
+        new FocusEvent('focus', { relatedTarget: button, bubbles: true })
+      );
     });
     const raf = captureRaf();
 

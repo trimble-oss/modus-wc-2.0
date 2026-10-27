@@ -969,11 +969,11 @@ export class ModusWcTimeInput {
       // tabbing in leaves the caret at 0 and enters on the first segment.
       this.focusSelectFrame = requestAnimationFrame(() => {
         this.focusSelectFrame = null;
-        if (fromClock) {
-          this.selectSegment(segments[segments.length - 1]);
-        } else if (this.skipSegmentSelectOnFocus) {
+        if (this.skipSegmentSelectOnFocus) {
           this.skipSegmentSelectOnFocus = false;
           this.placeCaretAtStart();
+        } else if (fromClock) {
+          this.selectSegment(segments[segments.length - 1]);
         } else if (this.selectHourOnFocus) {
           this.selectHourOnFocus = false;
           this.selectHourSegment();
