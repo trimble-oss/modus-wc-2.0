@@ -97,7 +97,8 @@ export function focusSelectedWheelOption(listbox: Element | null): void {
   if (!selected || !viewport) {
     return;
   }
-  listbox
+  const picker = viewport.closest('.time-dropdown');
+  (picker ?? listbox)
     .querySelectorAll<HTMLElement>('.time-wheel-option[tabindex="0"]')
     .forEach((el) => {
       if (el !== selected) {
@@ -126,7 +127,11 @@ export function scheduleWheelSelectionFocus(listbox: Element | null): void {
 }
 
 /** Move focus to the selected row of the previous / next wheel column. */
-function focusAdjacentWheel(target: HTMLElement, direction: 1 | -1): void {
+function focusAdjacentWheel(
+  target: HTMLElement,
+  direction: 1 | -1,
+  wrap = false
+): void {
   const viewport = target.closest('.time-wheel-viewport');
   const wheels = viewport?.parentElement;
   if (!viewport || !wheels) {
@@ -136,8 +141,15 @@ function focusAdjacentWheel(target: HTMLElement, direction: 1 | -1): void {
     wheels.querySelectorAll<HTMLElement>('.time-wheel-viewport')
   );
   const index = viewports.indexOf(viewport as HTMLElement);
-  const next = viewports[index + direction];
-  if (index < 0 || !next) {
+  if (index < 0 || viewports.length === 0) {
+    return;
+  }
+  let nextIndex = index + direction;
+  if (wrap) {
+    nextIndex = (nextIndex + viewports.length) % viewports.length;
+  }
+  const next = viewports[nextIndex];
+  if (!next || next === viewport) {
     return;
   }
   target.tabIndex = -1;
@@ -228,6 +240,11 @@ function handleDisabledWheelOptionKeyDown(
   value: string,
   onSelect: (value: string) => void
 ): void {
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    focusAdjacentWheel(target, event.shiftKey ? -1 : 1, true);
+    return;
+  }
   if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
     event.preventDefault();
     focusAdjacentWheel(target, event.key === 'ArrowRight' ? 1 : -1);
@@ -283,6 +300,11 @@ export function handleWheelOptionKeyDown(
   if (event.key === 'ArrowUp') {
     event.preventDefault();
     selectAdjacentWheelValue(target, -1, value, onSelect);
+    return;
+  }
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    focusAdjacentWheel(target, event.shiftKey ? -1 : 1, true);
     return;
   }
   if (event.key === 'ArrowRight') {

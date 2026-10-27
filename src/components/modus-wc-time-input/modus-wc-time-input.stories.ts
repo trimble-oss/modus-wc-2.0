@@ -175,27 +175,6 @@ export const WithSeconds: Story = {
   },
 };
 
-export const Format12HourWithSeconds: Story = {
-  ...Template,
-  args: {
-    format: '12hrs',
-    'show-seconds': true,
-    value: '21:45:30',
-  },
-};
-
-export const Format12HourWithGeneratedIntervals: Story = {
-  ...Template,
-  args: {
-    format: '12hrs',
-    variant: 'datalist',
-    'interval-minutes': 30,
-    min: '08:00',
-    max: '18:00',
-    value: '13:30',
-  },
-};
-
 export const WithDatalist: Story = {
   render: () => {
     // prettier-ignore
@@ -330,34 +309,62 @@ export const Migration: Story = {
         story: `
 #### Breaking Changes
 
+  - In 1.0 input state was maintained by the component. 2.0 components encourage users to follow a controlled
+  input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for
+  additional info and examples.
+  - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Changes
+
   - The field is a custom segmented text input (native \`--:--\` skeleton) instead of the browser's \`<input type="time">\`.
-  - Open the picker with the clock button or **Alt+ArrowDown** (plain Arrow keys edit segments).
-  - \`value\` remains **24-hour** (\`HH:mm\` / \`HH:mm:ss\`) for storage and \`inputChange\`.
-  - New \`format\` prop: \`12hrs\` or \`24hrs\`. Controls display, Modus picker wheels / datalist labels.
-    When unset, the hour clock follows the user's locale (falls back to \`24hrs\` if it cannot be detected).
+  - \`value\` stays **24-hour** (\`HH:mm\` / \`HH:mm:ss\`) for storage and \`inputChange\`.
+  - \`format\` is \`12hrs\` or \`24hrs\`. It controls the field display and the Modus picker wheels / datalist labels.
+    When unset, the hour clock follows the user's locale and falls back to \`24hrs\` when the locale clock cannot be detected.
     Set \`format\` explicitly to pin it regardless of locale.
-  - New \`variant\` prop (\`picker\` default, \`datalist\` for interval / option list).
-  - Dropdown mode: \`variant="datalist"\`, non-empty \`datalistOptions\`, or deprecated \`datalistId\`.
+  - \`variant\` is \`picker\` (default) or \`datalist\` for an interval or option list.
+  - Dropdown mode follows \`variant="datalist"\`, a non-empty \`datalistOptions\`, or deprecated \`datalistId\`.
     The bare \`interval-minutes\` attribute still opts into datalist for backward compatibility.
-  - \`datalistId\` is deprecated; prefer \`datalistOptions\` or \`variant="datalist"\`.
-  - Size values use abbreviations (\`sm\`, \`md\`, \`lg\`).
+  - \`datalistId\` is deprecated. Prefer \`datalistOptions\` or \`variant="datalist"\`.
+  - Keyboard editing: Arrow Up/Down step segments, Arrow Left/Right move between segments, digits auto-advance, and A/P sets AM/PM in \`12hrs\` mode.
+  - A field click selects a segment. The clock button or **Alt+ArrowDown** opens the dropdown. Plain arrow keys edit segments.
+  - Escape or a click outside closes the dropdown.
+  - Picker wheel clicks update the field immediately. A datalist selection closes the menu.
+  - Form submission uses a hidden input carrying the canonical 24-hour \`value\` when \`name\` is set.
 
-#### New Behaviors
+#### Prop Mapping
 
-  - Native-style keyboard editing: Arrow Up/Down step segments, Arrow Left/Right move between segments, digits auto-advance, A/P sets AM/PM in 12hrs mode.
-  - Field click selects a segment; clock button or **Alt+ArrowDown** opens the dropdown.
-  - Escape / click-outside closes the dropdown.
-  - Picker wheel clicks update the field immediately; datalist selection closes the menu.
-  - Form submission uses a hidden input carrying the canonical 24h \`value\` when \`name\` is set.
+| 1.0 Prop                | 2.0 Prop            | Notes                                   |
+|-------------------------|---------------------|-----------------------------------------|
+| allowed-chars-regex     |                     | Not carried over                        |
+| ampm                    |                     | Not carried over                        |
+| aria-label              | aria-label          |                                         |
+| auto-focus-input        | autofocus           |                                         |
+| auto-format             |                     | Not carried over                        |
+| disable-validation      |                     | Not carried over                        |
+| disabled                | disabled            |                                         |
+| error-text              | feedback.message    | Use \`feedback\` level                  |
+| helper-text             |                     | Not carried over                        |
+| label                   | label               |                                         |
+| max                     | max                 |                                         |
+| min                     | min                 |                                         |
+| placeholder             |                     | Not carried over                        |
+| read-only               | read-only           |                                         |
+| required                | required            |                                         |
+| size                    | size                | \`medium\` → \`md\`, \`large\` → \`lg\` |
+| valid-text              | feedback.message    | Use \`feedback\` level                  |
+| value                   | value               |                                         |
+
+#### Event Mapping
+
+| 1.0 Event      | 2.0 Event   | Notes                                                |
+|----------------|-------------|------------------------------------------------------|
+| timeInputBlur  | inputBlur   |                                                      |
+| valueChange    | inputChange |                                                      |
         `,
       },
     },
+    controls: { disable: true },
+    canvas: { disable: true },
   },
-  render: () => html`
-    <modus-wc-time-input
-      label="Meeting time"
-      format="24hrs"
-      value="09:45"
-    ></modus-wc-time-input>
-  `,
+  render: () => html`<div></div>`,
 };

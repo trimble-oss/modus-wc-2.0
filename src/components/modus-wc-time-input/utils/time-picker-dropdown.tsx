@@ -187,14 +187,12 @@ const TimeWheel: FunctionalComponent<{
                   return;
                 }
                 onSelect(opt.value);
-                // Follow the pick with focus only during a keyboard session in
-                // the wheel; a pointer pick leaves focus on the field.
+                // The dropdown swallows mousedown, so the ring only moves when
+                // focus is placed on the row that was just picked.
                 const listbox = (e.currentTarget as HTMLElement).closest(
                   '[role="listbox"]'
                 );
-                if (listbox?.contains(document.activeElement)) {
-                  scheduleWheelSelectionFocus(listbox);
-                }
+                scheduleWheelSelectionFocus(listbox);
               }}
               onKeyDown={(e: KeyboardEvent) =>
                 handleWheelOptionKeyDown(
