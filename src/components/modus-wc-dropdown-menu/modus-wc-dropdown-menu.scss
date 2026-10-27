@@ -8,10 +8,15 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
 
   .menu-wrapper {
     background-color: var(--modus-wc-color-base-page);
+    border-radius: var(--rounded-box);
     left: 0;
     position: absolute;
     top: 0;
     width: max-content;
+
+    .modus-wc-menu {
+      border-radius: var(--rounded-box);
+    }
   }
 
   /* Popover menu — not a nested collapsible submenu. Suppress DaisyUI's
@@ -25,19 +30,30 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
     }
   }
 
-  .modus-wc-menu-item > button:hover {
-    border-radius: 0;
+  /* Help menu paints its own edge rows; other menus match the wrapper corners.
+     The button and tree interactive inherit this radius from the li. */
+  .menu-wrapper:not(:has(.modus-wc-help-menu))
+    .modus-wc-menu:not(.modus-wc-menu-dropdown)
+    :is(modus-wc-menu-item, modus-wc-tree-item) {
+    > li {
+      border-radius: 0;
+    }
+
+    &:first-of-type > li {
+      border-start-end-radius: var(--rounded-box);
+      border-start-start-radius: var(--rounded-box);
+    }
+
+    &:last-of-type > li {
+      border-end-end-radius: var(--rounded-box);
+      border-end-start-radius: var(--rounded-box);
+    }
   }
 }
 
 [data-theme='connect-light'] modus-wc-dropdown-menu.modus-wc-dropdown-menu,
 [data-theme='connect-dark'] modus-wc-dropdown-menu.modus-wc-dropdown-menu {
-  .modus-wc-menu {
-    border-radius: var(--modus-wc-border-radius-sm);
-  }
-
   .menu-wrapper {
-    border-radius: var(--modus-wc-border-radius-sm);
     box-shadow: 0 0 0.375rem #aeaeb6;
   }
 
@@ -91,12 +107,12 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
   }
 }
 
-/* Kept after the Connect block so equal-specificity radius overrides win. */
-modus-wc-dropdown-menu.modus-wc-dropdown-menu
-  .menu-wrapper:has(.modus-wc-help-menu) {
-  border-radius: var(--rounded-box);
-
-  .modus-wc-menu {
-    border-radius: var(--rounded-box);
+[data-theme='modus-modern-light'] modus-wc-dropdown-menu.modus-wc-dropdown-menu,
+[data-theme='modus-modern-dark'] modus-wc-dropdown-menu.modus-wc-dropdown-menu {
+  /* Inner menu wrappers clip overflow; shadow on the wrapper (same as help menu). */
+  .menu-wrapper.menu-wrapper:not(:has(.modus-wc-help-menu)) {
+    box-shadow:
+      0 4px 6px -1px var(--modus-wc-color-base-200),
+      0 2px 4px -2px var(--modus-wc-color-base-200);
   }
 }

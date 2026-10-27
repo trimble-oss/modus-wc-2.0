@@ -122,6 +122,15 @@ modus-wc-badge .modus-wc-badge {
       color: var(--modus-wc-color-error);
     }
   }
+
+  // Shapes - must come after variants to override their border-radius
+  &.modus-wc-badge-ellipse {
+    border-radius: 9999px;
+  }
+
+  &.modus-wc-badge-rectangle {
+    border-radius: var(--modus-wc-border-radius-md);
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-badge .modus-wc-badge,
@@ -188,6 +197,19 @@ modus-wc-badge .modus-wc-badge {
     background-color: transparent;
     border: 1px solid;
     border-radius: var(--modus-wc-border-radius-badge);
+  }
+
+  // Shapes - :not() chain matches the specificity of the default color rule above
+  &.modus-wc-badge-ellipse:not(.modus-wc-badge-text):not(
+      .modus-wc-badge-rectangle
+    ) {
+    border-radius: 9999px;
+  }
+
+  &.modus-wc-badge-rectangle:not(.modus-wc-badge-text):not(
+      .modus-wc-badge-ellipse
+    ) {
+    border-radius: var(--modus-wc-border-radius-md);
   }
 }
 
