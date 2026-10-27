@@ -1684,7 +1684,7 @@ export const CustomEventHandlers: Story = {
       description: {
         story: `This example demonstrates custom event handlers:
 
-1. **Escape animation**: Pressing Escape still closes the menu, and also plays a short scale animation
+1. **Escape animation**: Pressing Escape plays a short scale animation
 2. **Fuzzy Character Search**: Instead of normal substring matching, this searches for items containing ALL typed characters in any order
 
 The fuzzy search allows finding items with scattered characters:
