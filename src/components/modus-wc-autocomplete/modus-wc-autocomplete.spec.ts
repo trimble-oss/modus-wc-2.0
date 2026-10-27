@@ -11,6 +11,7 @@ import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcAutocomplete } from './modus-wc-autocomplete';
 import * as autocompleteCore from './modus-wc-autocomplete-core';
 import {
+  renderExpandCollapseButton,
   renderNoResults,
   syncFilteredItems,
   syncMenuItemSelection,
@@ -2256,6 +2257,20 @@ describe('modus-wc-autocomplete', () => {
     expect(expandButton).toBeTruthy();
   });
 
+  it('should toggle chip expansion when the expand button handler runs', () => {
+    const onToggleExpansion = jest.fn();
+    const expandButtonElement = renderExpandCollapseButton({
+      selectionOrder: ['1', '2', '3'],
+      maxChips: 2,
+      isChipsExpanded: false,
+      onToggleExpansion,
+    }) as { $attrs$: { onButtonClick: (event: Event) => void } };
+
+    expandButtonElement.$attrs$.onButtonClick(new Event('click'));
+
+    expect(onToggleExpansion).toHaveBeenCalledTimes(1);
+  });
+
   // Test expanded state rendering
   it('should render collapse button and text when chips are expanded', async () => {
     const page = await newSpecPage({
@@ -2780,7 +2795,7 @@ describe('modus-wc-autocomplete', () => {
     expect(clearClickSpy).toHaveBeenCalled();
   });
 
-  it('should clear all selections when clear button is clicked', async () => {
+  it('should clear all selections when the clear button is activated with Enter', async () => {
     const page = await newSpecPage({
       components: [
         ModusWcAutocomplete,
@@ -2808,9 +2823,11 @@ describe('modus-wc-autocomplete', () => {
 
     const clearClickSpy = jest.spyOn(autocomplete.clearClick, 'emit');
 
-    // Simulate click
-    const clickEvent = new MouseEvent('click');
-    clearButton?.dispatchEvent(clickEvent);
+    clearButton
+      ?.querySelector('button')
+      ?.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+      );
     await page.waitForChanges();
 
     expect(clearClickSpy).toHaveBeenCalled();
