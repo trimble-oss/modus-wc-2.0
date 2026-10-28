@@ -5,18 +5,17 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 import { IInputFeedbackProp, ModusSize } from '../types';
 
-// const timeOptions = ['08:00', '12:00', '17:00'];
-
 interface TimeInputArgs {
   'auto-complete'?: 'on' | 'off';
   bordered?: boolean;
   'custom-class'?: string;
-  'datalist-id'?: string;
   'datalist-options'?: string[];
   disabled?: boolean;
   feedback?: IInputFeedbackProp;
+  format?: '12hrs' | '24hrs';
   'input-id'?: string;
   'input-tab-index'?: number;
+  'interval-minutes'?: number;
   label?: string;
   max?: string;
   min?: string;
@@ -26,15 +25,20 @@ interface TimeInputArgs {
   'show-seconds'?: boolean;
   size?: ModusSize;
   step?: number;
-  value: string;
+  variant?: 'datalist' | 'picker';
+  value?: string;
 }
 
 const meta: Meta<TimeInputArgs> = {
   title: 'Components/Forms/Time Input',
   component: 'modus-wc-time-input',
   args: {
+    bordered: true,
     disabled: false,
-    label: 'Label',
+    label: 'Time',
+    'read-only': false,
+    required: false,
+    'show-seconds': false,
     size: 'md',
   },
   argTypes: {
@@ -43,7 +47,6 @@ const meta: Meta<TimeInputArgs> = {
       options: ['on', 'off'],
     },
     feedback: {
-      description: 'Feedback prop for input components',
       table: {
         type: {
           detail: `
@@ -55,9 +58,17 @@ const meta: Meta<TimeInputArgs> = {
         },
       },
     },
+    format: {
+      control: { type: 'select' },
+      options: ['12hrs', '24hrs'],
+    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
+    },
+    variant: {
+      control: { type: 'select' },
+      options: ['picker', 'datalist'],
     },
   },
   decorators: [withActions],
@@ -76,34 +87,83 @@ const Template: Story = {
   render: (args) => html`
     <modus-wc-time-input
       auto-complete=${ifDefined(args['auto-complete'])}
-      bordered=${ifDefined(args.bordered)}
+      ?bordered=${args.bordered}
       custom-class=${ifDefined(args['custom-class'])}
-      datalist-id=${ifDefined(args['datalist-id'])}
       ?disabled=${args.disabled}
       .feedback=${args.feedback}
+      format=${ifDefined(args.format)}
       input-id=${ifDefined(args['input-id'])}
       input-tab-index=${ifDefined(args['input-tab-index'])}
+      interval-minutes=${ifDefined(args['interval-minutes'])}
       label=${ifDefined(args.label)}
       max=${ifDefined(args.max)}
       min=${ifDefined(args.min)}
       name=${ifDefined(args.name)}
       ?read-only=${args['read-only']}
       ?required=${args.required}
-      show-seconds=${ifDefined(args['show-seconds'])}
+      ?show-seconds=${args['show-seconds']}
       size=${ifDefined(args.size)}
       step=${ifDefined(args.step)}
+      variant=${ifDefined(args.variant)}
       .datalistOptions=${args['datalist-options']}
-      .value=${args.value}
+      value=${ifDefined(args.value)}
     ></modus-wc-time-input>
   `,
 };
 
 export const Default: Story = { ...Template };
 
+export const Datalist: Story = {
+  ...Template,
+  args: {
+    variant: 'datalist',
+    value: '09:45',
+    'datalist-options': ['09:15', '09:30', '09:45', '10:00', '10:15'],
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<modus-wc-time-input
+  aria-label="Time input"
+  label="Time"
+  variant="datalist"
+  value="09:45"
+  bordered
+></modus-wc-time-input>
+
+<script>
+  const timeInputElement = document.querySelector('modus-wc-time-input');
+  timeInputElement.datalistOptions = [
+    '09:15',
+    '09:30',
+    '09:45',
+    '10:00',
+    '10:15',
+  ];
+</script>
+        `,
+      },
+    },
+  },
+};
+
+export const WithGeneratedIntervals: Story = {
+  ...Template,
+  args: {
+    variant: 'datalist',
+    'interval-minutes': 15,
+    min: '08:00',
+    max: '12:00',
+    value: '09:00',
+  },
+};
+
 export const WithSeconds: Story = {
   ...Template,
   args: {
     'show-seconds': true,
+    value: '09:45:00',
   },
 };
 
@@ -145,12 +205,12 @@ export const WithDatalistOptions: Story = {
 
 const errorFeedback: IInputFeedbackProp = {
   level: 'error',
-  message: 'Value is required.',
+  message: 'Invalid time entered.',
 };
 
 export const WithErrorFeedback: Story = {
   ...Template,
-  args: { feedback: errorFeedback, required: true },
+  args: { feedback: errorFeedback, required: true, value: '' },
   parameters: {
     docs: {
       source: {
@@ -159,7 +219,7 @@ export const WithErrorFeedback: Story = {
   const timeInputElement = document.querySelector('modus-wc-time-input');
   timeInputElement.feedback = {
     level: 'error',
-    message: 'Value is required.'
+    message: 'Invalid time entered.'
   };
 </script>`,
       },
@@ -169,7 +229,6 @@ export const WithErrorFeedback: Story = {
 
 export const ShadowDomParent: Story = {
   render: (args) => {
-    // Create a unique shadow host for time-input component
     if (!customElements.get('time-input-shadow-host')) {
       const TimeInputShadowHost = createShadowHostClass<TimeInputArgs>({
         componentTag: 'modus-wc-time-input',
@@ -178,12 +237,13 @@ export const ShadowDomParent: Story = {
             autoComplete: string;
             bordered: boolean;
             customClass: string;
-            datalistId: string;
             datalistOptions: string[];
             disabled: boolean;
             feedback: IInputFeedbackProp;
+            format: string;
             inputId: string;
             inputTabIndex: number;
+            intervalMinutes: number;
             label: string;
             max: string;
             min: string;
@@ -198,14 +258,19 @@ export const ShadowDomParent: Story = {
           timeInputEl.autoComplete = v['auto-complete'] ?? '';
           timeInputEl.bordered = v['bordered'] ?? true;
           timeInputEl.customClass = v['custom-class'] || '';
-          timeInputEl.datalistId = v['datalist-id'] ?? '';
           if (v['datalist-options']) {
-            timeInputEl.datalistOptions = v['datalist-options']; // Conditional assignment only if provided
+            timeInputEl.datalistOptions = v['datalist-options'];
           }
           timeInputEl.disabled = Boolean(v.disabled);
-
+          if (v.format) {
+            timeInputEl.format = v.format;
+          }
           timeInputEl.inputId = v['input-id'] ?? '';
           timeInputEl.inputTabIndex = v['input-tab-index'] ?? 0;
+          if (v['interval-minutes'] !== undefined) {
+            timeInputEl.intervalMinutes = v['interval-minutes'];
+            el.setAttribute('interval-minutes', String(v['interval-minutes']));
+          }
           timeInputEl.label = v.label ?? '';
           timeInputEl.max = v.max ?? '';
           timeInputEl.min = v.min ?? '';
@@ -214,7 +279,6 @@ export const ShadowDomParent: Story = {
           timeInputEl.required = Boolean(v.required);
           timeInputEl.showSeconds = Boolean(v['show-seconds']);
           timeInputEl.size = v.size ?? 'md';
-          // Only set step if explicitly provided, otherwise let component calculate from showSeconds
           if (v.step !== undefined) {
             timeInputEl.step = v.step;
           }
@@ -229,6 +293,7 @@ export const ShadowDomParent: Story = {
     ></time-input-shadow-host>`;
   },
 };
+
 export const Migration: Story = {
   parameters: {
     docs: {
@@ -240,6 +305,23 @@ export const Migration: Story = {
   input model. See the Form Inputs [documentation](/docs/documentation-form-inputs--docs) for
   additional info and examples.
   - Size values have changed from verbose names (\`medium\`, \`large\`) to abbreviations (\`sm\`, \`md\`, \`lg\`).
+
+#### Changes
+
+  - The field is a custom segmented text input (native \`--:--\` skeleton) instead of the browser's \`<input type="time">\`.
+  - \`value\` stays **24-hour** (\`HH:mm\` / \`HH:mm:ss\`) for storage and \`inputChange\`.
+  - \`format\` is \`12hrs\` or \`24hrs\`. It controls the field display and the Modus picker wheels / datalist labels.
+    When unset, the hour clock follows the user's locale and falls back to \`24hrs\` when the locale clock cannot be detected.
+    Set \`format\` explicitly to pin it regardless of locale.
+  - \`variant\` is \`picker\` (default) or \`datalist\` for an interval or option list.
+  - Dropdown mode follows \`variant="datalist"\`, a non-empty \`datalistOptions\`, or deprecated \`datalistId\`.
+    The bare \`interval-minutes\` attribute still opts into datalist for backward compatibility.
+  - \`datalistId\` is deprecated. Prefer \`datalistOptions\` or \`variant="datalist"\`.
+  - Keyboard editing: Arrow Up/Down step segments, Arrow Left/Right move between segments, digits auto-advance, and A/P sets AM/PM in \`12hrs\` mode.
+  - A field click selects a segment. The clock button or **Alt+ArrowDown** opens the dropdown. Plain arrow keys edit segments.
+  - Escape or a click outside closes the dropdown.
+  - Picker wheel clicks update the field immediately. A datalist selection closes the menu.
+  - Form submission uses a hidden input carrying the canonical 24-hour \`value\` when \`name\` is set.
 
 #### Prop Mapping
 
@@ -273,10 +355,8 @@ export const Migration: Story = {
         `,
       },
     },
-    // To hide the actual story rendering and only show docs:
     controls: { disable: true },
     canvas: { disable: true },
   },
-  // Simple render function or leave it empty
   render: () => html`<div></div>`,
 };
