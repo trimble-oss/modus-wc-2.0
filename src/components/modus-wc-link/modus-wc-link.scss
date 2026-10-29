@@ -4,9 +4,13 @@
 */
 
 modus-wc-link a.modus-wc-link {
-  align-items: center;
-  display: inline-flex;
-  gap: var(--modus-wc-spacing-xs);
+  // One icon or both: either populated slot opts the link into the row layout.
+  &:has([slot='start-icon']),
+  &:has([slot='end-icon']) {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--modus-wc-spacing-xs);
+  }
 
   &,
   &:link,
