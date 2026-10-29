@@ -10,6 +10,10 @@ import {
 
 /**
  * A customizable link component used to navigate to URLs.
+ *
+ * This component supports a 'start-icon' `<slot>` for a leading icon, an
+ * 'end-icon' `<slot>` for a trailing icon, and a default slot for the link
+ * text. Either icon, both, or neither may be provided.
  */
 @Component({
   tag: 'modus-wc-link',
@@ -108,7 +112,11 @@ export class ModusWcLink {
           target={this.target}
           {...this.inheritedAttributes}
         >
-          <slot />
+          <slot name="start-icon" />
+          <span class="modus-wc-link-label">
+            <slot />
+          </span>
+          <slot name="end-icon" />
         </a>
       </Host>
     );

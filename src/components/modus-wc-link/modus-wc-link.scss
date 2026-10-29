@@ -4,35 +4,83 @@
 */
 
 modus-wc-link a.modus-wc-link {
-  &.modus-wc-link-color-primary {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--modus-wc-spacing-xs);
+
+  &,
+  &:link,
+  &:visited,
+  &:hover,
+  &:active,
+  &:focus,
+  &:focus-visible {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .modus-wc-link-label {
+    text-decoration: underline;
+  }
+
+  &.modus-wc-link-color-primary .modus-wc-link-label {
     color: var(--modus-wc-color-primary);
   }
 
-  &.modus-wc-link-color-secondary {
+  &.modus-wc-link-color-secondary .modus-wc-link-label {
     color: var(--modus-wc-color-secondary);
   }
 
-  &.modus-wc-link-color-tertiary {
+  &.modus-wc-link-color-tertiary .modus-wc-link-label {
     color: var(--modus-wc-color-base-inverted);
   }
 
-  &.modus-wc-link-color-success {
+  &.modus-wc-link-color-success .modus-wc-link-label {
     color: var(--modus-wc-color-success);
   }
 
-  &.modus-wc-link-color-info {
+  &.modus-wc-link-color-info .modus-wc-link-label {
     color: var(--modus-wc-color-info);
   }
 
-  &.modus-wc-link-color-warning {
+  &.modus-wc-link-color-warning .modus-wc-link-label {
     color: var(--modus-wc-color-warning);
   }
 
-  &.modus-wc-link-color-danger {
+  &.modus-wc-link-color-danger .modus-wc-link-label {
     color: var(--modus-wc-color-error);
   }
 
-  &.modus-wc-link-color-inherit {
+  &.modus-wc-link-color-inherit .modus-wc-link-label {
     color: inherit;
+  }
+
+  &.modus-wc-link-hover .modus-wc-link-label {
+    text-decoration: none;
+  }
+
+  &.modus-wc-link-hover:hover .modus-wc-link-label,
+  &.modus-wc-link-hover:focus-visible .modus-wc-link-label {
+    text-decoration: underline;
+  }
+
+  &.modus-wc-no-underline .modus-wc-link-label,
+  &.modus-wc-no-underline:hover .modus-wc-link-label,
+  &.modus-wc-no-underline:focus-visible .modus-wc-link-label {
+    text-decoration: none;
+  }
+
+  [slot='start-icon'],
+  [slot='end-icon'] {
+    flex-shrink: 0;
+    height: var(--modus-wc-font-size-xl);
+    width: var(--modus-wc-font-size-xl);
+
+    i.modus-wc-icon {
+      font-size: var(--modus-wc-font-size-xl);
+      height: var(--modus-wc-font-size-xl);
+      line-height: 1;
+      width: var(--modus-wc-font-size-xl);
+    }
   }
 }

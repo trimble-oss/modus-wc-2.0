@@ -111,6 +111,81 @@ export const ExternalLink: Story = {
   },
 };
 
+export const Icons: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<style>
+  .link-icons-story-example {
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-xs);
+  }
+
+  /* Storybook-only: tint mask icons to match the success link label */
+  i.link-icons-story-match-success[class*='modus-icon-'] {
+    background-color: var(--modus-wc-color-success);
+  }
+
+  i.link-icons-story-match-success.modus-icons {
+    color: var(--modus-wc-color-success);
+  }
+</style>
+
+<div style="display: flex; flex-direction: column; gap: var(--modus-wc-spacing-lg);">
+  <div class="link-icons-story-example">
+    <modus-wc-typography hierarchy="span" size="sm" label="Leading icon"></modus-wc-typography>
+    <modus-wc-link href="#">
+      <modus-wc-icon decorative name="link-simple" slot="start-icon"></modus-wc-icon>
+      Click me
+    </modus-wc-link>
+  </div>
+
+  <div class="link-icons-story-example">
+    <modus-wc-typography hierarchy="span" size="sm" label="Trailing icon"></modus-wc-typography>
+    <modus-wc-link href="#">
+      Click me
+      <modus-wc-icon decorative name="caret-right" slot="end-icon" version="2.0"></modus-wc-icon>
+    </modus-wc-link>
+  </div>
+
+  <div class="link-icons-story-example">
+    <modus-wc-typography hierarchy="span" size="sm" label="Leading and trailing icons"></modus-wc-typography>
+    <modus-wc-link href="#">
+      <modus-wc-icon decorative name="link-simple" slot="start-icon"></modus-wc-icon>
+      Click me
+      <modus-wc-icon decorative name="caret-right" slot="end-icon" version="2.0"></modus-wc-icon>
+    </modus-wc-link>
+  </div>
+
+  <div class="link-icons-story-example">
+    <modus-wc-typography
+      hierarchy="span"
+      size="sm"
+      label="Success, icons match the label"
+    ></modus-wc-typography>
+    <modus-wc-link color="success" href="#" underline="none">
+      <modus-wc-icon
+        custom-class="link-icons-story-match-success"
+        decorative
+        name="link-simple"
+        slot="start-icon"
+      ></modus-wc-icon>
+      Click me
+      <modus-wc-icon
+        custom-class="link-icons-story-match-success"
+        decorative
+        name="caret-right"
+        slot="end-icon"
+        version="2.0"
+      ></modus-wc-icon>
+    </modus-wc-link>
+  </div>
+</div>
+    `;
+  },
+};
+
 export const InheritColor: Story = {
   render: () => {
     // prettier-ignore
