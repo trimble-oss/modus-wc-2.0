@@ -19,7 +19,6 @@ modus-wc-link a.modus-wc-link {
   &:active,
   &:focus,
   &:focus-visible {
-    color: inherit;
     text-decoration: none;
   }
 
@@ -27,35 +26,35 @@ modus-wc-link a.modus-wc-link {
     text-decoration: underline;
   }
 
-  &.modus-wc-link-color-primary .modus-wc-link-label {
+  &.modus-wc-link-color-primary {
     color: var(--modus-wc-color-primary);
   }
 
-  &.modus-wc-link-color-secondary .modus-wc-link-label {
+  &.modus-wc-link-color-secondary {
     color: var(--modus-wc-color-secondary);
   }
 
-  &.modus-wc-link-color-tertiary .modus-wc-link-label {
+  &.modus-wc-link-color-tertiary {
     color: var(--modus-wc-color-base-inverted);
   }
 
-  &.modus-wc-link-color-success .modus-wc-link-label {
+  &.modus-wc-link-color-success {
     color: var(--modus-wc-color-success);
   }
 
-  &.modus-wc-link-color-info .modus-wc-link-label {
+  &.modus-wc-link-color-info {
     color: var(--modus-wc-color-info);
   }
 
-  &.modus-wc-link-color-warning .modus-wc-link-label {
+  &.modus-wc-link-color-warning {
     color: var(--modus-wc-color-warning);
   }
 
-  &.modus-wc-link-color-danger .modus-wc-link-label {
+  &.modus-wc-link-color-danger {
     color: var(--modus-wc-color-error);
   }
 
-  &.modus-wc-link-color-inherit .modus-wc-link-label {
+  &.modus-wc-link-color-inherit {
     color: inherit;
   }
 
