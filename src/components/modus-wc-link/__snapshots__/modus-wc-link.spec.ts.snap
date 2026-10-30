@@ -1,10 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-link should render a leading icon when the start-icon slot is set 1`] = `
+<modus-wc-link href="#">
+  <!---->
+  <a class="modus-wc-link modus-wc-link-color-primary" href="#">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="link-simple" slot="start-icon">
+      <i aria-hidden="true" class="modus-icon-link-simple modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-link-simple); webkit-mask-image: var(--modus-icon-link-simple);"></i>
+    </modus-wc-icon>
+    <span class="modus-wc-link-label">
+      Click me
+    </span>
+  </a>
+</modus-wc-link>
+`;
+
+exports[`modus-wc-link should render a trailing icon when the end-icon slot is set 1`] = `
+<modus-wc-link href="#">
+  <!---->
+  <a class="modus-wc-link modus-wc-link-color-primary" href="#">
+    <span class="modus-wc-link-label">
+      Click me
+    </span>
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="caret-right" slot="end-icon">
+      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        caret_right
+      </i>
+    </modus-wc-icon>
+  </a>
+</modus-wc-link>
+`;
+
+exports[`modus-wc-link should render leading and trailing icons together 1`] = `
+<modus-wc-link color="success" href="#" underline="none">
+  <!---->
+  <a class="modus-wc-link modus-wc-link-color-success modus-wc-no-underline" href="#">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="link-simple" slot="start-icon">
+      <i aria-hidden="true" class="modus-icon-link-simple modus-wc-icon modus-wc-icon--md" tabindex="-1" style="mask-image: var(--modus-icon-link-simple); webkit-mask-image: var(--modus-icon-link-simple);"></i>
+    </modus-wc-icon>
+    <span class="modus-wc-link-label">
+      Click me
+    </span>
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" name="caret-right" slot="end-icon">
+      <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
+        caret_right
+      </i>
+    </modus-wc-icon>
+  </a>
+</modus-wc-link>
+`;
+
 exports[`modus-wc-link should render with color class when color is set 1`] = `
 <modus-wc-link color="secondary" href="#">
   <!---->
   <a aria-label="Secondary link" class="modus-wc-link modus-wc-link-color-secondary" href="#">
-    Click me
+    <span class="modus-wc-link-label">
+      Click me
+    </span>
   </a>
 </modus-wc-link>
 `;
@@ -13,7 +64,9 @@ exports[`modus-wc-link should render with default props 1`] = `
 <modus-wc-link href="#">
   <!---->
   <a aria-label="Link" class="modus-wc-link modus-wc-link-color-primary" href="#">
-    Click me
+    <span class="modus-wc-link-label">
+      Click me
+    </span>
   </a>
 </modus-wc-link>
 `;
@@ -22,7 +75,9 @@ exports[`modus-wc-link should render with hover underline class when underline i
 <modus-wc-link href="#" underline="hover">
   <!---->
   <a aria-label="Hover link" class="modus-wc-link modus-wc-link-color-primary modus-wc-link-hover" href="#">
-    Click me
+    <span class="modus-wc-link-label">
+      Click me
+    </span>
   </a>
 </modus-wc-link>
 `;
@@ -31,7 +86,9 @@ exports[`modus-wc-link should render with inherit color class when color is inhe
 <modus-wc-link color="inherit" href="#">
   <!---->
   <a class="modus-wc-link modus-wc-link-color-inherit" href="#">
-    Click me
+    <span class="modus-wc-link-label">
+      Click me
+    </span>
   </a>
 </modus-wc-link>
 `;
@@ -40,7 +97,9 @@ exports[`modus-wc-link should render with no underline class when underline is n
 <modus-wc-link href="#" underline="none">
   <!---->
   <a aria-label="No underline link" class="modus-wc-link modus-wc-link-color-primary modus-wc-no-underline" href="#">
-    Click me
+    <span class="modus-wc-link-label">
+      Click me
+    </span>
   </a>
 </modus-wc-link>
 `;

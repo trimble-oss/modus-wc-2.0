@@ -111,6 +111,61 @@ export const ExternalLink: Story = {
   },
 };
 
+export const WithIcons: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<style>
+  .link-icons-story-example {
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-xs);
+  }
+</style>
+
+<div style="display: flex; flex-direction: column; gap: var(--modus-wc-spacing-lg);">
+  <div class="link-icons-story-example">
+    <modus-wc-typography hierarchy="span" size="sm" label="Start icon"></modus-wc-typography>
+    <modus-wc-link href="#">
+      <modus-wc-icon decorative name="link-simple" slot="start-icon"></modus-wc-icon>
+      Click me
+    </modus-wc-link>
+  </div>
+
+  <div class="link-icons-story-example">
+    <modus-wc-typography hierarchy="span" size="sm" label="End icon"></modus-wc-typography>
+    <modus-wc-link href="#">
+      Click me
+      <modus-wc-icon decorative name="caret-right" slot="end-icon" version="2.0"></modus-wc-icon>
+    </modus-wc-link>
+  </div>
+
+  <div class="link-icons-story-example">
+    <modus-wc-typography hierarchy="span" size="sm" label="Start and end icons"></modus-wc-typography>
+    <modus-wc-link href="#">
+      <modus-wc-icon decorative name="link-simple" slot="start-icon"></modus-wc-icon>
+      Click me
+      <modus-wc-icon decorative name="caret-right" slot="end-icon" version="2.0"></modus-wc-icon>
+    </modus-wc-link>
+  </div>
+
+  <div class="link-icons-story-example">
+    <modus-wc-typography
+      hierarchy="span"
+      size="sm"
+      label="Success"
+    ></modus-wc-typography>
+    <modus-wc-link color="success" href="#" underline="none">
+      <modus-wc-icon decorative name="link-simple" slot="start-icon"></modus-wc-icon>
+      Click me
+      <modus-wc-icon decorative name="caret-right" slot="end-icon" version="2.0"></modus-wc-icon>
+    </modus-wc-link>
+  </div>
+</div>
+    `;
+  },
+};
+
 export const InheritColor: Story = {
   render: () => {
     // prettier-ignore
