@@ -13,6 +13,17 @@ describe('modus-wc-logo', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should render developer console logo without combined emblem', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="developer_console"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+    expect(logoSpan?.classList.contains('logo-combined')).toBe(false);
+    expect(page.root?.querySelector('svg')).not.toBeNull();
+    expect(page.root?.innerHTML).toContain('logo-accent');
+  });
+
   it('should render with emblem prop', async () => {
     const page = await newSpecPage({
       components: [ModusWcLogo],
