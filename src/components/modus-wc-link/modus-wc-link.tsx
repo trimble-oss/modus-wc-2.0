@@ -11,8 +11,8 @@ import {
 /**
  * A customizable link component used to navigate to URLs.
  *
- * This component supports a 'start-icon' `<slot>` for a leading icon, an
- * 'end-icon' `<slot>` for a trailing icon, and a default slot for the link
+ * This component supports a 'start-icon' `<slot>` for a start icon, an
+ * 'end-icon' `<slot>` for an end icon, and a default slot for the link
  * text. Either icon, both, or neither may be provided.
  */
 @Component({

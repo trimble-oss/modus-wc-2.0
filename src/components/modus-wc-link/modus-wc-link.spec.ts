@@ -119,7 +119,7 @@ describe('modus-wc-link', () => {
     expect(anchor?.classList.contains('test-class')).toBe(true);
   });
 
-  it('should render a leading icon when the start-icon slot is set', async () => {
+  it('should render a start icon when the start-icon slot is set', async () => {
     const page = await newSpecPage({
       components: [ModusWcLink, ModusWcIcon],
       html: `<modus-wc-link href="#">
@@ -140,7 +140,7 @@ describe('modus-wc-link', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render a trailing icon when the end-icon slot is set', async () => {
+  it('should render an end icon when the end-icon slot is set', async () => {
     const page = await newSpecPage({
       components: [ModusWcLink, ModusWcIcon],
       html: `<modus-wc-link href="#">
@@ -161,7 +161,7 @@ describe('modus-wc-link', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should render leading and trailing icons together', async () => {
+  it('should render start and end icons together', async () => {
     const page = await newSpecPage({
       components: [ModusWcLink, ModusWcIcon],
       html: `<modus-wc-link color="success" href="#" underline="none">

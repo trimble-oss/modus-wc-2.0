@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modus-wc-link should render a leading icon when the start-icon slot is set 1`] = `
+exports[`modus-wc-link should render a start icon when the start-icon slot is set 1`] = `
 <modus-wc-link href="#">
   <!---->
   <a class="modus-wc-link modus-wc-link-color-primary" href="#">
@@ -14,7 +14,7 @@ exports[`modus-wc-link should render a leading icon when the start-icon slot is 
 </modus-wc-link>
 `;
 
-exports[`modus-wc-link should render a trailing icon when the end-icon slot is set 1`] = `
+exports[`modus-wc-link should render an end icon when the end-icon slot is set 1`] = `
 <modus-wc-link href="#">
   <!---->
   <a class="modus-wc-link modus-wc-link-color-primary" href="#">
@@ -30,7 +30,7 @@ exports[`modus-wc-link should render a trailing icon when the end-icon slot is s
 </modus-wc-link>
 `;
 
-exports[`modus-wc-link should render leading and trailing icons together 1`] = `
+exports[`modus-wc-link should render start and end icons together 1`] = `
 <modus-wc-link color="success" href="#" underline="none">
   <!---->
   <a class="modus-wc-link modus-wc-link-color-success modus-wc-no-underline" href="#">
