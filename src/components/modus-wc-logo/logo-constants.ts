@@ -164,7 +164,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/demand-planning-emblem.svg',
     category: 'trimble',
   },
-  developer_console: {
+  trimble_developer: {
     displayName: 'Developer Console',
     path: 'logos/trimble/trimble-developer.svg',
     emblemPath: 'logos/emblems/trimble-emblem.svg',
