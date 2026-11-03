@@ -32,6 +32,7 @@ export type LogoName =
   | 'connect2fab'
   | 'copilot'
   | 'demand_planning'
+  | 'developer_console'
   | 'earthworks'
   | 'estimation_construct'
   | 'estimation_desktop'
