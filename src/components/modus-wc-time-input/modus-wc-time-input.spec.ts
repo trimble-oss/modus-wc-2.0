@@ -1083,6 +1083,21 @@ describe('modus-wc-time-input', () => {
       '.time-wheel-viewport--hours'
     ) as HTMLElement;
     expect(hours.dataset.circular).toBe('true');
+
+    const coarse = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Coarse step" step="1200" value="09:00"></modus-wc-time-input>',
+    });
+    (coarse.rootInstance as unknown as { showDropdown: boolean }).showDropdown =
+      true;
+    await coarse.waitForChanges();
+    const minutes = coarse.root!.querySelector(
+      '.time-wheel-viewport--minutes'
+    ) as HTMLElement;
+    expect(minutes.dataset.circular).toBe('false');
+    expect(minutes.classList.contains('time-wheel-viewport--compact')).toBe(
+      true
+    );
     expect(hours.querySelectorAll('.time-wheel-option').length).toBe(
       24 * TIME_WHEEL_LOOP_COPIES
     );
@@ -2001,6 +2016,11 @@ describe('modus-wc-time-input', () => {
     expect(hidden).not.toBeNull();
     expect(hidden.name).toBe('start');
     expect(hidden.value).toBe('09:30');
+    expect(hidden.disabled).toBe(false);
+
+    (page.rootInstance as ModusWcTimeInput).disabled = true;
+    await page.waitForChanges();
+    expect(hidden.disabled).toBe(true);
   });
 
   it('should not open the dropdown when the input is clicked', async () => {
@@ -2985,6 +3005,21 @@ describe('modus-wc-time-input', () => {
     ).toBe(false);
   });
 
+  it('should leave Enter alone when the dropdown is closed', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Enter submit" value="09:00"></modus-wc-time-input>',
+    });
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    const event = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    });
+    input.dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
   it('should use the datalist dropdown when the deprecated datalistId is set', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput, ModusWcButton],
@@ -3259,7 +3294,7 @@ describe('modus-wc-time-input', () => {
     await page.waitForChanges();
 
     const secondOptions = page.root!.querySelectorAll(
-      '.time-wheel--seconds .time-wheel-option[data-wheel-copy="1"]'
+      '.time-wheel--seconds .time-wheel-option'
     );
     expect(secondOptions.length).toBe(4);
   });
@@ -3753,7 +3788,7 @@ describe('modus-wc-time-input', () => {
     component.step = 900; // 15 minutes in seconds
     await page.waitForChanges();
     const minOptions = page.root!.querySelectorAll(
-      '.time-wheel--minutes .time-wheel-option[data-wheel-copy="1"]'
+      '.time-wheel--minutes .time-wheel-option'
     );
     // Middle copy fallback
     expect(minOptions[0].getAttribute('tabindex')).toBe('0');
@@ -4954,6 +4989,54 @@ describe('modus-wc-time-input', () => {
     input.dispatchEvent(new FocusEvent('blur'));
     await page.waitForChanges();
     expect(harness.isInvalid).toBe(true);
+    const setValidity = jest.fn();
+    input.setCustomValidity = setValidity;
+    (
+      component as unknown as { syncCustomValidity: () => void }
+    ).syncCustomValidity();
+    expect(setValidity).toHaveBeenCalledWith('Enter a valid time.');
+
+    const cleared = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Clear time" value="09:00"></modus-wc-time-input>',
+    });
+    const clearedComponent = cleared.rootInstance as ModusWcTimeInput;
+    const clearedInput = cleared.root!.querySelector(
+      'input'
+    ) as HTMLInputElement;
+    const clearedHarness = clearedComponent as unknown as {
+      displayValue: string;
+    };
+    const changeSpy = jest.fn();
+    cleared.root!.addEventListener('inputChange', changeSpy);
+    clearedHarness.displayValue = '--:--';
+    clearedInput.dispatchEvent(new FocusEvent('focus'));
+    clearedInput.dispatchEvent(new FocusEvent('blur'));
+    await cleared.waitForChanges();
+    expect(clearedComponent.value).toBe('');
+    expect(changeSpy).toHaveBeenCalled();
+    const clearedValidity = jest.fn();
+    clearedInput.setCustomValidity = clearedValidity;
+    (
+      clearedComponent as unknown as { syncCustomValidity: () => void }
+    ).syncCustomValidity();
+    expect(clearedValidity).toHaveBeenCalledWith('');
+
+    const requiredPage = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Required time" required></modus-wc-time-input>',
+    });
+    const requiredInput = requiredPage.root!.querySelector(
+      'input'
+    ) as HTMLInputElement;
+    const requiredValidity = jest.fn();
+    requiredInput.setCustomValidity = requiredValidity;
+    (
+      requiredPage.rootInstance as unknown as { syncCustomValidity: () => void }
+    ).syncCustomValidity();
+    expect(requiredValidity).toHaveBeenCalledWith(
+      'Please fill out this field.'
+    );
 
     harness.isInvalid = false;
     harness.displayValue = '99:99';
@@ -5364,5 +5447,50 @@ describe('modus-wc-time-input', () => {
     harness.inputRef = undefined;
 
     expect(() => harness.selectSegmentAtCaret()).not.toThrow();
+  });
+
+  it('should no-op syncCustomValidity when the input ref is missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Missing validity ref" required></modus-wc-time-input>',
+    });
+    const harness = page.rootInstance as unknown as {
+      inputRef?: HTMLInputElement;
+      syncCustomValidity: () => void;
+    };
+
+    harness.inputRef = undefined;
+
+    expect(() => harness.syncCustomValidity()).not.toThrow();
+  });
+
+  it('should treat empty validity when value is unset or display matches skeleton', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Empty validity branches" required></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    const harness = component as unknown as {
+      value?: string;
+      displayValue: string;
+      inputRef?: HTMLInputElement;
+      syncCustomValidity: () => void;
+    };
+
+    harness.inputRef = input;
+    const setValidity = jest.fn();
+    input.setCustomValidity = setValidity;
+
+    harness.value = undefined;
+    harness.displayValue = '12:00';
+    harness.syncCustomValidity();
+    expect(setValidity).toHaveBeenCalledWith('Please fill out this field.');
+
+    setValidity.mockClear();
+    component.value = '09:00';
+    harness.displayValue = '--:--';
+    harness.syncCustomValidity();
+    expect(setValidity).toHaveBeenCalledWith('Please fill out this field.');
   });
 });

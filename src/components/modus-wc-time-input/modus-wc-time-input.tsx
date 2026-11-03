@@ -314,6 +314,7 @@ export class ModusWcTimeInput {
       this.pendingSegmentSelect = null;
     }
     this.syncClockTriggerAria();
+    this.syncCustomValidity();
   }
 
   componentDidUpdate() {
@@ -1003,9 +1004,49 @@ export class ModusWcTimeInput {
       return;
     }
 
-    this.isInvalid =
-      this.displayValue !==
-      getSkeleton(this.effectiveShowSeconds, this.resolvedFormat);
+    const skeleton = getSkeleton(
+      this.effectiveShowSeconds,
+      this.resolvedFormat,
+      this.effectiveShowMilliseconds
+    );
+    if (this.displayValue === skeleton) {
+      if (this.value !== '') {
+        this.emitChange('');
+      }
+      this.isInvalid = !!this.required;
+      return;
+    }
+    this.isInvalid = true;
+  }
+
+  /** The visible field is never empty (`--:--`), so native `required` cannot see a blank time. */
+  private syncCustomValidity() {
+    if (!this.inputRef) {
+      return;
+    }
+    const skeleton = getSkeleton(
+      this.effectiveShowSeconds,
+      this.resolvedFormat,
+      this.effectiveShowMilliseconds
+    );
+    const empty = !this.value?.trim() || this.displayValue === skeleton;
+    const incomplete =
+      !empty &&
+      !isSkeletonDisplayComplete(
+        this.displayValue,
+        this.effectiveShowSeconds,
+        this.resolvedFormat,
+        this.effectiveShowMilliseconds
+      );
+    let message = '';
+    if (this.required && empty) {
+      message = 'Please fill out this field.';
+    } else if (incomplete || this.isInvalid) {
+      message = 'Enter a valid time.';
+    }
+    if (typeof this.inputRef.setCustomValidity === 'function') {
+      this.inputRef.setCustomValidity(message);
+    }
   }
 
   /**
@@ -1312,7 +1353,12 @@ export class ModusWcTimeInput {
             {...this.inheritedAttributes}
           />
           {this.name && (
-            <input type="hidden" name={this.name} value={this.value} />
+            <input
+              type="hidden"
+              name={this.name}
+              value={this.value}
+              disabled={this.disabled}
+            />
           )}
           <modus-wc-button
             aria-label="Toggle time picker"

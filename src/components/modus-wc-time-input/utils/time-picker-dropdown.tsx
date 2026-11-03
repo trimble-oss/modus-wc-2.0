@@ -125,7 +125,7 @@ const TimeWheel: FunctionalComponent<{
   onSelect,
   onCommit,
   isOptionDisabled,
-  circular = options.length >= 2,
+  circular = options.length >= 6,
 }) => {
   const looped = circular
     ? buildCircularWheelOptions(options)

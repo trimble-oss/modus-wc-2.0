@@ -398,7 +398,7 @@ export function handleTimeInputKeyDown(
     return;
   }
 
-  if (event.key === 'Enter') {
+  if (event.key === 'Enter' && ctx.showDropdown) {
     event.preventDefault();
     ctx.closeDropdown();
     return;

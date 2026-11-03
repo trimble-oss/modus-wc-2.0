@@ -5,7 +5,7 @@ exports[`modus-wc-time-input should render with custom props 1`] = `
   <modus-wc-input-label forid="time-input" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <div class="time-input-container time-input-container--lg">
     <input aria-describedby="desc" aria-invalid="false" aria-keyshortcuts="Alt+ArrowDown" aria-label="Time input" aria-required="" autocomplete="on" class="custom modus-wc-input modus-wc-input-bordered modus-wc-input-lg modus-wc-time-input modus-wc-time-input--readonly modus-wc-time-input--with-seconds" disabled="" id="time-input" inputmode="numeric" readonly="" required="" tabindex="1" type="text" value="12:00:00">
-    <input name="time" type="hidden" value="12:00">
+    <input disabled="" name="time" type="hidden" value="12:00">
     <modus-wc-button aria-label="Toggle time picker" class="clock-icon-trigger">
       <!---->
       <button aria-expanded="false" aria-haspopup="dialog" aria-label="Toggle time picker" class="modus-wc-btn modus-wc-btn-borderless modus-wc-btn-disabled modus-wc-btn-neutral modus-wc-btn-sm modus-wc-btn-square" disabled="" tabindex="-1" type="button">
