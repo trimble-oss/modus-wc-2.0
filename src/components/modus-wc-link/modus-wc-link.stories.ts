@@ -145,40 +145,23 @@ export const ShadowDomParent: Story = {
         componentTag: 'modus-wc-link',
         propsMapper: (v: LinkArgs, el: HTMLElement) => {
           const linkEl = el as unknown as {
-            ariaLabel: string;
             color: string;
             customClass: string;
             href: string;
             rel: string;
             target: string;
+            title: string;
             underline: string;
           };
-          linkEl.ariaLabel = 'Click me link';
           linkEl.color = v.color;
           linkEl.customClass = v['custom-class'] || '';
           linkEl.href = v.href || '';
           linkEl.rel = v.rel || '';
           linkEl.target = v.target || '';
+          linkEl.title = v.title || '';
           linkEl.underline = v.underline;
-          // DO NOT set textContent - it destroys the component's internal structure!
-          // Link content should be set via defaultContent in the helper config
         },
-        defaultContent: () => {
-          const startIcon = document.createElement('modus-wc-icon');
-          startIcon.setAttribute('decorative', '');
-          startIcon.setAttribute('name', 'link-simple');
-          startIcon.setAttribute('slot', 'start-icon');
-
-          const label = document.createTextNode('Click me');
-
-          const endIcon = document.createElement('modus-wc-icon');
-          endIcon.setAttribute('decorative', '');
-          endIcon.setAttribute('name', 'caret-right');
-          endIcon.setAttribute('slot', 'end-icon');
-          endIcon.setAttribute('version', '2.0');
-
-          return [startIcon, label, endIcon];
-        },
+        defaultContent: 'Click me',
       });
       customElements.define('link-shadow-host', LinkShadowHost);
     }
