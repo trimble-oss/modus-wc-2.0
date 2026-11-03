@@ -197,6 +197,10 @@ modus-wc-badge .modus-wc-badge {
     background-color: transparent;
     border: 1px solid;
     border-radius: var(--modus-wc-border-radius-badge);
+
+    &.modus-wc-badge-neutral {
+      border-color: var(--modus-wc-color-base-200);
+    }
   }
 
   // Shapes - :not() chain matches the specificity of the default color rule above
