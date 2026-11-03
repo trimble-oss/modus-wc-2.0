@@ -4436,7 +4436,8 @@ describe('modus-wc-autocomplete', () => {
       const autocomplete = page.rootInstance as ModusWcAutocomplete;
 
       // Mock clearAllFocus to preserve null items
-      const originalClearAllFocus = autocomplete['clearAllFocus'];
+      const originalClearAllFocus =
+        autocomplete['clearAllFocus'].bind(autocomplete);
       autocomplete['clearAllFocus'] = jest.fn();
 
       // @ts-expect-error - Testing with null
