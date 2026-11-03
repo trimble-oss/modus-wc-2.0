@@ -1,0 +1,83 @@
+{
+  "description": "A customizable icon component used to render Modus icons. <b>This component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.</b>",
+  "properties": [
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the i element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 25
+    },
+    {
+      "name": "decorative",
+      "type": "boolean",
+      "description": "Indicates that the icon is decorative. When true, sets aria-hidden to hide the icon from screen readers.",
+      "default": "true",
+      "mutable": false,
+      "end_line": 28
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "The icon name. Accepts 1.0 snake_case names, kebab-case aliases, and native 2.0 kebab slugs from `@trimble-oss/modus-icons-css`.",
+      "default": null,
+      "mutable": false,
+      "end_line": 34
+    },
+    {
+      "name": "size",
+      "type": "DaisySize",
+      "description": "The icon size, can be \"sm\", \"md\", \"lg\" (a custom size can be specified in CSS). This adjusts the font size for the icon.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 37
+    },
+    {
+      "name": "version",
+      "type": "IconVersion",
+      "description": "The Modus Icons version to render. Names with no counterpart in the requested version fall back to the other version.",
+      "default": "'1.0'",
+      "mutable": false,
+      "end_line": 43
+    },
+    {
+      "name": "variant",
+      "type": "'outlined' | 'solid'",
+      "description": "The icon variant, can be \"outlined\" or \"solid\".",
+      "default": null,
+      "mutable": false,
+      "end_line": 46
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": [],
+  "examples": {
+    "basic": "<modus-wc-icon\n        aria-label=\"Alert icon\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?decorative=\"${args.decorative}\"\n        .name=\"${args.name}\"\n        size=\"${args.size}\"\n        variant=\"${ifDefined(args.variant)}\"\n        version=\"${ifDefined(args.version)}\"\n      >\n      </modus-wc-icon>",
+    "variations": [],
+    "args": {
+      "custom-class": "''",
+      "decorative": "false",
+      "name": "'alert'",
+      "size": "'md'",
+      "version": "'1.0'"
+    },
+    "argTypes": {},
+    "usage": []
+  },
+  "tag": "modus-wc-icon",
+  "storyExample": {
+    "template": "<modus-wc-icon\n        aria-label=\"Alert icon\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?decorative=\"${args.decorative}\"\n        .name=\"${args.name}\"\n        size=\"${args.size}\"\n        variant=\"${ifDefined(args.variant)}\"\n        version=\"${ifDefined(args.version)}\"\n      >\n      </modus-wc-icon>",
+    "args": {
+      "custom-class": "''",
+      "decorative": "false",
+      "name": "'alert'",
+      "size": "'md'",
+      "version": "'1.0'"
+    },
+    "argTypes": {},
+    "events": [],
+    "fullContent": "import { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { DaisySize } from '../types';\n\ninterface IconArgs {\n  'custom-class'?: string;\n  decorative: boolean;\n  name: string;\n  size: DaisySize;\n  variant?: 'outlined' | 'solid';\n  version?: '1.0' | '2.0';\n}\n\nconst meta: Meta<IconArgs> = {\n  title: 'Components/Icon',\n  component: 'modus-wc-icon',\n  args: {\n    'custom-class': '',\n    decorative: false,\n    name: 'alert',\n    size: 'md',\n    version: '1.0',\n  },\n  argTypes: {\n    size: {\n      control: { type: 'select' },\n      options: ['xs', 'sm', 'md', 'lg'],\n    },\n    variant: {\n      control: { type: 'select' },\n      options: ['outlined', 'solid'],\n    },\n    version: {\n      control: { type: 'select' },\n      options: ['1.0', '2.0'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<IconArgs>;\n\nconst Template: Story = {\n  render: (args) => {\n    return html`\n      <modus-wc-icon\n        aria-label=\"Alert icon\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?decorative=\"${args.decorative}\"\n        .name=\"${args.name}\"\n        size=\"${args.size}\"\n        variant=\"${ifDefined(args.variant)}\"\n        version=\"${ifDefined(args.version)}\"\n      >\n      </modus-wc-icon>\n    `;\n  },\n};\n\nexport const Default: Story = { ...Template };\n\nexport const CustomColor: Story = {\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<style>\n  .red-icon {\n    color: red;\n  }\n</style>\n<modus-wc-icon\n  aria-label=\"Red alert icon\"\n  custom-class=\"red-icon\"\n  .name=\"${args.name}\"\n  size=\"${args.size}\"\n>\n</modus-wc-icon>\n    `;\n  },\n};\n\nexport const NameResolution: Story = {\n  render: () => html`\n    <div style=\"display: grid; gap: 1.5rem;\">\n      <div style=\"display: flex; gap: 2rem; align-items: center;\">\n        <div style=\"text-align: center;\">\n          <modus-wc-icon\n            aria-label=\"Mapped add icon version 1.0\"\n            name=\"add\"\n            size=\"lg\"\n            version=\"1.0\"\n          ></modus-wc-icon>\n          <div>Mapped 1.0: add @ 1.0</div>\n        </div>\n        <div style=\"text-align: center;\">\n          <modus-wc-icon\n            aria-label=\"Mapped add icon version 2.0\"\n            name=\"add\"\n            size=\"lg\"\n            version=\"2.0\"\n          ></modus-wc-icon>\n          <div>Mapped 1.0: add @ 2.0 (plus)</div>\n        </div>\n        <div style=\"text-align: center;\">\n          <modus-wc-icon\n            aria-label=\"Unmapped address icon version 1.0\"\n            name=\"address\"\n            size=\"lg\"\n            version=\"1.0\"\n          ></modus-wc-icon>\n          <div>Unmapped: address @ 1.0</div>\n        </div>\n        <div style=\"text-align: center;\">\n          <modus-wc-icon\n            aria-label=\"Unmapped address icon version 2.0\"\n            name=\"address\"\n            size=\"lg\"\n            version=\"2.0\"\n          ></modus-wc-icon>\n          <div>Unmapped: address @ 2.0 (same glyph)</div>\n        </div>\n      </div>\n      <div style=\"display: flex; gap: 2rem; align-items: center;\">\n        <div style=\"text-align: center;\">\n          <modus-wc-icon\n            aria-label=\"Native ship icon version 1.0\"\n            name=\"ship\"\n            size=\"lg\"\n            version=\"1.0\"\n          ></modus-wc-icon>\n          <div>2.0-only: ship @ 1.0 (same glyph)</div>\n        </div>\n        <div style=\"text-align: center;\">\n          <modus-wc-icon\n            aria-label=\"Native ship icon version 2.0\"\n            name=\"ship\"\n            size=\"lg\"\n            version=\"2.0\"\n          ></modus-wc-icon>\n          <div>2.0-only: ship @ 2.0</div>\n        </div>\n      </div>\n    </div>\n  `,\n};\n\nexport const CustomIcons: Story = {\n  args: {\n    'custom-class': 'icon-font tc-icon-cloud-queue',\n    decorative: false,\n    name: '',\n    size: 'lg',\n  },\n  decorators: [\n    (story) => html`\n      <link\n        rel=\"stylesheet\"\n        href=\"https://resources.connect.trimble.com/1.12.0/fonts/icon-font.min.css\"\n      />\n      ${story()}\n    `,\n  ],\n  render: (args) => {\n    return html`\n      <modus-wc-icon\n        aria-label=\"Cloud Queue icon\"\n        custom-class=\"${ifDefined(args['custom-class'])}\"\n        ?decorative=\"${args.decorative}\"\n        .name=\"${args.name}\"\n        size=\"${args.size}\"\n      >\n      </modus-wc-icon>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  render: (args) => {\n    // Create a unique shadow host for icon component\n    if (!customElements.get('icon-shadow-host')) {\n      const IconShadowHost = createShadowHostClass<IconArgs>({\n        componentTag: 'modus-wc-icon',\n        propsMapper: (v: IconArgs, el: HTMLElement) => {\n          const iconEl = el as unknown as {\n            customClass: string;\n            decorative: boolean;\n            name: string;\n            size: string;\n            variant: string;\n            version: string;\n          };\n          iconEl.customClass = v['custom-class'] || '';\n          iconEl.decorative = Boolean(v.decorative);\n          iconEl.name = v.name;\n          iconEl.size = v.size;\n          iconEl.variant = v.variant ?? 'outlined';\n          iconEl.version = v.version ?? '1.0';\n        },\n      });\n      customElements.define('icon-shadow-host', IconShadowHost);\n    }\n\n    return html`<icon-shadow-host .props=${{ ...args }}></icon-shadow-host>`;\n  },\n};\nexport const Migration: Story = {\n  parameters: {\n    docs: {\n      description: {\n        story: `\n#### Breaking Changes\n\n  - Requires <b>Modus Icons</b> to be installed in the host application see [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs).\n  - The \\`color\\` property has been removed in favor of using CSS for styling.\n  - The \\`iconClick\\` event has been removed. Use the \\`click\\` event on the host element instead.\n  - In 1.0 the \\`size\\` prop accepted any numeric string (e.g., \\`'16'\\`, \\`'24'\\`, \\`'32'\\`) to set the icon's\n  width and height. 2.0 uses preset sizes: \\`sm\\`, \\`md\\`, \\`lg\\`, and can use CSS for custom sizes.\n\n#### Icon names\n\n  - The \\`version\\` property selects the Modus Icons set. Default is \\`1.0\\`.\n  - Legacy 1.0 names render the 1.0 ligature when \\`version=\"1.0\"\\` and the mapped 2.0 glyph when \\`version=\"2.0\"\\`.\n  - Unmapped 1.0 names keep the 1.0 ligature in both versions.\n  - Native 2.0-only slugs keep the 2.0 glyph in both versions.\n\n#### Prop Mapping\n\n| 1.0 Prop | 2.0 Prop | Notes                                                |\n|----------|----------|------------------------------------------------------|\n| color    |          | Not carried over, use CSS instead                    |\n| name     | name     | 1.0 names and 2.0 slugs are both accepted            |\n| size     | size     | Numeric values changed to \\`sm\\`, \\`md\\`, \\`lg\\`, use CSS for custom sizes |\n|          | version  | \\`'1.0'\\` (default) or \\`'2.0'\\`                     |\n\n#### Event Mapping\n\n| 1.0 Event | 2.0 Event | Notes                                                         |\n|-----------|-----------|---------------------------------------------------------------|\n| iconClick |           | Not carried over, use \\`click\\` event on host element instead |\n        `,\n      },\n    },\n    controls: { disable: true },\n    canvas: { disable: true },\n  },\n  render: () => html`<div></div>`,\n};\n"
+  }
+}
