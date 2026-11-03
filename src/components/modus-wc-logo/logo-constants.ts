@@ -35,13 +35,13 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   advanced_image_manager: {
     displayName: 'Advanced Image Manager',
     path: 'logos/trimble/advanced-image-manager.svg',
-    : 'logos/emblems/advanced-image-manager-emblem.svg',
+    emblemPath: 'logos/emblems/advanced-image-manager-emblem.svg',
     category: 'trimble',
   },
   analytics: {
     displayName: 'Analytics',
     path: 'logos/trimble/analytics.svg',
-    : 'logos/emblems/analytics-emblem.svg',
+    emblemPath: 'logos/emblems/analytics-emblem.svg',
     category: 'trimble',
   },
   app_xchange: {
