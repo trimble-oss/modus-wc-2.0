@@ -3783,12 +3783,12 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Step">
             <summary>
-            Granularity in seconds. Sets the increment used by the minute and second picker wheels and by arrow-key stepping. A step under 60 also reveals the seconds segment. Suggestion-list options are generated from intervalMinutes, not from this value.
+            Granularity in seconds, matching input type=&quot;time&quot;. Omitted means 60 (one minute). Counted from min, or from midnight when min is omitted. A step under 60 reveals seconds. Any fractional step under 1 also reveals milliseconds (HH:mm:ss.SSS); the wheel lists 000, 100, … 900. There is no separate milliseconds prop. Suggestion-list options are generated from intervalMinutes, not from this value. Wheels list ticks when the step divides that unit.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Value">
             <summary>
-            The value of the time input in 24-hour format with leading zeros: HH:mm or HH:mm:ss.
+            The value of the time input in 24-hour format with leading zeros: HH:mm, HH:mm:ss, or HH:mm:ss.SSS when milliseconds are shown.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.Variant">
@@ -3824,7 +3824,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.OnInputChange">
             <summary>
-            Event emitted when the input value changes. target.value is always 24h (HH:mm / HH:mm:ss).
+            Event emitted when the input value changes. target.value is always 24h (HH:mm, HH:mm:ss, or HH:mm:ss.SSS).
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTimeInput.OnInputFocus">
