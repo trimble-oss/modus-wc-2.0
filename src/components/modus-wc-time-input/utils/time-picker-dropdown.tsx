@@ -14,6 +14,7 @@ import {
   buildCircularWheelOptions,
   buildDatalistOptions,
   getHourOptions,
+  getMillisecondOptions,
   getPeriodOptions,
   getUnitOptions,
   IDatalistOption,
@@ -27,6 +28,7 @@ export interface IWheelSelectionPartial {
   hour?: number;
   minutes?: number;
   seconds?: number;
+  milliseconds?: number;
   period?: 'AM' | 'PM';
 }
 
@@ -35,6 +37,7 @@ export interface ITimePickerDropdownProps {
   setDropdownRef: (el: HTMLElement | undefined) => void;
   value: string;
   effectiveShowSeconds: boolean;
+  effectiveShowMilliseconds?: boolean;
   resolvedFormat: TimeFormat;
   minuteStep: number;
   secondStep: number;
@@ -220,6 +223,7 @@ export const TimePickerDropdown: FunctionalComponent<
     | 'setDropdownRef'
     | 'value'
     | 'effectiveShowSeconds'
+    | 'effectiveShowMilliseconds'
     | 'resolvedFormat'
     | 'minuteStep'
     | 'secondStep'
@@ -239,10 +243,14 @@ export const TimePickerDropdown: FunctionalComponent<
   const seconds = props.effectiveShowSeconds
     ? getUnitOptions(props.secondStep)
     : [];
+  const milliseconds = props.effectiveShowMilliseconds
+    ? getMillisecondOptions(state.milliseconds)
+    : [];
   const periods = getPeriodOptions();
 
   const wheelRange = {
     showSeconds: props.effectiveShowSeconds,
+    showMilliseconds: props.effectiveShowMilliseconds,
     hourFormat: props.resolvedFormat,
     min: props.min,
     max: props.max,
@@ -283,6 +291,16 @@ export const TimePickerDropdown: FunctionalComponent<
             onSelect={(v) => props.onWheelSelect({ seconds: Number(v) })}
             onCommit={props.onWheelCommit}
             isOptionDisabled={(v) => isOptionDisabled('seconds', v)}
+          />
+        )}
+        {props.effectiveShowMilliseconds && (
+          <TimeWheel
+            kind="milliseconds"
+            options={milliseconds}
+            selectedValue={String(state.milliseconds)}
+            onSelect={(v) => props.onWheelSelect({ milliseconds: Number(v) })}
+            onCommit={props.onWheelCommit}
+            isOptionDisabled={(v) => isOptionDisabled('milliseconds', v)}
           />
         )}
         {is12hrsFormat(props.resolvedFormat) && (

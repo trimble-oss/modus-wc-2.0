@@ -12,7 +12,12 @@ import {
   toTotalSeconds,
 } from './time-format';
 
-export type TimeWheelKind = 'hours' | 'minutes' | 'seconds' | 'period';
+export type TimeWheelKind =
+  | 'hours'
+  | 'minutes'
+  | 'seconds'
+  | 'milliseconds'
+  | 'period';
 
 export interface ITimeWheelOption {
   label: string;
@@ -75,6 +80,27 @@ export function getUnitOptions(step = 1): ITimeWheelOption[] {
     options.push({ label, value: String(i) });
   }
   return options;
+}
+
+/**
+ * Millisecond rows are always the hundreds 000–900, for any fractional step.
+ * An off-grid value replaces the nearest hundred (a tie takes the higher one).
+ */
+export function getMillisecondOptions(current = 0): ITimeWheelOption[] {
+  const values = Array.from({ length: 10 }, (_, index) => index * 100);
+  const currentMs = Math.min(999, Math.max(0, Math.round(current)));
+  if (!values.includes(currentMs)) {
+    const nearest = Math.min(900, Math.round(currentMs / 100) * 100);
+    const index = values.indexOf(nearest);
+    if (index >= 0) {
+      values[index] = currentMs;
+    }
+    values.sort((a, b) => a - b);
+  }
+  return values.map((value) => ({
+    label: value.toString().padStart(3, '0'),
+    value: String(value),
+  }));
 }
 
 export function getPeriodOptions(): ITimeWheelOption[] {
@@ -163,6 +189,7 @@ export interface IWheelState {
   hour: number;
   minutes: number;
   seconds: number;
+  milliseconds: number;
   period: 'AM' | 'PM';
 }
 
@@ -183,6 +210,7 @@ export function resolveWheelState(
       hour: hour12,
       minutes: parsed.minutes,
       seconds: showSeconds ? parsed.seconds : 0,
+      milliseconds: parsed.milliseconds ?? 0,
       period,
     };
   }
@@ -190,6 +218,7 @@ export function resolveWheelState(
     hour: parsed.hours24,
     minutes: parsed.minutes,
     seconds: showSeconds ? parsed.seconds : 0,
+    milliseconds: parsed.milliseconds ?? 0,
     period: parsed.hours24 < 12 ? 'AM' : 'PM',
   };
 }
@@ -203,7 +232,11 @@ function getWheelOptionSpan(
   kind: TimeWheelKind,
   value: string,
   state: IWheelState,
-  params: { showSeconds: boolean; hourFormat: TimeFormat }
+  params: {
+    showSeconds: boolean;
+    showMilliseconds?: boolean;
+    hourFormat: TimeFormat;
+  }
 ): { start: number; end: number } | null {
   if (kind === 'period') {
     // A period covers its half of the day whatever the other wheels read.
@@ -225,13 +258,22 @@ function getWheelOptionSpan(
       break;
     case 'seconds':
       next.seconds = Number(value);
+      spanSeconds = params.showMilliseconds ? 0.999 : 0;
+      break;
+    case 'milliseconds':
+      next.milliseconds = Number(value);
       break;
     default:
       break;
   }
 
   const parsed = parse24h(
-    valueFromWheelState(next, params.showSeconds, params.hourFormat)
+    valueFromWheelState(
+      next,
+      params.showSeconds,
+      params.hourFormat,
+      params.showMilliseconds
+    )
   );
   if (!parsed) {
     return null;
@@ -242,8 +284,11 @@ function getWheelOptionSpan(
   if (kind !== 'hours') {
     start += parsed.minutes * 60;
   }
-  if (kind === 'seconds') {
+  if (kind === 'seconds' || kind === 'milliseconds') {
     start += parsed.seconds;
+  }
+  if (kind === 'milliseconds') {
+    start += (parsed.milliseconds ?? 0) / 1000;
   }
 
   return { start, end: start + spanSeconds };
@@ -256,6 +301,7 @@ export function isWheelOptionInRange(
   state: IWheelState,
   params: {
     showSeconds: boolean;
+    showMilliseconds?: boolean;
     hourFormat: TimeFormat;
     min?: string;
     max?: string;
@@ -281,7 +327,8 @@ export function isWheelOptionInRange(
 export function valueFromWheelState(
   state: IWheelState,
   showSeconds: boolean,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): string {
   let hours24: number;
   if (is12hrsFormat(hourFormat)) {
@@ -300,6 +347,7 @@ export function valueFromWheelState(
     hours24,
     minutes: state.minutes,
     seconds: showSeconds ? state.seconds : 0,
+    milliseconds: showMilliseconds ? state.milliseconds : 0,
   };
-  return format24h(time, showSeconds);
+  return format24h(time, showSeconds, showMilliseconds);
 }

@@ -30,6 +30,7 @@ import {
   buildCircularWheelOptions,
   buildDatalistOptions,
   getHourOptions,
+  getMillisecondOptions,
   isWheelOptionInRange,
   resolveWheelState,
   TIME_WHEEL_LOOP_COPIES,
@@ -40,6 +41,7 @@ import {
   resolveFocusableWheelKey,
 } from './utils/time-picker-dropdown';
 import {
+  applyHtmlStep,
   applyStepToSegment,
   displayFromValue,
   getSkeleton,
@@ -328,24 +330,67 @@ describe('time-options utils', () => {
     expect(isWheelOptionInRange('seconds', '31', state, params)).toBe(false);
   });
 
+  it('should list millisecond hundreds and replace the nearest tick when off-grid', () => {
+    expect(getMillisecondOptions(500).map((opt) => opt.label)).toEqual([
+      '000',
+      '100',
+      '200',
+      '300',
+      '400',
+      '500',
+      '600',
+      '700',
+      '800',
+      '900',
+    ]);
+    expect(getMillisecondOptions(0).map((opt) => opt.label)).toEqual([
+      '000',
+      '100',
+      '200',
+      '300',
+      '400',
+      '500',
+      '600',
+      '700',
+      '800',
+      '900',
+    ]);
+    expect(getMillisecondOptions(551).map((opt) => opt.label)).toEqual([
+      '000',
+      '100',
+      '200',
+      '300',
+      '400',
+      '500',
+      '551',
+      '700',
+      '800',
+      '900',
+    ]);
+    expect(getMillisecondOptions(550).map((opt) => opt.value)).toContain('550');
+    expect(getMillisecondOptions(550).map((opt) => opt.value)).not.toContain(
+      '600'
+    );
+  });
+
   it('should build 24h value from wheel state', () => {
     expect(
       valueFromWheelState(
-        { hour: 9, minutes: 45, seconds: 0, period: 'AM' },
+        { hour: 9, minutes: 45, seconds: 0, milliseconds: 0, period: 'AM' },
         false,
         '12hrs'
       )
     ).toBe('09:45');
     expect(
       valueFromWheelState(
-        { hour: 12, minutes: 0, seconds: 0, period: 'AM' },
+        { hour: 12, minutes: 0, seconds: 0, milliseconds: 0, period: 'AM' },
         false,
         '12hrs'
       )
     ).toBe('00:00');
     expect(
       valueFromWheelState(
-        { hour: 21, minutes: 45, seconds: 0, period: 'PM' },
+        { hour: 21, minutes: 45, seconds: 0, milliseconds: 0, period: 'PM' },
         false,
         '24hrs'
       )
@@ -571,6 +616,24 @@ describe('time-segments utils', () => {
     expect(
       applyStepToSegment('--:--:--', secondSeg, -1, true, '24hrs', 1, 15)
     ).toBe('00:00:45');
+  });
+
+  it('should step the whole time on the HTML step grid', () => {
+    // 15-minute step is 900 seconds. Off-grid 10:50 carries into the hour.
+    expect(applyHtmlStep('10:50', 1, false, '24hrs', 900)).toBe('11:00');
+    expect(applyHtmlStep('10:50', -1, false, '24hrs', 900)).toBe('10:45');
+    expect(applyHtmlStep('10:20', 1, false, '24hrs', 900)).toBe('10:30');
+    expect(applyHtmlStep('10:20', -1, false, '24hrs', 900)).toBe('10:15');
+    // min is the anchor: 09:20 is 20 minutes after 09:00, not a 15-minute tick.
+    expect(applyHtmlStep('09:20', 1, false, '24hrs', 900, '09:00')).toBe(
+      '09:30'
+    );
+    expect(applyHtmlStep('09:20', -1, false, '24hrs', 900, '09:00')).toBe(
+      '09:15'
+    );
+    expect(
+      applyHtmlStep('10:00:00.000', 1, true, '24hrs', 0.001, undefined, true)
+    ).toBe('10:00:00.001');
   });
 
   it('should enter an empty 12-hour clock on 01 going up and 12 going down', () => {
@@ -1091,6 +1154,67 @@ describe('modus-wc-time-input', () => {
       expect(component.value).toBe('');
       expect(changeSpy).not.toHaveBeenCalled();
     } finally {
+      restoreNow();
+    }
+  });
+
+  it('should keep an off-grid millisecond until a hundred is picked', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Millisecond wheel" step="0.001" value="10:00:00.551"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const open = async () => {
+      (component as unknown as { showDropdown: boolean }).showDropdown = true;
+      await page.waitForChanges();
+    };
+    const labels = () =>
+      Array.from(
+        page.root!.querySelectorAll(
+          '.time-wheel--milliseconds .time-wheel-option[data-wheel-copy="1"]'
+        )
+      ).map((row) => row.textContent?.trim());
+
+    await open();
+    expect(labels()).toContain('551');
+    expect(labels()).not.toContain('600');
+
+    const row = Array.from(
+      page.root!.querySelectorAll(
+        '.time-wheel--milliseconds .time-wheel-option[data-wheel-copy="1"]'
+      )
+    ).find((el) => el.textContent?.trim() === '700');
+    row?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    await page.waitForChanges();
+    expect(component.value).toBe('10:00:00.700');
+
+    (component as unknown as { showDropdown: boolean }).showDropdown = false;
+    await page.waitForChanges();
+    await open();
+    expect(labels()).toContain('600');
+    expect(labels()).not.toContain('551');
+  });
+
+  it('should seed a blank field on the current milliseconds', async () => {
+    const restoreNow = mockNow(14, 37, 8);
+    const msSpy = jest
+      .spyOn(Date.prototype, 'getMilliseconds')
+      .mockReturnValue(551);
+    try {
+      const page = await newSpecPage({
+        components: [ModusWcTimeInput, ModusWcButton],
+        html: '<modus-wc-time-input aria-label="Seed milliseconds" step="0.001"></modus-wc-time-input>',
+      });
+      const component = page.rootInstance as ModusWcTimeInput;
+      (component as unknown as { openDropdown: () => void }).openDropdown();
+      await page.waitForChanges();
+      const selected = page.root!.querySelector(
+        '.time-wheel--milliseconds .time-wheel-option.is-selected:not([aria-hidden="true"])'
+      ) as HTMLElement;
+      expect(selected.dataset.value).toBe('551');
+      expect(component.value).toBe('');
+    } finally {
+      msSpy.mockRestore();
       restoreNow();
     }
   });
@@ -2578,7 +2702,7 @@ describe('modus-wc-time-input', () => {
     expect(
       (component as unknown as { showDropdown: boolean }).showDropdown
     ).toBe(false);
-    expect(component.value).toBe('08:00');
+    expect(component.value).toBe('08:59');
   });
 
   it('should ignore ArrowDown when the dropdown is already open', async () => {
@@ -3036,6 +3160,93 @@ describe('modus-wc-time-input', () => {
       '.time-wheel--minutes .time-wheel-option[data-wheel-copy="1"]'
     );
     expect(minuteOptions.length).toBe(30);
+  });
+
+  it('should flag a value that misses the step counted from min', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Step mismatch" min="09:00" step="900" value="09:20"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    input.dispatchEvent(new FocusEvent('focus'));
+    input.dispatchEvent(new FocusEvent('blur'));
+    await page.waitForChanges();
+    expect((component as unknown as { isInvalid: boolean }).isInvalid).toBe(
+      true
+    );
+    expect(component.value).toBe('09:20');
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(input.classList.contains('modus-wc-input--error')).toBe(true);
+
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowUp',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+    expect(component.value).toBe('09:30');
+    expect((component as unknown as { isInvalid: boolean }).isInvalid).toBe(
+      false
+    );
+    expect(input.getAttribute('aria-invalid')).toBe('false');
+    expect(input.classList.contains('modus-wc-input--error')).toBe(false);
+  });
+
+  it('should reveal and step milliseconds when step is under 1 second', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="Milliseconds" step="0.001" value="10:00:00.000"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    expect(input.value).toBe('10:00:00.000');
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ArrowUp',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    await page.waitForChanges();
+    expect(component.value).toBe('10:00:00.001');
+  });
+
+  it('should coerce a step that is still a numeric string', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcButton],
+      html: '<modus-wc-time-input aria-label="String step" value="10:00"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    const readStep = () =>
+      (component as unknown as { parsedStep?: number }).parsedStep;
+
+    const holdStep = (raw: string) => {
+      Object.defineProperty(component, 'step', {
+        configurable: true,
+        get: () => raw,
+      });
+    };
+
+    holdStep('0.5');
+    (
+      component as unknown as { handleFormatChange: () => void }
+    ).handleFormatChange();
+    await page.waitForChanges();
+    expect(readStep()).toBe(0.5);
+    expect(input.value).toBe('10:00:00.000');
+
+    holdStep('not-a-step');
+    expect(readStep()).toBeUndefined();
+
+    holdStep('   ');
+    expect(readStep()).toBeUndefined();
+
+    holdStep('0');
+    expect(readStep()).toBeUndefined();
   });
 
   it('should apply a custom second step and reveal seconds when step is under 60', async () => {
@@ -4507,7 +4718,7 @@ describe('modus-wc-time-input', () => {
 
     keydown('ArrowUp');
     await page.waitForChanges();
-    expect(component.value).toBe('10:00');
+    expect(component.value).toBe('09:01');
 
     keydown('ArrowRight');
     await page.waitForChanges();

@@ -66,6 +66,15 @@ modus-wc-time-input {
       .modus-wc-time-input {
       width: 8.625rem; // 138px
     }
+
+    &:has(.modus-wc-time-input--with-milliseconds) .modus-wc-time-input {
+      width: 8.5625rem; // 137px
+    }
+
+    &:has(.modus-wc-time-input--with-milliseconds.modus-wc-time-input--12hrs)
+      .modus-wc-time-input {
+      width: 10.375rem; // 166px
+    }
   }
 
   // lg renders at 1.125rem with 1.5rem side padding, so the text, the icon
@@ -96,6 +105,15 @@ modus-wc-time-input {
     &:has(.modus-wc-time-input--with-seconds.modus-wc-time-input--12hrs)
       .modus-wc-time-input {
       width: 10.125rem; // 162px
+    }
+
+    &:has(.modus-wc-time-input--with-milliseconds) .modus-wc-time-input {
+      width: 10rem; // 160px
+    }
+
+    &:has(.modus-wc-time-input--with-milliseconds.modus-wc-time-input--12hrs)
+      .modus-wc-time-input {
+      width: 12.125rem; // 194px
     }
   }
 

@@ -159,6 +159,14 @@ export const WithGeneratedIntervals: Story = {
   },
 };
 
+export const WithMilliseconds: Story = {
+  ...Template,
+  args: {
+    step: 0.001,
+    value: '09:45:00.250',
+  },
+};
+
 export const WithSeconds: Story = {
   ...Template,
   args: {
@@ -309,7 +317,8 @@ export const Migration: Story = {
 #### Changes
 
   - The field is a custom segmented text input (native \`--:--\` skeleton) instead of the browser's \`<input type="time">\`.
-  - \`value\` stays **24-hour** (\`HH:mm\` / \`HH:mm:ss\`) for storage and \`inputChange\`.
+  - \`value\` stays **24-hour** (\`HH:mm\`, \`HH:mm:ss\`, or \`HH:mm:ss.SSS\`) for storage and \`inputChange\`.
+  - \`step\` is seconds, like \`<input type="time">\` (default 60). It is counted from \`min\`, or from midnight. A step under 60 shows seconds. Any fractional step under 1 also shows milliseconds, listed as 000, 100, … 900. Arrow keys move to the next or previous valid time.
   - \`format\` is \`12hrs\` or \`24hrs\`. It controls the field display and the Modus picker wheels / datalist labels.
     When unset, the hour clock follows the user's locale and falls back to \`24hrs\` when the locale clock cannot be detected.
     Set \`format\` explicitly to pin it regardless of locale.

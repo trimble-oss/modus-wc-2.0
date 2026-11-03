@@ -4,12 +4,18 @@ import {
   IParsedTime,
   is12hrsFormat,
   parse24h,
+  stepTimeOnGrid,
   TimeFormat,
   toHours12,
   toHours24,
 } from './time-format';
 
-export type SegmentKind = 'hour' | 'minute' | 'second' | 'period';
+export type SegmentKind =
+  | 'hour'
+  | 'minute'
+  | 'second'
+  | 'millisecond'
+  | 'period';
 
 export interface ITimeSegment {
   kind: SegmentKind;
@@ -20,10 +26,17 @@ export interface ITimeSegment {
 /** Empty native-style skeleton for the active display format. */
 export function getSkeleton(
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): string {
   if (is12hrsFormat(hourFormat)) {
+    if (showMilliseconds) {
+      return '--:--:--.--- --';
+    }
     return showSeconds ? '--:--:-- --' : '--:-- --';
+  }
+  if (showMilliseconds) {
+    return '--:--:--.---';
   }
   return showSeconds ? '--:--:--' : '--:--';
 }
@@ -34,18 +47,37 @@ export function isFieldEmptyForPicker(
   value: string,
   displayValue: string,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): boolean {
   if (!value?.trim()) {
     return true;
   }
-  return !isSkeletonDisplayComplete(displayValue, showSeconds, hourFormat);
+  return !isSkeletonDisplayComplete(
+    displayValue,
+    showSeconds,
+    hourFormat,
+    showMilliseconds
+  );
 }
 
 export function getSegments(
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): ITimeSegment[] {
+  if (showMilliseconds) {
+    const segments: ITimeSegment[] = [
+      { kind: 'hour', start: 0, end: 2 },
+      { kind: 'minute', start: 3, end: 5 },
+      { kind: 'second', start: 6, end: 8 },
+      { kind: 'millisecond', start: 9, end: 12 },
+    ];
+    if (is12hrsFormat(hourFormat)) {
+      segments.push({ kind: 'period', start: 13, end: 15 });
+    }
+    return segments;
+  }
   if (is12hrsFormat(hourFormat)) {
     if (showSeconds) {
       return [
@@ -87,16 +119,20 @@ export function isSegmentEmpty(segmentText: string): boolean {
 export function isSkeletonDisplayComplete(
   display: string,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): boolean {
-  const skeleton = getSkeleton(showSeconds, hourFormat);
+  const skeleton = getSkeleton(showSeconds, hourFormat, showMilliseconds);
   if (display.length !== skeleton.length) {
     return false;
   }
-  return getSegments(showSeconds, hourFormat).every((seg) => {
+  return getSegments(showSeconds, hourFormat, showMilliseconds).every((seg) => {
     const text = getSegmentText(display, seg);
     if (seg.kind === 'period') {
       return text === 'AM' || text === 'PM';
+    }
+    if (seg.kind === 'millisecond') {
+      return /^\d{3}$/.test(text);
     }
     return /^\d{2}$/.test(text);
   });
@@ -106,22 +142,31 @@ export function isSkeletonDisplayComplete(
 export function parseSkeletonDisplay(
   display: string,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): IParsedTime | null {
-  if (!isSkeletonDisplayComplete(display, showSeconds, hourFormat)) {
+  if (
+    !isSkeletonDisplayComplete(
+      display,
+      showSeconds,
+      hourFormat,
+      showMilliseconds
+    )
+  ) {
     return null;
   }
 
-  const segments = getSegments(showSeconds, hourFormat);
+  const segments = getSegments(showSeconds, hourFormat, showMilliseconds);
   const read = (kind: SegmentKind) =>
     getSegmentText(display, segments.find((s) => s.kind === kind)!);
 
   const hourText = read('hour');
   const minuteText = read('minute');
   const minutes = Number(minuteText);
-  const seconds = showSeconds ? Number(read('second')) : 0;
+  const seconds = showSeconds || showMilliseconds ? Number(read('second')) : 0;
+  const milliseconds = showMilliseconds ? Number(read('millisecond')) : 0;
 
-  if (minutes > 59 || seconds > 59) {
+  if (minutes > 59 || seconds > 59 || milliseconds > 999) {
     return null;
   }
 
@@ -140,32 +185,36 @@ export function parseSkeletonDisplay(
     }
   }
 
-  return { hours24, minutes, seconds };
+  return showMilliseconds
+    ? { hours24, minutes, seconds, milliseconds }
+    : { hours24, minutes, seconds };
 }
 
 /** Build display from a canonical 24h value or return the empty skeleton. */
 export function displayFromValue(
   value: string,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): string {
   if (!value) {
-    return getSkeleton(showSeconds, hourFormat);
+    return getSkeleton(showSeconds, hourFormat, showMilliseconds);
   }
   const parsed = parse24h(value);
   if (!parsed) {
-    return getSkeleton(showSeconds, hourFormat);
+    return getSkeleton(showSeconds, hourFormat, showMilliseconds);
   }
-  return formatDisplay(parsed, showSeconds, hourFormat);
+  return formatDisplay(parsed, showSeconds, hourFormat, showMilliseconds);
 }
 
 /** Resolve segment at caret position (inclusive end for trailing edge). */
 export function getSegmentAtCaret(
   caret: number,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): ITimeSegment {
-  const segments = getSegments(showSeconds, hourFormat);
+  const segments = getSegments(showSeconds, hourFormat, showMilliseconds);
   const match =
     segments.find((seg) => caret >= seg.start && caret <= seg.end) ??
     segments[segments.length - 1];
@@ -175,9 +224,10 @@ export function getSegmentAtCaret(
 export function getPrevSegment(
   segment: ITimeSegment,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): ITimeSegment {
-  const segments = getSegments(showSeconds, hourFormat);
+  const segments = getSegments(showSeconds, hourFormat, showMilliseconds);
   const index = segments.findIndex((s) => s.kind === segment.kind);
   return segments[Math.max(0, index - 1)];
 }
@@ -185,9 +235,10 @@ export function getPrevSegment(
 export function getNextSegment(
   segment: ITimeSegment,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): ITimeSegment {
-  const segments = getSegments(showSeconds, hourFormat);
+  const segments = getSegments(showSeconds, hourFormat, showMilliseconds);
   const index = segments.findIndex((s) => s.kind === segment.kind);
   return segments[Math.min(segments.length - 1, index + 1)];
 }
@@ -200,14 +251,20 @@ function padSegment(n: number): string {
 export function getEffectiveTime(
   display: string,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): IParsedTime {
-  const complete = parseSkeletonDisplay(display, showSeconds, hourFormat);
+  const complete = parseSkeletonDisplay(
+    display,
+    showSeconds,
+    hourFormat,
+    showMilliseconds
+  );
   if (complete) {
     return complete;
   }
 
-  const segments = getSegments(showSeconds, hourFormat);
+  const segments = getSegments(showSeconds, hourFormat, showMilliseconds);
   const hourText = getSegmentText(
     display,
     segments.find((s) => s.kind === 'hour')!
@@ -236,8 +293,37 @@ export function getEffectiveTime(
     secondSeg && !isSegmentEmpty(getSegmentText(display, secondSeg))
       ? Number(getSegmentText(display, secondSeg))
       : 0;
+  const msSeg = segments.find((s) => s.kind === 'millisecond');
+  const milliseconds =
+    msSeg && !isSegmentEmpty(getSegmentText(display, msSeg))
+      ? Number(getSegmentText(display, msSeg))
+      : 0;
 
-  return { hours24, minutes, seconds };
+  return { hours24, minutes, seconds, milliseconds };
+}
+
+/**
+ * Move the whole time to the next or previous HTML step, anchored at `min`
+ * (or midnight). Carries across hours instead of wrapping one segment.
+ */
+export function applyHtmlStep(
+  display: string,
+  delta: number,
+  showSeconds = false,
+  hourFormat: TimeFormat = '24hrs',
+  stepSeconds = 60,
+  anchorValue?: string,
+  showMilliseconds = false
+): string {
+  const time = getEffectiveTime(
+    display,
+    showSeconds,
+    hourFormat,
+    showMilliseconds
+  );
+  const anchor = anchorValue ? parse24h(anchorValue) : null;
+  const next = stepTimeOnGrid(time, delta, stepSeconds, anchor);
+  return formatDisplay(next, showSeconds, hourFormat, showMilliseconds);
 }
 
 /** Write one segment back into the display string. */
@@ -275,11 +361,32 @@ function stepEmptySegment(
     time.minutes = up ? 0 : Math.floor(59 / minuteStep) * minuteStep;
   } else if (segment.kind === 'second') {
     time.seconds = up ? 0 : Math.floor(59 / secondStep) * secondStep;
+  } else if (segment.kind === 'millisecond') {
+    time.milliseconds = up ? 0 : 999;
   } else if (segment.kind === 'period') {
     // An untouched period enters on AM rather than toggling away from it.
     const { hour12 } = toHours12(time.hours24);
     time.hours24 = toHours24(hour12, 'AM');
   }
+}
+
+/**
+ * Step onto the next or previous multiple of `step`, counting from 0 and
+ * wrapping at `modulo`. Native time inputs do the same: 20 with a step of 15
+ * goes to 30 going up and 15 going down, not 35 and 5.
+ */
+export function stepValueOnGrid(
+  value: number,
+  delta: number,
+  step: number,
+  modulo: number
+): number {
+  const safeStep = step > 0 ? step : 1;
+  const next =
+    delta > 0
+      ? (Math.floor(value / safeStep) + 1) * safeStep
+      : (Math.ceil(value / safeStep) - 1) * safeStep;
+  return ((next % modulo) + modulo) % modulo;
 }
 
 /** Apply stepped value to a segment and return updated display. */
@@ -310,9 +417,9 @@ export function applyStepToSegment(
       time.hours24 = (time.hours24 + delta + 24) % 24;
     }
   } else if (segment.kind === 'minute') {
-    time.minutes = (time.minutes + delta * minuteStep + 60) % 60;
+    time.minutes = stepValueOnGrid(time.minutes, delta, minuteStep, 60);
   } else if (segment.kind === 'second') {
-    time.seconds = (time.seconds + delta * secondStep + 60) % 60;
+    time.seconds = stepValueOnGrid(time.seconds, delta, secondStep, 60);
   } else if (segment.kind === 'period') {
     time.hours24 = (time.hours24 + 12) % 24;
   }
@@ -445,6 +552,26 @@ export function typeDigitInSegment(
     };
   }
 
+  if (segment.kind === 'millisecond') {
+    const n = Number(nextBuffer);
+    if (nextBuffer.length >= 3) {
+      return {
+        display: setSegmentText(
+          display,
+          segment,
+          Math.min(999, n).toString().padStart(3, '0')
+        ),
+        buffer: '',
+        advance: true,
+      };
+    }
+    return {
+      display: setSegmentText(display, segment, n.toString().padStart(3, '0')),
+      buffer: nextBuffer,
+      advance: false,
+    };
+  }
+
   // minute or second
   const n = Number(nextBuffer);
   if (nextBuffer.length >= 2 || n > 5) {
@@ -466,27 +593,46 @@ export function typeDigitInSegment(
 export function getAriaLiveLabel(
   display: string,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): string {
-  if (!isSkeletonDisplayComplete(display, showSeconds, hourFormat)) {
+  if (
+    !isSkeletonDisplayComplete(
+      display,
+      showSeconds,
+      hourFormat,
+      showMilliseconds
+    )
+  ) {
     return 'Time incomplete';
   }
-  const parsed = parseSkeletonDisplay(display, showSeconds, hourFormat);
+  const parsed = parseSkeletonDisplay(
+    display,
+    showSeconds,
+    hourFormat,
+    showMilliseconds
+  );
   if (!parsed) {
     return 'Time incomplete';
   }
-  return formatDisplay(parsed, showSeconds, hourFormat);
+  return formatDisplay(parsed, showSeconds, hourFormat, showMilliseconds);
 }
 
 /** Convert complete display to 24h storage string. */
 export function displayTo24h(
   display: string,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): string | null {
-  const parsed = parseSkeletonDisplay(display, showSeconds, hourFormat);
+  const parsed = parseSkeletonDisplay(
+    display,
+    showSeconds,
+    hourFormat,
+    showMilliseconds
+  );
   if (!parsed) {
     return null;
   }
-  return format24h(parsed, showSeconds);
+  return format24h(parsed, showSeconds, showMilliseconds);
 }

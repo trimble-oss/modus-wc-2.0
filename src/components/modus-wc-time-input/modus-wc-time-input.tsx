@@ -26,6 +26,7 @@ import {
   format24h,
   formatDisplay,
   IParsedTime,
+  isStepMismatch,
   parse24h,
   TimeFormat,
 } from './utils/time-format';
@@ -245,23 +246,26 @@ export class ModusWcTimeInput {
   @Prop() size?: ModusSize = 'md';
 
   /**
-   * Granularity in seconds. Sets the increment used by the minute and second
-   * picker wheels and by arrow-key stepping. A step under 60 also reveals the
-   * seconds segment. Suggestion-list options are generated from
-   * `intervalMinutes`, not from this value.
+   * Granularity in seconds, matching `<input type="time">`. Omitted means 60
+   * (one minute). Counted from `min`, or from midnight when `min` is omitted.
+   * A step under 60 reveals seconds. Any fractional step under 1 also reveals
+   * milliseconds (`HH:mm:ss.SSS`); the wheel lists 000, 100, … 900. There is no
+   * separate milliseconds prop.
+   * Suggestion-list options are generated from `intervalMinutes`, not from this
+   * value. Wheels list ticks when the step divides that unit.
    */
   @Prop() step?: number;
 
   /**
    * The value of the time input in 24-hour format with leading zeros:
-   * `HH:mm` or `HH:mm:ss`.
+   * `HH:mm`, `HH:mm:ss`, or `HH:mm:ss.SSS` when milliseconds are shown.
    */
   @Prop({ mutable: true, reflect: true }) value: string = '';
 
   /** Event emitted when the input loses focus. */
   @StencilEvent() inputBlur!: EventEmitter<FocusEvent>;
 
-  /** Event emitted when the input value changes. `target.value` is always 24h (`HH:mm` / `HH:mm:ss`). */
+  /** Event emitted when the input value changes. `target.value` is always 24h (`HH:mm`, `HH:mm:ss`, or `HH:mm:ss.SSS`). */
   @StencilEvent() inputChange!: EventEmitter<InputEvent>;
 
   /** Event emitted when the input gains focus. */
@@ -277,6 +281,7 @@ export class ModusWcTimeInput {
 
   @Watch('format')
   @Watch('showSeconds')
+  @Watch('step')
   handleFormatChange() {
     if (!this.hasFocus) {
       this.syncDisplayValue();
@@ -471,29 +476,82 @@ export class ModusWcTimeInput {
     return this.el.hasAttribute('interval-minutes');
   }
 
+  /** Attribute strings stay strings on a number prop, so coerce here. */
+  private get parsedStep(): number | undefined {
+    const raw = this.step as number | string | undefined;
+    if (typeof raw === 'number' && raw > 0) {
+      return raw;
+    }
+    if (typeof raw === 'string' && raw.trim() !== '') {
+      const numeric = Number(raw);
+      if (Number.isFinite(numeric) && numeric > 0) {
+        return numeric;
+      }
+    }
+    return undefined;
+  }
+
+  /** An explicit positive step, or the HTML default of 60 seconds. */
+  private get resolvedStepSeconds(): number {
+    return this.parsedStep ?? 60;
+  }
+
+  private get effectiveShowMilliseconds(): boolean {
+    const step = this.parsedStep;
+    return typeof step === 'number' && step > 0 && step < 1;
+  }
+
   private get effectiveShowSeconds(): boolean {
-    if (this.step !== undefined && this.step < 60) {
+    if (this.effectiveShowMilliseconds) {
+      return true;
+    }
+    const step = this.parsedStep;
+    if (typeof step === 'number' && step < 60) {
       return true;
     }
     return Boolean(this.showSeconds);
   }
 
   private get minuteStep(): number {
-    if (this.step !== undefined && this.step >= 60) {
-      return Math.max(1, Math.floor(this.step / 60));
+    const step = this.resolvedStepSeconds;
+    if (typeof step === 'number' && step >= 60 && step % 60 === 0) {
+      return step / 60;
     }
     return 1;
   }
 
   private get secondStep(): number {
-    if (this.step !== undefined && this.step < 60) {
-      return Math.max(1, this.step);
+    const step = this.resolvedStepSeconds;
+    if (
+      typeof step === 'number' &&
+      step >= 1 &&
+      step < 60 &&
+      Number.isInteger(step)
+    ) {
+      return step;
     }
     return 1;
   }
 
+  private formatStored(time: IParsedTime): string {
+    return format24h(
+      time,
+      this.effectiveShowSeconds,
+      this.effectiveShowMilliseconds
+    );
+  }
+
+  private stepMatches(time: IParsedTime): boolean {
+    const anchor = this.min ? parse24h(this.min) : null;
+    return !isStepMismatch(time, this.resolvedStepSeconds, anchor);
+  }
+
   private getSegments(): ITimeSegment[] {
-    return getSegments(this.effectiveShowSeconds, this.resolvedFormat);
+    return getSegments(
+      this.effectiveShowSeconds,
+      this.resolvedFormat,
+      this.effectiveShowMilliseconds
+    );
   }
 
   private getActiveSegment(): ITimeSegment {
@@ -503,7 +561,8 @@ export class ModusWcTimeInput {
       const seg = getSegmentAtCaret(
         caret,
         this.effectiveShowSeconds,
-        this.resolvedFormat
+        this.resolvedFormat,
+        this.effectiveShowMilliseconds
       );
       this.activeSegmentKind = seg.kind;
       return seg;
@@ -538,7 +597,7 @@ export class ModusWcTimeInput {
   /** `value` in comparable storage form; unparsable or empty becomes `''`. */
   private normalizeValue(raw: string): string {
     const parsed = parse24h(raw);
-    return parsed ? format24h(parsed, this.effectiveShowSeconds) : '';
+    return parsed ? this.formatStored(parsed) : '';
   }
 
   /**
@@ -692,7 +751,8 @@ export class ModusWcTimeInput {
         this.value,
         this.displayValue,
         this.effectiveShowSeconds,
-        this.resolvedFormat
+        this.resolvedFormat,
+        this.effectiveShowMilliseconds
       )
     ) {
       this.pickerSeedValue = null;
@@ -708,10 +768,10 @@ export class ModusWcTimeInput {
       seconds: this.effectiveShowSeconds
         ? Math.floor(now.getSeconds() / secondStep) * secondStep
         : 0,
+      milliseconds: this.effectiveShowMilliseconds ? now.getMilliseconds() : 0,
     };
-    this.pickerSeedValue = format24h(
-      clampTime(seeded, this.min, this.max),
-      this.effectiveShowSeconds
+    this.pickerSeedValue = this.formatStored(
+      clampTime(seeded, this.min, this.max)
     );
   }
 
@@ -722,7 +782,8 @@ export class ModusWcTimeInput {
         this.value,
         this.displayValue,
         this.effectiveShowSeconds,
-        this.resolvedFormat
+        this.resolvedFormat,
+        this.effectiveShowMilliseconds
       )
     ) {
       return this.pickerSeedValue || '';
@@ -739,6 +800,10 @@ export class ModusWcTimeInput {
 
     if (this.effectiveShowSeconds) {
       classList.push('modus-wc-time-input--with-seconds');
+    }
+
+    if (this.effectiveShowMilliseconds) {
+      classList.push('modus-wc-time-input--with-milliseconds');
     }
 
     if (this.resolvedFormat === '12hrs') {
@@ -765,7 +830,8 @@ export class ModusWcTimeInput {
     this.ariaLiveText = getAriaLiveLabel(
       this.displayValue,
       this.effectiveShowSeconds,
-      this.resolvedFormat
+      this.resolvedFormat,
+      this.effectiveShowMilliseconds
     );
   }
 
@@ -774,7 +840,8 @@ export class ModusWcTimeInput {
     this.displayValue = displayFromValue(
       next24h,
       this.effectiveShowSeconds,
-      this.resolvedFormat
+      this.resolvedFormat,
+      this.effectiveShowMilliseconds
     );
     this.updateAriaLive();
     this.inputChange.emit({
@@ -790,18 +857,19 @@ export class ModusWcTimeInput {
       isSkeletonDisplayComplete(
         nextDisplay,
         this.effectiveShowSeconds,
-        this.resolvedFormat
+        this.resolvedFormat,
+        this.effectiveShowMilliseconds
       )
     ) {
       const parsed = parseSkeletonDisplay(
         nextDisplay,
         this.effectiveShowSeconds,
-        this.resolvedFormat
+        this.resolvedFormat,
+        this.effectiveShowMilliseconds
       );
       if (parsed) {
         const clamped = clampTime(parsed, this.min, this.max);
-        const next24h = format24h(clamped, this.effectiveShowSeconds);
-        this.isInvalid = false;
+        const next24h = this.formatStored(clamped);
         this.pendingSegmentSelect = activeKind;
         if (next24h !== this.value) {
           this.emitChange(next24h);
@@ -809,9 +877,13 @@ export class ModusWcTimeInput {
           this.displayValue = formatDisplay(
             clamped,
             this.effectiveShowSeconds,
-            this.resolvedFormat
+            this.resolvedFormat,
+            this.effectiveShowMilliseconds
           );
         }
+        // After emitChange: the value watcher clears isInvalid when focus
+        // has already left, and this assignment is the one that must stick.
+        this.isInvalid = !this.stepMatches(clamped);
         return;
       }
     }
@@ -826,6 +898,8 @@ export class ModusWcTimeInput {
       readOnly: Boolean(this.readOnly),
       displayValue: this.displayValue,
       effectiveShowSeconds: this.effectiveShowSeconds,
+      effectiveShowMilliseconds: this.effectiveShowMilliseconds,
+      stepSeconds: this.resolvedStepSeconds,
       resolvedFormat: this.resolvedFormat,
       minuteStep: this.minuteStep,
       secondStep: this.secondStep,
@@ -899,27 +973,30 @@ export class ModusWcTimeInput {
       isSkeletonDisplayComplete(
         this.displayValue,
         this.effectiveShowSeconds,
-        this.resolvedFormat
+        this.resolvedFormat,
+        this.effectiveShowMilliseconds
       )
     ) {
       const parsed = parseSkeletonDisplay(
         this.displayValue,
         this.effectiveShowSeconds,
-        this.resolvedFormat
+        this.resolvedFormat,
+        this.effectiveShowMilliseconds
       );
       if (parsed) {
         const clamped = clampTime(parsed, this.min, this.max);
-        const next24h = format24h(clamped, this.effectiveShowSeconds);
-        this.isInvalid = false;
+        const next24h = this.formatStored(clamped);
         if (next24h !== this.value) {
           this.emitChange(next24h);
         } else {
           this.displayValue = formatDisplay(
             clamped,
             this.effectiveShowSeconds,
-            this.resolvedFormat
+            this.resolvedFormat,
+            this.effectiveShowMilliseconds
           );
         }
+        this.isInvalid = !this.stepMatches(clamped);
       } else {
         this.isInvalid = true;
       }
@@ -1024,7 +1101,8 @@ export class ModusWcTimeInput {
     const seg = getSegmentAtCaret(
       caret,
       this.effectiveShowSeconds,
-      this.resolvedFormat
+      this.resolvedFormat,
+      this.effectiveShowMilliseconds
     );
     this.selectSegment(seg);
   }
@@ -1104,19 +1182,21 @@ export class ModusWcTimeInput {
     const next24h = valueFromWheelState(
       nextState,
       this.effectiveShowSeconds,
-      this.resolvedFormat
+      this.resolvedFormat,
+      this.effectiveShowMilliseconds
     );
     const parsed = parse24h(next24h);
     if (!parsed) {
       return;
     }
     const clamped = clampTime(parsed, this.min, this.max);
-    const final24h = format24h(clamped, this.effectiveShowSeconds);
-    this.isInvalid = false;
+    const final24h = this.formatStored(clamped);
     if (this.isCurrentValue(final24h)) {
+      this.isInvalid = !this.stepMatches(clamped);
       return;
     }
     this.emitChange(final24h);
+    this.isInvalid = !this.stepMatches(clamped);
   }
 
   /** Re-picking the row that is already selected must not emit `inputChange`. */
@@ -1125,7 +1205,7 @@ export class ModusWcTimeInput {
     if (!parsedCurrent) {
       return false;
     }
-    return format24h(parsedCurrent, this.effectiveShowSeconds) === next24h;
+    return this.formatStored(parsedCurrent) === next24h;
   }
 
   private handleDatalistSelect(value24h: string) {
@@ -1137,11 +1217,11 @@ export class ModusWcTimeInput {
       return;
     }
     const clamped = clampTime(parsed, this.min, this.max);
-    const next = format24h(clamped, this.effectiveShowSeconds);
-    this.isInvalid = false;
+    const next = this.formatStored(clamped);
     if (!this.isCurrentValue(next)) {
       this.emitChange(next);
     }
+    this.isInvalid = !this.stepMatches(clamped);
     this.closeDropdown();
   }
 
@@ -1163,7 +1243,8 @@ export class ModusWcTimeInput {
     this.displayValue = displayFromValue(
       this.value,
       this.effectiveShowSeconds,
-      this.resolvedFormat
+      this.resolvedFormat,
+      this.effectiveShowMilliseconds
     );
     this.updateAriaLive();
   }
@@ -1175,6 +1256,7 @@ export class ModusWcTimeInput {
       setDropdownRef: this.setDropdownRef,
       value: this.pickerValue,
       effectiveShowSeconds: this.effectiveShowSeconds,
+      effectiveShowMilliseconds: this.effectiveShowMilliseconds,
       resolvedFormat: this.resolvedFormat,
       minuteStep: this.minuteStep,
       secondStep: this.secondStep,
@@ -1204,7 +1286,11 @@ export class ModusWcTimeInput {
         <div class={this.getContainerClasses()}>
           <input
             ref={this.setInputRef}
-            aria-invalid={this.isInvalid || this.feedback?.level === 'error'}
+            aria-invalid={
+              this.isInvalid || this.feedback?.level === 'error'
+                ? 'true'
+                : 'false'
+            }
             aria-keyshortcuts="Alt+ArrowDown"
             aria-required={this.required}
             autocomplete={this.autoComplete ?? 'off'}

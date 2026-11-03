@@ -5,6 +5,7 @@ import {
   TimeFormat,
 } from './time-format';
 import {
+  applyHtmlStep,
   applyStepToSegment,
   clearSegmentInDisplay,
   getNextSegment,
@@ -37,7 +38,9 @@ export interface ITimeInputKeyboardContext {
   readOnly: boolean;
   displayValue: string;
   effectiveShowSeconds: boolean;
+  effectiveShowMilliseconds?: boolean;
   resolvedFormat: TimeFormat;
+  stepSeconds?: number;
   minuteStep: number;
   secondStep: number;
   min?: string;
@@ -68,6 +71,7 @@ export function supportsBeforeInputCharacterInput(): boolean {
 type IExternalTimeContext = Pick<
   ITimeInputKeyboardContext,
   | 'effectiveShowSeconds'
+  | 'effectiveShowMilliseconds'
   | 'resolvedFormat'
   | 'min'
   | 'max'
@@ -82,13 +86,18 @@ function applyExternalTimeValue(
   const parsed = parseExternalTimeValue(
     raw,
     ctx.effectiveShowSeconds,
-    ctx.resolvedFormat
+    ctx.resolvedFormat,
+    ctx.effectiveShowMilliseconds
   );
   if (!parsed) {
     return false;
   }
   const clamped = clampTime(parsed, ctx.min, ctx.max);
-  const next24h = format24h(clamped, ctx.effectiveShowSeconds);
+  const next24h = format24h(
+    clamped,
+    ctx.effectiveShowSeconds,
+    ctx.effectiveShowMilliseconds
+  );
   ctx.emitParsedTime(next24h);
   ctx.setPendingSegmentSelect('hour');
   return true;
@@ -106,6 +115,7 @@ type ITypedCharacterContext = Pick<
   ITimeInputKeyboardContext,
   | 'displayValue'
   | 'effectiveShowSeconds'
+  | 'effectiveShowMilliseconds'
   | 'resolvedFormat'
   | 'getActiveSegment'
   | 'getSegmentDigitBuffer'
@@ -138,7 +148,12 @@ export function applyTypedCharacter(
   );
   ctx.setSegmentDigitBuffer(result.buffer);
   const nextSeg = result.advance
-    ? getNextSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat)
+    ? getNextSegment(
+        seg,
+        ctx.effectiveShowSeconds,
+        ctx.resolvedFormat,
+        ctx.effectiveShowMilliseconds
+      )
     : seg;
   ctx.setActiveSegmentKind(nextSeg.kind);
   ctx.commitDisplay(result.display, nextSeg.kind);
@@ -261,38 +276,36 @@ export function handleTimeInputKeyDown(
   }
 
   const seg = ctx.getActiveSegment();
+  const showMs = Boolean(ctx.effectiveShowMilliseconds);
 
-  if (event.key === 'ArrowUp') {
-    event.preventDefault();
-    const next = applyStepToSegment(
-      ctx.displayValue,
-      seg,
-      1,
-      ctx.effectiveShowSeconds,
-      ctx.resolvedFormat,
-      ctx.minuteStep,
-      ctx.secondStep
-    );
-    ctx.commitDisplay(next, seg.kind);
-    return;
-  }
-
-  if (event.key === 'ArrowDown') {
-    if (event.altKey) {
+  if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown' && event.altKey) {
       event.preventDefault();
       ctx.openDropdown();
       return;
     }
     event.preventDefault();
-    const next = applyStepToSegment(
-      ctx.displayValue,
-      seg,
-      -1,
-      ctx.effectiveShowSeconds,
-      ctx.resolvedFormat,
-      ctx.minuteStep,
-      ctx.secondStep
-    );
+    const delta = event.key === 'ArrowUp' ? 1 : -1;
+    const next =
+      seg.kind === 'period'
+        ? applyStepToSegment(
+            ctx.displayValue,
+            seg,
+            delta,
+            ctx.effectiveShowSeconds || showMs,
+            ctx.resolvedFormat,
+            ctx.minuteStep,
+            ctx.secondStep
+          )
+        : applyHtmlStep(
+            ctx.displayValue,
+            delta,
+            ctx.effectiveShowSeconds,
+            ctx.resolvedFormat,
+            ctx.stepSeconds ?? 60,
+            ctx.min,
+            showMs
+          );
     ctx.commitDisplay(next, seg.kind);
     return;
   }
@@ -300,7 +313,7 @@ export function handleTimeInputKeyDown(
   if (event.key === 'ArrowLeft') {
     event.preventDefault();
     ctx.selectSegment(
-      getPrevSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat)
+      getPrevSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat, showMs)
     );
     return;
   }
@@ -308,25 +321,39 @@ export function handleTimeInputKeyDown(
   if (event.key === 'ArrowRight') {
     event.preventDefault();
     ctx.selectSegment(
-      getNextSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat)
+      getNextSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat, showMs)
     );
     return;
   }
 
   if (event.key === 'Tab') {
-    const segments = getSegments(ctx.effectiveShowSeconds, ctx.resolvedFormat);
+    const segments = getSegments(
+      ctx.effectiveShowSeconds,
+      ctx.resolvedFormat,
+      showMs
+    );
     const segmentIndex = segments.findIndex((s) => s.kind === seg.kind);
     if (event.shiftKey) {
       if (segmentIndex > 0) {
         event.preventDefault();
         ctx.selectSegment(
-          getPrevSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat)
+          getPrevSegment(
+            seg,
+            ctx.effectiveShowSeconds,
+            ctx.resolvedFormat,
+            showMs
+          )
         );
       }
     } else if (segmentIndex < segments.length - 1) {
       event.preventDefault();
       ctx.selectSegment(
-        getNextSegment(seg, ctx.effectiveShowSeconds, ctx.resolvedFormat)
+        getNextSegment(
+          seg,
+          ctx.effectiveShowSeconds,
+          ctx.resolvedFormat,
+          showMs
+        )
       );
     }
     return;

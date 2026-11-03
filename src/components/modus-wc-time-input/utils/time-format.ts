@@ -1,8 +1,9 @@
-/** Parsed time in 24-hour components. */
+/** Parsed time in 24-hour components. `milliseconds` is 0–999. */
 export interface IParsedTime {
   hours24: number;
   minutes: number;
   seconds: number;
+  milliseconds?: number;
 }
 
 /** Display / picker hour clock: 12-hour with AM/PM, or 24-hour. */
@@ -53,12 +54,27 @@ export function is12HourFormat(format: TimeFormat = '24hrs'): boolean {
 const COMPLETE_12H = /^(\d{1,2}):(\d{2})(?:\s|:)?(?:(\d{2})\s+)?(AM|PM)$/i;
 const COMPLETE_12H_NO_SECONDS = /^(\d{1,2}):(\d{2})\s+(AM|PM)$/i;
 const COMPLETE_12H_WITH_SECONDS = /^(\d{1,2}):(\d{2}):(\d{2})\s+(AM|PM)$/i;
-const COMPLETE_24H = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/;
+const COMPLETE_24H = /^(\d{1,2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?$/;
 const COMPLETE_24H_NO_SECONDS = /^(\d{1,2}):(\d{2})$/;
 const COMPLETE_24H_WITH_SECONDS = /^(\d{1,2}):(\d{2}):(\d{2})$/;
+const COMPLETE_24H_WITH_MILLIS = /^(\d{1,2}):(\d{2}):(\d{2})\.(\d{1,3})$/;
+const COMPLETE_12H_WITH_MILLIS =
+  /^(\d{1,2}):(\d{2}):(\d{2})\.(\d{1,3})\s+(AM|PM)$/i;
 
 function pad2(n: number): string {
   return n.toString().padStart(2, '0');
+}
+
+function pad3(n: number): string {
+  return n.toString().padStart(3, '0');
+}
+
+/** Fractional seconds (`5` → 500ms, `05` → 50ms). */
+function parseMillisFraction(text: string | undefined): number {
+  if (!text) {
+    return 0;
+  }
+  return Number(text.padEnd(3, '0'));
 }
 
 function clamp(n: number, min: number, max: number): number {
@@ -97,32 +113,49 @@ export function parse24h(value: string): IParsedTime | null {
   const hours24 = Number(match[1]);
   const minutes = Number(match[2]);
   const seconds = match[3] !== undefined ? Number(match[3]) : 0;
+  const milliseconds =
+    match[4] !== undefined ? parseMillisFraction(match[4]) : undefined;
   if (
     Number.isNaN(hours24) ||
     Number.isNaN(minutes) ||
     Number.isNaN(seconds) ||
+    (milliseconds !== undefined &&
+      (Number.isNaN(milliseconds) || milliseconds > 999)) ||
     hours24 > 23 ||
     minutes > 59 ||
     seconds > 59
   ) {
     return null;
   }
-  return { hours24, minutes, seconds };
+  return milliseconds === undefined
+    ? { hours24, minutes, seconds }
+    : { hours24, minutes, seconds, milliseconds };
 }
 
-/** Format as 24-hour `HH:mm` or `HH:mm:ss`. */
-export function format24h(time: IParsedTime, showSeconds = false): string {
+/** Format as 24-hour `HH:mm`, `HH:mm:ss`, or `HH:mm:ss.SSS`. */
+export function format24h(
+  time: IParsedTime,
+  showSeconds = false,
+  showMilliseconds = false
+): string {
   const base = `${pad2(time.hours24)}:${pad2(time.minutes)}`;
+  if (showMilliseconds) {
+    return `${base}:${pad2(time.seconds)}.${pad3(time.milliseconds ?? 0)}`;
+  }
   return showSeconds ? `${base}:${pad2(time.seconds)}` : base;
 }
 
 /** Format for 12-hour display: `HH:MM AM/PM` or `HH:MM:SS AM/PM`. */
 export function format12hDisplay(
   time: IParsedTime,
-  showSeconds = false
+  showSeconds = false,
+  showMilliseconds = false
 ): string {
   const { hour12, period } = toHours12(time.hours24);
   const base = `${pad2(hour12)}:${pad2(time.minutes)}`;
+  if (showMilliseconds) {
+    return `${base}:${pad2(time.seconds)}.${pad3(time.milliseconds ?? 0)} ${period}`;
+  }
   if (showSeconds) {
     return `${base}:${pad2(time.seconds)} ${period}`;
   }
@@ -133,22 +166,50 @@ export function format12hDisplay(
 export function formatDisplay(
   time: IParsedTime,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): string {
   return is12hrsFormat(hourFormat)
-    ? format12hDisplay(time, showSeconds)
-    : format24h(time, showSeconds);
+    ? format12hDisplay(time, showSeconds, showMilliseconds)
+    : format24h(time, showSeconds, showMilliseconds);
 }
 
 /** Parse a 12-hour display string into components. */
 export function parse12hDisplay(
   display: string,
-  showSeconds = false
+  showSeconds = false,
+  showMilliseconds = false
 ): IParsedTime | null {
   if (!display?.trim()) {
     return null;
   }
   const trimmed = display.trim().replace(/\s+/g, ' ');
+  if (showMilliseconds) {
+    const withMs = COMPLETE_12H_WITH_MILLIS.exec(trimmed);
+    if (!withMs) {
+      return null;
+    }
+    const hour12 = Number(withMs[1]);
+    const minutes = Number(withMs[2]);
+    const seconds = Number(withMs[3]);
+    const milliseconds = parseMillisFraction(withMs[4]);
+    const period = withMs[5].toUpperCase() as 'AM' | 'PM';
+    if (
+      hour12 < 1 ||
+      hour12 > 12 ||
+      minutes > 59 ||
+      seconds > 59 ||
+      milliseconds > 999
+    ) {
+      return null;
+    }
+    return {
+      hours24: toHours24(hour12, period),
+      minutes,
+      seconds,
+      milliseconds,
+    };
+  }
   if (showSeconds) {
     const withSec = COMPLETE_12H_WITH_SECONDS.exec(trimmed);
     if (withSec) {
@@ -203,12 +264,19 @@ export function parse12hDisplay(
 /** Parse a complete 24-hour display string (same shape as stored value). */
 export function parse24hDisplay(
   display: string,
-  showSeconds = false
+  showSeconds = false,
+  showMilliseconds = false
 ): IParsedTime | null {
   if (!display?.trim()) {
     return null;
   }
   const trimmed = display.trim();
+  if (showMilliseconds) {
+    if (!COMPLETE_24H_WITH_MILLIS.test(trimmed)) {
+      return null;
+    }
+    return parse24h(trimmed);
+  }
   if (showSeconds) {
     const withSec = COMPLETE_24H_WITH_SECONDS.exec(trimmed);
     if (!withSec) {
@@ -227,11 +295,12 @@ export function parse24hDisplay(
 export function parseDisplay(
   display: string,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): IParsedTime | null {
   return is12hrsFormat(hourFormat)
-    ? parse12hDisplay(display, showSeconds)
-    : parse24hDisplay(display, showSeconds);
+    ? parse12hDisplay(display, showSeconds, showMilliseconds)
+    : parse24hDisplay(display, showSeconds, showMilliseconds);
 }
 
 /**
@@ -241,7 +310,8 @@ export function parseDisplay(
 export function parseExternalTimeValue(
   raw: string,
   showSeconds = false,
-  hourFormat: TimeFormat = '24hrs'
+  hourFormat: TimeFormat = '24hrs',
+  showMilliseconds = false
 ): IParsedTime | null {
   const trimmed = raw.trim();
   if (!trimmed) {
@@ -254,13 +324,16 @@ export function parseExternalTimeValue(
     parse24h(trimmed),
     parseDisplay(trimmed, showSeconds, hourFormat),
     parseDisplay(trimmed, showSeconds, alternateFormat),
-    parseDisplay(trimmed, true, '12hrs'),
-    parseDisplay(trimmed, true, '24hrs'),
+    parseDisplay(trimmed, true, '12hrs', showMilliseconds),
+    parseDisplay(trimmed, true, '24hrs', showMilliseconds),
   ];
 
   for (const parsed of attempts) {
     if (parsed) {
-      return showSeconds ? parsed : { ...parsed, seconds: 0 };
+      if (!showSeconds && !showMilliseconds) {
+        return { ...parsed, seconds: 0 };
+      }
+      return parsed;
     }
   }
 
@@ -272,9 +345,7 @@ export function parseExternalTimeValue(
  * Returns negative if a < b, 0 if equal, positive if a > b.
  */
 export function compareTimes(a: IParsedTime, b: IParsedTime): number {
-  const aTotal = a.hours24 * 3600 + a.minutes * 60 + a.seconds;
-  const bTotal = b.hours24 * 3600 + b.minutes * 60 + b.seconds;
-  return aTotal - bTotal;
+  return toTotalMillis(a) - toTotalMillis(b);
 }
 
 /** Clamp a parsed time between optional min/max 24h strings. */
@@ -297,7 +368,70 @@ export function clampTime(
 
 /** Total seconds since midnight for a parsed time. */
 export function toTotalSeconds(time: IParsedTime): number {
-  return time.hours24 * 3600 + time.minutes * 60 + time.seconds;
+  return (
+    time.hours24 * 3600 +
+    time.minutes * 60 +
+    time.seconds +
+    (time.milliseconds ?? 0) / 1000
+  );
+}
+
+const DAY_MILLIS = 24 * 60 * 60 * 1000;
+
+/** Total milliseconds since midnight. */
+export function toTotalMillis(time: IParsedTime): number {
+  return (
+    (time.hours24 * 3600 + time.minutes * 60 + time.seconds) * 1000 +
+    (time.milliseconds ?? 0)
+  );
+}
+
+/** Build a parsed time from milliseconds since midnight, wrapping at 24h. */
+export function fromTotalMillis(total: number): IParsedTime {
+  const normalized = ((total % DAY_MILLIS) + DAY_MILLIS) % DAY_MILLIS;
+  const milliseconds = normalized % 1000;
+  const totalSeconds = Math.floor(normalized / 1000);
+  const hours24 = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return { hours24, minutes, seconds, milliseconds };
+}
+
+/**
+ * HTML time step: `(value - anchor) mod step === 0`, with `step` in seconds.
+ * Anchor is `min`, or midnight when `min` is omitted.
+ */
+export function isStepMismatch(
+  time: IParsedTime,
+  stepSeconds: number,
+  anchor?: IParsedTime | null
+): boolean {
+  const stepMs = Math.round(stepSeconds * 1000);
+  if (!Number.isFinite(stepMs) || stepMs <= 0) {
+    return false;
+  }
+  const delta = toTotalMillis(time) - (anchor ? toTotalMillis(anchor) : 0);
+  return ((delta % stepMs) + stepMs) % stepMs !== 0;
+}
+
+/**
+ * Next or previous instant on the step grid. `delta` is +1 or -1.
+ * Carries across minutes and hours and wraps at midnight.
+ */
+export function stepTimeOnGrid(
+  time: IParsedTime,
+  delta: number,
+  stepSeconds: number,
+  anchor?: IParsedTime | null
+): IParsedTime {
+  const stepMs = Math.max(1, Math.round(stepSeconds * 1000));
+  const anchorMs = anchor ? toTotalMillis(anchor) : 0;
+  const offset = toTotalMillis(time) - anchorMs;
+  const nextOffset =
+    delta > 0
+      ? (Math.floor(offset / stepMs) + 1) * stepMs
+      : (Math.ceil(offset / stepMs) - 1) * stepMs;
+  return fromTotalMillis(anchorMs + nextOffset);
 }
 
 /** Build parsed time from total seconds since midnight. */
