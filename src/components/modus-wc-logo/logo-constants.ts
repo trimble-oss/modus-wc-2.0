@@ -164,13 +164,6 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/demand-planning-emblem.svg',
     category: 'trimble',
   },
-  developer_console: {
-    displayName: 'Developer Console',
-    path: 'logos/trimble/trimble-developer.svg',
-    emblemPath: 'logos/emblems/trimble-emblem.svg',
-    category: 'trimble',
-    selfContained: true,
-  },
   earthworks: {
     displayName: 'Trimble Earthworks',
     path: 'logos/trimble/earthworks.svg',
@@ -428,6 +421,13 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     path: 'logos/trimble/trimble.svg',
     emblemPath: 'logos/emblems/trimble-emblem.svg',
     category: 'trimble_brand',
+  },
+  trimble_developer: {
+    displayName: 'Trimble Developer',
+    path: 'logos/trimble/trimble-developer.svg',
+    emblemPath: 'logos/emblems/trimble-emblem.svg',
+    category: 'trimble',
+    selfContained: true,
   },
   truckmate: {
     displayName: 'TruckMate',

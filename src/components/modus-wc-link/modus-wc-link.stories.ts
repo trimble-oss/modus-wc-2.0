@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/web-components';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';
 
 interface LinkArgs {
   color:
@@ -111,6 +112,19 @@ export const ExternalLink: Story = {
   },
 };
 
+export const WithIcons: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<modus-wc-link href="#">
+  <modus-wc-icon decorative name="link-simple" slot="start-icon"></modus-wc-icon>
+  Click me
+  <modus-wc-icon decorative name="caret-right" slot="end-icon" version="2.0"></modus-wc-icon>
+</modus-wc-link>
+    `;
+  },
+};
+
 export const InheritColor: Story = {
   render: () => {
     // prettier-ignore
@@ -121,5 +135,37 @@ export const InheritColor: Story = {
   inline.
 </p>
     `;
+  },
+};
+
+export const ShadowDomParent: Story = {
+  render: (args) => {
+    if (!customElements.get('link-shadow-host')) {
+      const LinkShadowHost = createShadowHostClass<LinkArgs>({
+        componentTag: 'modus-wc-link',
+        propsMapper: (v: LinkArgs, el: HTMLElement) => {
+          const linkEl = el as unknown as {
+            color: string;
+            customClass: string;
+            href: string;
+            rel: string;
+            target: string;
+            title: string;
+            underline: string;
+          };
+          linkEl.color = v.color;
+          linkEl.customClass = v['custom-class'] || '';
+          linkEl.href = v.href || '';
+          linkEl.rel = v.rel || '';
+          linkEl.target = v.target || '';
+          linkEl.title = v.title || '';
+          linkEl.underline = v.underline;
+        },
+        defaultContent: 'Click me',
+      });
+      customElements.define('link-shadow-host', LinkShadowHost);
+    }
+
+    return html`<link-shadow-host .props=${{ ...args }}></link-shadow-host>`;
   },
 };
