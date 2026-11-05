@@ -42,7 +42,7 @@ const meta: Meta<TreeItemArgs> = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     'tooltip-position': {
       control: { type: 'select' },
@@ -267,7 +267,7 @@ export const ShadowDomParent: Story = {
           treeItemEl.hasSubmenu = Boolean(v['has-submenu']);
           treeItemEl.label = v.label;
           treeItemEl.selected = Boolean(v.selected);
-          treeItemEl.size = v.size || 'md';
+          treeItemEl.size = v.size ?? 'md';
           treeItemEl.subLabel = v['sub-label'] || '';
           treeItemEl.tooltipContent = v['tooltip-content'] || '';
           treeItemEl.tooltipPosition = v['tooltip-position'] || 'auto';

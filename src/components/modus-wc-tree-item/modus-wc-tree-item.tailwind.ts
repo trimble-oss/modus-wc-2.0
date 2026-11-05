@@ -11,7 +11,7 @@ export const convertPropsToClasses = ({
   bordered?: boolean;
   disabled?: boolean;
   focused?: boolean;
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
 }): string => {
   let classes = '';
 
