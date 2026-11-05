@@ -89,7 +89,7 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
   connect: {
     displayName: 'Trimble Connect',
     path: 'logos/trimble/connect.svg',
-    emblemPath: 'logos/emblems/connect-emblem.svg',
+    emblemPath: 'logos/emblems/trimble-emblem.svg',
     category: 'trimble',
   },
   connect_360_capture: {
