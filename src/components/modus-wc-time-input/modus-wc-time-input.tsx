@@ -9,6 +9,7 @@ import {
   Prop,
   State,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
@@ -21,6 +22,7 @@ import {
   inheritAriaAttributes,
 } from '../utils';
 import { createPopperOptions } from './utils/popper-utils';
+import { detectLocaleTimeFormat } from './utils/time-format';
 import {
   IWheelState,
   resolveWheelState,
@@ -248,15 +250,18 @@ export class ModusWcTimeInput {
       return;
     }
     const showSeconds = this.shouldShowSeconds();
+    const showMilliseconds = this.shouldShowMilliseconds();
+    const format = this.getResolvedFormat();
     const current: IWheelState = resolveWheelState(
       this.value,
       showSeconds,
-      '24hrs'
+      format
     );
     const next24h = valueFromWheelState(
       { ...current, ...partial },
       showSeconds,
-      '24hrs'
+      format,
+      showMilliseconds
     );
     if (!this.timeInputRef || next24h === this.value) {
       return;
@@ -363,20 +368,72 @@ export class ModusWcTimeInput {
     return !this.disabled && !this.readOnly;
   }
 
+  /**
+   * `step` is seconds. A positive value wins; otherwise seconds mode uses 1s
+   * and the default field uses 60s.
+   */
+  private getResolvedStep(): number {
+    if (this.step != null && this.step > 0) {
+      return this.step;
+    }
+    return this.showSeconds ? 1 : 60;
+  }
+
   /** Minute ticks when `step` is a whole number of minutes that divides an hour. */
   private getMinuteStep(): number {
-    if (this.step == null || this.step < 60) {
+    const step = this.getResolvedStep();
+    if (step < 60) {
       return 1;
     }
-    const minutes = this.step / 60;
-    if (Number.isInteger(minutes) && minutes > 0 && 60 % minutes === 0) {
+    const minutes = step / 60;
+    if (Number.isInteger(minutes) && 60 % minutes === 0) {
       return minutes;
     }
     return 1;
   }
 
+  /** Second ticks when `step` is a whole number of seconds that divides a minute. */
+  private getSecondStep(): number {
+    const step = this.getResolvedStep();
+    if (step >= 1 && step < 60 && Number.isInteger(step) && 60 % step === 0) {
+      return step;
+    }
+    return 1;
+  }
+
   private shouldShowSeconds(): boolean {
-    return Boolean(this.showSeconds || (this.step != null && this.step < 60));
+    return this.showSeconds || this.getResolvedStep() < 60;
+  }
+
+  /** Fractional `step` (below one second) needs the millisecond column. */
+  private shouldShowMilliseconds(): boolean {
+    const step = this.getResolvedStep();
+    return step > 0 && step < 1;
+  }
+
+  /**
+   * Same hour clock the native time input is showing. The control does not
+   * expose that flag; it follows the language of the input, then the browser
+   * locale. Not a component prop.
+   */
+  private getResolvedFormat(): '12hrs' | '24hrs' {
+    const lang = this.timeInputRef?.closest('[lang]')?.getAttribute('lang');
+    return detectLocaleTimeFormat(lang || undefined);
+  }
+
+  /**
+   * Rebuilding the wheels while the panel is open leaves the old scroll
+   * listeners on detached nodes, so a step change looks like it did nothing.
+   */
+  @Watch('step')
+  @Watch('showSeconds')
+  handlePrecisionChange() {
+    if (!this.showDropdown) {
+      return;
+    }
+    unbindCircularWheelListeners(this.wheelScrollCleanups);
+    this.wheelScrollCleanups = [];
+    this.pendingScrollToSelection = true;
   }
 
   /*
@@ -439,7 +496,7 @@ export class ModusWcTimeInput {
             readonly={this.readOnly}
             ref={(el) => (this.timeInputRef = el as HTMLInputElement)}
             required={this.required}
-            step={this.step || this.showSeconds ? 1 : 60}
+            step={this.getResolvedStep()}
             tabIndex={this.inputTabIndex}
             type="time"
             value={this.value}
@@ -471,14 +528,15 @@ export class ModusWcTimeInput {
         {this.showDropdown && this.shouldShowTimePickerButton() && (
           <TimePickerDropdown
             dropdownId={`time-dropdown-${this.dropdownIdSuffix}`}
+            effectiveShowMilliseconds={this.shouldShowMilliseconds()}
             effectiveShowSeconds={this.shouldShowSeconds()}
             max={this.max}
             min={this.min}
             minuteStep={this.getMinuteStep()}
             onWheelCommit={() => this.closeDropdown()}
             onWheelSelect={this.applyWheelSelection}
-            resolvedFormat="24hrs"
-            secondStep={1}
+            resolvedFormat={this.getResolvedFormat()}
+            secondStep={this.getSecondStep()}
             setDropdownRef={this.setDropdownRef}
             value={this.value}
           />
