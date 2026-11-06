@@ -3,15 +3,199 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-input {
-  @include feedback-levels;
-  @include sizing-tokens;
-}
-
 modus-wc-time-input {
+  max-width: 100%;
+  min-width: 0;
+
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
+
+  .modus-wc-time-input {
+    &.modus-wc-input {
+      border-bottom-width: var(--input-bottom-border-width);
+      max-width: 100%;
+      min-width: 0;
+      overflow: clip;
+      overflow-clip-margin: var(--modus-wc-border-width-sm);
+
+      input[type='time'] {
+        background-color: var(--modus-wc-color-base-page);
+        color: var(--modus-wc-color-base-inverted);
+        max-width: 100%;
+        min-width: 0;
+
+        &::-webkit-calendar-picker-indicator,
+        &::-webkit-inner-spin-button,
+        &::-webkit-clear-button {
+          appearance: none;
+          display: none;
+        }
+      }
+
+      /*
+       * Firefox keeps the segments and its own clock in one shrink-wrapped row.
+       * Let that row size to the text, then cover only the native clock so the
+       * custom button sits against the segments instead of at the far edge.
+       */
+      @supports (-moz-appearance: textfield) {
+        &:has(.modus-wc-time-input-picker-container) > input[type='time'] {
+          flex-grow: 0;
+          margin-inline-end: -1.5rem;
+          margin-inline-start: auto;
+          min-width: 4.5rem;
+          width: auto;
+        }
+
+        .modus-wc-time-input-picker-container {
+          align-self: stretch;
+          background-color: var(
+            --modus-wc-time-input-field-bg,
+            var(--modus-wc-color-base-page)
+          );
+          position: relative;
+          z-index: 1;
+        }
+      }
+
+      &:has(> input[disabled]) > input[disabled] {
+        background-color: var(--modus-wc-color-base-200);
+      }
+
+      &:has(> input[readonly]) > input[readonly] {
+        background-color: var(--modus-wc-color-base-100);
+      }
+
+      .modus-wc-time-input-picker-container {
+        align-items: center;
+        align-self: center;
+        display: flex;
+        flex-shrink: 0;
+        justify-content: center;
+        line-height: 0;
+        max-height: 100%;
+
+        modus-wc-button {
+          display: inline-flex;
+          line-height: 0;
+        }
+
+        .modus-wc-btn {
+          box-sizing: border-box;
+          min-height: 0;
+          padding: 0;
+
+          &.modus-wc-btn-xs {
+            height: var(--modus-wc-size-xs);
+            max-height: var(--modus-wc-size-xs);
+            width: var(--modus-wc-size-xs);
+          }
+
+          &.modus-wc-btn-sm {
+            height: var(--modus-wc-size-sm);
+            max-height: var(--modus-wc-size-sm);
+            width: var(--modus-wc-size-sm);
+          }
+
+          &:focus-visible {
+            box-shadow: none;
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+
+  .time-dropdown {
+    background: var(--modus-wc-color-base-page);
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
+    border-radius: var(--rounded-box);
+    box-shadow:
+      0 4px 6px -1px rgb(0, 0, 0, 0.1),
+      0 2px 4px -2px rgb(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: fixed;
+    z-index: 9999;
+  }
+
+  .time-dropdown--picker {
+    align-items: flex-start;
+    display: flex;
+    gap: var(--modus-wc-spacing-md);
+    padding: var(--modus-wc-spacing-sm);
+  }
+
+  .time-wheels {
+    align-items: flex-start;
+    display: flex;
+    gap: var(--modus-wc-spacing-md);
+  }
+
+  .time-wheel-viewport {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    height: 15rem;
+    -ms-overflow-style: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &.time-wheel-viewport--compact {
+      height: auto;
+      overflow-y: hidden;
+    }
+  }
+
+  .time-wheel {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .time-wheel-option {
+    align-items: center;
+    border-radius: var(--modus-wc-border-radius-lg);
+    box-sizing: border-box;
+    color: var(--modus-wc-color-base-inverted);
+    cursor: pointer;
+    display: flex;
+    flex-shrink: 0;
+    font-size: var(--modus-wc-font-size-sm);
+    height: var(--modus-wc-size-md);
+    line-height: 1.5rem;
+    min-height: var(--modus-wc-size-md);
+    padding-inline: var(--modus-wc-spacing-lg);
+    white-space: nowrap;
+
+    &:hover:not(.is-selected) {
+      background-color: var(--modus-wc-color-base-200);
+    }
+
+    &.is-selected {
+      background-color: var(--modus-wc-color-primary-pale);
+      color: var(--modus-wc-color-base-inverted);
+    }
+
+    &.is-disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    &:focus {
+      outline: var(--modus-wc-border-width-sm) solid var(--modus-wc-color-primary);
+      outline-offset: -2px;
+    }
+  }
+}
+
+.modus-wc-input {
+  @include feedback-levels;
+  @include sizing-tokens;
 }
 
 [data-theme='modus-classic-light'] modus-wc-time-input .modus-wc-time-input,
@@ -61,7 +245,11 @@ modus-wc-time-input {
 
 [data-theme='modus-classic-dark'] modus-wc-time-input .modus-wc-time-input {
   &.modus-wc-input {
-    color-scheme: dark; // needed to ensure the clock icon button is visible in dark mode
+    color-scheme: dark;
+
+    input[type='time'] {
+      color-scheme: dark;
+    }
 
     &:focus {
       border-color: var(--modus-wc-color-highlight-blue);
