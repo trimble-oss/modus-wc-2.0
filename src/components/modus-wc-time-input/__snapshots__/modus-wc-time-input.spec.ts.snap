@@ -4,7 +4,12 @@ exports[`modus-wc-time-input should render with custom props 1`] = `
 <modus-wc-time-input auto-complete="on" bordered="" custom-class="custom" datalist-id="time-options" disabled="" input-id="time-input" input-tab-index="1" label="Test label" max="23:59" min="00:00" name="time" read-only="" required="" show-seconds="" size="lg" step="30" value="12:00">
   <modus-wc-input-label forid="time-input" labeltext="Test label" required="" size="lg"></modus-wc-input-label>
   <label class="custom modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-lg modus-wc-items-center modus-wc-time-input modus-wc-time-input--readonly modus-wc-w-full">
-    <input aria-describedby="desc" aria-label="Time input" aria-required="" autocomplete="on" class="modus-wc-grow" disabled="" id="time-input" list="time-options" max="23:59" min="00:00" name="time" readonly="" required="" step="1" tabindex="1" type="time" value="12:00">
+    <input aria-describedby="desc" aria-label="Time input" aria-required="" autocomplete="on" class="modus-wc-grow" disabled="" id="time-input" list="time-options" max="23:59" min="00:00" name="time" readonly="" required="" step="30" tabindex="1" type="time" value="12:00">
+    <div aria-hidden="true" class="modus-wc-time-input-picker-container">
+      <span class="modus-wc-time-input-picker-toggle modus-wc-time-input-picker-toggle--md">
+        <modus-wc-icon decorative="" name="clock" size="md"></modus-wc-icon>
+      </span>
+    </div>
   </label>
 </modus-wc-time-input>
 `;
@@ -14,7 +19,7 @@ exports[`modus-wc-time-input should render with default props 1`] = `
   <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-time-input modus-wc-w-full">
     <input class="modus-wc-grow" id="mwc_id_0" list="test-list" step="60" type="time" value="">
     <div class="modus-wc-time-input-picker-container">
-      <modus-wc-button aria-label="Open time picker" class="modus-wc-time-input-picker-toggle" color="secondary" shape="square" size="sm" variant="borderless">
+      <modus-wc-button aria-expanded="false" aria-haspopup="dialog" aria-label="Open time picker" class="modus-wc-time-input-picker-toggle" color="tertiary" shape="square" size="sm" variant="borderless">
         <modus-wc-icon decorative="" name="clock" size="sm"></modus-wc-icon>
       </modus-wc-button>
     </div>
@@ -27,7 +32,7 @@ exports[`modus-wc-time-input should render with error feedback 1`] = `
   <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-time-input modus-wc-w-full">
     <input aria-label="Error input" class="modus-wc-grow" id="mwc_id_2" list="modus-wc-datalist-test-random-id" step="60" type="time" value="">
     <div class="modus-wc-time-input-picker-container">
-      <modus-wc-button aria-label="Open time picker" class="modus-wc-time-input-picker-toggle" color="secondary" shape="square" size="sm" variant="borderless">
+      <modus-wc-button aria-expanded="false" aria-haspopup="dialog" aria-label="Open time picker" class="modus-wc-time-input-picker-toggle" color="tertiary" shape="square" size="sm" variant="borderless">
         <modus-wc-icon decorative="" name="clock" size="sm"></modus-wc-icon>
       </modus-wc-button>
     </div>

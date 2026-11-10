@@ -22,7 +22,14 @@ import {
   inheritAriaAttributes,
 } from '../utils';
 import { createPopperOptions } from './utils/popper-utils';
-import { detectLocaleTimeFormat } from './utils/time-format';
+import {
+  detectLocaleTimeFormat,
+  format24h,
+  fromTotalMillis,
+  isStepMismatch,
+  parse24h,
+  toTotalMillis,
+} from './utils/time-format';
 import {
   IWheelState,
   resolveWheelState,
@@ -30,11 +37,13 @@ import {
 } from './utils/time-options';
 import {
   IWheelSelectionPartial,
+  TimeDatalistDropdown,
   TimePickerDropdown,
 } from './utils/time-picker-dropdown';
 import {
   bindCircularWheelListeners,
   ICircularScrollLock,
+  scrollDatalistToSelection,
   scrollWheelsToSelection,
   unbindCircularWheelListeners,
 } from './utils/time-wheel-scroll';
@@ -59,6 +68,9 @@ export class ModusWcTimeInput {
   private readonly dropdownIdSuffix = generateRandomId(8);
 
   @State() private showDropdown = false;
+
+  /** `list` is the interval menu. `wheels` is the column picker, including after Other. */
+  @State() private pickerMode: 'list' | 'wheels' = 'wheels';
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -207,8 +219,12 @@ export class ModusWcTimeInput {
     if (this.disabled || this.readOnly) {
       return;
     }
-    this.showDropdown = !this.showDropdown;
-    this.pendingScrollToSelection = this.showDropdown;
+    const opening = !this.showDropdown;
+    this.showDropdown = opening;
+    this.pendingScrollToSelection = opening;
+    if (opening) {
+      this.pickerMode = this.datalistOptions.length > 0 ? 'list' : 'wheels';
+    }
   };
 
   private handleTimePickerClick = (
@@ -230,20 +246,66 @@ export class ModusWcTimeInput {
   private handleInputKeyDown = (event: KeyboardEvent) => {
     const opensNativePicker =
       event.key === 'F4' ||
+      event.key === ' ' ||
       (event.altKey && (event.key === 'ArrowDown' || event.key === 'ArrowUp'));
     if (!opensNativePicker) {
       return;
     }
     event.preventDefault();
     if (!this.showDropdown && !this.disabled && !this.readOnly) {
+      this.pickerMode = this.datalistOptions.length > 0 ? 'list' : 'wheels';
       this.showDropdown = true;
       this.pendingScrollToSelection = true;
     }
   };
 
   private setDropdownRef = (el: HTMLElement | undefined) => {
+    if (this.dropdownRef === el) {
+      return;
+    }
+    this.popperInstance?.destroy();
+    this.popperInstance = undefined;
+    unbindCircularWheelListeners(this.wheelScrollCleanups);
+    this.wheelScrollCleanups = [];
     this.dropdownRef = el;
   };
+
+  /** Move a wheel result onto the step grid so the field does not keep a rejected time. */
+  private snapToStep(value24h: string): string {
+    const parsed = parse24h(value24h);
+    if (!parsed) {
+      return value24h;
+    }
+    const step = this.getResolvedStep();
+    const anchor = this.min ? parse24h(this.min) : null;
+    if (!isStepMismatch(parsed, step, anchor)) {
+      return value24h;
+    }
+    const stepMs = Math.max(1, Math.round(step * 1000));
+    const anchorMs = anchor ? toTotalMillis(anchor) : 0;
+    const offset = toTotalMillis(parsed) - anchorMs;
+    const snapped = Math.round(offset / stepMs) * stepMs;
+    const snappedTime = fromTotalMillis(anchorMs + snapped);
+    const includeSeconds =
+      this.shouldShowSeconds() ||
+      snappedTime.seconds !== 0 ||
+      (snappedTime.milliseconds ?? 0) !== 0;
+    const includeMilliseconds =
+      this.shouldShowMilliseconds() || (snappedTime.milliseconds ?? 0) !== 0;
+    return format24h(snappedTime, includeSeconds, includeMilliseconds);
+  }
+
+  private commitTimeValue(value24h: string, close: boolean) {
+    const next24h = this.snapToStep(value24h);
+    if (this.timeInputRef && next24h !== this.value) {
+      this.value = next24h;
+      this.timeInputRef.value = next24h;
+      this.timeInputRef.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    if (close) {
+      this.closeDropdown();
+    }
+  }
 
   private applyWheelSelection = (partial: IWheelSelectionPartial) => {
     if (this.disabled || this.readOnly) {
@@ -263,12 +325,14 @@ export class ModusWcTimeInput {
       format,
       showMilliseconds
     );
-    if (!this.timeInputRef || next24h === this.value) {
-      return;
-    }
-    this.value = next24h;
-    this.timeInputRef.value = next24h;
-    this.timeInputRef.dispatchEvent(new Event('input', { bubbles: true }));
+    this.commitTimeValue(next24h, false);
+  };
+
+  private showWheelPicker = () => {
+    this.pickerMode = 'wheels';
+    this.pendingScrollToSelection = true;
+    unbindCircularWheelListeners(this.wheelScrollCleanups);
+    this.wheelScrollCleanups = [];
   };
 
   private closeDropdown() {
@@ -306,10 +370,17 @@ export class ModusWcTimeInput {
           return;
         }
         if (this.pendingScrollToSelection) {
-          scrollWheelsToSelection(this.dropdownRef);
+          if (this.pickerMode === 'list') {
+            scrollDatalistToSelection(this.dropdownRef);
+          } else {
+            scrollWheelsToSelection(this.dropdownRef);
+          }
           this.pendingScrollToSelection = false;
         }
-        if (this.wheelScrollCleanups.length === 0) {
+        if (
+          this.pickerMode === 'wheels' &&
+          this.wheelScrollCleanups.length === 0
+        ) {
           this.wheelScrollCleanups = bindCircularWheelListeners(
             this.dropdownRef,
             this.circularScrollLock
@@ -364,8 +435,13 @@ export class ModusWcTimeInput {
     }
   }
 
+  /** Disabled and read-only fields keep the clock graphic, but it must not open. */
+  private isTimePickerInactive(): boolean {
+    return Boolean(this.disabled || this.readOnly);
+  }
+
   private shouldShowTimePickerButton(): boolean {
-    return !this.disabled && !this.readOnly;
+    return !this.isTimePickerInactive();
   }
 
   /**
@@ -484,7 +560,7 @@ export class ModusWcTimeInput {
             class="modus-wc-grow"
             disabled={this.disabled}
             id={effectiveId}
-            list={this.datalistId}
+            list={this.datalistOptions.length > 0 ? undefined : this.datalistId}
             max={this.max}
             min={this.min}
             name={this.name}
@@ -502,19 +578,32 @@ export class ModusWcTimeInput {
             value={this.value}
             {...this.inheritedAttributes}
           />
-          {this.shouldShowTimePickerButton() && (
-            <div class="modus-wc-time-input-picker-container">
+          <div
+            aria-hidden={this.isTimePickerInactive() ? 'true' : undefined}
+            class="modus-wc-time-input-picker-container"
+            onMouseDown={this.handleTimePickerPointerDown}
+          >
+            {this.isTimePickerInactive() ? (
+              <span
+                class={`modus-wc-time-input-picker-toggle modus-wc-time-input-picker-toggle--${this.getTimePickerToggleSize()}`}
+              >
+                <modus-wc-icon
+                  decorative
+                  name="clock"
+                  size={this.getTimePickerToggleSize()}
+                />
+              </span>
+            ) : (
               <modus-wc-button
                 aria-expanded={this.showDropdown ? 'true' : 'false'}
                 aria-haspopup="dialog"
                 aria-label="Open time picker"
                 class="modus-wc-time-input-picker-toggle"
-                color="secondary"
+                color="tertiary"
                 shape="square"
                 size={this.getTimePickerToggleSize()}
                 variant="borderless"
                 onButtonClick={this.handleTimePickerClick}
-                onMouseDown={this.handleTimePickerPointerDown}
               >
                 <modus-wc-icon
                   decorative
@@ -522,25 +611,45 @@ export class ModusWcTimeInput {
                   size={this.getTimePickerToggleSize()}
                 />
               </modus-wc-button>
-            </div>
-          )}
+            )}
+          </div>
         </label>
-        {this.showDropdown && this.shouldShowTimePickerButton() && (
-          <TimePickerDropdown
-            dropdownId={`time-dropdown-${this.dropdownIdSuffix}`}
-            effectiveShowMilliseconds={this.shouldShowMilliseconds()}
-            effectiveShowSeconds={this.shouldShowSeconds()}
-            max={this.max}
-            min={this.min}
-            minuteStep={this.getMinuteStep()}
-            onWheelCommit={() => this.closeDropdown()}
-            onWheelSelect={this.applyWheelSelection}
-            resolvedFormat={this.getResolvedFormat()}
-            secondStep={this.getSecondStep()}
-            setDropdownRef={this.setDropdownRef}
-            value={this.value}
-          />
-        )}
+        {this.showDropdown &&
+          this.shouldShowTimePickerButton() &&
+          this.pickerMode === 'list' && (
+            <TimeDatalistDropdown
+              datalistOptions={this.datalistOptions}
+              dropdownId={`time-dropdown-${this.dropdownIdSuffix}`}
+              effectiveShowSeconds={this.shouldShowSeconds()}
+              max={this.max}
+              min={this.min}
+              onDatalistSelect={(value24h) =>
+                this.commitTimeValue(value24h, true)
+              }
+              onOtherSelect={this.showWheelPicker}
+              resolvedFormat={this.getResolvedFormat()}
+              setDropdownRef={this.setDropdownRef}
+              value={this.value}
+            />
+          )}
+        {this.showDropdown &&
+          this.shouldShowTimePickerButton() &&
+          this.pickerMode === 'wheels' && (
+            <TimePickerDropdown
+              dropdownId={`time-dropdown-${this.dropdownIdSuffix}`}
+              effectiveShowMilliseconds={this.shouldShowMilliseconds()}
+              effectiveShowSeconds={this.shouldShowSeconds()}
+              max={this.max}
+              min={this.min}
+              minuteStep={this.getMinuteStep()}
+              onWheelCommit={() => this.closeDropdown()}
+              onWheelSelect={this.applyWheelSelection}
+              resolvedFormat={this.getResolvedFormat()}
+              secondStep={this.getSecondStep()}
+              setDropdownRef={this.setDropdownRef}
+              value={this.value}
+            />
+          )}
         {this.renderDatalist()}
         {this.feedback && (
           <modus-wc-input-feedback

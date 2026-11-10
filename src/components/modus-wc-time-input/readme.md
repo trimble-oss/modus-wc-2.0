@@ -48,16 +48,16 @@ A customizable input component used to create time inputs.
 ### Depends on
 
 - [modus-wc-input-label](../modus-wc-input-label)
-- [modus-wc-button](../modus-wc-button)
 - [modus-wc-icon](../modus-wc-icon)
+- [modus-wc-button](../modus-wc-button)
 - [modus-wc-input-feedback](../modus-wc-input-feedback)
 
 ### Graph
 ```mermaid
 graph TD;
   modus-wc-time-input --> modus-wc-input-label
-  modus-wc-time-input --> modus-wc-button
   modus-wc-time-input --> modus-wc-icon
+  modus-wc-time-input --> modus-wc-button
   modus-wc-time-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
   style modus-wc-time-input fill:#f9f,stroke:#333,stroke-width:4px

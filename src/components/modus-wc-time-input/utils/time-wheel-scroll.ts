@@ -6,13 +6,14 @@ export interface ICircularScrollLock {
 
 /** Map a wheel viewport element to its kind key (`hours`, `minutes`, etc.). */
 export function getWheelViewportKind(viewport: HTMLElement): string {
-  return (
-    Array.from(viewport.classList)
-      .find(
-        (c) => typeof c === 'string' && c.startsWith('time-wheel-viewport--')
-      )
-      ?.replace('time-wheel-viewport--', '') ?? ''
-  );
+  const match = viewport.className
+    .split(/\s+/)
+    .find(
+      (className) =>
+        className.startsWith('time-wheel-viewport--') &&
+        className !== 'time-wheel-viewport--compact'
+    );
+  return match?.replace('time-wheel-viewport--', '') ?? '';
 }
 
 /** Prefer the middle copy of a circular wheel when scrolling to selection. */
@@ -150,6 +151,18 @@ export function scrollDatalistToSelection(
   }
 }
 
+/**
+ * Visible row of the selected value inside the 6-row viewport (0-based).
+ * Hours and seconds sit on row 3. Minutes sit on row 6. AM/PM stays on row 1.
+ */
+const SELECTED_ROW_INDEX: Record<string, number> = {
+  hours: 2,
+  seconds: 2,
+  milliseconds: 2,
+  minutes: 5,
+  period: 0,
+};
+
 export function scrollWheelsToSelection(
   dropdownRef: HTMLElement | undefined
 ): void {
@@ -163,9 +176,13 @@ export function scrollWheelsToSelection(
     if (!selected) {
       return;
     }
+    const kind = getWheelViewportKind(viewportEl);
+    const rowIndex = SELECTED_ROW_INDEX[kind] ?? 0;
+    const rowHeight = selected.offsetHeight || 0;
     viewportEl.scrollTop +=
       selected.getBoundingClientRect().top -
-      viewportEl.getBoundingClientRect().top;
+      viewportEl.getBoundingClientRect().top -
+      rowIndex * rowHeight;
   });
 }
 
