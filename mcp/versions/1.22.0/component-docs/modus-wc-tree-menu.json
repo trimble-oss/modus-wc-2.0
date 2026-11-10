@@ -1,0 +1,106 @@
+{
+  "description": "A customizable tree menu component used to display a list of modus-wc-tree-item elements vertically or horizontally. The component supports a `<slot>` for injecting custom modus-wc-tree-item elements inside the ul element.",
+  "properties": [
+    {
+      "name": "bordered",
+      "type": "boolean",
+      "description": "Indicates that the tree menu should have a border.",
+      "default": null,
+      "mutable": false,
+      "end_line": 34
+    },
+    {
+      "name": "customClass",
+      "type": "string",
+      "description": "Custom CSS class to apply to the ul element.",
+      "default": "''",
+      "mutable": false,
+      "end_line": 37
+    },
+    {
+      "name": "orientation",
+      "type": "Orientation",
+      "description": "The orientation of the tree menu.",
+      "default": "'vertical'",
+      "mutable": false,
+      "end_line": 40
+    },
+    {
+      "name": "selectionMode",
+      "type": "SelectionMode",
+      "description": "The selection mode of the tree menu.",
+      "default": "'single'",
+      "mutable": false,
+      "end_line": 43
+    },
+    {
+      "name": "size",
+      "type": "ModusSize",
+      "description": "The size of the tree menu.",
+      "default": "'md'",
+      "mutable": false,
+      "end_line": 51
+    },
+    {
+      "name": "isSubMenu",
+      "type": "boolean",
+      "description": "Indicates that this tree menu is a submenu (dropdown).",
+      "default": null,
+      "mutable": false,
+      "end_line": 54
+    }
+  ],
+  "events": [
+    {
+      "name": "menuFocusout",
+      "detail": "FocusEvent",
+      "description": "Event emitted when the tree menu loses focus.",
+      "end_line": 57
+    },
+    {
+      "name": "menuSelectionChange",
+      "detail": "{ selectedItems: HTMLElement[]; }",
+      "description": "Event emitted when the selection changes in multiple selection mode. Emits the array of currently selected tree item elements.",
+      "end_line": 62
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "default",
+      "description": "Slot for default content"
+    }
+  ],
+  "examples": {
+    "basic": "<modus-wc-tree-menu\n  aria-label=\"Tree menu\"\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  orientation=${ifDefined(args.orientation)}\n  selection-mode=${ifDefined(args['selection-mode'])}\n  size=${ifDefined(args.size)}\n>\n  <modus-wc-tree-item\n    label=\"Small\"\n    value=\"1\"\n    size=\"sm\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item label=\"Medium\" value=\"2\"></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Large\"\n    value=\"3\"\n    size=\"lg\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Bordered\"\n    value=\"4\"\n    bordered=\"true\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"With Sub-label\"\n    value=\"5\"\n    sub-label=\"Sub-label\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Selected\"\n    value=\"6\"\n    selected=\"true\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item label=\"With Start Icon\" value=\"7\">\n    <modus-wc-icon slot=\"start\" name=\"info\"></modus-wc-icon>\n  </modus-wc-tree-item>\n  <modus-wc-tree-item label=\"With End Action\" value=\"8\">\n    <div slot=\"end\" style=\"display: flex; align-items: center;\">\n      <modus-wc-button\n        variant=\"borderless\"\n        size=\"sm\"\n        shape=\"circle\"\n        color=\"primary\"\n        aria-label=\"More options\"\n      >\n        <modus-wc-icon name=\"more_vertical\" size=\"sm\"></modus-wc-icon>\n      </modus-wc-button>\n    </div>\n  </modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Disabled\"\n    value=\"9\"\n    disabled=\"true\"\n  ></modus-wc-tree-item>\n</modus-wc-tree-menu>",
+    "variations": [],
+    "args": {
+      "orientation": "'vertical'",
+      "selection-mode": "'single'",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "usage": [],
+    "events": [
+      "menuFocusout",
+      "menuSelectionChange",
+      "itemSelect"
+    ]
+  },
+  "tag": "modus-wc-tree-menu",
+  "storyExample": {
+    "template": "<modus-wc-tree-menu\n  aria-label=\"Tree menu\"\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  orientation=${ifDefined(args.orientation)}\n  selection-mode=${ifDefined(args['selection-mode'])}\n  size=${ifDefined(args.size)}\n>\n  <modus-wc-tree-item\n    label=\"Small\"\n    value=\"1\"\n    size=\"sm\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item label=\"Medium\" value=\"2\"></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Large\"\n    value=\"3\"\n    size=\"lg\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Bordered\"\n    value=\"4\"\n    bordered=\"true\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"With Sub-label\"\n    value=\"5\"\n    sub-label=\"Sub-label\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Selected\"\n    value=\"6\"\n    selected=\"true\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item label=\"With Start Icon\" value=\"7\">\n    <modus-wc-icon slot=\"start\" name=\"info\"></modus-wc-icon>\n  </modus-wc-tree-item>\n  <modus-wc-tree-item label=\"With End Action\" value=\"8\">\n    <div slot=\"end\" style=\"display: flex; align-items: center;\">\n      <modus-wc-button\n        variant=\"borderless\"\n        size=\"sm\"\n        shape=\"circle\"\n        color=\"primary\"\n        aria-label=\"More options\"\n      >\n        <modus-wc-icon name=\"more_vertical\" size=\"sm\"></modus-wc-icon>\n      </modus-wc-button>\n    </div>\n  </modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Disabled\"\n    value=\"9\"\n    disabled=\"true\"\n  ></modus-wc-tree-item>\n</modus-wc-tree-menu>",
+    "args": {
+      "orientation": "'vertical'",
+      "selection-mode": "'single'",
+      "size": "'md'"
+    },
+    "argTypes": {},
+    "events": [
+      "menuFocusout",
+      "menuSelectionChange",
+      "itemSelect"
+    ],
+    "fullContent": "import { withActions } from '@storybook/addon-actions/decorator';\nimport { Meta, StoryObj } from '@storybook/web-components';\nimport { html } from 'lit';\nimport { ifDefined } from 'lit/directives/if-defined.js';\nimport { ref } from 'lit/directives/ref.js';\nimport { createShadowHostClass } from '../../providers/shadow-dom/shadow-host-helper';\nimport { ModusSize, Orientation, SelectionMode } from '../types';\nimport {\n  treeMenuCollapsibleMenuSourceCode,\n  treeMenuDefaultSourceCode,\n  treeMenuMultiSelectSourceCode,\n  treeMenuShadowDomParentSourceCode,\n} from './modus-wc-tree-menu.story-source';\n\ninterface TreeMenuArgs {\n  bordered?: boolean;\n  'custom-class'?: string;\n  orientation?: Orientation;\n  'selection-mode'?: SelectionMode;\n  size?: ModusSize;\n}\n\nconst meta: Meta<TreeMenuArgs> = {\n  title: 'Components/Tree Menu',\n  component: 'modus-wc-tree-menu',\n  args: {\n    orientation: 'vertical',\n    'selection-mode': 'single',\n    size: 'md',\n  },\n  argTypes: {\n    orientation: {\n      control: { type: 'select' },\n      options: ['horizontal', 'vertical'],\n    },\n    'selection-mode': {\n      control: { type: 'select' },\n      options: ['single', 'multiple'],\n    },\n    size: {\n      control: { type: 'select' },\n      options: ['xs', 'sm', 'md', 'lg'],\n    },\n  },\n  decorators: [withActions],\n  parameters: {\n    actions: {\n      handles: ['menuFocusout', 'menuSelectionChange', 'itemSelect'],\n    },\n  },\n};\n\nexport default meta;\n\ntype Story = StoryObj<TreeMenuArgs>;\n\nexport const Default: Story = {\n  parameters: {\n    docs: { source: { code: treeMenuDefaultSourceCode } },\n  },\n  render: (args) => {\n    // prettier-ignore\n    return html`\n<modus-wc-tree-menu\n  aria-label=\"Tree menu\"\n  ?bordered=${args.bordered}\n  custom-class=${ifDefined(args['custom-class'])}\n  orientation=${ifDefined(args.orientation)}\n  selection-mode=${ifDefined(args['selection-mode'])}\n  size=${ifDefined(args.size)}\n>\n  <modus-wc-tree-item\n    label=\"Small\"\n    value=\"1\"\n    size=\"sm\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item label=\"Medium\" value=\"2\"></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Large\"\n    value=\"3\"\n    size=\"lg\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Bordered\"\n    value=\"4\"\n    bordered=\"true\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"With Sub-label\"\n    value=\"5\"\n    sub-label=\"Sub-label\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Selected\"\n    value=\"6\"\n    selected=\"true\"\n  ></modus-wc-tree-item>\n  <modus-wc-tree-item label=\"With Start Icon\" value=\"7\">\n    <modus-wc-icon slot=\"start\" name=\"info\"></modus-wc-icon>\n  </modus-wc-tree-item>\n  <modus-wc-tree-item label=\"With End Action\" value=\"8\">\n    <div slot=\"end\" style=\"display: flex; align-items: center;\">\n      <modus-wc-button\n        variant=\"borderless\"\n        size=\"sm\"\n        shape=\"circle\"\n        color=\"primary\"\n        aria-label=\"More options\"\n      >\n        <modus-wc-icon name=\"more_vertical\" size=\"sm\"></modus-wc-icon>\n      </modus-wc-button>\n    </div>\n  </modus-wc-tree-item>\n  <modus-wc-tree-item\n    label=\"Disabled\"\n    value=\"9\"\n    disabled=\"true\"\n  ></modus-wc-tree-item>\n</modus-wc-tree-menu>\n    `;\n  },\n};\n\nexport const MultiSelect: Story = {\n  args: {\n    'selection-mode': 'multiple',\n  },\n  parameters: {\n    docs: { source: { code: treeMenuMultiSelectSourceCode } },\n  },\n  render: (args) => {\n    let outputEl: Element | undefined;\n\n    const handleSelectionChange = (\n      e: CustomEvent<{ selectedItems: HTMLElement[] }>\n    ) => {\n      if (!outputEl) return;\n      const { selectedItems } = e.detail;\n      outputEl.textContent =\n        selectedItems.length > 0\n          ? `Selected: ${selectedItems.map((i) => i.getAttribute('value')).join(', ')}`\n          : 'Selected: none';\n    };\n\n    // prettier-ignore\n    return html`\n<modus-wc-tree-menu\n  aria-label=\"Tree menu\"\n  selection-mode=${ifDefined(args['selection-mode'])}\n  @menuSelectionChange=${handleSelectionChange}\n>\n  <modus-wc-tree-item label=\"Item 1\" value=\"1\"></modus-wc-tree-item>\n  <modus-wc-tree-item label=\"Item 2\" value=\"2\"></modus-wc-tree-item>\n  <modus-wc-tree-item label=\"Item 3\" value=\"3\"></modus-wc-tree-item>\n</modus-wc-tree-menu>\n<p ${ref((el) => (outputEl = el ?? undefined))}>Selected: none</p>\n    `;\n  },\n};\n\nexport const CollapsibleMenu: Story = {\n  parameters: {\n    docs: { source: { code: treeMenuCollapsibleMenuSourceCode } },\n  },\n  render: () => {\n    // prettier-ignore\n    return html`\n<modus-wc-tree-menu aria-label=\"Tree menu\">\n  <modus-wc-tree-item label=\"Parent Item\" value=\"parent\" has-submenu=\"true\">\n    <modus-wc-tree-menu is-sub-menu=\"true\">\n      <modus-wc-tree-item label=\"Child 1\" value=\"child-1\"></modus-wc-tree-item>\n      <modus-wc-tree-item label=\"Child 2\" value=\"child-2\"></modus-wc-tree-item>\n    </modus-wc-tree-menu>\n  </modus-wc-tree-item>\n  <modus-wc-tree-item label=\"Sibling Item\" value=\"sibling\"></modus-wc-tree-item>\n</modus-wc-tree-menu>\n    `;\n  },\n};\n\nexport const ShadowDomParent: Story = {\n  parameters: {\n    docs: { source: { code: treeMenuShadowDomParentSourceCode } },\n  },\n  render: (args) => {\n    if (!customElements.get('tree-menu-shadow-host')) {\n      const TreeMenuShadowHost = createShadowHostClass<TreeMenuArgs>({\n        componentTag: 'modus-wc-tree-menu',\n        propsMapper: (v: TreeMenuArgs, el: HTMLElement) => {\n          const treeMenuEl = el as unknown as {\n            ariaLabel: string;\n            bordered: boolean;\n            customClass: string;\n            orientation: string;\n            selectionMode: string;\n            size: string;\n          };\n          treeMenuEl.ariaLabel = 'Tree menu';\n          treeMenuEl.bordered = Boolean(v.bordered);\n          treeMenuEl.customClass = v['custom-class'] || '';\n          treeMenuEl.orientation = v.orientation || 'vertical';\n          treeMenuEl.selectionMode = v['selection-mode'] || 'single';\n          treeMenuEl.size = v.size || 'md';\n\n          if (!el.querySelector('modus-wc-tree-item')) {\n            el.innerHTML = `\n              <modus-wc-tree-item label=\"Small\" value=\"1\" size=\"sm\"></modus-wc-tree-item>\n              <modus-wc-tree-item label=\"Medium\" value=\"2\"></modus-wc-tree-item>\n              <modus-wc-tree-item label=\"Large\" value=\"3\" size=\"lg\"></modus-wc-tree-item>\n              <modus-wc-tree-item label=\"Bordered\" value=\"4\" bordered=\"true\"></modus-wc-tree-item>\n              <modus-wc-tree-item label=\"With Sub-label\" value=\"5\" sub-label=\"Sub-label\"></modus-wc-tree-item>\n              <modus-wc-tree-item label=\"Selected\" value=\"6\" selected=\"true\"></modus-wc-tree-item>\n              <modus-wc-tree-item label=\"With Start Icon\" value=\"7\">\n                <modus-wc-icon slot=\"start\" name=\"info\"></modus-wc-icon>\n              </modus-wc-tree-item>\n              <modus-wc-tree-item label=\"With End Action\" value=\"8\">\n                <div slot=\"end\" style=\"display: flex; align-items: center;\">\n                  <modus-wc-button\n                    variant=\"borderless\"\n                    size=\"sm\"\n                    shape=\"circle\"\n                    color=\"primary\"\n                    aria-label=\"More options\"\n                  >\n                    <modus-wc-icon name=\"more_vertical\" size=\"sm\"></modus-wc-icon>\n                  </modus-wc-button>\n                </div>\n              </modus-wc-tree-item>\n              <modus-wc-tree-item label=\"Disabled\" value=\"9\" disabled=\"true\"></modus-wc-tree-item>\n            `;\n          }\n        },\n      });\n      customElements.define('tree-menu-shadow-host', TreeMenuShadowHost);\n    }\n\n    return html`<tree-menu-shadow-host\n      .props=${{ ...args }}\n    ></tree-menu-shadow-host>`;\n  },\n};\n"
+  }
+}
