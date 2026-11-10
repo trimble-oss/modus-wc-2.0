@@ -56,6 +56,23 @@ modus-wc-time-input {
           );
           position: relative;
           z-index: 1;
+
+          /*
+           * The native Firefox clock can extend past the button. Paint a
+           * little further into the field with the same fill so that sliver
+           * stays covered without shrinking the time segments.
+           */
+          &::before {
+            background-color: var(
+              --modus-wc-time-input-field-bg,
+              var(--modus-wc-color-base-page)
+            );
+            content: '';
+            inset-block: 0;
+            inset-inline-start: -0.25rem;
+            position: absolute;
+            width: 0.25rem;
+          }
         }
       }
 
@@ -135,8 +152,10 @@ modus-wc-time-input {
     border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
     border-radius: var(--rounded-box);
     box-shadow:
-      0 4px 6px -1px rgb(0, 0, 0, 0.1),
-      0 2px 4px -2px rgb(0, 0, 0, 0.1);
+      0 4px 6px -1px
+        color-mix(in sRGB, var(--modus-wc-color-base-content) 10%, transparent),
+      0 2px 4px -2px
+        color-mix(in sRGB, var(--modus-wc-color-base-content) 10%, transparent);
     overflow: hidden;
     position: fixed;
     z-index: 9999;

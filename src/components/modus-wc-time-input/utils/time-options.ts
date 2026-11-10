@@ -253,8 +253,7 @@ function getWheelOptionSpan(
   if (kind === 'period') {
     // A period covers its half of the day whatever the other wheels read.
     const start = value === 'AM' ? 0 : 12 * 3600;
-    const end =
-      start + 12 * 3600 - (params.showMilliseconds ? 0.001 : 1);
+    const end = start + 12 * 3600 - (params.showMilliseconds ? 0.001 : 1);
     return { start, end };
   }
 
