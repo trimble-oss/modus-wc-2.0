@@ -40,7 +40,11 @@ export interface ITimePickerDropdownProps {
   effectiveShowMilliseconds?: boolean;
   resolvedFormat: TimeFormat;
   minuteStep: number;
+  minuteOffset?: number;
   secondStep: number;
+  secondOffset?: number;
+  stepSeconds?: number;
+  millisecondOffset?: number;
   datalistOptions: string[];
   intervalMinutes?: number;
   min?: string;
@@ -226,7 +230,11 @@ export const TimePickerDropdown: FunctionalComponent<
     | 'effectiveShowMilliseconds'
     | 'resolvedFormat'
     | 'minuteStep'
+    | 'minuteOffset'
     | 'secondStep'
+    | 'secondOffset'
+    | 'stepSeconds'
+    | 'millisecondOffset'
     | 'min'
     | 'max'
     | 'onWheelSelect'
@@ -239,12 +247,15 @@ export const TimePickerDropdown: FunctionalComponent<
     props.resolvedFormat
   );
   const hours = getHourOptions(props.resolvedFormat);
-  const minutes = getUnitOptions(props.minuteStep);
+  const minutes = getUnitOptions(props.minuteStep, props.minuteOffset ?? 0);
   const seconds = props.effectiveShowSeconds
-    ? getUnitOptions(props.secondStep)
+    ? getUnitOptions(props.secondStep, props.secondOffset ?? 0)
     : [];
   const milliseconds = props.effectiveShowMilliseconds
-    ? getMillisecondOptions(state.milliseconds)
+    ? getMillisecondOptions(
+        props.stepSeconds ?? 0.1,
+        props.millisecondOffset ?? 0
+      )
     : [];
   const periods = getPeriodOptions();
 

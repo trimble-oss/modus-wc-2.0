@@ -25,11 +25,10 @@ import { createPopperOptions } from './utils/popper-utils';
 import {
   detectLocaleTimeFormat,
   format24h,
-  fromTotalMillis,
-  isStepMismatch,
   parse24h,
-  toTotalMillis,
+  snapTimeToGrid,
 } from './utils/time-format';
+import { scheduleWheelSelectionFocus } from './utils/time-listbox-keyboard';
 import {
   IWheelState,
   resolveWheelState,
@@ -64,6 +63,9 @@ export class ModusWcTimeInput {
   private popperInstance?: PopperInstance;
   private wheelScrollCleanups: Array<() => void> = [];
   private pendingScrollToSelection = false;
+
+  /** Focus the wheel panel after “Other” replaces the datalist. */
+  private pendingWheelFocus = false;
   private readonly circularScrollLock: ICircularScrollLock = { current: false };
   private readonly dropdownIdSuffix = generateRandomId(8);
 
@@ -204,6 +206,10 @@ export class ModusWcTimeInput {
   };
 
   private handleInput = (event: Event) => {
+    const next = (event.target as HTMLInputElement | null)?.value;
+    if (typeof next === 'string' && next !== this.value) {
+      this.value = next;
+    }
     this.inputChange.emit(event);
   };
 
@@ -216,23 +222,50 @@ export class ModusWcTimeInput {
   private handleTimePickerPointerDown = (event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    if (this.disabled || this.readOnly) {
-      return;
-    }
-    const opening = !this.showDropdown;
-    this.showDropdown = opening;
-    this.pendingScrollToSelection = opening;
-    if (opening) {
-      this.pickerMode = this.datalistOptions.length > 0 ? 'list' : 'wheels';
-    }
+    this.toggleTimePicker();
   };
 
+  /**
+   * Mouse clicks are already handled on pointerdown (and that pointerdown
+   * suppresses the click). Keyboard and assistive-tech activation arrive
+   * only as buttonClick.
+   */
   private handleTimePickerClick = (
     event: CustomEvent<MouseEvent | KeyboardEvent>
   ) => {
     event.preventDefault();
     event.stopPropagation();
+    if (event.detail instanceof MouseEvent) {
+      return;
+    }
+    this.toggleTimePicker();
   };
+
+  private toggleTimePicker() {
+    if (this.disabled || this.readOnly) {
+      return;
+    }
+    if (this.showDropdown) {
+      this.closeDropdown();
+      return;
+    }
+    this.syncValueFromField();
+    this.pickerMode = this.datalistOptions.length > 0 ? 'list' : 'wheels';
+    this.showDropdown = true;
+    this.pendingScrollToSelection = true;
+  }
+
+  /** Native edits update the input before `value` is written back. */
+  private syncValueFromField() {
+    const current = this.timeInputRef?.value;
+    if (typeof current === 'string' && current !== this.value) {
+      this.value = current;
+    }
+  }
+
+  private fieldValue(): string {
+    return this.timeInputRef?.value || this.value || '';
+  }
 
   /**
    * A click on the time text opens the native picker in Firefox. Cancelling the
@@ -252,10 +285,8 @@ export class ModusWcTimeInput {
       return;
     }
     event.preventDefault();
-    if (!this.showDropdown && !this.disabled && !this.readOnly) {
-      this.pickerMode = this.datalistOptions.length > 0 ? 'list' : 'wheels';
-      this.showDropdown = true;
-      this.pendingScrollToSelection = true;
+    if (!this.showDropdown) {
+      this.toggleTimePicker();
     }
   };
 
@@ -270,22 +301,18 @@ export class ModusWcTimeInput {
     this.dropdownRef = el;
   };
 
-  /** Move a wheel result onto the step grid so the field does not keep a rejected time. */
+  /** Move a wheel result onto an in-range step grid point inside the same day. */
   private snapToStep(value24h: string): string {
     const parsed = parse24h(value24h);
     if (!parsed) {
       return value24h;
     }
-    const step = this.getResolvedStep();
-    const anchor = this.min ? parse24h(this.min) : null;
-    if (!isStepMismatch(parsed, step, anchor)) {
-      return value24h;
-    }
-    const stepMs = Math.max(1, Math.round(step * 1000));
-    const anchorMs = anchor ? toTotalMillis(anchor) : 0;
-    const offset = toTotalMillis(parsed) - anchorMs;
-    const snapped = Math.round(offset / stepMs) * stepMs;
-    const snappedTime = fromTotalMillis(anchorMs + snapped);
+    const snappedTime = snapTimeToGrid(
+      parsed,
+      this.getResolvedStep(),
+      this.min,
+      this.max
+    );
     const includeSeconds =
       this.shouldShowSeconds() ||
       snappedTime.seconds !== 0 ||
@@ -315,7 +342,7 @@ export class ModusWcTimeInput {
     const showMilliseconds = this.shouldShowMilliseconds();
     const format = this.getResolvedFormat();
     const current: IWheelState = resolveWheelState(
-      this.value,
+      this.fieldValue(),
       showSeconds,
       format
     );
@@ -331,12 +358,18 @@ export class ModusWcTimeInput {
   private showWheelPicker = () => {
     this.pickerMode = 'wheels';
     this.pendingScrollToSelection = true;
+    this.pendingWheelFocus = true;
     unbindCircularWheelListeners(this.wheelScrollCleanups);
     this.wheelScrollCleanups = [];
   };
 
   private closeDropdown() {
+    const root = this.el.getRootNode() as Document | ShadowRoot;
+    if (root.activeElement && this.dropdownRef?.contains(root.activeElement)) {
+      this.timeInputRef?.focus({ preventScroll: true });
+    }
     this.showDropdown = false;
+    this.pendingWheelFocus = false;
   }
 
   componentDidRender() {
@@ -365,28 +398,7 @@ export class ModusWcTimeInput {
       } else {
         void this.popperInstance.update();
       }
-      requestAnimationFrame(() => {
-        if (!this.showDropdown || !this.dropdownRef) {
-          return;
-        }
-        if (this.pendingScrollToSelection) {
-          if (this.pickerMode === 'list') {
-            scrollDatalistToSelection(this.dropdownRef);
-          } else {
-            scrollWheelsToSelection(this.dropdownRef);
-          }
-          this.pendingScrollToSelection = false;
-        }
-        if (
-          this.pickerMode === 'wheels' &&
-          this.wheelScrollCleanups.length === 0
-        ) {
-          this.wheelScrollCleanups = bindCircularWheelListeners(
-            this.dropdownRef,
-            this.circularScrollLock
-          );
-        }
-      });
+      requestAnimationFrame(this.syncOpenDropdown);
     } else if (this.popperInstance || this.wheelScrollCleanups.length) {
       unbindCircularWheelListeners(this.wheelScrollCleanups);
       this.wheelScrollCleanups = [];
@@ -394,6 +406,33 @@ export class ModusWcTimeInput {
       this.popperInstance = undefined;
     }
   }
+
+  /** Scroll and wire the panel after it has been positioned. */
+  private syncOpenDropdown = () => {
+    if (!this.showDropdown || !this.dropdownRef) {
+      return;
+    }
+    if (this.pendingScrollToSelection) {
+      if (this.pickerMode === 'list') {
+        scrollDatalistToSelection(this.dropdownRef);
+      } else {
+        scrollWheelsToSelection(this.dropdownRef);
+      }
+      this.pendingScrollToSelection = false;
+    }
+    if (this.pendingWheelFocus && this.pickerMode === 'wheels') {
+      this.pendingWheelFocus = false;
+      scheduleWheelSelectionFocus(
+        this.dropdownRef.querySelector('.time-wheel')
+      );
+    }
+    if (this.pickerMode === 'wheels' && this.wheelScrollCleanups.length === 0) {
+      this.wheelScrollCleanups = bindCircularWheelListeners(
+        this.dropdownRef,
+        this.circularScrollLock
+      );
+    }
+  };
 
   disconnectedCallback() {
     unbindCircularWheelListeners(this.wheelScrollCleanups);
@@ -475,6 +514,21 @@ export class ModusWcTimeInput {
       return step;
     }
     return 1;
+  }
+
+  /** Residue of `min` on the minute or second column, so wheels match the step anchor. */
+  private getColumnOffset(unit: 'minute' | 'second' | 'millisecond'): number {
+    const anchor = this.min ? parse24h(this.min) : null;
+    if (!anchor) {
+      return 0;
+    }
+    if (unit === 'millisecond') {
+      return anchor.milliseconds ?? 0;
+    }
+    const step =
+      unit === 'minute' ? this.getMinuteStep() : this.getSecondStep();
+    const value = unit === 'minute' ? anchor.minutes : anchor.seconds;
+    return ((value % step) + step) % step;
   }
 
   private shouldShowSeconds(): boolean {
@@ -595,6 +649,9 @@ export class ModusWcTimeInput {
               </span>
             ) : (
               <modus-wc-button
+                // The button copies aria-expanded once, at load. A new key
+                // rebuilds it so the inner button matches the open state.
+                key={this.showDropdown ? 'open' : 'closed'}
                 aria-expanded={this.showDropdown ? 'true' : 'false'}
                 aria-haspopup="dialog"
                 aria-label="Open time picker"
@@ -641,8 +698,12 @@ export class ModusWcTimeInput {
               effectiveShowSeconds={this.shouldShowSeconds()}
               max={this.max}
               min={this.min}
+              millisecondOffset={this.getColumnOffset('millisecond')}
+              minuteOffset={this.getColumnOffset('minute')}
               minuteStep={this.getMinuteStep()}
               onWheelCommit={() => this.closeDropdown()}
+              secondOffset={this.getColumnOffset('second')}
+              stepSeconds={this.getResolvedStep()}
               onWheelSelect={this.applyWheelSelection}
               resolvedFormat={this.getResolvedFormat()}
               secondStep={this.getSecondStep()}

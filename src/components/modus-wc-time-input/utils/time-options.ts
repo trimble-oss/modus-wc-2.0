@@ -71,11 +71,15 @@ export function getHourOptions(
   }));
 }
 
-/** Minute or second options 00–59, optionally stepped. */
-export function getUnitOptions(step = 1): ITimeWheelOption[] {
+/**
+ * Minute or second options. `offset` is the anchor residue so a step of 15
+ * with min 09:05 lists 05, 20, 35, 50 rather than 00, 15, 30, 45.
+ */
+export function getUnitOptions(step = 1, offset = 0): ITimeWheelOption[] {
   const safeStep = step > 0 ? step : 1;
+  const start = ((Math.trunc(offset) % safeStep) + safeStep) % safeStep;
   const options: ITimeWheelOption[] = [];
-  for (let i = 0; i < 60; i += safeStep) {
+  for (let i = start; i < 60; i += safeStep) {
     const label = pad2Time(i);
     options.push({ label, value: String(i) });
   }
@@ -83,20 +87,26 @@ export function getUnitOptions(step = 1): ITimeWheelOption[] {
 }
 
 /**
- * Millisecond rows are always the hundreds 000–900, for any fractional step.
- * An off-grid value replaces the nearest hundred (a tie takes the higher one).
+ * Millisecond rows on the same step grid as commit. `stepSeconds` 0.5 lists
+ * 000 and 500; an anchor shifts the residue (min .050 with step 0.1 → 050, 150, …).
  */
-export function getMillisecondOptions(current = 0): ITimeWheelOption[] {
-  const values = Array.from({ length: 10 }, (_, index) => index * 100);
-  const currentMs = Math.min(999, Math.max(0, Math.round(current)));
-  if (!values.includes(currentMs)) {
-    const nearest = Math.min(900, Math.round(currentMs / 100) * 100);
-    const index = values.indexOf(nearest);
-    if (index >= 0) {
-      values[index] = currentMs;
+export function getMillisecondOptions(
+  stepSeconds = 0.1,
+  anchorMs = 0
+): ITimeWheelOption[] {
+  const stepMs = Math.max(1, Math.round(stepSeconds * 1000));
+  const origin = ((Math.round(anchorMs) % 1000) + 1000) % 1000;
+  const values: number[] = [];
+  const seen = new Set<number>();
+  for (let i = 0; i < 1000; i++) {
+    const ms = (origin + i * stepMs) % 1000;
+    if (seen.has(ms)) {
+      break;
     }
-    values.sort((a, b) => a - b);
+    seen.add(ms);
+    values.push(ms);
   }
+  values.sort((a, b) => a - b);
   return values.map((value) => ({
     label: value.toString().padStart(3, '0'),
     value: String(value),
@@ -238,10 +248,14 @@ function getWheelOptionSpan(
     hourFormat: TimeFormat;
   }
 ): { start: number; end: number } | null {
+  const fraction = params.showMilliseconds ? 0.999 : 0;
+
   if (kind === 'period') {
     // A period covers its half of the day whatever the other wheels read.
     const start = value === 'AM' ? 0 : 12 * 3600;
-    return { start, end: start + 12 * 3600 - 1 };
+    const end =
+      start + 12 * 3600 - (params.showMilliseconds ? 0.001 : 1);
+    return { start, end };
   }
 
   const next: IWheelState = { ...state };
@@ -250,11 +264,11 @@ function getWheelOptionSpan(
   switch (kind) {
     case 'hours':
       next.hour = Number(value);
-      spanSeconds = 59 * 60 + 59;
+      spanSeconds = 59 * 60 + 59 + fraction;
       break;
     case 'minutes':
       next.minutes = Number(value);
-      spanSeconds = params.showSeconds ? 59 : 0;
+      spanSeconds = params.showSeconds ? 59 + fraction : 0;
       break;
     case 'seconds':
       next.seconds = Number(value);
@@ -319,9 +333,14 @@ export function isWheelOptionInRange(
   const minParsed = params.min ? parse24h(params.min) : null;
   const maxParsed = params.max ? parse24h(params.max) : null;
   const lower = minParsed ? toTotalSeconds(minParsed) : 0;
-  const upper = maxParsed ? toTotalSeconds(maxParsed) : 24 * 3600 - 1;
+  const upper = maxParsed
+    ? toTotalSeconds(maxParsed)
+    : 24 * 3600 - (params.showMilliseconds ? 0.001 : 1);
 
-  return span.end >= lower && span.start <= upper;
+  // min later than max wraps midnight: the allowed set is the union of both ends.
+  return lower <= upper
+    ? span.end >= lower && span.start <= upper
+    : span.end >= lower || span.start <= upper;
 }
 
 export function valueFromWheelState(

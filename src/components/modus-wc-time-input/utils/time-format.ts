@@ -348,12 +348,53 @@ export function compareTimes(a: IParsedTime, b: IParsedTime): number {
   return toTotalMillis(a) - toTotalMillis(b);
 }
 
+const DAY_MILLIS = 24 * 60 * 60 * 1000;
+
+/**
+ * Whether `time` sits in `[min, max]`. When `min` is later than `max`, the
+ * range wraps midnight (HTML time inputs): `22:00`–`06:00` allows `23:00`
+ * and `01:00`, and excludes the daytime gap.
+ */
+export function isInTimeRange(
+  time: IParsedTime,
+  min?: string,
+  max?: string
+): boolean {
+  const bounds = timeRangeMillis(min, max);
+  if (!bounds) {
+    return true;
+  }
+  const t = toTotalMillis(time);
+  if (bounds.wraps) {
+    return t >= bounds.lower || t <= bounds.upper;
+  }
+  return t >= bounds.lower && t <= bounds.upper;
+}
+
 /** Clamp a parsed time between optional min/max 24h strings. */
 export function clampTime(
   time: IParsedTime,
   min?: string,
   max?: string
 ): IParsedTime {
+  if (isInTimeRange(time, min, max)) {
+    return { ...time };
+  }
+  const bounds = timeRangeMillis(min, max);
+  if (!bounds) {
+    return { ...time };
+  }
+  const t = toTotalMillis(time);
+  if (bounds.wraps && t > bounds.upper && t < bounds.lower) {
+    const minParsed = parse24h(min ?? '');
+    const maxParsed = parse24h(max ?? '');
+    if (!minParsed || !maxParsed) {
+      return { ...time };
+    }
+    return t - bounds.upper <= bounds.lower - t
+      ? { ...maxParsed }
+      : { ...minParsed };
+  }
   let result = { ...time };
   const minParsed = min ? parse24h(min) : null;
   const maxParsed = max ? parse24h(max) : null;
@@ -366,6 +407,20 @@ export function clampTime(
   return result;
 }
 
+function timeRangeMillis(
+  min?: string,
+  max?: string
+): { lower: number; upper: number; wraps: boolean } | null {
+  const minParsed = min ? parse24h(min) : null;
+  const maxParsed = max ? parse24h(max) : null;
+  if (!minParsed && !maxParsed) {
+    return null;
+  }
+  const lower = minParsed ? toTotalMillis(minParsed) : 0;
+  const upper = maxParsed ? toTotalMillis(maxParsed) : DAY_MILLIS - 1;
+  return { lower, upper, wraps: lower > upper };
+}
+
 /** Total seconds since midnight for a parsed time. */
 export function toTotalSeconds(time: IParsedTime): number {
   return (
@@ -375,8 +430,6 @@ export function toTotalSeconds(time: IParsedTime): number {
     (time.milliseconds ?? 0) / 1000
   );
 }
-
-const DAY_MILLIS = 24 * 60 * 60 * 1000;
 
 /** Total milliseconds since midnight. */
 export function toTotalMillis(time: IParsedTime): number {
@@ -412,6 +465,63 @@ export function isStepMismatch(
   }
   const delta = toTotalMillis(time) - (anchor ? toTotalMillis(anchor) : 0);
   return ((delta % stepMs) + stepMs) % stepMs !== 0;
+}
+
+/**
+ * Nearest step-grid instant that stays inside the same day and inside min/max.
+ * Rounding past midnight is clamped to the last grid point of the day so a
+ * value such as 23:59:59 with step 7 does not wrap to 00:00:01.
+ */
+export function snapTimeToGrid(
+  time: IParsedTime,
+  stepSeconds: number,
+  min?: string,
+  max?: string
+): IParsedTime {
+  const stepMs = Math.max(1, Math.round(stepSeconds * 1000));
+  const anchor = min ? parse24h(min) : null;
+  if (
+    !isStepMismatch(time, stepSeconds, anchor) &&
+    isInTimeRange(time, min, max)
+  ) {
+    return time;
+  }
+  const anchorMs = anchor ? toTotalMillis(anchor) : 0;
+  const first = Math.ceil(-anchorMs / stepMs);
+  const last = Math.floor((DAY_MILLIS - 1 - anchorMs) / stepMs);
+  const target = Math.round((toTotalMillis(time) - anchorMs) / stepMs);
+  let index = Math.min(last, Math.max(first, target));
+  let snappedMs = anchorMs + index * stepMs;
+  const bounds = timeRangeMillis(min, max);
+
+  const inRange = (ms: number) => isInTimeRange(fromTotalMillis(ms), min, max);
+
+  if (bounds && !inRange(snappedMs)) {
+    if (bounds.wraps && snappedMs > bounds.upper && snappedMs < bounds.lower) {
+      snappedMs =
+        snappedMs - bounds.upper <= bounds.lower - snappedMs
+          ? bounds.upper
+          : bounds.lower;
+    } else {
+      if (snappedMs < bounds.lower) {
+        snappedMs = bounds.lower;
+      }
+      if (snappedMs > bounds.upper) {
+        snappedMs = bounds.upper;
+      }
+    }
+    index = Math.min(
+      last,
+      Math.max(first, Math.round((snappedMs - anchorMs) / stepMs))
+    );
+    snappedMs = anchorMs + index * stepMs;
+    if (!inRange(snappedMs) && snappedMs > bounds.upper) {
+      snappedMs -= stepMs;
+    } else if (!inRange(snappedMs) && snappedMs < bounds.lower) {
+      snappedMs += stepMs;
+    }
+  }
+  return fromTotalMillis(snappedMs);
 }
 
 /**
