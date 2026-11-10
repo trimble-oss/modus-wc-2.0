@@ -1,6 +1,6 @@
 export function createPopperOptions(
   placement: 'bottom-start' | 'bottom-end' = 'bottom-start',
-  offsetY = 8
+  offsetY = 10
 ) {
   const fallbackPlacements =
     placement === 'bottom-end'

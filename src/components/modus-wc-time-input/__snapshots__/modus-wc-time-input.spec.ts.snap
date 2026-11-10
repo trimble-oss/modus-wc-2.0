@@ -30,7 +30,7 @@ exports[`modus-wc-time-input should render with default props 1`] = `
 exports[`modus-wc-time-input should render with error feedback 1`] = `
 <modus-wc-time-input value="">
   <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-time-input modus-wc-w-full">
-    <input aria-label="Error input" class="modus-wc-grow" id="mwc_id_2" list="modus-wc-datalist-test-random-id" step="60" type="time" value="">
+    <input aria-label="Error input" class="modus-wc-grow" id="mwc_id_2" step="60" type="time" value="">
     <div class="modus-wc-time-input-picker-container">
       <modus-wc-button aria-expanded="false" aria-haspopup="dialog" aria-label="Open time picker" class="modus-wc-time-input-picker-toggle" color="tertiary" shape="square" size="sm" variant="borderless">
         <modus-wc-icon decorative="" name="clock" size="sm"></modus-wc-icon>

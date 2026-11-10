@@ -25,9 +25,21 @@ modus-wc-time-input {
         max-width: 100%;
         min-width: 0;
 
+        /*
+         * Mobile WebKit draws a disclosure chevron on the time field.
+         * appearance: none removes it. Firefox is excluded because that
+         * value clips the hour and minute segments there.
+         */
+        @supports not (-moz-appearance: textfield) {
+          -webkit-appearance: none;
+          appearance: none;
+        }
+
         &::-webkit-calendar-picker-indicator,
+        &::-webkit-clear-button,
         &::-webkit-inner-spin-button,
-        &::-webkit-clear-button {
+        &::-webkit-list-button {
+          -webkit-appearance: none;
           appearance: none;
           display: none;
         }

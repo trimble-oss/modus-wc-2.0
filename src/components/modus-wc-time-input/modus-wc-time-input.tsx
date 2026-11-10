@@ -25,6 +25,7 @@ import { createPopperOptions } from './utils/popper-utils';
 import {
   detectLocaleTimeFormat,
   format24h,
+  type IParsedTime,
   parse24h,
   snapTimeToGrid,
 } from './utils/time-format';
@@ -307,19 +308,23 @@ export class ModusWcTimeInput {
     if (!parsed) {
       return value24h;
     }
-    const snappedTime = snapTimeToGrid(
+    const snapped = snapTimeToGrid(
       parsed,
       this.getResolvedStep(),
       this.min,
       this.max
     );
+    const time: IParsedTime = {
+      hours24: snapped.hours24,
+      minutes: snapped.minutes,
+      seconds: snapped.seconds,
+      milliseconds: snapped.milliseconds ?? 0,
+    };
     const includeSeconds =
-      this.shouldShowSeconds() ||
-      snappedTime.seconds !== 0 ||
-      (snappedTime.milliseconds ?? 0) !== 0;
+      this.shouldShowSeconds() || time.seconds !== 0 || time.milliseconds !== 0;
     const includeMilliseconds =
-      this.shouldShowMilliseconds() || (snappedTime.milliseconds ?? 0) !== 0;
-    return format24h(snappedTime, includeSeconds, includeMilliseconds);
+      this.shouldShowMilliseconds() || time.milliseconds !== 0;
+    return format24h(time, includeSeconds, includeMilliseconds);
   }
 
   private commitTimeValue(value24h: string, close: boolean) {
@@ -393,7 +398,7 @@ export class ModusWcTimeInput {
         this.popperInstance = createPopper(
           this.timeInputRef,
           this.dropdownRef,
-          createPopperOptions('bottom-start', 4)
+          createPopperOptions('bottom-start')
         );
       } else {
         void this.popperInstance.update();
@@ -481,6 +486,22 @@ export class ModusWcTimeInput {
 
   private shouldShowTimePickerButton(): boolean {
     return !this.isTimePickerInactive();
+  }
+
+  /**
+   * A `list` attribute paints a native disclosure arrow on mobile, including
+   * when the datalist is empty. Keep it only for a caller-supplied datalist
+   * that this component is not already drawing itself.
+   */
+  private nativeDatalistId(): string | undefined {
+    if (
+      !this.datalistId ||
+      this.datalistId === this.internalDatalistId ||
+      this.datalistOptions.length > 0
+    ) {
+      return undefined;
+    }
+    return this.datalistId;
   }
 
   /**
@@ -614,7 +635,7 @@ export class ModusWcTimeInput {
             class="modus-wc-grow"
             disabled={this.disabled}
             id={effectiveId}
-            list={this.datalistOptions.length > 0 ? undefined : this.datalistId}
+            list={this.nativeDatalistId()}
             max={this.max}
             min={this.min}
             name={this.name}
