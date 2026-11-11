@@ -111,6 +111,9 @@ describe('modus-wc-alert', () => {
     const component = page.rootInstance as ModusWcAlert;
     const dismissElementSpy = jest.spyOn(component, 'dismissElement');
 
+    const dismissButton = page.root?.querySelector('modus-wc-button button');
+    expect(dismissButton?.classList.contains('modus-wc-btn-square')).toBe(true);
+
     const button = page.root?.querySelector('button');
     expect(button).not.toBeNull();
 
