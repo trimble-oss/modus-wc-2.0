@@ -116,3 +116,13 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu {
       0 2px 4px -2px var(--modus-wc-color-base-200);
   }
 }
+
+/* Kept after the Connect block so equal-specificity radius overrides win. */
+modus-wc-dropdown-menu.modus-wc-dropdown-menu
+  .menu-wrapper:has(.modus-wc-help-menu) {
+  border-radius: var(--radius-box);
+
+  .modus-wc-menu {
+    border-radius: var(--radius-box);
+  }
+}

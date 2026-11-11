@@ -22,7 +22,7 @@ modus-wc-modal .modus-wc-modal {
       display: flex;
 
       > span {
-        border-radius: var(--rounded-box);
+        border-radius: var(--radius-box);
         display: block;
       }
 
@@ -57,7 +57,7 @@ modus-wc-modal .modus-wc-modal {
   // Use a direct child selector to avoid leaking these styles into nested spans
   // (for example, spans inside tab content or other descendants).
   > span {
-    border-radius: var(--rounded-box);
+    border-radius: var(--radius-box);
     display: block;
     height: 100%;
   }
@@ -93,7 +93,7 @@ modus-wc-modal .modus-wc-modal {
 [data-theme='modus-classic-dark'],
 [data-theme='modus-classic-light'] {
   .modus-wc-modal-box {
-    --rounded-box: var(--modus-wc-border-radius-md);
+    --radius-box: var(--modus-wc-border-radius-md);
   }
 
   .modus-wc-modal-header span {
