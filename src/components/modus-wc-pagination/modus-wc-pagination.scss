@@ -166,6 +166,12 @@ modus-wc-pagination .modus-wc-pagination {
     width: auto !important;
   }
 
+  // Focus halo: 2px primary outline (per Figma focus spec).
+  .modus-wc-pagination-btn:focus-visible {
+    outline: 2px solid var(--modus-wc-color-primary);
+    outline-offset: 2px;
+  }
+
   .modus-wc-pagination-btn:not(:disabled) {
     background-color: var(--modus-wc-color-base-100);
     color: var(--modus-wc-color-base-content);

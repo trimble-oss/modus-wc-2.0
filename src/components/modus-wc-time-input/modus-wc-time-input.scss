@@ -37,12 +37,14 @@ modus-wc-time-input {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
     }
 
+    // Focus halo: 2px primary outline (per Figma focus spec).
     &:focus,
     &:focus-within {
       border-color: var(--modus-wc-color-blue-light);
       border-width: var(--modus-wc-border-width-sm);
       box-shadow: none; // Removes the Tailwind ring effect
-      outline: none; // Ensures there's no outline on focus
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: 2px;
     }
 
     &.modus-wc-time-input--readonly {
@@ -72,4 +74,10 @@ modus-wc-time-input {
 [data-theme='connect-light'] modus-wc-time-input .modus-wc-time-input,
 [data-theme='connect-dark'] modus-wc-time-input .modus-wc-time-input {
   @include connect-input-styles;
+}
+
+// Focus halo for all themes: 2px primary outline (per Figma focus spec).
+modus-wc-time-input .modus-wc-time-input:focus {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
 }

@@ -384,9 +384,12 @@ modus-wc-date {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
     }
 
+    // Focus halo: 2px primary outline (per Figma focus spec).
     &:focus {
       border-color: var(--modus-wc-color-blue-light);
       border-width: var(--modus-wc-border-width-sm);
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: 2px;
     }
 
     &.modus-wc-date-input--readonly {
@@ -463,4 +466,10 @@ modus-wc-date {
       }
     }
   }
+}
+
+// Focus halo for all themes: 2px primary outline (per Figma focus spec).
+modus-wc-date .modus-wc-date-input:focus {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
 }
