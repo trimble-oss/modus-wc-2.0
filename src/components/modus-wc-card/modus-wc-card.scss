@@ -43,7 +43,7 @@ modus-wc-card .modus-wc-card {
 
 [data-theme='modus-classic-light'] modus-wc-card .modus-wc-card,
 [data-theme='modus-classic-dark'] modus-wc-card .modus-wc-card {
-  --rounded-box: 0.5rem;
+  --radius-box: 0.5rem;
 
   box-shadow: 0 0 2px 0 rgb(54, 53, 69, 0.3);
 
@@ -54,7 +54,7 @@ modus-wc-card .modus-wc-card {
 
 [data-theme='modus-classic-light'] modus-wc-card .modus-wc-card {
   .modus-wc-card-title {
-    --fallback-bc: var(--modus-wc-color-trimble-gray);
+    color: var(--modus-wc-color-trimble-gray);
   }
 
   .modus-wc-card-subtitle {
@@ -64,7 +64,7 @@ modus-wc-card .modus-wc-card {
 
 [data-theme='modus-classic-dark'] modus-wc-card .modus-wc-card {
   .modus-wc-card-title {
-    --fallback-bc: var(--modus-wc-color-white);
+    color: var(--modus-wc-color-white);
   }
 
   .modus-wc-card-subtitle {

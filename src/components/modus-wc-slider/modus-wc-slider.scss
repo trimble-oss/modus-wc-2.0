@@ -4,7 +4,7 @@
 */
 
 modus-wc-slider .modus-wc-range {
-  --rounded-box: 200px;
+  --radius-selector: 200px;
   --range-shadow: var(--modus-wc-color-trimble-blue);
 }
 
@@ -17,6 +17,6 @@ modus-wc-slider .modus-wc-range {
 
 [data-theme='modus-classic-light'] modus-wc-slider .modus-wc-range,
 [data-theme='modus-classic-dark'] modus-wc-slider .modus-wc-range {
-  --rounded-box: 200px;
+  --radius-selector: 200px;
   --range-shadow: var(--modus-wc-color-trimble-blue);
 }

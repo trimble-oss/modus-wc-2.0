@@ -3,10 +3,34 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 *
 * Disabled colors use --_btn-bg / --_btn-fg on color classes in
-* src/styles/tailwind.css (compiled to output.css); shared variant restore +
-* modern/connect opacity live there too. Classic theme disabled opacity is
-* still defined in this file.
+* src/styles/tailwind-v4-button-overrides.css (compiled to output.css); shared
+* variant restore + modern/connect opacity live there too. Classic theme
+* disabled opacity is still defined in this file.
 */
+
+/* DaisyUI 5 removed --btn-focus-scale. Modern and Classic keep the previous
+   0.98 press. Connect themes set the scale to 1 (no shrink). */
+modus-wc-button
+  .modus-wc-btn:active:not(:disabled):not(.modus-wc-btn-disabled) {
+  scale: 0.98;
+}
+
+[data-theme^='connect'] modus-wc-button .modus-wc-btn:active {
+  scale: 1;
+}
+
+/* DaisyUI 5 removed *-focus colors. Theme generation publishes them as
+   --color-primary-focus and --color-secondary-focus (full colors). */
+[data-theme^='modus-modern'] modus-wc-button .modus-wc-btn:focus-visible,
+[data-theme^='connect'] modus-wc-button .modus-wc-btn:focus-visible {
+  &.modus-wc-btn-primary {
+    outline-color: var(--color-primary-focus, var(--color-primary));
+  }
+
+  &.modus-wc-btn-secondary {
+    outline-color: var(--color-secondary-focus, var(--color-secondary));
+  }
+}
 
 modus-wc-button .modus-wc-btn {
   @include sizing-tokens;
@@ -153,7 +177,7 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
 [data-theme='modus-classic-dark']
   modus-wc-button
   .modus-wc-btn:not(.modus-wc-btn-success):not(.modus-wc-btn-base-inverted) {
-  --rounded-btn: var(--modus-wc-border-radius-md);
+  --radius-field: var(--modus-wc-border-radius-md);
 
   border: none;
   outline: none;
@@ -639,10 +663,10 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
   }
 }
 
-/* Connect: filled secondary stays theme gray (connect.ts --s / --fallback-s).
-   Text must stay white in every state — do not use --modus-wc-color-secondary-
-   content or --fallback-sc (those track Modern yellow secondary = black).
-   Outlined + borderless secondary use yellow via local --fallback-s so DaisyUI
+/* Connect: filled secondary stays theme gray (--color-secondary).
+   Text must stay white in every state — do not use --color-secondary-content
+   (Modern yellow secondary content is black).
+   Outlined + borderless secondary use yellow via --color-secondary so DaisyUI
    outline/borderless color paths and disabled --_btn-* tokens follow yellow. */
 [data-theme='connect-light']
   modus-wc-button
@@ -667,8 +691,8 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
     .modus-wc-btn-outline,
     .modus-wc-btn-borderless
   ) {
-  --fallback-s: var(--modus-wc-color-yellow);
-  --fallback-sc: var(--modus-wc-color-black);
+  --color-secondary: var(--modus-wc-color-yellow);
+  --color-secondary-content: var(--modus-wc-color-black);
   --btn-color: var(--modus-wc-color-yellow);
   /* stylelint-disable custom-property-pattern -- private tokens from tailwind.css */
   --_btn-bg: var(--modus-wc-color-yellow);
@@ -702,8 +726,8 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
     .modus-wc-btn-outline,
     .modus-wc-btn-borderless
   ) {
-  --fallback-s: var(--modus-wc-color-yellow-light);
-  --fallback-sc: var(--modus-wc-color-black);
+  --color-secondary: var(--modus-wc-color-yellow-light);
+  --color-secondary-content: var(--modus-wc-color-black);
   --btn-color: var(--modus-wc-color-yellow-light);
   /* stylelint-disable custom-property-pattern -- private tokens from tailwind.css */
   --_btn-bg: var(--modus-wc-color-yellow-light);

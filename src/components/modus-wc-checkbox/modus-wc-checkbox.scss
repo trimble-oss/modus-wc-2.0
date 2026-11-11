@@ -37,7 +37,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 
   [type='checkbox'].modus-wc-checkbox {
     &:checked {
-      --fallback-bc: var(--modus-wc-color-primary);
+      --input-color: var(--modus-wc-color-primary);
     }
 
     &:focus {
@@ -45,7 +45,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
     }
 
     &:hover {
-      --fallback-bc: var(--modus-wc-color-primary);
+      --input-color: var(--modus-wc-color-primary);
     }
   }
 }
@@ -61,7 +61,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 [data-theme='modus-classic-light'] modus-wc-checkbox .modus-wc-checkbox,
 [data-theme='modus-classic-dark'] modus-wc-checkbox .modus-wc-checkbox {
   --check-bg: var(--modus-wc-color-highlight-blue);
-  --fallback-bc: var(--modus-wc-color-gray-4);
+  --input-color: var(--modus-wc-color-gray-4);
   --check-content: var(--modus-wc-color-white);
 
   border-radius: var(--modus-wc-border-radius-sm);
@@ -84,16 +84,16 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   }
 
   &:checked {
-    --fallback-bc: var(--modus-wc-color-highlight-blue);
+    --input-color: var(--modus-wc-color-highlight-blue);
   }
 
   &:checked:hover {
     --check-bg: var(--modus-wc-color-blue-light);
-    --fallback-bc: var(--modus-wc-color-blue-light);
+    --input-color: var(--modus-wc-color-blue-light);
   }
 
   &:indeterminate {
-    --fallback-bc: var(--modus-wc-color-highlight-blue);
+    --input-color: var(--modus-wc-color-highlight-blue);
   }
 
   &:disabled {
@@ -119,7 +119,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   }
 
   &:hover {
-    --fallback-bc: var(--modus-wc-color-highlight-blue);
+    --input-color: var(--modus-wc-color-highlight-blue);
   }
 }
 
@@ -127,16 +127,16 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   --check-bg: var(--modus-wc-color-blue-light);
 
   &:checked {
-    --fallback-bc: var(--modus-wc-color-blue-light);
+    --input-color: var(--modus-wc-color-blue-light);
   }
 
   &:checked:hover {
     --check-bg: var(--modus-wc-color-trimble-blue);
-    --fallback-bc: var(--modus-wc-color-trimble-blue);
+    --input-color: var(--modus-wc-color-trimble-blue);
   }
 
   &:indeterminate {
-    --fallback-bc: var(--modus-wc-color-blue-light);
+    --input-color: var(--modus-wc-color-blue-light);
   }
 
   &:focus {
@@ -144,7 +144,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
   }
 
   &:hover {
-    --fallback-bc: var(--modus-wc-color-blue-light);
+    --input-color: var(--modus-wc-color-blue-light);
   }
 }
 
@@ -189,7 +189,7 @@ modus-wc-checkbox.modus-wc-checkbox-host {
 
   [type='checkbox'].modus-wc-checkbox {
     --check-bg: #005f9e;
-    --fallback-bc: #aeaeb6;
+    --input-color: #aeaeb6;
     --check-content: var(--modus-wc-color-white);
 
     border-color: #aeaeb6;
@@ -216,20 +216,20 @@ modus-wc-checkbox.modus-wc-checkbox-host {
     }
 
     &:checked {
-      --fallback-bc: #005f9e;
+      --input-color: #005f9e;
 
       border-color: #005f9e;
     }
 
     &:checked:hover {
       --check-bg: #005f9e;
-      --fallback-bc: #005f9e;
+      --input-color: #005f9e;
 
       border-color: #005f9e;
     }
 
     &:indeterminate {
-      --fallback-bc: #005f9e;
+      --input-color: #005f9e;
 
       border-color: #005f9e;
     }
@@ -251,14 +251,14 @@ modus-wc-checkbox.modus-wc-checkbox-host {
     &:focus:not(:focus-visible):not(:hover):not(:checked):not(:active):not(
         :indeterminate
       ) {
-      --fallback-bc: #aeaeb6;
+      --input-color: #aeaeb6;
 
       border-color: #aeaeb6;
     }
 
     &:focus:not(:focus-visible):checked,
     &:focus:not(:focus-visible):indeterminate {
-      --fallback-bc: #005f9e;
+      --input-color: #005f9e;
 
       border-color: #005f9e;
     }
@@ -271,13 +271,13 @@ modus-wc-checkbox.modus-wc-checkbox-host {
     }
 
     &:hover:not(:disabled):not(:checked):not(:indeterminate) {
-      --fallback-bc: #005f9e;
+      --input-color: #005f9e;
 
       border-color: #005f9e;
     }
 
     &:active:not(:disabled):not(:checked) {
-      --fallback-bc: #005f9e;
+      --input-color: #005f9e;
 
       border-color: #005f9e;
     }

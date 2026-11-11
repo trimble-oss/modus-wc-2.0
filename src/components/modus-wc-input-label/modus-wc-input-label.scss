@@ -45,7 +45,7 @@ modus-wc-input-label .modus-wc-input-label {
 }
 
 [data-theme='connect-light'] modus-wc-input-label .modus-wc-input-label {
-  color: oklch(var(--s));
+  color: var(--color-secondary);
   font-weight: var(--modus-wc-font-weight-normal);
   margin-bottom: 0;
   min-height: var(--modus-wc-line-height-md);
