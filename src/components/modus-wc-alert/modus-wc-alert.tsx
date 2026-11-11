@@ -409,6 +409,7 @@ export class ModusWcAlert {
             <modus-wc-button
               aria-label="Dismiss alert"
               color="tertiary"
+              shape="square"
               size="sm"
               slot="button"
               variant="borderless"
