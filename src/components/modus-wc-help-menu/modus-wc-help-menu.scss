@@ -14,7 +14,7 @@ modus-wc-dropdown-menu.modus-wc-dropdown-menu
 
 modus-wc-help-menu {
   background-color: var(--modus-wc-color-base-page);
-  border-radius: var(--rounded-box);
+  border-radius: var(--radius-box);
   display: block;
   min-width: 11.25rem;
   width: 100%;
@@ -158,16 +158,16 @@ modus-wc-help-menu {
     modus-wc-menu-item.modus-wc-help-menu-item-first
       .modus-wc-menu-item
       > button {
-      border-start-end-radius: var(--rounded-box);
-      border-start-start-radius: var(--rounded-box);
+      border-start-end-radius: var(--radius-box);
+      border-start-start-radius: var(--radius-box);
     }
 
     modus-wc-menu-item.modus-wc-help-menu-item-last .modus-wc-menu-item,
     modus-wc-menu-item.modus-wc-help-menu-item-last
       .modus-wc-menu-item
       > button {
-      border-end-end-radius: var(--rounded-box);
-      border-end-start-radius: var(--rounded-box);
+      border-end-end-radius: var(--radius-box);
+      border-end-start-radius: var(--radius-box);
     }
   }
 
