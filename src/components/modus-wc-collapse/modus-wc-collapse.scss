@@ -35,6 +35,12 @@ modus-wc-collapse .modus-wc-collapse {
       background-color: transparent;
       color: var(--modus-wc-color-base-content);
     }
+
+    // Focus halo: 2px primary outline (per Figma focus spec).
+    &:focus-visible {
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: 2px;
+    }
   }
 
   .description {

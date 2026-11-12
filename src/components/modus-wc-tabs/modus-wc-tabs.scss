@@ -186,3 +186,11 @@ modus-wc-tabs .modus-wc-tab {
     background-color: var(--modus-wc-color-gray-9);
   }
 }
+
+// Remove the gray fill on focused non-active tabs (not part of the Figma focus spec).
+modus-wc-tabs
+  .modus-wc-tab:focus-visible:not(.modus-wc-tab-active):not(
+    .modus-wc-tab-disabled
+  ) {
+  background-color: transparent;
+}

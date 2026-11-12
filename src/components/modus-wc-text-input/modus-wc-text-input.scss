@@ -480,10 +480,12 @@ modus-wc-text-input {
       }
     }
 
+    // Focus halo: 2px primary outline around the field (per Figma focus spec).
     &:focus-within {
       border-width: var(--modus-wc-border-width-sm);
       box-shadow: none; // Removes the Tailwind ring effect
-      outline: none; // Ensures there's no outline on focus
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: 2px;
     }
 
     .modus-wc-text-input-icon {
@@ -544,4 +546,10 @@ modus-wc-text-input {
   .modus-wc-text-input {
     @include connect-input-styles;
   }
+}
+
+// Focus halo on the field wrapper for all themes: 2px primary outline (per Figma focus spec).
+modus-wc-text-input .modus-wc-text-input:focus-within {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
 }

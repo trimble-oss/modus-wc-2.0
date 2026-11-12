@@ -74,11 +74,13 @@ modus-wc-textarea {
     padding: var(--modus-wc-spacing-md);
   }
 
+  // Focus halo: 2px primary outline (per Figma focus spec).
   &:focus {
     border-color: var(--modus-wc-color-blue-light);
     border-width: var(--modus-wc-border-width-sm);
     box-shadow: none; // Removes the Tailwind ring effect
-    outline: none; // Ensures there's no outline on focus
+    outline: 2px solid var(--modus-wc-color-primary);
+    outline-offset: 2px;
   }
 }
 
@@ -95,4 +97,10 @@ modus-wc-textarea {
 [data-theme='connect-light'] modus-wc-textarea .modus-wc-textarea,
 [data-theme='connect-dark'] modus-wc-textarea .modus-wc-textarea {
   @include connect-input-styles;
+}
+
+// Focus halo for all themes: 2px primary outline (per Figma focus spec).
+modus-wc-textarea .modus-wc-textarea:focus {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
 }

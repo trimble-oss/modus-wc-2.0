@@ -293,3 +293,9 @@ tr.selected {
   margin: 0; /* strip default margins (e.g., Host blocks) */
   width: 100%;
 }
+
+// Focus halo for sortable headers: 2px primary outline (per Figma focus spec).
+.modus-wc-table th.sortable:focus-visible {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: -2px;
+}
