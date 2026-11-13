@@ -6,15 +6,16 @@
 modus-wc-slider {
   @include input-disabled-overlay;
 
-.modus-wc-range {
-  --rounded-box: 200px;
-  --range-shdw: var(--modus-wc-color-trimble-blue);
+  .modus-wc-range {
+    --rounded-box: 200px;
+    --range-shdw: var(--modus-wc-color-trimble-blue);
 
-  &:disabled {
-    --range-shdw: var(--modus-wc-color-base-200);
-    background-color: transparent;
+    &:disabled {
+      --range-shdw: var(--modus-wc-color-base-200);
+
+      background-color: transparent;
+    }
   }
-}
 }
 
 [data-theme='modus-modern-light'] modus-wc-slider .modus-wc-input-label,
