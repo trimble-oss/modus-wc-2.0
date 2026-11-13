@@ -3,7 +3,11 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-autocomplete.modus-wc-autocomplete {
+modus-wc-autocomplete {
+  @include input-disabled-overlay;
+}
+
+.modus-wc-autocomplete {
   display: inline-block;
   position: relative;
   width: 100%;
@@ -23,6 +27,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     min-height: fit-content;
     padding: var(--modus-wc-spacing-xs);
 
+    @include input-disabled-state;
     @include feedback-levels;
 
     .modus-wc-autocomplete-search-icon {
@@ -226,7 +231,6 @@ modus-wc-autocomplete.modus-wc-autocomplete {
 
   .modus-wc-autocomplete-multi-select--disabled {
     cursor: not-allowed;
-    opacity: 0.6;
     user-select: none;
   }
 

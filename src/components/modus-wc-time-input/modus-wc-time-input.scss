@@ -6,9 +6,12 @@
 .modus-wc-input {
   @include feedback-levels;
   @include sizing-tokens;
+  @include input-disabled-state;
 }
 
 modus-wc-time-input {
+  @include input-disabled-overlay;
+
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
