@@ -129,6 +129,39 @@
   }
 }
 
+@mixin input-disabled-state {
+  &:disabled,
+  &:has(> input[disabled]),
+  &:has(> select[disabled]),
+  &:has(> textarea[disabled]) {
+    background-color: var(--modus-wc-color-base-200);
+    border: none;
+    color: var(--modus-wc-color-base-inverted);
+  }
+}
+
+@mixin input-disabled-overlay {
+  &[disabled],
+  &:has(input[disabled], textarea[disabled], select[disabled]) {
+    opacity: var(--modus-wc-opacity-overlay);
+
+    // Host overlay dims labels/icons; don't stack with tailwind.css input:disabled
+    // opacity (0.6 × 0.6 washes base-200 to ~#f7f7f9 instead of ~#f2f2f6).
+    input:disabled,
+    textarea:disabled,
+    select:disabled {
+      opacity: 1;
+    }
+
+    // Nested input hosts (e.g. autocomplete → text-input) inherit parent dimming.
+    modus-wc-text-input:has(input[disabled]),
+    modus-wc-textarea:has(textarea[disabled]),
+    modus-wc-select:has(select[disabled]) {
+      opacity: 1;
+    }
+  }
+}
+
 @mixin btn-state-colors {
   &.modus-wc-btn-primary {
     &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {

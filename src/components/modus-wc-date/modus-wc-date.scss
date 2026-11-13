@@ -1,6 +1,7 @@
 .modus-wc-input {
   @include feedback-levels;
   @include sizing-tokens;
+  @include input-disabled-state;
 }
 
 modus-wc-date .modus-wc-date-input {
@@ -13,6 +14,8 @@ modus-wc-date .modus-wc-date-input {
 
 // Calendar styles
 modus-wc-date {
+  @include input-disabled-overlay;
+
   --calendar-grid-columns: repeat(7, 36px);
   --calendar-grid-columns-with-week-numbers: auto repeat(7, 36px);
 

@@ -8,14 +8,18 @@
 }
 
 modus-wc-textarea {
+  @include input-disabled-overlay;
+
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }
 
   .modus-wc-textarea {
+    @include input-disabled-state;
+
     color: var(--modus-wc-color-base-inverted);
 
-    &:read-only {
+    &:read-only:not(:disabled) {
       background-color: var(--modus-wc-color-base-100);
     }
   }

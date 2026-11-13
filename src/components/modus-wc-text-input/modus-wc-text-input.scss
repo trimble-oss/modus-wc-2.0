@@ -12,6 +12,7 @@ modus-wc-text-input .modus-wc-input {
 
   @include feedback-levels;
   @include sizing-tokens;
+  @include input-disabled-state;
 
   & input {
     background-color: var(--modus-wc-color-base-page);
@@ -34,6 +35,8 @@ modus-wc-text-input .modus-wc-input {
 }
 
 modus-wc-text-input {
+  @include input-disabled-overlay;
+
   max-width: 100%;
   min-width: 0;
 
@@ -112,13 +115,6 @@ modus-wc-text-input {
           display: inline-flex;
           justify-content: center;
           line-height: 0;
-        }
-      }
-
-      // Match input:disabled opacity — sibling icons don't inherit it.
-      &.modus-wc-input-disabled {
-        .modus-wc-text-input-icon-password {
-          opacity: 0.5;
         }
       }
 
@@ -214,7 +210,6 @@ modus-wc-text-input {
 
 [data-theme='modus-modern-light'] modus-wc-text-input .modus-wc-input-label,
 [data-theme='modus-modern-dark'] modus-wc-text-input .modus-wc-input-label {
-  color: var(--modus-wc-color-accent); // Figma label color (#6a6e79)
   padding-bottom: var(--modus-wc-spacing-xs); // Figma t-spacing/1 (4px)
 }
 

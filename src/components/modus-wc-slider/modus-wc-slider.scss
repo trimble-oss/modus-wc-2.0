@@ -3,9 +3,19 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-slider .modus-wc-range {
-  --rounded-box: 200px;
-  --range-shadow: var(--modus-wc-color-trimble-blue);
+modus-wc-slider {
+  @include input-disabled-overlay;
+
+  .modus-wc-range {
+    --rounded-box: 200px;
+    --range-shdw: var(--modus-wc-color-trimble-blue);
+
+    &:disabled {
+      --range-shdw: var(--modus-wc-color-base-200);
+
+      background-color: transparent;
+    }
+  }
 }
 
 [data-theme='modus-modern-light'] modus-wc-slider .modus-wc-input-label,
@@ -18,5 +28,5 @@ modus-wc-slider .modus-wc-range {
 [data-theme='modus-classic-light'] modus-wc-slider .modus-wc-range,
 [data-theme='modus-classic-dark'] modus-wc-slider .modus-wc-range {
   --rounded-box: 200px;
-  --range-shadow: var(--modus-wc-color-trimble-blue);
+  --range-shdw: var(--modus-wc-color-trimble-blue);
 }
