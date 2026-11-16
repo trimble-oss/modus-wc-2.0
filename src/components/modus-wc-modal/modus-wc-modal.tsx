@@ -10,6 +10,18 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  * A customizable modal component used to display content in a dialog.
  *
  * This component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.
+ *
+ * Open the inner dialog with `showModal()` on the element identified by `modal-id`.
+ * The browser traps focus inside the dialog and returns focus to the control that called
+ * `showModal()` when the dialog closes, including when the user presses Escape
+ * (WCAG 2.4.3). This component leaves that behavior to the browser. When the dialog
+ * is closed by removing it from the page, or by calling `close()` after the opening
+ * control is gone, move focus back to a logical control yourself.
+ *
+ * When `aria-label` and `aria-labelledby` are omitted, the dialog name is the header
+ * slot (WCAG 4.1.2). An `aria-label` or `aria-labelledby` set on the modal is kept.
+ * Put the title in that slot. When the slot also contains an icon or extra buttons,
+ * set `aria-label` or `aria-labelledby` so the dialog name stays the title.
  */
 @Component({
   tag: 'modus-wc-modal',
@@ -76,19 +88,41 @@ export class ModusWcModal {
     return classList.join(' ');
   }
 
+  private authorNamedDialog(): boolean {
+    return Boolean(
+      this.inheritedAttributes['aria-label'] ||
+      this.inheritedAttributes['aria-labelledby']
+    );
+  }
+
+  private headerHasTitle(): boolean {
+    return Array.from(this.el.querySelectorAll('[slot="header"]')).some(
+      (node) => Boolean(node.textContent?.trim())
+    );
+  }
+
   render() {
+    const headerTitleId = `${this.modalId || 'modus-wc-modal'}-header-title`;
+    const dialogName =
+      !this.authorNamedDialog() && this.headerHasTitle()
+        ? { 'aria-labelledby': headerTitleId }
+        : {};
+
     return (
       <Host>
         <dialog
           class={this.getClasses()}
           id={this.modalId}
+          {...dialogName}
           {...this.inheritedAttributes}
         >
           <div
             class={`modus-wc-modal-box ${this.fullscreen ? 'modus-wc-modal-fullscreen' : ''}`}
           >
             <div class="modus-wc-modal-header modus-wc-text-lg modus-wc-font-bold">
-              <slot name="header" />
+              <div class="modus-wc-modal-header-title" id={headerTitleId}>
+                <slot name="header" />
+              </div>
               <div class="modus-wc-modal-top-icon-buttons">
                 {this.showFullscreenToggle && (
                   <modus-wc-button

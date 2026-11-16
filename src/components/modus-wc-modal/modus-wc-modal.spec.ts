@@ -146,4 +146,100 @@ describe('modus-wc-modal', () => {
     expect(scss).toContain('modus-wc-modal dialog.modus-wc-modal[open]');
     expect(scss).toContain('display: grid');
   });
+
+  const labelledText = (root: HTMLElement): string => {
+    const dialog = root.querySelector('dialog');
+    const labelledBy = dialog?.getAttribute('aria-labelledby');
+    if (!labelledBy) return '';
+    return labelledBy
+      .split(/\s+/)
+      .map((id) => root.querySelector(`[id="${id}"]`)?.textContent ?? '')
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+
+  it('should name the dialog from the header slot when aria-label is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: `<modus-wc-modal modal-id="named">
+        <span slot="header">Confirm action</span>
+      </modus-wc-modal>`,
+    });
+    await page.waitForChanges();
+
+    const dialog = page.root!.querySelector('dialog');
+    expect(dialog?.getAttribute('aria-label')).toBeNull();
+    expect(labelledText(page.root!)).toBe('Confirm action');
+
+    const label = page.root!.querySelector(
+      `[id="${dialog!.getAttribute('aria-labelledby')}"]`
+    );
+    expect(label?.querySelector('button')).toBeNull();
+  });
+
+  it('should leave the dialog unnamed when the header slot is empty', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: '<modus-wc-modal modal-id="empty"></modus-wc-modal>',
+    });
+
+    const dialog = page.root!.querySelector('dialog');
+    expect(dialog?.hasAttribute('aria-labelledby')).toBe(false);
+    expect(dialog?.hasAttribute('aria-label')).toBe(false);
+  });
+
+  it('should keep an author aria-label and skip the header name', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: `<modus-wc-modal modal-id="labelled" aria-label="Custom name">
+        <span slot="header">Header title</span>
+      </modus-wc-modal>`,
+    });
+    await page.waitForChanges();
+
+    const dialog = page.root!.querySelector('dialog');
+    expect(dialog?.getAttribute('aria-label')).toBe('Custom name');
+    expect(dialog?.hasAttribute('aria-labelledby')).toBe(false);
+  });
+
+  it('should leave the dialog unnamed when a header node has null text content', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: '<modus-wc-modal modal-id="null-text"></modus-wc-modal>',
+    });
+
+    const header = { textContent: null } as unknown as Element;
+    const host = page.rootInstance.el;
+    jest
+      .spyOn(host, 'querySelectorAll')
+      .mockImplementation((...args: unknown[]) => {
+        const selector = args[0];
+        if (selector === '[slot="header"]') {
+          return [header];
+        }
+        return Element.prototype.querySelectorAll.call(host, String(selector));
+      });
+
+    page.root!.customClass = 'rerender';
+    await page.waitForChanges();
+
+    const dialog = page.root!.querySelector('dialog');
+    expect(dialog?.hasAttribute('aria-labelledby')).toBe(false);
+    expect(dialog?.hasAttribute('aria-label')).toBe(false);
+  });
+
+  it('should keep an author aria-labelledby', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: `<modus-wc-modal modal-id="external" aria-labelledby="external-label">
+        <span slot="header">Header title</span>
+      </modus-wc-modal>`,
+    });
+    await page.waitForChanges();
+
+    const dialog = page.root!.querySelector('dialog');
+    expect(dialog?.getAttribute('aria-labelledby')).toBe('external-label');
+    expect(dialog?.getAttribute('aria-label')).toBeNull();
+  });
 });

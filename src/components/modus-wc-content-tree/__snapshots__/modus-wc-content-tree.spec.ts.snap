@@ -944,6 +944,7 @@ exports[`modus-wc-content-tree should render with custom props and sample nodes 
     <dialog aria-label="Confirm deletion" class="modus-wc-content-tree-modal modus-wc-modal" id="content-tree-delete-2">
       <div class="modus-wc-modal-box">
         <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+          <div class="modus-wc-modal-header-title" id="content-tree-delete-2-header-title"></div>
           <div class="modus-wc-modal-top-icon-buttons"></div>
         </div>
         <div class="modus-wc-modal-content modus-wc-py-4">
@@ -1001,6 +1002,7 @@ exports[`modus-wc-content-tree should render with default props 1`] = `
     <dialog aria-label="Confirm deletion" class="modus-wc-content-tree-modal modus-wc-modal" id="content-tree-delete-0">
       <div class="modus-wc-modal-box">
         <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+          <div class="modus-wc-modal-header-title" id="content-tree-delete-0-header-title"></div>
           <div class="modus-wc-modal-top-icon-buttons"></div>
         </div>
         <div class="modus-wc-modal-content modus-wc-py-4">

@@ -11,6 +11,18 @@ A customizable modal component used to display content in a dialog.
 
 This component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.
 
+Open the inner dialog with `showModal()` on the element identified by `modal-id`.
+The browser traps focus inside the dialog and returns focus to the control that called
+`showModal()` when the dialog closes, including when the user presses Escape
+(WCAG 2.4.3). This component leaves that behavior to the browser. When the dialog
+is closed by removing it from the page, or by calling `close()` after the opening
+control is gone, move focus back to a logical control yourself.
+
+When `aria-label` and `aria-labelledby` are omitted, the dialog name is the header
+slot (WCAG 4.1.2). An `aria-label` or `aria-labelledby` set on the modal is kept.
+Put the title in that slot. When the slot also contains an icon or extra buttons,
+set `aria-label` or `aria-labelledby` so the dialog name stays the title.
+
 ## Properties
 
 | Property               | Attribute                | Description                                                                                                                | Type                                         | Default     |
