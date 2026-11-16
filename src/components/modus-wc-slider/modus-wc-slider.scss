@@ -8,7 +8,7 @@ modus-wc-slider {
 
   .modus-wc-range {
     --rounded-box: 200px;
-    --range-shdw: var(--modus-wc-color-trimble-blue);
+    --range-shdw: var(--modus-wc-color-primary);
 
     &:disabled {
       --range-shdw: var(--modus-wc-color-base-200);
