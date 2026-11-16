@@ -776,4 +776,34 @@ describe('modus-wc-text-input', () => {
     expect(input.getAttribute('aria-invalid')).toBe('spelling');
     expect(input.hasAttribute('aria-describedby')).toBe(false);
   });
+
+  it('should restore inherited aria when error feedback is cleared or replaced with a blank warning', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput, ModusWcInputFeedback],
+      html: '<modus-wc-text-input input-id="email" aria-describedby="hint" aria-invalid="spelling" aria-label="Email"></modus-wc-text-input>',
+    });
+    const component = page.rootInstance as ModusWcTextInput;
+    const input = page.root!.querySelector('input')!;
+
+    component.feedback = { level: 'error', message: 'Value is required.' };
+    await page.waitForChanges();
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(input.getAttribute('aria-describedby')).toBe('hint email-feedback');
+    expect(page.root!.querySelector('modus-wc-input-feedback span')?.id).toBe(
+      'email-feedback'
+    );
+
+    component.feedback = undefined;
+    await page.waitForChanges();
+    expect(page.root!.querySelector('modus-wc-input-feedback')).toBeNull();
+    expect(input.getAttribute('aria-invalid')).toBe('spelling');
+    expect(input.getAttribute('aria-describedby')).toBe('hint');
+
+    component.feedback = { level: 'warning', message: '   ' };
+    await page.waitForChanges();
+    const message = page.root!.querySelector('modus-wc-input-feedback span')!;
+    expect(message.hasAttribute('id')).toBe(false);
+    expect(input.getAttribute('aria-invalid')).toBe('spelling');
+    expect(input.getAttribute('aria-describedby')).toBe('hint');
+  });
 });

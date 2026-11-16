@@ -2,6 +2,7 @@ import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
+import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
@@ -7379,5 +7380,60 @@ describe('feedback prop', () => {
     expect(label?.getAttribute('customClass')).toContain(
       'modus-wc-input-label--error'
     );
+  });
+
+  it('should associate error feedback with the single-select input', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcInputFeedback],
+      html: '<modus-wc-autocomplete input-id="city" aria-describedby="hint" aria-label="City"></modus-wc-autocomplete>',
+    });
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.feedback = { level: 'error', message: 'Choose a city.' };
+    await page.waitForChanges();
+
+    const input = page.root!.querySelector('input')!;
+    const message = page.root!.querySelector('modus-wc-input-feedback span')!;
+    expect(message.id).toBe('city-feedback');
+    expect(message.textContent).toContain('Choose a city.');
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(input.getAttribute('aria-describedby')).toBe('hint city-feedback');
+  });
+
+  it('should associate error feedback with the multi-select input', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcInputFeedback],
+      html: '<modus-wc-autocomplete input-id="cities" aria-describedby="hint" aria-label="Cities" multi-select="true"></modus-wc-autocomplete>',
+    });
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.feedback = { level: 'error', message: 'Choose a city.' };
+    await page.waitForChanges();
+
+    const input = page.root!.querySelector('input')!;
+    const message = page.root!.querySelector('modus-wc-input-feedback span')!;
+    expect(message.id).toBe('cities-feedback');
+    expect(message.textContent).toContain('Choose a city.');
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(input.getAttribute('aria-describedby')).toBe('hint cities-feedback');
+  });
+
+  it('should drop the feedback reference when feedback is hidden and keep inherited descriptions', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcInputFeedback],
+      html: '<modus-wc-autocomplete input-id="city" aria-describedby="hint" aria-invalid="grammar" aria-label="City"></modus-wc-autocomplete>',
+    });
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.feedback = { level: 'error', message: 'Choose a city.' };
+    await page.waitForChanges();
+
+    const input = page.root!.querySelector('input')!;
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(input.getAttribute('aria-describedby')).toBe('hint city-feedback');
+
+    component['showFeedback'] = false;
+    await page.waitForChanges();
+
+    expect(page.root!.querySelector('modus-wc-input-feedback')).toBeNull();
+    expect(input.getAttribute('aria-describedby')).toBe('hint');
+    expect(input.getAttribute('aria-invalid')).toBe('grammar');
   });
 });
