@@ -298,11 +298,11 @@
   }
 
   &:not(
-      .modus-wc-input--error,
-      .modus-wc-input--info,
-      .modus-wc-input--success,
-      .modus-wc-input--warning
-    ) {
+    .modus-wc-input--error,
+    .modus-wc-input--info,
+    .modus-wc-input--success,
+    .modus-wc-input--warning
+  ) {
     &:focus,
     &:focus-within {
       border-bottom-color: var(--modus-wc-color-primary);
