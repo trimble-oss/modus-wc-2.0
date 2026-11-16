@@ -178,14 +178,16 @@ describe('modus-wc-modal', () => {
     expect(label?.querySelector('button')).toBeNull();
   });
 
-  it('should leave the dialog unnamed when the header slot is empty', async () => {
+  it('should keep the header reference when the header slot is empty', async () => {
     const page = await newSpecPage({
       components: [ModusWcModal, ModusWcButton],
       html: '<modus-wc-modal modal-id="empty"></modus-wc-modal>',
     });
 
     const dialog = page.root!.querySelector('dialog');
-    expect(dialog?.hasAttribute('aria-labelledby')).toBe(false);
+    const title = page.root!.querySelector('.modus-wc-modal-header-title');
+    expect(dialog?.getAttribute('aria-labelledby')).toBe(title?.id);
+    expect(labelledText(page.root!)).toBe('');
     expect(dialog?.hasAttribute('aria-label')).toBe(false);
   });
 
@@ -203,32 +205,6 @@ describe('modus-wc-modal', () => {
     expect(dialog?.hasAttribute('aria-labelledby')).toBe(false);
   });
 
-  it('should leave the dialog unnamed when a header node has null text content', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcModal, ModusWcButton],
-      html: '<modus-wc-modal modal-id="null-text"></modus-wc-modal>',
-    });
-
-    const header = { textContent: null } as unknown as Element;
-    const host = page.rootInstance.el;
-    jest
-      .spyOn(host, 'querySelectorAll')
-      .mockImplementation((...args: unknown[]) => {
-        const selector = args[0];
-        if (selector === '[slot="header"]') {
-          return [header];
-        }
-        return Element.prototype.querySelectorAll.call(host, String(selector));
-      });
-
-    page.root!.customClass = 'rerender';
-    await page.waitForChanges();
-
-    const dialog = page.root!.querySelector('dialog');
-    expect(dialog?.hasAttribute('aria-labelledby')).toBe(false);
-    expect(dialog?.hasAttribute('aria-label')).toBe(false);
-  });
-
   it('should keep an author aria-labelledby', async () => {
     const page = await newSpecPage({
       components: [ModusWcModal, ModusWcButton],
@@ -241,5 +217,89 @@ describe('modus-wc-modal', () => {
     const dialog = page.root!.querySelector('dialog');
     expect(dialog?.getAttribute('aria-labelledby')).toBe('external-label');
     expect(dialog?.getAttribute('aria-label')).toBeNull();
+  });
+
+  it('should keep title ids distinct from every dialog id in the same document', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: `<div id="modus-wc-modal-title-1"></div>
+        <modus-wc-modal modal-id="confirm">
+          <span slot="header">Save</span>
+        </modus-wc-modal>
+        <modus-wc-modal modal-id="confirm-header-title">
+          <span slot="header">Other</span>
+        </modus-wc-modal>`,
+    });
+    await page.waitForChanges();
+
+    const dialogs = Array.from(page.body.querySelectorAll('dialog'));
+    const titles = Array.from(
+      page.body.querySelectorAll('.modus-wc-modal-header-title')
+    );
+    const dialogIds = dialogs.map((dialog) => dialog.id);
+    const titleIds = titles.map((title) => title.id);
+
+    expect(dialogIds).toEqual(['confirm', 'confirm-header-title']);
+    expect(new Set([...dialogIds, ...titleIds]).size).toBe(
+      dialogIds.length + titleIds.length
+    );
+    expect(document.getElementById('confirm-header-title')).toBe(dialogs[1]);
+    expect(titleIds).not.toContain('confirm-header-title');
+    expect(
+      labelledText(page.body.querySelector('modus-wc-modal') as HTMLElement)
+    ).toBe('Save');
+  });
+
+  it('should include header text that appears after the first render', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: `<modus-wc-modal modal-id="late">
+        <span slot="header"></span>
+      </modus-wc-modal>`,
+    });
+    await page.waitForChanges();
+
+    const dialog = page.root!.querySelector('dialog');
+    const title = page.root!.querySelector('.modus-wc-modal-header-title');
+    expect(dialog?.getAttribute('aria-labelledby')).toBe(title?.id);
+    expect(labelledText(page.root!)).toBe('');
+
+    page.root!.querySelector('[slot="header"]')!.textContent = 'Loaded title';
+
+    expect(labelledText(page.root!)).toBe('Loaded title');
+    expect(dialog?.getAttribute('aria-labelledby')).toBe(title?.id);
+  });
+
+  it('should follow the header text when the title is cleared', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: `<modus-wc-modal modal-id="cleared">
+        <span slot="header">Temporary</span>
+      </modus-wc-modal>`,
+    });
+    await page.waitForChanges();
+    expect(labelledText(page.root!)).toBe('Temporary');
+
+    page.root!.querySelector('[slot="header"]')!.textContent = '   ';
+
+    const dialog = page.root!.querySelector('dialog');
+    expect(dialog?.hasAttribute('aria-labelledby')).toBe(true);
+    expect(labelledText(page.root!)).toBe('');
+  });
+
+  it('should keep an author name when header text appears later', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcModal, ModusWcButton],
+      html: `<modus-wc-modal modal-id="author-late" aria-label="Custom name">
+        <span slot="header"></span>
+      </modus-wc-modal>`,
+    });
+    await page.waitForChanges();
+
+    page.root!.querySelector('[slot="header"]')!.textContent = 'Loaded title';
+
+    const dialog = page.root!.querySelector('dialog');
+    expect(dialog?.getAttribute('aria-label')).toBe('Custom name');
+    expect(dialog?.hasAttribute('aria-labelledby')).toBe(false);
   });
 });

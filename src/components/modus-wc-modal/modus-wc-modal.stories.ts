@@ -42,9 +42,9 @@ const meta: Meta<ModalArgs> = {
     docs: {
       description: {
         component: `
-Open the dialog with \`showModal()\` on the element identified by \`modal-id\`. The browser traps focus inside the dialog and returns focus to the control that called \`showModal()\` when the dialog closes, including Escape (WCAG 2.4.3). This component leaves that behavior to the browser. When the dialog is closed by removing it from the page, or by calling \`close()\` after the opening control is gone, move focus back to a logical control yourself.
+Open the dialog with \`showModal()\` on the element identified by \`modal-id\`. The browser traps focus inside the dialog and restores the element focused before \`showModal()\` when the dialog closes, including Escape (WCAG 2.4.3). This component leaves that behavior to the browser. If your app needs a specific return target, or the previously focused element is hidden or removed, use a \`close\` listener on the inner dialog to focus a logical control, for example: \`dialog.addEventListener('close', () => returnTarget.focus())\`. If the dialog itself is removed, restore focus as part of that removal.
 
-When \`aria-label\` and \`aria-labelledby\` are omitted, the dialog name is the header slot (WCAG 4.1.2). An \`aria-label\` or \`aria-labelledby\` set on \`modus-wc-modal\` is kept. Put the title in that slot. When the slot also contains an icon or extra buttons, set \`aria-label\` or \`aria-labelledby\` so the dialog name stays the title.
+When \`aria-label\` and \`aria-labelledby\` are omitted, the dialog name is the header slot (WCAG 4.1.2). That reference stays on the header, so a title that appears later is included without rendering the modal again. An \`aria-label\` or \`aria-labelledby\` set on \`modus-wc-modal\` is kept. Put the title in that slot. When the slot also contains an icon or extra buttons, set \`aria-label\` or \`aria-labelledby\` so the dialog name stays the title.
         `,
       },
     },
@@ -212,7 +212,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'This example does not set `aria-label`. The dialog name is the header slot text, "Modal Title". `showModal()` traps focus and returns it to "Open modal" on close.',
+          'This example does not set `aria-label`. The dialog name is the header slot text, "Modal Title". `showModal()` traps focus and restores the previously focused element on close.',
       },
     },
   },

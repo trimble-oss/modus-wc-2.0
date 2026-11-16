@@ -12,16 +12,20 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  * This component supports 'header', 'content', and 'footer' `<slot>` elements for inserting custom HTML.
  *
  * Open the inner dialog with `showModal()` on the element identified by `modal-id`.
- * The browser traps focus inside the dialog and returns focus to the control that called
- * `showModal()` when the dialog closes, including when the user presses Escape
- * (WCAG 2.4.3). This component leaves that behavior to the browser. When the dialog
- * is closed by removing it from the page, or by calling `close()` after the opening
- * control is gone, move focus back to a logical control yourself.
+ * The browser traps focus inside the dialog and restores the element focused before
+ * `showModal()` when the dialog closes, including Escape (WCAG 2.4.3).
+ * This component leaves that behavior to the browser. If your app needs a specific
+ * return target, or the previously focused element is hidden or removed, use a
+ * `close` listener on the inner dialog to focus a logical control, for example:
+ * `dialog.addEventListener('close', () => returnTarget.focus())`.
+ * If the dialog itself is removed, restore focus as part of that removal.
  *
  * When `aria-label` and `aria-labelledby` are omitted, the dialog name is the header
- * slot (WCAG 4.1.2). An `aria-label` or `aria-labelledby` set on the modal is kept.
- * Put the title in that slot. When the slot also contains an icon or extra buttons,
- * set `aria-label` or `aria-labelledby` so the dialog name stays the title.
+ * slot (WCAG 4.1.2). That reference stays on the header, so a title that appears
+ * later is included without rendering the modal again. An `aria-label` or
+ * `aria-labelledby` set on the modal is kept. Put the title in that slot. When the
+ * slot also contains an icon or extra buttons, set `aria-label` or `aria-labelledby`
+ * so the dialog name stays the title.
  */
 @Component({
   tag: 'modus-wc-modal',
@@ -29,6 +33,7 @@ import { Attributes, inheritAriaAttributes } from '../utils';
   shadow: false,
 })
 export class ModusWcModal {
+  private headerTitleId = '';
   private inheritedAttributes: Attributes = {};
 
   /** Reference to the host element */
@@ -67,6 +72,8 @@ export class ModusWcModal {
     }
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.headerTitleId = this.allocateHeaderTitleId();
+    this.el.setAttribute('data-modus-title-id', this.headerTitleId);
   }
 
   private closeDialog() {
@@ -88,6 +95,26 @@ export class ModusWcModal {
     return classList.join(' ');
   }
 
+  /**
+   * Title ids are not derived from `modalId`. A second dialog whose id is
+   * `{firstModalId}-header-title` would otherwise share an id with the first
+   * title wrapper.
+   */
+  private allocateHeaderTitleId(): string {
+    const root = this.el.getRootNode() as ParentNode;
+    let candidate = '';
+    let suffix = 0;
+    do {
+      suffix += 1;
+      candidate = `modus-wc-modal-title-${suffix}`;
+    } while (
+      root.querySelector(
+        `[id="${candidate}"], [data-modus-title-id="${candidate}"]`
+      )
+    );
+    return candidate;
+  }
+
   private authorNamedDialog(): boolean {
     return Boolean(
       this.inheritedAttributes['aria-label'] ||
@@ -95,18 +122,13 @@ export class ModusWcModal {
     );
   }
 
-  private headerHasTitle(): boolean {
-    return Array.from(this.el.querySelectorAll('[slot="header"]')).some(
-      (node) => Boolean(node.textContent?.trim())
-    );
-  }
-
   render() {
-    const headerTitleId = `${this.modalId || 'modus-wc-modal'}-header-title`;
-    const dialogName =
-      !this.authorNamedDialog() && this.headerHasTitle()
-        ? { 'aria-labelledby': headerTitleId }
-        : {};
+    // Always reference the header when the author did not name the dialog.
+    // The accessible name is read from that element, so text added after this
+    // render (a slotted label, or a title loaded later) stays in sync.
+    const dialogName = this.authorNamedDialog()
+      ? {}
+      : { 'aria-labelledby': this.headerTitleId };
 
     return (
       <Host>
@@ -120,7 +142,7 @@ export class ModusWcModal {
             class={`modus-wc-modal-box ${this.fullscreen ? 'modus-wc-modal-fullscreen' : ''}`}
           >
             <div class="modus-wc-modal-header modus-wc-text-lg modus-wc-font-bold">
-              <div class="modus-wc-modal-header-title" id={headerTitleId}>
+              <div class="modus-wc-modal-header-title" id={this.headerTitleId}>
                 <slot name="header" />
               </div>
               <div class="modus-wc-modal-top-icon-buttons">
