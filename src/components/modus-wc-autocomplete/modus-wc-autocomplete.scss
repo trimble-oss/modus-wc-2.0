@@ -4,7 +4,10 @@
 */
 
 modus-wc-autocomplete {
-  @include input-disabled-overlay;
+  &:has(modus-wc-text-input > label > input[disabled]),
+  &:has(modus-wc-autocomplete-multi-select--disabled) {
+    @include input-disabled-overlay;
+  }
 }
 
 .modus-wc-autocomplete {

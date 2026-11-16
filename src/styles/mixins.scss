@@ -131,9 +131,9 @@
 
 @mixin input-disabled-state {
   &:disabled,
-  &:has(> input[disabled]),
-  &:has(> select[disabled]),
-  &:has(> textarea[disabled]) {
+  &:has(> :is(input, select, textarea)[disabled]),
+  &.modus-wc-input-disabled,
+  &:has(.modus-wc-autocomplete-multi-select--disabled) {
     background-color: var(--modus-wc-color-base-200);
     border: none;
     color: var(--modus-wc-color-base-inverted);
