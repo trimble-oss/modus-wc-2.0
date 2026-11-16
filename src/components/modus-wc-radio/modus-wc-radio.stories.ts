@@ -50,17 +50,33 @@ type Story = StoryObj<RadioArgs>;
 export const Default: Story = {
   render: (args) => {
     return html`
-      <modus-wc-radio
-        custom-class=${ifDefined(args['custom-class'])}
-        ?disabled=${args.disabled}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        label=${ifDefined(args.label)}
-        name=${ifDefined(args.name)}
-        ?required=${args.required}
-        size=${ifDefined(args.size)}
-        .value=${args.value}
-      ></modus-wc-radio>
+      <style>
+        .radio-group {
+          border: 0;
+          margin: 0;
+          min-inline-size: 0;
+          padding: 0;
+        }
+
+        .radio-group legend {
+          margin-bottom: 0.5rem;
+          padding: 0;
+        }
+      </style>
+      <fieldset class="radio-group">
+        <legend>Radio group</legend>
+        <modus-wc-radio
+          custom-class=${ifDefined(args['custom-class'])}
+          ?disabled=${args.disabled}
+          input-id=${ifDefined(args['input-id'])}
+          input-tab-index=${ifDefined(args['input-tab-index'])}
+          label=${ifDefined(args.label)}
+          name=${ifDefined(args.name)}
+          ?required=${args.required}
+          size=${ifDefined(args.size)}
+          .value=${args.value}
+        ></modus-wc-radio>
+      </fieldset>
     `;
   },
 };

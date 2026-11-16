@@ -11,10 +11,12 @@ import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import {
+  assignFeedbackAria,
   Attributes,
   createEffectiveIdResolver,
   inheritAriaAttributes,
   inheritAttributes,
+  resolveControlFeedbackAria,
 } from '../utils';
 
 /**
@@ -184,6 +186,16 @@ export class ModusWcNumberInput {
 
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
+    const feedbackAria = resolveControlFeedbackAria(
+      this.feedback,
+      effectiveId,
+      this.inheritedAttributes
+    );
+    const controlAttributes = assignFeedbackAria(
+      this.inheritedAttributes,
+      feedbackAria.describedBy,
+      feedbackAria.ariaInvalid
+    );
 
     return (
       <Host class={this.customClass}>
@@ -218,13 +230,14 @@ export class ModusWcNumberInput {
             tabIndex={this.inputTabIndex}
             type={this.type}
             value={this.value}
-            {...this.inheritedAttributes}
+            {...controlAttributes}
           />
         </div>
         {this.feedback && (
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackAria.messageId}
             size={this.size}
           />
         )}

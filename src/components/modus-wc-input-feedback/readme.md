@@ -13,13 +13,14 @@ A customizable feedback component used to provide additional context related to 
 
 ## Properties
 
-| Property             | Attribute      | Description                                                   | Type                                          | Default     |
-| -------------------- | -------------- | ------------------------------------------------------------- | --------------------------------------------- | ----------- |
-| `customClass`        | `custom-class` | Custom CSS class to apply to the outer div element.           | `string \| undefined`                         | `''`        |
-| `icon`               | `icon`         | The Modus icon to use instead of the pre-defined icons.       | `string \| undefined`                         | `''`        |
-| `level` _(required)_ | `level`        | The level informs which icon and color that will be rendered. | `"error" \| "info" \| "success" \| "warning"` | `undefined` |
-| `message`            | `message`      | The message.                                                  | `string \| undefined`                         | `''`        |
-| `size`               | `size`         | The size of the feedback component.                           | `"lg" \| "md" \| "sm" \| undefined`           | `'md'`      |
+| Property             | Attribute      | Description                                                                     | Type                                          | Default     |
+| -------------------- | -------------- | ------------------------------------------------------------------------------- | --------------------------------------------- | ----------- |
+| `customClass`        | `custom-class` | Custom CSS class to apply to the outer div element.                             | `string \| undefined`                         | `''`        |
+| `icon`               | `icon`         | The Modus icon to use instead of the pre-defined icons.                         | `string \| undefined`                         | `''`        |
+| `level` _(required)_ | `level`        | The level informs which icon and color that will be rendered.                   | `"error" \| "info" \| "success" \| "warning"` | `undefined` |
+| `message`            | `message`      | The message.                                                                    | `string \| undefined`                         | `''`        |
+| `messageId`          | `message-id`   | Id of the message element, referenced by aria-describedby on the related field. | `string \| undefined`                         | `undefined` |
+| `size`               | `size`         | The size of the feedback component.                                             | `"lg" \| "md" \| "sm" \| undefined`           | `'md'`      |
 
 
 ## Dependencies

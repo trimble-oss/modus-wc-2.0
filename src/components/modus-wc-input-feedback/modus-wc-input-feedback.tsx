@@ -38,6 +38,9 @@ export class ModusWcInputFeedback {
   /** The message. */
   @Prop() message?: string = '';
 
+  /** Id of the message element, referenced by aria-describedby on the related field. */
+  @Prop() messageId?: string;
+
   /** The size of the feedback component. */
   @Prop() size?: ModusSize = 'md';
 
@@ -86,7 +89,7 @@ export class ModusWcInputFeedback {
           ) : (
             this.getPresetIcon()
           )}
-          <span>{this.message}</span>
+          <span id={this.messageId}>{this.message}</span>
         </div>
       </Host>
     );
