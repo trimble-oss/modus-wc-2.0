@@ -543,5 +543,6 @@ modus-wc-text-input {
 
   .modus-wc-text-input {
     @include connect-input-styles;
+    @include connect-text-input-feedback;
   }
 }

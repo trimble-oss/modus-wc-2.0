@@ -16,6 +16,47 @@
   }
 }
 
+// Connect text inputs: `feedback-levels` tints the full border; keep default sides
+// and semantic color on the bottom underline only (!important beats `feedback-levels`).
+@mixin connect-text-input-feedback {
+  $default-border: var(--fallback-bc, oklch(var(--bc) / 0.2));
+  $levels: (
+    error: var(--modus-wc-color-error),
+    info: var(--modus-wc-color-info),
+    success: var(--modus-wc-color-success),
+    warning: var(--modus-wc-color-warning),
+  );
+
+  @each $level, $color in $levels {
+    &.modus-wc-input.modus-wc-input--#{$level} {
+      border-color: $default-border !important;
+      border-bottom-color: $color !important;
+
+      &:focus,
+      &:focus-within {
+        border-color: $default-border !important;
+        border-bottom-color: $color !important;
+        box-shadow: none;
+        outline: none;
+      }
+    }
+  }
+}
+
+@mixin connect-form-label-host-spacing {
+  modus-wc-autocomplete,
+  modus-wc-date,
+  modus-wc-number-input,
+  modus-wc-select,
+  modus-wc-text-input,
+  modus-wc-textarea,
+  modus-wc-time-input {
+    .modus-wc-input-label {
+      padding-bottom: 0;
+    }
+  }
+}
+
 @mixin sizing-tokens {
   &-xs {
     height: var(--modus-wc-size-xs);
@@ -256,21 +297,16 @@
     padding: 0 var(--modus-wc-spacing-sm);
   }
 
-  &:hover {
-    border-bottom-color: var(--modus-wc-color-primary);
-  }
-
-  &:active {
-    border-bottom-color: var(--modus-wc-color-primary);
-  }
-
-  &:focus {
-    border-bottom-color: var(--modus-wc-color-primary);
-    outline: none;
-  }
-
-  &:focus-within {
-    border-bottom-color: var(--modus-wc-color-primary);
-    outline: none;
+  &:not(
+      .modus-wc-input--error,
+      .modus-wc-input--info,
+      .modus-wc-input--success,
+      .modus-wc-input--warning
+    ) {
+    &:focus,
+    &:focus-within {
+      border-bottom-color: var(--modus-wc-color-primary);
+      outline: none;
+    }
   }
 }
