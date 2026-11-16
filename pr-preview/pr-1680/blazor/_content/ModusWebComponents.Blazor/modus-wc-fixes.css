@@ -1,0 +1,29 @@
+/* modus-wc-fixes.css — host-element overrides for Stencil shadow-DOM gaps.
+ * Include this AFTER modus-wc-styles.css in your index.html:
+ *   <link rel="stylesheet" href="_content/ModusWebComponents.Blazor/modus-wc-fixes.css" />
+ */
+
+/* Disabled form controls: block pointer events on the custom element host so
+ * :active/:focus styles inside the shadow DOM cannot fire on tap. Without this,
+ * Android WebView shows a blue colour-change or halo when a disabled checkbox or
+ * radio is tapped. The attribute selector matches the string the Blazor wrapper
+ * renders: disabled="true" (not a valueless boolean attribute). */
+modus-wc-checkbox[disabled="true"],
+modus-wc-radio[disabled="true"] {
+  pointer-events: none;
+}
+
+/* Android sticky-hover: on touch devices :hover stays on the last-tapped
+ * element until the user taps elsewhere. The Stencil hover rule has higher
+ * CSS specificity (five :not() pseudo-class arguments, 0,5,1) than the
+ * active/selected rule (0,1,1), so the grey hover background overrides the
+ * primary-pale selection colour on the most-recently-tapped item until focusout.
+ * This restores the active/selected colour on hover for those states. */
+modus-wc-menu-item .modus-wc-menu-item.modus-wc-menu-item-active:hover,
+modus-wc-menu-item .modus-wc-menu-item.modus-wc-menu-item-selected:hover {
+  background-color: color-mix(
+    in sRGB,
+    var(--modus-wc-color-primary-pale) 50%,
+    transparent
+  ) !important;
+}
