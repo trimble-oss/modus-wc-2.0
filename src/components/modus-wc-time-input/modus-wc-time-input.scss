@@ -66,7 +66,7 @@ modus-wc-time-input {
     color-scheme: dark; // needed to ensure the clock icon button is visible in dark mode
 
     &:focus {
-      border-color: var(--modus-wc-color-highlight-blue);
+      border-color: transparent;
     }
   }
 }
@@ -82,9 +82,21 @@ modus-wc-time-input .modus-wc-time-input:focus {
   outline-offset: 2px;
 }
 
-// Focus state for the clock icon (native picker indicator) matches the input halo.
-modus-wc-time-input
-  .modus-wc-time-input:focus-visible::-webkit-calendar-picker-indicator {
-  filter: invert(20%) sepia(90%) saturate(2000%) hue-rotate(190deg)
-    brightness(90%);
+// Classic themes: the primary halo is the only focus ring (no second border).
+[data-theme='modus-classic-light']
+  modus-wc-time-input
+  .modus-wc-time-input.modus-wc-input:focus {
+  border-color: transparent;
+}
+
+[data-theme='modus-classic-light']
+  modus-wc-time-input
+  .modus-wc-time-input.modus-wc-input:focus-within {
+  border-color: transparent;
+}
+
+[data-theme='modus-classic-dark']
+  modus-wc-time-input
+  .modus-wc-time-input.modus-wc-input:focus-within {
+  border-color: transparent;
 }
