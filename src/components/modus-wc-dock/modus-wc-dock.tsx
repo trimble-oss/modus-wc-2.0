@@ -91,7 +91,7 @@ export class ModusWcDock {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-dock'];
+    const classList: string[] = ['modus-wc-dock', 'moduswc:dock'];
 
     const propClasses = convertPropsToClasses({
       position: this.position,

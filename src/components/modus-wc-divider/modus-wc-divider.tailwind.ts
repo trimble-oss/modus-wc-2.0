@@ -21,25 +21,25 @@ export const convertPropsToClasses = ({
   if (color) {
     switch (color) {
       case 'primary':
-        classes = `${classes} modus-wc-divider-primary`;
+        classes = `${classes} moduswc:divider-primary modus-wc-divider-primary`;
         break;
       case 'secondary':
-        classes = `${classes} modus-wc-divider-secondary`;
+        classes = `${classes} moduswc:divider-secondary modus-wc-divider-secondary`;
         break;
       case 'tertiary':
-        classes = `${classes} modus-wc-divider-neutral`;
+        classes = `${classes} moduswc:divider-neutral modus-wc-divider-neutral`;
         break;
       case 'high-contrast':
-        classes = `${classes} modus-wc-divider-accent`;
+        classes = `${classes} moduswc:divider-accent modus-wc-divider-accent`;
         break;
       case 'success':
-        classes = `${classes} modus-wc-divider-success`;
+        classes = `${classes} moduswc:divider-success modus-wc-divider-success`;
         break;
       case 'warning':
-        classes = `${classes} modus-wc-divider-warning`;
+        classes = `${classes} moduswc:divider-warning modus-wc-divider-warning`;
         break;
       case 'danger':
-        classes = `${classes} modus-wc-divider-error`;
+        classes = `${classes} moduswc:divider-error modus-wc-divider-error`;
         break;
     }
   }
@@ -47,10 +47,10 @@ export const convertPropsToClasses = ({
   if (orientation) {
     switch (orientation) {
       case 'horizontal':
-        classes = `${classes} modus-wc-divider-horizontal`;
+        classes = `${classes} moduswc:divider-horizontal modus-wc-divider-horizontal`;
         break;
       case 'vertical':
-        classes = `${classes} modus-wc-divider-vertical`;
+        classes = `${classes} moduswc:divider-vertical modus-wc-divider-vertical`;
         break;
     }
   }
@@ -58,16 +58,16 @@ export const convertPropsToClasses = ({
   if (position) {
     switch (position) {
       case 'end':
-        classes = `${classes} modus-wc-divider-start`;
+        classes = `${classes} moduswc:divider-start modus-wc-divider-start`;
         break;
       case 'start':
-        classes = `${classes} modus-wc-divider-end`;
+        classes = `${classes} moduswc:divider-end modus-wc-divider-end`;
         break;
     }
   }
 
   if (responsive) {
-    classes = `${classes} flex-grow place-items-center`;
+    classes = `${classes} moduswc:grow moduswc:place-items-center`;
   }
 
   return classes.trim();

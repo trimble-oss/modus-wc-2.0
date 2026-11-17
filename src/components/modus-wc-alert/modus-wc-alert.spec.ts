@@ -49,7 +49,9 @@ describe('modus-wc-alert', () => {
     });
 
     const alertDiv = page.root?.querySelector('.modus-wc-alert');
-    expect(alertDiv?.className).toBe('modus-wc-alert modus-wc-alert-neutral');
+    expect(alertDiv?.className).toBe(
+      'modus-wc-alert moduswc:alert modus-wc-alert-neutral'
+    );
 
     const icon = page.root?.querySelector('modus-wc-icon i');
     expect(icon?.classList.contains('modus-icons-outlined')).toBe(true);
@@ -65,7 +67,7 @@ describe('modus-wc-alert', () => {
     });
 
     const alertDiv = page.root?.querySelector('.modus-wc-alert');
-    expect(alertDiv?.className).toBe('modus-wc-alert');
+    expect(alertDiv?.className).toBe('modus-wc-alert moduswc:alert');
 
     const icon = page.root?.querySelector('modus-wc-icon i');
     expect(icon?.classList.contains('modus-icons-outlined')).toBe(true);
@@ -79,7 +81,9 @@ describe('modus-wc-alert', () => {
     });
 
     const alertDiv = page.root?.querySelector('.modus-wc-alert');
-    expect(alertDiv?.className).toBe('modus-wc-alert modus-wc-alert-info');
+    expect(alertDiv?.className).toBe(
+      'modus-wc-alert moduswc:alert moduswc:alert-info modus-wc-alert-info'
+    );
 
     const icon = page.root?.querySelector('modus-wc-icon i');
     expect(icon?.classList.contains('modus-icons-outlined')).toBe(true);
@@ -383,7 +387,9 @@ describe('modus-wc-alert', () => {
     });
     const innerDiv = page.root?.querySelector('.modus-wc-alert');
     // Default classes should only contain the base class and the variant class
-    expect(innerDiv?.className).toBe('modus-wc-alert modus-wc-alert-info');
+    expect(innerDiv?.className).toBe(
+      'modus-wc-alert moduswc:alert moduswc:alert-info modus-wc-alert-info'
+    );
   });
 
   it('should append custom-class to the alert when customClass is provided', async () => {
@@ -472,7 +478,7 @@ describe('modus-wc-alert', () => {
     await page.waitForChanges();
 
     const alertDiv = page.root?.querySelector('.modus-wc-alert');
-    expect(alertDiv?.className).toBe('modus-wc-alert');
+    expect(alertDiv?.className).toBe('modus-wc-alert moduswc:alert');
 
     const icon = page.root?.querySelector('modus-wc-icon i');
     expect(icon?.classList.contains('modus-icons-outlined')).toBe(true);
@@ -1150,16 +1156,16 @@ describe('modus-wc-alert', () => {
   describe('convertPropsToClasses', () => {
     it('should return the variant-specific class when a semantic variant is provided', () => {
       expect(convertPropsToClasses({ variant: 'error' })).toBe(
-        'modus-wc-alert-error'
+        'moduswc:alert-error modus-wc-alert-error'
       );
       expect(convertPropsToClasses({ variant: 'info' })).toBe(
-        'modus-wc-alert-info'
+        'moduswc:alert-info modus-wc-alert-info'
       );
       expect(convertPropsToClasses({ variant: 'success' })).toBe(
-        'modus-wc-alert-success'
+        'moduswc:alert-success modus-wc-alert-success'
       );
       expect(convertPropsToClasses({ variant: 'warning' })).toBe(
-        'modus-wc-alert-warning'
+        'moduswc:alert-warning modus-wc-alert-warning'
       );
     });
 

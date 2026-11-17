@@ -30,15 +30,22 @@ export function getMultiSelectClasses(props: {
   return [
     'modus-wc-autocomplete-multi-select',
     'modus-wc-input',
+    'moduswc:input',
     'modus-wc-w-full',
+    'moduswc:w-full',
     'modus-wc-flex',
+    'moduswc:flex',
     'modus-wc-items-center',
+    'moduswc:items-center',
     'modus-wc-gap-1',
-    props.bordered && 'modus-wc-input-bordered',
-    props.disabled && 'modus-wc-input-disabled',
+    'moduswc:gap-1',
+    props.bordered === false
+      ? 'moduswc:input-ghost'
+      : 'modus-wc-input-bordered',
+    props.disabled && 'moduswc:input-disabled modus-wc-input-disabled',
     props.readOnly && 'modus-wc-text-input--readonly',
-    props.size && `modus-wc-input-${props.size}`,
-    props.bordered && 'modus-wc-autocomplete-multi-select--bordered',
+    props.size && `moduswc:input-${props.size} modus-wc-input-${props.size}`,
+    props.bordered !== false && 'modus-wc-autocomplete-multi-select--bordered',
     props.disabled && 'modus-wc-autocomplete-multi-select--disabled',
     props.readOnly && 'modus-wc-autocomplete-multi-select--readonly',
     props.feedback &&

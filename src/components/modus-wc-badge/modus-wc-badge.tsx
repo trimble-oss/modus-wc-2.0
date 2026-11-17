@@ -51,7 +51,7 @@ export class ModusWcBadge {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-badge'];
+    const classList = ['modus-wc-badge', 'moduswc:badge'];
     const propClasses = convertPropsToClasses({
       color: this.color,
       shape: this.shape,

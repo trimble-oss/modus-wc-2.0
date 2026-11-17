@@ -63,7 +63,7 @@ export class ModusWcModal {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-modal'];
+    const classList = ['modus-wc-modal', 'moduswc:modal'];
 
     const propClasses = convertPropsToClasses({
       position: this.position,
@@ -85,9 +85,9 @@ export class ModusWcModal {
           {...this.inheritedAttributes}
         >
           <div
-            class={`modus-wc-modal-box ${this.fullscreen ? 'modus-wc-modal-fullscreen' : ''}`}
+            class={`moduswc:modal-box modus-wc-modal-box ${this.fullscreen ? 'modus-wc-modal-fullscreen' : ''}`}
           >
-            <div class="modus-wc-modal-header modus-wc-text-lg modus-wc-font-bold">
+            <div class="modus-wc-modal-header moduswc:text-lg modus-wc-text-lg moduswc:font-bold modus-wc-font-bold">
               <slot name="header" />
               <div class="modus-wc-modal-top-icon-buttons">
                 {this.showFullscreenToggle && (
@@ -120,15 +120,18 @@ export class ModusWcModal {
                 )}
               </div>
             </div>
-            <div class="modus-wc-modal-content modus-wc-py-4">
+            <div class="modus-wc-modal-content moduswc:py-4 modus-wc-py-4">
               <slot name="content" />
             </div>
-            <div class="modus-wc-modal-action">
+            <div class="moduswc:modal-action modus-wc-modal-action">
               <slot name="footer" />
             </div>
           </div>
           {this.backdrop === 'default' && (
-            <form method="dialog" class="modus-wc-modal-backdrop">
+            <form
+              method="dialog"
+              class="moduswc:modal-backdrop modus-wc-modal-backdrop"
+            >
               <button>close</button>
             </form>
           )}

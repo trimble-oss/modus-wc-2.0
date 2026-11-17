@@ -64,7 +64,7 @@ describe('modus-wc-typography - convertPropsToClasses', () => {
     'returns correct size class using Modus CSS variable (%s)',
     (size) => {
       expect(convertPropsToClasses({ size: size as TypographySize })).toBe(
-        `modus-wc-text-${size}`
+        `moduswc:text-${size} modus-wc-text-${size}`
       );
     }
   );
@@ -74,7 +74,7 @@ describe('modus-wc-typography - convertPropsToClasses', () => {
     'returns correct size class using Tailwind default (%s)',
     (size) => {
       expect(convertPropsToClasses({ size: size as TypographySize })).toBe(
-        `modus-wc-text-${size}`
+        `moduswc:text-${size} modus-wc-text-${size}`
       );
     }
   );
@@ -94,6 +94,8 @@ describe('modus-wc-typography - convertPropsToClasses', () => {
         size: 'md',
         weight: 'semibold',
       })
-    ).toBe('modus-wc-text-md modus-wc-typography-weight-semibold');
+    ).toBe(
+      'moduswc:text-md modus-wc-text-md modus-wc-typography-weight-semibold'
+    );
   });
 });

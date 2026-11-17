@@ -10,13 +10,13 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (bordered) {
-    classes = `${classes} modus-wc-border`;
+    classes = `${classes} moduswc:border modus-wc-border`;
   }
 
   if (expanded) {
-    classes = `${classes} modus-wc-collapse-open`;
+    classes = `${classes} moduswc:collapse-open modus-wc-collapse-open`;
   } else {
-    classes = `${classes} modus-wc-collapse-close`;
+    classes = `${classes} moduswc:collapse-close modus-wc-collapse-close`;
   }
 
   return classes.trim();
@@ -27,10 +27,10 @@ export const convertPropsToDescriptionDivClasses = ({
 }: {
   size?: DaisySize;
 }): string => {
-  let sizeClass = 'modus-wc-text-base';
+  let sizeClass = 'moduswc:text-base modus-wc-text-base';
 
   if (size) {
-    sizeClass = `modus-wc-text-${size}`;
+    sizeClass = `moduswc:text-${size} modus-wc-text-${size}`;
   }
 
   return sizeClass;
@@ -46,16 +46,16 @@ export const convertPropsToTitleChildDivClasses = ({
   if (size) {
     switch (size) {
       case 'xs':
-        classes = 'modus-wc-text-base';
+        classes = 'moduswc:text-base modus-wc-text-base';
         break;
       case 'sm':
-        classes = 'modus-wc-text-lg';
+        classes = 'moduswc:text-lg modus-wc-text-lg';
         break;
       case 'md':
-        classes = 'modus-wc-text-xl';
+        classes = 'moduswc:text-xl modus-wc-text-xl';
         break;
       case 'lg':
-        classes = 'modus-wc-text-2xl';
+        classes = 'moduswc:text-2xl modus-wc-text-2xl';
         break;
     }
   }
@@ -73,16 +73,20 @@ export const convertPropsToTitleDivClasses = ({
   if (size) {
     switch (size) {
       case 'xs':
-        classes = 'modus-wc-pb-2 modus-wc-pl-2 modus-wc-pt-2';
+        classes =
+          'moduswc:pb-2 moduswc:pl-2 moduswc:pt-2 modus-wc-pb-2 modus-wc-pl-2 modus-wc-pt-2';
         break;
       case 'sm':
-        classes = 'modus-wc-pb-3 modus-wc-pl-3 modus-wc-pt-3';
+        classes =
+          'moduswc:pb-3 moduswc:pl-3 moduswc:pt-3 modus-wc-pb-3 modus-wc-pl-3 modus-wc-pt-3';
         break;
       case 'md':
-        classes = 'modus-wc-pb-4 modus-wc-pl-4 modus-wc-pt-4';
+        classes =
+          'moduswc:pb-4 moduswc:pl-4 moduswc:pt-4 modus-wc-pb-4 modus-wc-pl-4 modus-wc-pt-4';
         break;
       case 'lg':
-        classes = 'modus-wc-pb-5 modus-wc-pl-5 modus-wc-pt-5';
+        classes =
+          'moduswc:pb-5 moduswc:pl-5 moduswc:pt-5 modus-wc-pb-5 modus-wc-pl-5 modus-wc-pt-5';
         break;
     }
   }

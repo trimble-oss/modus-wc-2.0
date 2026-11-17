@@ -8,7 +8,7 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (size) {
-    classes = `${classes} modus-wc-checkbox-${size}`;
+    classes = `${classes} moduswc:checkbox-${size} modus-wc-checkbox-${size}`;
   }
 
   return classes.trim();

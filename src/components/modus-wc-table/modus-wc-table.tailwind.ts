@@ -21,7 +21,7 @@ export function convertTablePropsToClasses(props: TableProps): string {
 
   // Add zebra class
   if (props.zebra) {
-    classes.push('modus-wc-table-zebra');
+    classes.push('moduswc:table-zebra modus-wc-table-zebra');
   }
 
   // Add hover class
@@ -35,13 +35,13 @@ export function convertTablePropsToClasses(props: TableProps): string {
 // Utility classes for sortable functionality
 export const tableSortableClasses = {
   header: {
-    sortable: 'cursor-pointer',
-    sorted: 'font-bold',
+    sortable: 'moduswc:cursor-pointer',
+    sorted: 'moduswc:font-bold',
     asc: 'sort-asc',
     desc: 'sort-desc',
   },
   icon: {
-    base: 'ml-2 inline-block',
+    base: 'moduswc:ml-2 moduswc:inline-block',
     asc: '▲',
     desc: '▼',
     none: '',
@@ -76,7 +76,7 @@ export const convertHeaderCellPropsToClasses = ({
   let classes = '';
 
   if (sortable) {
-    classes = `${classes} modus-wc-cursor-pointer`;
+    classes = `${classes} moduswc:cursor-pointer modus-wc-cursor-pointer`;
   }
 
   return classes.trim();

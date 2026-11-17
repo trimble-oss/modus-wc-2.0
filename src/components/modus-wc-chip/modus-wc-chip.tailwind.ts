@@ -30,7 +30,7 @@ export const convertPropsToClasses = ({
   }
 
   if (size) {
-    classes = `${classes} modus-wc-btn-${size}`;
+    classes = `${classes} moduswc:btn-${size} modus-wc-btn-${size}`;
   }
 
   if (shape === 'circle') {

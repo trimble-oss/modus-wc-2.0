@@ -6,7 +6,7 @@ export const convertPropsToClasses = (props: {
   let classes = '';
 
   if (Object.prototype.hasOwnProperty.call(props, 'size') && props.size) {
-    classes = `${classes} modus-wc-toggle-${props.size}`;
+    classes = `${classes} moduswc:toggle-${props.size} modus-wc-toggle-${props.size}`;
   }
 
   return classes;

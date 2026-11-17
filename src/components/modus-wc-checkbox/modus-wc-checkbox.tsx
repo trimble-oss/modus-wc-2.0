@@ -87,7 +87,7 @@ export class ModusWcCheckbox {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-checkbox'];
+    const classList = ['modus-wc-checkbox', 'moduswc:checkbox'];
 
     const propClasses = convertPropsToClasses({ size: this.size });
 

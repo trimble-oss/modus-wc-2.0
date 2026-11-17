@@ -18,7 +18,7 @@ export const convertPropsToClasses = ({
   }
 
   if (size) {
-    classes = `${classes} modus-wc-dock-${size}`;
+    classes = `${classes} moduswc:dock-${size} modus-wc-dock-${size}`;
   }
 
   if (showLabels === false) {
@@ -38,7 +38,7 @@ export const convertItemPropsToClasses = ({
   let classes = 'modus-wc-dock-item';
 
   if (active) {
-    classes = `${classes} modus-wc-dock-item-active`;
+    classes = `${classes} moduswc:dock-active modus-wc-dock-item-active`;
   }
 
   if (disabled) {

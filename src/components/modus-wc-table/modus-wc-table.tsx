@@ -692,10 +692,15 @@ export class ModusWcTable {
     return (
       <Host>
         <div class="table-container">
-          <div class="modus-wc-overflow-x-auto" {...this.inheritedAttributes}>
+          <div
+            class="moduswc:overflow-x-auto modus-wc-overflow-x-auto"
+            {...this.inheritedAttributes}
+          >
             <table class={this.getClasses()}>
               {this.caption && (
-                <caption class="modus-wc-sr-only">{this.caption}</caption>
+                <caption class="moduswc:sr-only modus-wc-sr-only">
+                  {this.caption}
+                </caption>
               )}
               {content}
             </table>
@@ -707,7 +712,7 @@ export class ModusWcTable {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-table'];
+    const classList: string[] = ['modus-wc-table', 'moduswc:table'];
 
     const propClasses = convertTablePropsToClasses({
       density: this.density,

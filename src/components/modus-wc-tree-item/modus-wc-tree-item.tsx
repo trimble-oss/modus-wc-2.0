@@ -164,9 +164,15 @@ export class ModusWcTreeItem {
       const liElement = this.el.querySelector('li');
 
       if (submenu && liElement) {
-        submenu.classList.remove('modus-wc-menu-dropdown-show');
+        submenu.classList.remove(
+          'modus-wc-menu-dropdown-show',
+          'moduswc:menu-dropdown-show'
+        );
         liElement.classList.remove('modus-wc-menu-item-expanded');
-        liElement.classList.remove('modus-wc-menu-dropdown-show');
+        liElement.classList.remove(
+          'modus-wc-menu-dropdown-show',
+          'moduswc:menu-dropdown-show'
+        );
         this.isExpanded = false;
       }
     }
@@ -315,16 +321,23 @@ export class ModusWcTreeItem {
 
       if (submenu && liElement) {
         submenu.classList.toggle('modus-wc-menu-dropdown-show');
+        submenu.classList.toggle('moduswc:menu-dropdown-show');
         this.isExpanded = submenu.classList.contains(
           'modus-wc-menu-dropdown-show'
         );
 
         if (this.isExpanded) {
           liElement.classList.add('modus-wc-menu-item-expanded');
-          liElement.classList.add('modus-wc-menu-dropdown-show');
+          liElement.classList.add(
+            'modus-wc-menu-dropdown-show',
+            'moduswc:menu-dropdown-show'
+          );
         } else {
           liElement.classList.remove('modus-wc-menu-item-expanded');
-          liElement.classList.remove('modus-wc-menu-dropdown-show');
+          liElement.classList.remove(
+            'modus-wc-menu-dropdown-show',
+            'moduswc:menu-dropdown-show'
+          );
         }
       }
     } else if (this.resolveSelectionMode() === 'multiple' || this.checkbox) {

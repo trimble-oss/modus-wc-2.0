@@ -83,14 +83,14 @@ export class ModusWcThemeSwitcher {
           aria-checked={this.isDarkMode}
           aria-label={this.isDarkMode ? 'Dark theme' : 'Light theme'}
           checked={this.isDarkMode}
-          class="modus-wc-toggle modus-wc-theme-controller modus-wc-bg-base-content modus-wc-col-span-2 modus-wc-col-start-1 modus-wc-row-start-1"
+          class="moduswc:toggle modus-wc-toggle moduswc:theme-controller modus-wc-theme-controller moduswc:bg-base-content modus-wc-bg-base-content moduswc:col-span-2 modus-wc-col-span-2 moduswc:col-start-1 modus-wc-col-start-1 moduswc:row-start-1 modus-wc-row-start-1"
           onChange={(event) => this.handleModeToggle(event)}
           type="checkbox"
           value="default"
         />
         <svg
           aria-hidden="true"
-          class="modus-wc-stroke-base-100 modus-wc-fill-base-100 modus-wc-col-start-1 modus-wc-row-start-1"
+          class="moduswc:stroke-base-100 modus-wc-stroke-base-100 moduswc:fill-base-100 modus-wc-fill-base-100 moduswc:col-start-1 modus-wc-col-start-1 moduswc:row-start-1 modus-wc-row-start-1"
           fill="none"
           height="14"
           role="presentation"
@@ -107,7 +107,7 @@ export class ModusWcThemeSwitcher {
         </svg>
         <svg
           aria-hidden="true"
-          class="modus-wc-stroke-base-100 modus-wc-fill-base-100 modus-wc-col-start-2 modus-wc-row-start-1"
+          class="moduswc:stroke-base-100 modus-wc-stroke-base-100 moduswc:fill-base-100 modus-wc-fill-base-100 moduswc:col-start-2 modus-wc-col-start-2 moduswc:row-start-1 modus-wc-row-start-1"
           fill="none"
           height="14"
           role="presentation"

@@ -97,7 +97,7 @@ export class ModusWcAlert {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-alert'];
+    const classList = ['modus-wc-alert', 'moduswc:alert'];
     const propClasses = convertPropsToClasses({
       variant: this.variant,
     });

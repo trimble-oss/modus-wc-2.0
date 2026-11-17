@@ -108,7 +108,7 @@ export class ModusWcCollapse {
   };
 
   private getOuterDivClasses(): string {
-    const classList: string[] = ['modus-wc-collapse'];
+    const classList: string[] = ['modus-wc-collapse', 'moduswc:collapse'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,

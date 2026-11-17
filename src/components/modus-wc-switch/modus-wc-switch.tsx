@@ -89,7 +89,7 @@ export class ModusWcSwitch {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-toggle'];
+    const classList = ['modus-wc-toggle', 'moduswc:toggle'];
 
     const propClasses = convertPropsToClasses({ size: this.size });
 
