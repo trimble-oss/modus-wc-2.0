@@ -81,3 +81,10 @@ modus-wc-time-input .modus-wc-time-input:focus {
   outline: 2px solid var(--modus-wc-color-primary);
   outline-offset: 2px;
 }
+
+// Focus state for the clock icon (native picker indicator) matches the input halo.
+modus-wc-time-input
+  .modus-wc-time-input:focus-visible::-webkit-calendar-picker-indicator {
+  filter: invert(20%) sepia(90%) saturate(2000%) hue-rotate(190deg)
+    brightness(90%);
+}

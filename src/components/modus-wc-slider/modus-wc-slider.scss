@@ -6,9 +6,6 @@
 modus-wc-slider .modus-wc-range {
   --rounded-box: 200px;
   --range-shadow: var(--modus-wc-color-trimble-blue);
-
-  // DaisyUI reads --range-shdw for the focused thumb fill; default is black.
-  --range-shdw: var(--modus-wc-color-primary);
 }
 
 [data-theme='modus-modern-light'] modus-wc-slider .modus-wc-input-label,
@@ -22,7 +19,4 @@ modus-wc-slider .modus-wc-range {
 [data-theme='modus-classic-dark'] modus-wc-slider .modus-wc-range {
   --rounded-box: 200px;
   --range-shadow: var(--modus-wc-color-trimble-blue);
-
-  // DaisyUI reads --range-shdw for the focused thumb fill; default is black.
-  --range-shdw: var(--modus-wc-color-primary);
 }

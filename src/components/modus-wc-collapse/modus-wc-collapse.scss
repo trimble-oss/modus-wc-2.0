@@ -7,6 +7,13 @@ modus-wc-collapse details.modus-wc-collapse > summary {
   display: inline-flex;
 }
 
+// Hide the container's own focus ring (DaisyUI :has rule) while the title shows the halo.
+// Doubled class raises specificity above the DaisyUI rule.
+modus-wc-collapse
+  .modus-wc-collapse.modus-wc-collapse:has(> summary:focus-visible) {
+  outline: none;
+}
+
 modus-wc-collapse .modus-wc-collapse {
   background-color: var(--modus-wc-color-base-100);
   border-radius: 0;
@@ -36,10 +43,10 @@ modus-wc-collapse .modus-wc-collapse {
       color: var(--modus-wc-color-base-content);
     }
 
-    // Focus halo: 2px primary outline (per Figma focus spec).
+    // Focus halo: 2px primary outline, inset so the container's overflow: hidden doesn't clip it.
     &:focus-visible {
       outline: 2px solid var(--modus-wc-color-primary);
-      outline-offset: 2px;
+      outline-offset: -2px;
     }
   }
 
