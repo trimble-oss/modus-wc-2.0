@@ -297,6 +297,34 @@
     padding: 0 var(--modus-wc-spacing-sm);
   }
 
+  &:hover {
+    border-bottom-color: var(--modus-wc-color-primary);
+  }
+
+  &:active {
+    border-bottom-color: var(--modus-wc-color-primary);
+  }
+
+  &:focus {
+    border-bottom-color: var(--modus-wc-color-primary);
+    outline: none;
+  }
+
+  &:focus-within {
+    border-bottom-color: var(--modus-wc-color-primary);
+    outline: none;
+  }
+}
+
+// Connect-light inputs: focus underline only (no hover/active primary) and no primary on feedback states.
+@mixin connect-input-styles-light {
+  border-bottom-width: var(--input-bottom-border-width);
+  outline-width: 0 !important;
+
+  &:not(.modus-wc-select, .modus-wc-number-input) {
+    padding: 0 var(--modus-wc-spacing-sm);
+  }
+
   &:not(
     .modus-wc-input--error,
     .modus-wc-input--info,
