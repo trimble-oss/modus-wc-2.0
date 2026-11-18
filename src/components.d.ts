@@ -2151,10 +2151,15 @@ export namespace Components {
          */
         "pulse": boolean;
         /**
-          * The semantic status variant.
+          * Dot size. Default xs (8px).
+          * @default 'xs'
+         */
+        "size": 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+        /**
+          * The semantic status variant. The inactive variant never pulses.
           * @default 'active'
          */
-        "variant": 'active' | 'warning' | 'danger';
+        "variant": 'active' | 'warning' | 'danger' | 'info' | 'inactive';
     }
     /**
      * Used to show a list of steps in a process.
@@ -6837,10 +6842,15 @@ declare namespace LocalJSX {
          */
         "pulse"?: boolean;
         /**
-          * The semantic status variant.
+          * Dot size. Default xs (8px).
+          * @default 'xs'
+         */
+        "size"?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+        /**
+          * The semantic status variant. The inactive variant never pulses.
           * @default 'active'
          */
-        "variant"?: 'active' | 'warning' | 'danger';
+        "variant"?: 'active' | 'warning' | 'danger' | 'info' | 'inactive';
     }
     /**
      * Used to show a list of steps in a process.

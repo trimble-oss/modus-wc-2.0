@@ -7547,12 +7547,21 @@
               }
             },
             {
+              "name": "size",
+              "fieldName": "size",
+              "default": "'xs'",
+              "description": "Dot size. Default xs (8px).",
+              "type": {
+                "text": "'xs' | 'sm' | 'md' | 'lg' | 'xl'"
+              }
+            },
+            {
               "name": "variant",
               "fieldName": "variant",
               "default": "'active'",
-              "description": "The semantic status variant.",
+              "description": "The semantic status variant. The inactive variant never pulses.",
               "type": {
-                "text": "'active' | 'warning' | 'danger'"
+                "text": "'active' | 'warning' | 'danger' | 'info' | 'inactive'"
               }
             }
           ],
