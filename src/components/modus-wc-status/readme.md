@@ -17,7 +17,7 @@ A status indicator with a pulsing dot and semantic label for conveying system st
 | `label`       | `label`        | The visible status label. Defaults to the variant name when omitted. | `string \| undefined`                                       | `''`       |
 | `pulse`       | `pulse`        | Whether the dot displays a pulsing halo animation.                   | `boolean`                                                   | `true`     |
 | `size`        | `size`         | Dot size. Default xs (8px).                                          | `"lg" \| "md" \| "sm" \| "xl" \| "xs"`                      | `'xs'`     |
-| `variant`     | `variant`      | The semantic status variant. The inactive variant never pulses.      | `"active" \| "danger" \| "inactive" \| "info" \| "warning"` | `'active'` |
+| `variant`     | `variant`      | The semantic status variant.                                         | `"active" \| "danger" \| "inactive" \| "info" \| "warning"` | `'active'` |
 
 
 ----------------------------------------------

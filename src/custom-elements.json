@@ -7559,7 +7559,7 @@
               "name": "variant",
               "fieldName": "variant",
               "default": "'active'",
-              "description": "The semantic status variant. The inactive variant never pulses.",
+              "description": "The semantic status variant.",
               "type": {
                 "text": "'active' | 'warning' | 'danger' | 'info' | 'inactive'"
               }

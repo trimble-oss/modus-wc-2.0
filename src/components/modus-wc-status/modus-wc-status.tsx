@@ -40,7 +40,7 @@ export class ModusWcStatus {
   /** Dot size. Default xs (8px). */
   @Prop() size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xs';
 
-  /** The semantic status variant. The inactive variant never pulses. */
+  /** The semantic status variant. */
   @Prop() variant: 'active' | 'warning' | 'danger' | 'info' | 'inactive' =
     'active';
 
@@ -60,7 +60,7 @@ export class ModusWcStatus {
   private isPulseEnabled(): boolean {
     const pulse = this.pulse as boolean | string | undefined;
 
-    return this.variant !== 'inactive' && pulse !== false && pulse !== 'false';
+    return pulse !== false && pulse !== 'false';
   }
 
   private getClasses(): string {

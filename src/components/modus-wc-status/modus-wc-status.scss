@@ -163,6 +163,14 @@ modus-wc-status .modus-wc-status {
       background-color: var(--modus-wc-color-base-content-low-contrast);
     }
 
+    .modus-wc-status-pulse {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-base-content-low-contrast) 30%,
+        transparent
+      );
+    }
+
     .modus-wc-status-label {
       color: var(--modus-wc-color-base-content-low-contrast);
     }

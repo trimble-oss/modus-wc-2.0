@@ -114,18 +114,26 @@ describe('modus-wc-status', () => {
     ).toBe('Info');
   });
 
-  it('should render inactive variant without pulse', async () => {
+  it('should render inactive variant with pulse by default', async () => {
     const page = await newSpecPage({
       components: [ModusWcStatus],
-      html: '<modus-wc-status variant="inactive" pulse="true"></modus-wc-status>',
+      html: '<modus-wc-status variant="inactive"></modus-wc-status>',
     });
     expect(page.root?.querySelector('.modus-wc-status')).toHaveClass(
       'modus-wc-status--inactive'
     );
-    expect(page.root?.querySelector('.modus-wc-status-pulse')).toBeNull();
+    expect(page.root?.querySelector('.modus-wc-status-pulse')).not.toBeNull();
     expect(
       page.root?.querySelector('.modus-wc-status-label')?.textContent?.trim()
     ).toBe('Inactive');
+  });
+
+  it('should hide pulse for inactive variant when pulse is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status variant="inactive" pulse="false"></modus-wc-status>',
+    });
+    expect(page.root?.querySelector('.modus-wc-status-pulse')).toBeNull();
   });
 
   it('should default to the xs size class', async () => {

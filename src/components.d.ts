@@ -2156,7 +2156,7 @@ export namespace Components {
          */
         "size": 'xs' | 'sm' | 'md' | 'lg' | 'xl';
         /**
-          * The semantic status variant. The inactive variant never pulses.
+          * The semantic status variant.
           * @default 'active'
          */
         "variant": 'active' | 'warning' | 'danger' | 'info' | 'inactive';
@@ -6847,7 +6847,7 @@ declare namespace LocalJSX {
          */
         "size"?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
         /**
-          * The semantic status variant. The inactive variant never pulses.
+          * The semantic status variant.
           * @default 'active'
          */
         "variant"?: 'active' | 'warning' | 'danger' | 'info' | 'inactive';
