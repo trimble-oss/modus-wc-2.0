@@ -294,3 +294,11 @@ modus-wc-collapse .modus-wc-collapse {
     color: var(--modus-wc-color-base-inverted);
   }
 }
+
+// Modern: the collapsed title halo follows the container radius (non-bordered items).
+[data-theme^='modus-modern']
+  modus-wc-collapse
+  .modus-wc-collapse:not(.modus-wc-border)
+  > summary.modus-wc-collapse-title:focus-visible {
+  border-radius: var(--modus-wc-border-radius-box);
+}

@@ -81,3 +81,10 @@ modus-wc-time-input .modus-wc-time-input:focus {
   outline: 2px solid var(--modus-wc-color-primary);
   outline-offset: 2px;
 }
+
+// Focus halo for mouse and keyboard focus (including the clock icon click): 2px primary, matching the text inputs.
+modus-wc-time-input .modus-wc-time-input.modus-wc-input:focus,
+modus-wc-time-input .modus-wc-time-input.modus-wc-input:focus-within {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}
