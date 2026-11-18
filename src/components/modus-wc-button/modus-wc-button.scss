@@ -736,3 +736,11 @@ modus-wc-button .modus-wc-btn.modus-wc-btn-base-inverted {
     color: var(--modus-wc-color-black);
   }
 }
+
+// Modern themes: every button's focus halo is the 2px primary blue (overrides the per-variant colours above).
+[data-theme^='modus-modern']
+  modus-wc-button
+  .modus-wc-btn[class*='modus-wc-btn-']:focus-visible {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}
