@@ -297,14 +297,6 @@
     padding: 0 var(--modus-wc-spacing-sm);
   }
 
-  &:hover {
-    border-bottom-color: var(--modus-wc-color-primary);
-  }
-
-  &:active {
-    border-bottom-color: var(--modus-wc-color-primary);
-  }
-
   &:focus {
     border-bottom-color: var(--modus-wc-color-primary);
     outline: none;
