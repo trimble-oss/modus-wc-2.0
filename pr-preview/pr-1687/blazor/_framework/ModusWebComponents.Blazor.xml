@@ -3067,12 +3067,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcStatus.Size">
             <summary>
             Dot size. Default xs (8px).
-            Allowed values: "xs", "sm", "md", "lg", "xl"
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcStatus.Variant">
             <summary>
-            The semantic status variant. The inactive variant never pulses.
+            The semantic status variant.
             Allowed values: "active", "warning", "danger", "info", "inactive"
             </summary>
         </member>
