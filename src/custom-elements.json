@@ -7552,7 +7552,7 @@
               "default": "'xs'",
               "description": "Dot size. Default xs (8px).",
               "type": {
-                "text": "'xs' | 'sm' | 'md' | 'lg' | 'xl'"
+                "text": "ModusSize | 'xs' | 'xl'"
               }
             },
             {

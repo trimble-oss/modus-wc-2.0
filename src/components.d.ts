@@ -2154,7 +2154,7 @@ export namespace Components {
           * Dot size. Default xs (8px).
           * @default 'xs'
          */
-        "size": 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+        "size": ModusSize | 'xs' | 'xl';
         /**
           * The semantic status variant.
           * @default 'active'
@@ -6845,7 +6845,7 @@ declare namespace LocalJSX {
           * Dot size. Default xs (8px).
           * @default 'xs'
          */
-        "size"?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+        "size"?: ModusSize | 'xs' | 'xl';
         /**
           * The semantic status variant.
           * @default 'active'

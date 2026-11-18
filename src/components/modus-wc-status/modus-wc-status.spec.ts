@@ -101,7 +101,7 @@ describe('modus-wc-status', () => {
     expect(status?.getAttribute('aria-label')).toBe('System health');
   });
 
-  it('should render info variant', async () => {
+  it('should add the info class and label when variant is info', async () => {
     const page = await newSpecPage({
       components: [ModusWcStatus],
       html: '<modus-wc-status variant="info"></modus-wc-status>',
@@ -114,7 +114,7 @@ describe('modus-wc-status', () => {
     ).toBe('Info');
   });
 
-  it('should render inactive variant with pulse by default', async () => {
+  it('should render the pulse when variant is inactive and pulse is not set', async () => {
     const page = await newSpecPage({
       components: [ModusWcStatus],
       html: '<modus-wc-status variant="inactive"></modus-wc-status>',
@@ -136,7 +136,15 @@ describe('modus-wc-status', () => {
     expect(page.root?.querySelector('.modus-wc-status-pulse')).toBeNull();
   });
 
-  it('should default to the xs size class', async () => {
+  it('should not render the pulse when pulse is false and size is lg', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status size="lg" pulse="false"></modus-wc-status>',
+    });
+    expect(page.root?.querySelector('.modus-wc-status-pulse')).toBeNull();
+  });
+
+  it('should add the xs size class when size is not set', async () => {
     const page = await newSpecPage({
       components: [ModusWcStatus],
       html: '<modus-wc-status></modus-wc-status>',

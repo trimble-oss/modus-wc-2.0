@@ -1,6 +1,7 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-status.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
+import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
 const VARIANT_LABELS: Record<
@@ -38,7 +39,7 @@ export class ModusWcStatus {
   @Prop() pulse: boolean = true;
 
   /** Dot size. Default xs (8px). */
-  @Prop() size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xs';
+  @Prop() size: ModusSize | 'xs' | 'xl' = 'xs';
 
   /** The semantic status variant. */
   @Prop() variant: 'active' | 'warning' | 'danger' | 'info' | 'inactive' =

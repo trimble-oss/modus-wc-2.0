@@ -1,10 +1,12 @@
+import { ModusSize } from '../types';
+
 export const convertPropsToClasses = ({
   pulse,
   size,
   variant,
 }: {
   pulse?: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: ModusSize | 'xs' | 'xl';
   variant?: 'active' | 'warning' | 'danger' | 'info' | 'inactive';
 }): string => {
   let classes = '';
