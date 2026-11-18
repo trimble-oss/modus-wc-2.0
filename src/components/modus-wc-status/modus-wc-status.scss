@@ -44,11 +44,11 @@ modus-wc-status .modus-wc-status {
   .modus-wc-status-pulse {
     animation: modus-wc-status-alpha-pulse 2s ease-out infinite;
     border-radius: 50%;
-    height: var(--modus-wc-spacing-sm);
+    height: var(--modus-wc-status-dot-size, var(--modus-wc-spacing-sm));
     inset: 0;
     margin: auto;
     position: absolute;
-    width: var(--modus-wc-spacing-sm);
+    width: var(--modus-wc-status-dot-size, var(--modus-wc-spacing-sm));
   }
 
   .modus-wc-status-label {
