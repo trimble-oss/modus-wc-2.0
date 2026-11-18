@@ -121,7 +121,11 @@ modus-wc-select .modus-wc-select {
 }
 
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select:focus {
-  border-color: var(--modus-wc-color-highlight-blue);
+  border-color: transparent;
+}
+
+[data-theme='modus-classic-light'] modus-wc-select .modus-wc-select:focus {
+  border-color: transparent;
 }
 
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select,

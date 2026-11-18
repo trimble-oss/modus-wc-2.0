@@ -66,7 +66,7 @@ modus-wc-time-input {
     color-scheme: dark; // needed to ensure the clock icon button is visible in dark mode
 
     &:focus {
-      border-color: var(--modus-wc-color-highlight-blue);
+      border-color: transparent;
     }
   }
 }
@@ -80,6 +80,25 @@ modus-wc-time-input {
 modus-wc-time-input .modus-wc-time-input:focus {
   outline: 2px solid var(--modus-wc-color-primary);
   outline-offset: 2px;
+}
+
+// Classic themes: the primary halo is the only focus ring (no second border).
+[data-theme='modus-classic-light']
+  modus-wc-time-input
+  .modus-wc-time-input.modus-wc-input:focus {
+  border-color: transparent;
+}
+
+[data-theme='modus-classic-light']
+  modus-wc-time-input
+  .modus-wc-time-input.modus-wc-input:focus-within {
+  border-color: transparent;
+}
+
+[data-theme='modus-classic-dark']
+  modus-wc-time-input
+  .modus-wc-time-input.modus-wc-input:focus-within {
+  border-color: transparent;
 }
 
 // Focus halo for mouse and keyboard focus (including the clock icon click): 2px primary, matching the text inputs.

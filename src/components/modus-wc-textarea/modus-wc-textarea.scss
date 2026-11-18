@@ -91,7 +91,11 @@ modus-wc-textarea {
 }
 
 [data-theme='modus-classic-dark'] modus-wc-textarea .modus-wc-textarea:focus {
-  border-color: var(--modus-wc-color-highlight-blue);
+  border-color: transparent;
+}
+
+[data-theme='modus-classic-light'] modus-wc-textarea .modus-wc-textarea:focus {
+  border-color: transparent;
 }
 
 [data-theme='connect-light'] modus-wc-textarea .modus-wc-textarea,

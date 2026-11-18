@@ -508,7 +508,7 @@ modus-wc-text-input {
       border-color: var(--modus-wc-color-accent);
 
       &:focus-within {
-        border-color: var(--modus-wc-color-blue-light);
+        border-color: transparent;
       }
     }
 
@@ -525,9 +525,15 @@ modus-wc-text-input {
     }
 
     &:focus-within {
-      border-color: var(--modus-wc-color-highlight-blue);
+      border-color: transparent;
     }
   }
+}
+
+[data-theme='modus-classic-light']
+  modus-wc-text-input
+  .modus-wc-text-input.modus-wc-input:focus-within {
+  border-color: transparent;
 }
 
 [data-theme='connect-light'] modus-wc-text-input,
