@@ -63,7 +63,9 @@ modus-wc-status .modus-wc-status {
   }
 
   &.modus-wc-status--sm {
-    --modus-wc-status-dot-size: 10px;
+    --modus-wc-status-dot-size: calc(
+      var(--modus-wc-spacing-sm) + var(--modus-wc-spacing-2xs)
+    );
 
     .modus-wc-status-label {
       font-size: var(--modus-wc-font-size-md);
@@ -71,7 +73,7 @@ modus-wc-status .modus-wc-status {
   }
 
   &.modus-wc-status--md {
-    --modus-wc-status-dot-size: 12px;
+    --modus-wc-status-dot-size: var(--modus-wc-spacing-md);
 
     .modus-wc-status-label {
       font-size: var(--modus-wc-font-size-lg);
@@ -79,7 +81,9 @@ modus-wc-status .modus-wc-status {
   }
 
   &.modus-wc-status--lg {
-    --modus-wc-status-dot-size: 14px;
+    --modus-wc-status-dot-size: calc(
+      var(--modus-wc-spacing-md) + var(--modus-wc-spacing-2xs)
+    );
 
     .modus-wc-status-label {
       font-size: var(--modus-wc-font-size-xl);
@@ -87,7 +91,7 @@ modus-wc-status .modus-wc-status {
   }
 
   &.modus-wc-status--xl {
-    --modus-wc-status-dot-size: 16px;
+    --modus-wc-status-dot-size: var(--modus-wc-spacing-lg);
 
     .modus-wc-status-label {
       font-size: var(--modus-wc-font-size-2xl);
