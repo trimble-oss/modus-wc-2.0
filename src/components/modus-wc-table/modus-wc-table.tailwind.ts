@@ -21,7 +21,7 @@ export function convertTablePropsToClasses(props: TableProps): string {
 
   // Add zebra class
   if (props.zebra) {
-    classes.push('moduswc:table-zebra modus-wc-table-zebra');
+    classes.push('modus-wc-table-zebra');
   }
 
   // Add hover class

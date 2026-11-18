@@ -8,7 +8,7 @@ export const convertPropsToClasses = ({
   if (variant === 'neutral') {
     classes = `${classes} modus-wc-alert-neutral`;
   } else if (variant) {
-    classes = `${classes} moduswc:alert-${variant} modus-wc-alert-${variant}`;
+    classes = `${classes} modus-wc-alert-${variant}`;
   }
 
   return classes.trim();

@@ -14,12 +14,25 @@ modus-wc-alert .modus-wc-alert {
   backdrop-filter: blur(var(--modus-wc-spacing-lg));
   background-color: var(--modus-wc-color-base-page);
   border-color: var(--modus-wc-color-base-200);
-  border-width: var(--alert-border-width);
-  border-left-width: var(--alert-border-left-width);
-  border-radius: var(--alert-border-radius);
+  border-radius: var(
+    --alert-border-radius,
+    var(--modus-wc-border-radius-md)
+  );
+  border-style: solid;
+  border-width: var(--alert-border-width, var(--modus-wc-border-width-xs));
+  border-left-width: var(--alert-border-left-width, 0.5rem);
+  box-shadow: none;
   color: var(--modus-wc-color-base-content);
   display: flex;
+  gap: var(--modus-wc-spacing-sm);
+  min-height: 3.5rem;
+  padding-block: var(--modus-wc-spacing-sm);
+  padding-inline: var(--modus-wc-spacing-md);
   text-align: start;
+
+  .modus-wc-alert-icon {
+    flex-shrink: 0;
+  }
 
   .modus-wc-alert-content {
     flex: auto;
@@ -167,7 +180,8 @@ modus-wc-alert .modus-wc-alert {
   }
 }
 
-[data-theme='modus-classic-light'] modus-wc-alert .modus-wc-alert {
+[data-theme='modus-classic-light'] modus-wc-alert .modus-wc-alert,
+[data-theme='modus-modern-light'] modus-wc-alert .modus-wc-alert {
   .modus-wc-alert-icon {
     color: var(--modus-wc-color-gray-5);
   }

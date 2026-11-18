@@ -87,7 +87,8 @@ export class ModusWcCheckbox {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-checkbox', 'moduswc:checkbox'];
+    // Modus SCSS owns checkbox chrome (Daisy 5 clip-path checkmark and selector radius differ from Modus).
+    const classList = ['modus-wc-checkbox'];
 
     const propClasses = convertPropsToClasses({ size: this.size });
 

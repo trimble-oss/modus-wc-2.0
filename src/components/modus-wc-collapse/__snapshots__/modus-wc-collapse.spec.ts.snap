@@ -3,11 +3,11 @@
 exports[`modus-wc-collapse should render in expanded state 1`] = `
 <modus-wc-collapse collapse-id="123" expanded="true">
   <!---->
-  <details class="modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-open no-leading-icons" open="">
-    <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title">
+  <details class="modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-open moduswc:collapse moduswc:collapse-open no-leading-icons" open="">
+    <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4 moduswc:inline-flex moduswc:items-center moduswc:justify-between moduswc:min-h-4" id="123-title">
       <div class="modus-wc-summary-main-content">
         <div class="modus-wc-title-main-content">
-          <div class="modus-wc-inline-flex modus-wc-items-center modus-wc-title-main-row">
+          <div class="modus-wc-inline-flex modus-wc-items-center modus-wc-title-main-row moduswc:inline-flex moduswc:items-center">
             <modus-wc-icon aria-label="Alert" name="alert"></modus-wc-icon>
             Collapse Title
           </div>
@@ -15,7 +15,7 @@ exports[`modus-wc-collapse should render in expanded state 1`] = `
         <modus-wc-icon class="modus-wc-collapse-chevron" decorative="" name="expand_more" size="md"></modus-wc-icon>
       </div>
     </summary>
-    <div class="description modus-wc-collapse-description modus-wc-font-light modus-wc-text-base">
+    <div class="description modus-wc-collapse-description modus-wc-font-light modus-wc-text-base moduswc:text-base">
       Collapse description
     </div>
     <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content">
@@ -30,8 +30,8 @@ exports[`modus-wc-collapse should render in expanded state 1`] = `
 exports[`modus-wc-collapse should render with custom header and content 1`] = `
 <modus-wc-collapse collapse-id="123">
   <!---->
-  <details class="modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-close no-leading-icons">
-    <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title">
+  <details class="modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-close moduswc:collapse moduswc:collapse-close no-leading-icons">
+    <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4 moduswc:inline-flex moduswc:items-center moduswc:justify-between moduswc:min-h-4" id="123-title">
       <div class="modus-wc-summary-main-content">
         <div class="modus-wc-title-main-content">
           <div slot="header">
@@ -53,12 +53,12 @@ exports[`modus-wc-collapse should render with custom header and content 1`] = `
 exports[`modus-wc-collapse should render with custom props 1`] = `
 <modus-wc-collapse collapse-id="123" custom-class="test-class" expanded="true" size="sm" variant="ghost">
   <!---->
-  <details class="modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-open no-leading-icons test-class" open="">
-    <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title">
+  <details class="modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-open moduswc:collapse moduswc:collapse-open no-leading-icons test-class" open="">
+    <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4 moduswc:inline-flex moduswc:items-center moduswc:justify-between moduswc:min-h-4" id="123-title">
       <div class="modus-wc-summary-main-content">
         <div class="modus-wc-title-main-content">
-          <div class="modus-wc-inline-flex modus-wc-items-center modus-wc-title-main-row">
-            <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+          <div class="modus-wc-inline-flex modus-wc-items-center modus-wc-title-main-row moduswc:inline-flex moduswc:items-center">
+            <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center">
               <i aria-label="Alert" class="modus-icons modus-wc-icon modus-wc-icon--md" role="img" tabindex="-1">
                 alert
               </i>
@@ -66,14 +66,14 @@ exports[`modus-wc-collapse should render with custom props 1`] = `
             Collapse Title
           </div>
         </div>
-        <modus-wc-icon class="modus-wc-collapse-chevron modus-wc-flex modus-wc-items-center">
+        <modus-wc-icon class="modus-wc-collapse-chevron modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center">
           <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
             expand_more
           </i>
         </modus-wc-icon>
       </div>
     </summary>
-    <div class="description modus-wc-collapse-description modus-wc-font-light modus-wc-text-base">
+    <div class="description modus-wc-collapse-description modus-wc-font-light modus-wc-text-base moduswc:text-base">
       Collapse description
     </div>
     <div aria-labelledby="123-title" class="modus-wc-collapse-content modus-wc-cursor-default" id="123-content"></div>
@@ -84,8 +84,8 @@ exports[`modus-wc-collapse should render with custom props 1`] = `
 exports[`modus-wc-collapse should render with default props 1`] = `
 <modus-wc-collapse collapse-id="123">
   <!---->
-  <details class="modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-close no-leading-icons">
-    <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4" id="123-title">
+  <details class="modus-wc-chevron-right modus-wc-collapse modus-wc-collapse-close moduswc:collapse moduswc:collapse-close no-leading-icons">
+    <summary class="modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4 moduswc:inline-flex moduswc:items-center moduswc:justify-between moduswc:min-h-4" id="123-title">
       <div class="modus-wc-summary-main-content">
         <div class="modus-wc-title-main-content"></div>
         <modus-wc-icon class="modus-wc-collapse-chevron" decorative="" name="expand_more" size="md"></modus-wc-icon>

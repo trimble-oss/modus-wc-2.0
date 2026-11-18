@@ -24,15 +24,6 @@ const BADGE_COLOR_CLASS_SUFFIX: Record<BadgeColor, string> = {
   danger: 'error',
 };
 
-const BADGE_DAISY_COLOR: Partial<Record<BadgeColor, string>> = {
-  primary: 'primary',
-  secondary: 'secondary',
-  tertiary: 'neutral',
-  success: 'success',
-  warning: 'warning',
-  danger: 'error',
-};
-
 export const convertPropsToClasses = ({
   color,
   shape,
@@ -45,13 +36,11 @@ export const convertPropsToClasses = ({
   variant?: BadgeVariant;
 }): string => {
   const colorSuffix = color ? BADGE_COLOR_CLASS_SUFFIX[color] : undefined;
-  const daisyColor = color ? BADGE_DAISY_COLOR[color] : undefined;
   const classes = [
     colorSuffix && `modus-wc-badge-${colorSuffix}`,
-    daisyColor && `moduswc:badge-${daisyColor}`,
     shape && variant !== 'text' && `modus-wc-badge-${shape}`,
-    size && `moduswc:badge-${size} modus-wc-badge-${size}`,
-    variant === 'outlined' && 'moduswc:badge-outline modus-wc-badge-outlined',
+    size && `modus-wc-badge-${size}`,
+    variant === 'outlined' && 'modus-wc-badge-outlined',
     variant &&
       variant !== 'filled' &&
       variant !== 'outlined' &&

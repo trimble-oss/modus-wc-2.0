@@ -712,7 +712,7 @@ export class ModusWcTable {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-table', 'moduswc:table'];
+    const classList: string[] = ['modus-wc-table'];
 
     const propClasses = convertTablePropsToClasses({
       density: this.density,

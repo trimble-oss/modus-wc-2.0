@@ -199,7 +199,7 @@ export class ModusWcPagination {
         class={`${buttonClasses} ${isCurrentPage ? 'moduswc:btn-active modus-wc-btn-active modus-wc-pagination-page-active' : ''}`}
         onClick={() => this.handlePageClick(page)}
       >
-        <span class="modus-wc-sr-only">{pageAriaLabel}</span>
+        <span class="moduswc:sr-only modus-wc-sr-only">{pageAriaLabel}</span>
         {isTruncated ? (
           <modus-wc-tooltip content={pageStr} position="top">
             {pageLabel}

@@ -3,8 +3,9 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-collapse details.modus-wc-collapse > summary {
+modus-wc-collapse details.modus-wc-collapse > summary.modus-wc-collapse-title {
   display: inline-flex;
+  width: 100%;
 }
 
 modus-wc-collapse .modus-wc-collapse {
@@ -59,6 +60,11 @@ modus-wc-collapse .modus-wc-collapse {
     justify-content: space-between;
     min-height: 1rem;
     width: 100%;
+  }
+
+  .modus-wc-title-main-row {
+    align-items: center;
+    display: inline-flex;
   }
 
   .modus-wc-title-main-row > modus-wc-icon {

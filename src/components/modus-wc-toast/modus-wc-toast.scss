@@ -1,4 +1,61 @@
 /**
-* This component uses Tailwind CSS and DaisyUI.
-* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+* Toast container positioning (Modus-owned; no Daisy toast grid).
 */
+
+modus-wc-toast .modus-wc-toast {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: var(--modus-wc-spacing-sm);
+  inset-inline-end: var(--modus-wc-spacing-md);
+  inset-inline-start: auto;
+  max-width: calc(100vw - 2rem);
+  position: fixed;
+  top: auto;
+  bottom: var(--modus-wc-spacing-md);
+  width: max-content;
+  z-index: 9999;
+
+  &.modus-wc-toast-top {
+    bottom: auto;
+    top: var(--modus-wc-spacing-md);
+  }
+
+  &.modus-wc-toast-bottom {
+    bottom: var(--modus-wc-spacing-md);
+    top: auto;
+  }
+
+  &.modus-wc-toast-middle {
+    bottom: auto;
+    top: 50%;
+    translate: var(--modus-wc-toast-x, 0) -50%;
+  }
+
+  &.modus-wc-toast-start {
+    inset-inline-end: auto;
+    inset-inline-start: var(--modus-wc-spacing-md);
+    --modus-wc-toast-x: 0;
+  }
+
+  &.modus-wc-toast-end {
+    inset-inline-end: var(--modus-wc-spacing-md);
+    inset-inline-start: auto;
+    --modus-wc-toast-x: 0;
+  }
+
+  &.modus-wc-toast-center {
+    inset-inline-end: 50%;
+    inset-inline-start: 50%;
+    --modus-wc-toast-x: -50%;
+
+    &:dir(rtl) {
+      --modus-wc-toast-x: 50%;
+    }
+  }
+
+  &.modus-wc-toast-top,
+  &.modus-wc-toast-bottom {
+    translate: var(--modus-wc-toast-x, 0) 0;
+  }
+}

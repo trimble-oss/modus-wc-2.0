@@ -62,6 +62,11 @@ modus-wc-dock .modus-wc-dock-item {
   min-width: 0;
   position: relative;
 
+  &::after {
+    content: none;
+    display: none;
+  }
+
   &.modus-wc-dock-item-disabled {
     opacity: 0.6;
     pointer-events: none;

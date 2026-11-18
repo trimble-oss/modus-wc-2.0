@@ -58,10 +58,8 @@ export class ModusWcThemeSwitcher {
     this.modeUnsubscribe?.();
   }
 
-  private getClasses(): string {
-    const classList = [
-      'modus-wc-inline-grid modus-wc-cursor-pointer modus-wc-justify-center modus-wc-place-items-center',
-    ];
+  private getLabelClasses(): string {
+    const classList = ['modus-wc-theme-switcher-label'];
 
     if (this.customClass) classList.push(this.customClass);
 
@@ -78,19 +76,19 @@ export class ModusWcThemeSwitcher {
 
   render() {
     return (
-      <label class={this.getClasses()} {...this.inheritedAttributes}>
+      <label class={this.getLabelClasses()} {...this.inheritedAttributes}>
         <input
           aria-checked={this.isDarkMode}
           aria-label={this.isDarkMode ? 'Dark theme' : 'Light theme'}
           checked={this.isDarkMode}
-          class="moduswc:toggle modus-wc-toggle moduswc:theme-controller modus-wc-theme-controller moduswc:bg-base-content modus-wc-bg-base-content moduswc:col-span-2 modus-wc-col-span-2 moduswc:col-start-1 modus-wc-col-start-1 moduswc:row-start-1 modus-wc-row-start-1"
+          class="modus-wc-theme-switcher-toggle"
           onChange={(event) => this.handleModeToggle(event)}
           type="checkbox"
           value="default"
         />
         <svg
           aria-hidden="true"
-          class="moduswc:stroke-base-100 modus-wc-stroke-base-100 moduswc:fill-base-100 modus-wc-fill-base-100 moduswc:col-start-1 modus-wc-col-start-1 moduswc:row-start-1 modus-wc-row-start-1"
+          class="modus-wc-theme-switcher-icon modus-wc-theme-switcher-icon-sun"
           fill="none"
           height="14"
           role="presentation"
@@ -107,7 +105,7 @@ export class ModusWcThemeSwitcher {
         </svg>
         <svg
           aria-hidden="true"
-          class="moduswc:stroke-base-100 modus-wc-stroke-base-100 moduswc:fill-base-100 modus-wc-fill-base-100 moduswc:col-start-2 modus-wc-col-start-2 moduswc:row-start-1 modus-wc-row-start-1"
+          class="modus-wc-theme-switcher-icon modus-wc-theme-switcher-icon-moon"
           fill="none"
           height="14"
           role="presentation"

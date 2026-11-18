@@ -14,19 +14,19 @@ export const convertPropsToClasses = ({
   let ratingItemClasses = '';
 
   if (allowHalf && !(variant === 'smiley' || variant === 'thumb')) {
-    ratingClasses = `${ratingClasses} moduswc:rating-half modus-wc-rating-half`;
+    ratingClasses = `${ratingClasses} modus-wc-rating-half`;
   }
 
   if (size) {
     switch (size) {
       case 'sm':
-        ratingClasses = `${ratingClasses} moduswc:rating-sm modus-wc-rating-sm`;
+        ratingClasses = `${ratingClasses} modus-wc-rating-sm`;
         break;
       case 'md':
-        ratingClasses = `${ratingClasses} moduswc:rating-md modus-wc-rating-md`;
+        ratingClasses = `${ratingClasses} modus-wc-rating-md`;
         break;
       case 'lg':
-        ratingClasses = `${ratingClasses} moduswc:rating-lg modus-wc-rating-lg`;
+        ratingClasses = `${ratingClasses} modus-wc-rating-lg`;
         break;
     }
   }

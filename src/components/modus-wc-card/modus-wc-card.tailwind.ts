@@ -12,19 +12,19 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (bordered) {
-    classes = `${classes} moduswc:card-border modus-wc-card-bordered`;
+    classes = `${classes} modus-wc-card-bordered`;
   }
 
   if (fullImage) {
-    classes = `${classes} moduswc:image-full`;
+    classes = `${classes} modus-wc-image-full`;
   }
 
   if (layout === 'horizontal') {
-    classes = `${classes} moduswc:card-side`;
+    classes = `${classes} modus-wc-card-side`;
   }
 
   if (padding === 'compact') {
-    classes = `${classes} moduswc:card-sm modus-wc-card-compact`;
+    classes = `${classes} modus-wc-card-compact`;
   }
 
   if (padding === 'comfortable') {
