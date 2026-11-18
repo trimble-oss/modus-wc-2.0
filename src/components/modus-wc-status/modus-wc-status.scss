@@ -29,23 +29,26 @@ modus-wc-status .modus-wc-status {
     align-items: center;
     display: flex;
     flex-shrink: 0;
-    height: var(--modus-wc-spacing-sm);
+    height: var(--modus-wc-status-dot-size, var(--modus-wc-spacing-sm));
     position: relative;
-    width: var(--modus-wc-spacing-sm);
+    width: var(--modus-wc-status-dot-size, var(--modus-wc-spacing-sm));
   }
 
   .modus-wc-status-dot {
     border-radius: 50%;
     flex-shrink: 0;
-    height: var(--modus-wc-spacing-sm);
-    width: var(--modus-wc-spacing-sm);
+    height: var(--modus-wc-status-dot-size, var(--modus-wc-spacing-sm));
+    width: var(--modus-wc-status-dot-size, var(--modus-wc-spacing-sm));
   }
 
   .modus-wc-status-pulse {
     animation: modus-wc-status-alpha-pulse 2s ease-out infinite;
     border-radius: 50%;
+    height: 8px;
     inset: 0;
+    margin: auto;
     position: absolute;
+    width: 8px;
   }
 
   .modus-wc-status-label {
@@ -53,6 +56,34 @@ modus-wc-status .modus-wc-status {
     font-weight: var(--modus-wc-font-weight-semibold);
     line-height: var(--modus-wc-line-height-md);
     margin: 0;
+  }
+
+  &.modus-wc-status--xs {
+    --modus-wc-status-dot-size: 8px;
+  }
+
+  &.modus-wc-status--sm {
+    --modus-wc-status-dot-size: 10px;
+  }
+
+  &.modus-wc-status--md {
+    --modus-wc-status-dot-size: 12px;
+  }
+
+  &.modus-wc-status--lg {
+    --modus-wc-status-dot-size: 14px;
+
+    .modus-wc-status-label {
+      font-size: var(--modus-wc-font-size-lg);
+    }
+  }
+
+  &.modus-wc-status--xl {
+    --modus-wc-status-dot-size: 16px;
+
+    .modus-wc-status-label {
+      font-size: var(--modus-wc-font-size-lg);
+    }
   }
 
   &.modus-wc-status--active {
@@ -106,6 +137,34 @@ modus-wc-status .modus-wc-status {
 
     .modus-wc-status-label {
       color: var(--modus-wc-color-error);
+    }
+  }
+
+  &.modus-wc-status--info {
+    .modus-wc-status-dot {
+      background-color: var(--modus-wc-color-info);
+    }
+
+    .modus-wc-status-pulse {
+      background-color: color-mix(
+        in sRGB,
+        var(--modus-wc-color-info) 30%,
+        transparent
+      );
+    }
+
+    .modus-wc-status-label {
+      color: var(--modus-wc-color-info);
+    }
+  }
+
+  &.modus-wc-status--inactive {
+    .modus-wc-status-dot {
+      background-color: var(--modus-wc-color-base-content-low-contrast);
+    }
+
+    .modus-wc-status-label {
+      color: var(--modus-wc-color-base-content-low-contrast);
     }
   }
 

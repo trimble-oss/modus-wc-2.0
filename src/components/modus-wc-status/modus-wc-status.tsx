@@ -3,10 +3,15 @@ import { convertPropsToClasses } from './modus-wc-status.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-const VARIANT_LABELS: Record<'active' | 'warning' | 'danger', string> = {
+const VARIANT_LABELS: Record<
+  'active' | 'warning' | 'danger' | 'info' | 'inactive',
+  string
+> = {
   active: 'Active',
   warning: 'Warning',
   danger: 'Danger',
+  info: 'Info',
+  inactive: 'Inactive',
 };
 
 /**
@@ -32,8 +37,12 @@ export class ModusWcStatus {
   /** Whether the dot displays a pulsing halo animation. */
   @Prop() pulse: boolean = true;
 
-  /** The semantic status variant. */
-  @Prop() variant: 'active' | 'warning' | 'danger' = 'active';
+  /** Dot size. Default xs (8px). */
+  @Prop() size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'xs';
+
+  /** The semantic status variant. The inactive variant never pulses. */
+  @Prop() variant: 'active' | 'warning' | 'danger' | 'info' | 'inactive' =
+    'active';
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -51,13 +60,14 @@ export class ModusWcStatus {
   private isPulseEnabled(): boolean {
     const pulse = this.pulse as boolean | string | undefined;
 
-    return pulse !== false && pulse !== 'false';
+    return this.variant !== 'inactive' && pulse !== false && pulse !== 'false';
   }
 
   private getClasses(): string {
     const classList = ['modus-wc-status'];
     const propClasses = convertPropsToClasses({
       pulse: this.isPulseEnabled(),
+      size: this.size,
       variant: this.variant,
     });
 
