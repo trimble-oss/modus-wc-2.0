@@ -7,29 +7,6 @@ modus-wc-collapse details.modus-wc-collapse > summary {
   display: inline-flex;
 }
 
-// Collapsed: hide the container's own focus ring (DaisyUI :has rule); the title shows the halo.
-// Doubled class raises specificity above the DaisyUI rule.
-modus-wc-collapse
-  .modus-wc-collapse.modus-wc-collapse:not([open]):has(
-    > summary:focus-visible
-  ) {
-  outline: none;
-}
-
-// Expanded: the whole item gets the halo (the outline follows the container's border radius),
-// and the title halo is hidden so there is one ring.
-modus-wc-collapse
-  .modus-wc-collapse.modus-wc-collapse[open]:has(> summary:focus-visible) {
-  outline: 2px solid var(--modus-wc-color-primary);
-  outline-offset: 2px;
-}
-
-modus-wc-collapse
-  .modus-wc-collapse[open]
-  .modus-wc-collapse-title:focus-visible {
-  outline: none;
-}
-
 modus-wc-collapse .modus-wc-collapse {
   background-color: var(--modus-wc-color-base-100);
   border-radius: 0;
@@ -57,12 +34,6 @@ modus-wc-collapse .modus-wc-collapse {
     &:focus {
       background-color: transparent;
       color: var(--modus-wc-color-base-content);
-    }
-
-    // Focus halo: 2px primary outline, inset so the container's overflow: hidden doesn't clip it.
-    &:focus-visible {
-      outline: 2px solid var(--modus-wc-color-primary);
-      outline-offset: -2px;
     }
   }
 
@@ -293,12 +264,4 @@ modus-wc-collapse .modus-wc-collapse {
   &.modus-wc-collapse-open .modus-wc-collapse-title {
     color: var(--modus-wc-color-base-inverted);
   }
-}
-
-// Modern: the collapsed title halo follows the container radius (non-bordered items).
-[data-theme^='modus-modern']
-  modus-wc-collapse
-  .modus-wc-collapse:not(.modus-wc-border)
-  > summary.modus-wc-collapse-title:focus-visible {
-  border-radius: var(--modus-wc-border-radius-box);
 }

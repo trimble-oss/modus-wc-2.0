@@ -31,12 +31,6 @@ modus-wc-date {
       position: absolute;
       right: var(--modus-wc-spacing-md);
 
-      // Focus halo on the inner button (the modus-wc-button host is not focusable).
-      .modus-wc-btn:focus-visible {
-        outline: 2px solid var(--modus-wc-color-primary);
-        outline-offset: 2px;
-      }
-
       &:hover {
         color: var(--modus-wc-color-primary);
       }
@@ -390,12 +384,9 @@ modus-wc-date {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
     }
 
-    // Focus halo: 2px primary outline (per Figma focus spec).
     &:focus {
       border-color: var(--modus-wc-color-blue-light);
       border-width: var(--modus-wc-border-width-sm);
-      outline: 2px solid var(--modus-wc-color-primary);
-      outline-offset: 2px;
     }
 
     &.modus-wc-date-input--readonly {
@@ -415,7 +406,7 @@ modus-wc-date {
 [data-theme='modus-classic-dark'] modus-wc-date .modus-wc-date-input {
   color-scheme: dark; // needed to ensure the calendar icon button is visible in dark mode
   &.modus-wc-input:focus {
-    border-color: transparent;
+    border-color: var(--modus-wc-color-highlight-blue);
   }
 }
 
@@ -472,17 +463,4 @@ modus-wc-date {
       }
     }
   }
-}
-
-// Focus halo for all themes: 2px primary outline (per Figma focus spec).
-modus-wc-date .modus-wc-date-input:focus {
-  outline: 2px solid var(--modus-wc-color-primary);
-  outline-offset: 2px;
-}
-
-// Classic themes: the primary halo is the only focus ring (no second border).
-[data-theme='modus-classic-light']
-  modus-wc-date
-  .modus-wc-date-input.modus-wc-input:focus {
-  border-color: transparent;
 }

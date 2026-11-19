@@ -104,13 +104,11 @@ modus-wc-select .modus-wc-select {
     min-height: var(--modus-wc-size-xl);
   }
 
-  // Focus halo: 2px primary outline (per Figma focus spec).
   &:focus {
     border-color: var(--modus-wc-color-blue-light);
     border-width: var(--modus-wc-border-width-sm);
     box-shadow: none; // Removes the Tailwind ring effect
-    outline: 2px solid var(--modus-wc-color-primary);
-    outline-offset: 2px;
+    outline: none; // Ensures there's no outline on focus
   }
 }
 
@@ -121,11 +119,7 @@ modus-wc-select .modus-wc-select {
 }
 
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select:focus {
-  border-color: transparent;
-}
-
-[data-theme='modus-classic-light'] modus-wc-select .modus-wc-select:focus {
-  border-color: transparent;
+  border-color: var(--modus-wc-color-highlight-blue);
 }
 
 [data-theme='modus-classic-dark'] modus-wc-select .modus-wc-select,
@@ -136,10 +130,4 @@ modus-wc-select .modus-wc-select {
 [data-theme='connect-light'] modus-wc-select .modus-wc-select,
 [data-theme='connect-dark'] modus-wc-select .modus-wc-select {
   @include connect-input-styles;
-}
-
-// Focus halo for all themes: 2px primary outline (per Figma focus spec).
-modus-wc-select .modus-wc-select:focus {
-  outline: 2px solid var(--modus-wc-color-primary);
-  outline-offset: 2px;
 }

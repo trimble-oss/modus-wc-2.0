@@ -114,17 +114,3 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
     }
   }
 }
-
-// Focus halo replaces the dashed border on keyboard focus (per Figma focus spec).
-// Mouse clicks show no ring.
-modus-wc-file-dropzone
-  .modus-wc-file-dropzone
-  .dropzone-content:focus:not(:focus-visible) {
-  outline: none;
-}
-
-modus-wc-file-dropzone .modus-wc-file-dropzone .dropzone-content:focus-visible {
-  border-color: transparent;
-  outline: 2px solid var(--modus-wc-color-primary);
-  outline-offset: 2px;
-}

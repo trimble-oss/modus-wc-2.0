@@ -141,9 +141,7 @@ modus-wc-chip .modus-wc-chip {
       }
     }
 
-    // Focus halo: 2px primary outline (per Figma focus spec).
-    &:focus-visible {
-      outline: 2px solid var(--modus-wc-color-primary);
+    &:focus {
       outline-offset: 0;
     }
   }
@@ -302,9 +300,7 @@ modus-wc-chip .modus-wc-chip {
       }
     }
 
-    // Focus halo: 2px primary outline (per Figma focus spec).
-    &:focus-visible {
-      outline: 2px solid var(--modus-wc-color-primary);
+    &:focus {
       outline-offset: 0;
     }
   }

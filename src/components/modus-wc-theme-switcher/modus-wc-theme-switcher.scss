@@ -65,9 +65,3 @@ modus-wc-theme-switcher {
     fill: var(--modus-wc-color-base-100);
   }
 }
-
-// Focus halo: 2px primary outline (per Figma focus spec).
-modus-wc-theme-switcher .modus-wc-theme-controller:focus-visible {
-  outline: 2px solid var(--modus-wc-color-primary);
-  outline-offset: 2px;
-}

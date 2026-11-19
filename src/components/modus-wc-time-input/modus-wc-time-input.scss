@@ -37,14 +37,12 @@ modus-wc-time-input {
       padding: var(--modus-wc-spacing-md) var(--modus-wc-spacing-sm);
     }
 
-    // Focus halo: 2px primary outline (per Figma focus spec).
     &:focus,
     &:focus-within {
       border-color: var(--modus-wc-color-blue-light);
       border-width: var(--modus-wc-border-width-sm);
       box-shadow: none; // Removes the Tailwind ring effect
-      outline: 2px solid var(--modus-wc-color-primary);
-      outline-offset: 2px;
+      outline: none; // Ensures there's no outline on focus
     }
 
     &.modus-wc-time-input--readonly {
@@ -66,7 +64,7 @@ modus-wc-time-input {
     color-scheme: dark; // needed to ensure the clock icon button is visible in dark mode
 
     &:focus {
-      border-color: transparent;
+      border-color: var(--modus-wc-color-highlight-blue);
     }
   }
 }
@@ -74,36 +72,4 @@ modus-wc-time-input {
 [data-theme='connect-light'] modus-wc-time-input .modus-wc-time-input,
 [data-theme='connect-dark'] modus-wc-time-input .modus-wc-time-input {
   @include connect-input-styles;
-}
-
-// Focus halo for all themes: 2px primary outline (per Figma focus spec).
-modus-wc-time-input .modus-wc-time-input:focus {
-  outline: 2px solid var(--modus-wc-color-primary);
-  outline-offset: 2px;
-}
-
-// Classic themes: the primary halo is the only focus ring (no second border).
-[data-theme='modus-classic-light']
-  modus-wc-time-input
-  .modus-wc-time-input.modus-wc-input:focus {
-  border-color: transparent;
-}
-
-[data-theme='modus-classic-light']
-  modus-wc-time-input
-  .modus-wc-time-input.modus-wc-input:focus-within {
-  border-color: transparent;
-}
-
-[data-theme='modus-classic-dark']
-  modus-wc-time-input
-  .modus-wc-time-input.modus-wc-input:focus-within {
-  border-color: transparent;
-}
-
-// Focus halo for mouse and keyboard focus (including the clock icon click): 2px primary, matching the text inputs.
-modus-wc-time-input .modus-wc-time-input.modus-wc-input:focus,
-modus-wc-time-input .modus-wc-time-input.modus-wc-input:focus-within {
-  outline: 2px solid var(--modus-wc-color-primary);
-  outline-offset: 2px;
 }
