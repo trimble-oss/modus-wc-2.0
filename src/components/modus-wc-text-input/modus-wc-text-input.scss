@@ -545,3 +545,11 @@ modus-wc-text-input {
     @include connect-input-styles;
   }
 }
+
+// Modern only: 2px primary focus halo on the field wrapper.
+[data-theme^='modus-modern']
+  modus-wc-text-input
+  .modus-wc-text-input:focus-within {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}
