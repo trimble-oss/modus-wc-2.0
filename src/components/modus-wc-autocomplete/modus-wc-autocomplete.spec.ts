@@ -1,4 +1,13 @@
 import { newSpecPage } from '@stencil/core/testing';
+import { ModusWcAutocomplete } from './modus-wc-autocomplete';
+import * as autocompleteCore from './modus-wc-autocomplete-core';
+import {
+  renderExpandCollapseButton,
+  renderMenuItems,
+  renderNoResults,
+  syncFilteredItems,
+  syncMenuItemSelection,
+} from './modus-wc-autocomplete-core';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
@@ -8,7 +17,6 @@ import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
 import { ModusWcTextInput } from '../modus-wc-text-input/modus-wc-text-input';
 import { IAutocompleteItem } from '../types';
 import { expectLabelLinkedToControl } from '../utils';
-import { ModusWcAutocomplete } from './modus-wc-autocomplete';
 
 function findMenuItemVNode(
   node: unknown
@@ -22,22 +30,14 @@ function findMenuItemVNode(
     return undefined;
   }
 
-  const vnode = node as {
+  const stencilNode = node as {
     $tag$?: string;
     $attrs$?: { optionId?: string };
     $children$?: unknown;
   };
-  if (vnode.$tag$ === 'modus-wc-menu-item') return vnode;
-  return findMenuItemVNode(vnode.$children$);
+  if (stencilNode.$tag$ === 'modus-wc-menu-item') return stencilNode;
+  return findMenuItemVNode(stencilNode.$children$);
 }
-import * as autocompleteCore from './modus-wc-autocomplete-core';
-import {
-  renderExpandCollapseButton,
-  renderMenuItems,
-  renderNoResults,
-  syncFilteredItems,
-  syncMenuItemSelection,
-} from './modus-wc-autocomplete-core';
 
 describe('modus-wc-autocomplete', () => {
   const items: IAutocompleteItem[] = [
@@ -2294,13 +2294,13 @@ describe('modus-wc-autocomplete', () => {
   });
 
   it('should omit optionId when listboxId is not provided', () => {
-    const vnode = renderMenuItems({
+    const menuItemsOutput = renderMenuItems({
       hasSlottedContent: false,
-      items: [{ label: 'Item 1', value: '1' }],
+      items: [{ label: 'Item 1', value: '1', visibleInMenu: true }],
       onItemSelect: jest.fn(),
     });
 
-    const menuItem = findMenuItemVNode(vnode);
+    const menuItem = findMenuItemVNode(menuItemsOutput);
     expect(menuItem?.$attrs$?.optionId).toBeUndefined();
   });
 
