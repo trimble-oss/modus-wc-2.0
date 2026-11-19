@@ -146,4 +146,5 @@ modus-wc-number-input {
 [data-theme='connect-light'] modus-wc-number-input .modus-wc-number-input,
 [data-theme='connect-dark'] modus-wc-number-input .modus-wc-number-input {
   @include connect-input-styles;
+  @include connect-text-input-feedback;
 }

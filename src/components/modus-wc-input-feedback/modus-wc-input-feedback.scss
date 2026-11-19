@@ -121,18 +121,13 @@ modus-wc-input-feedback .modus-wc-input-feedback {
   }
 }
 
-[data-theme='connect-light'] modus-wc-input-feedback .modus-wc-input-feedback {
+[data-theme='connect-light'] modus-wc-input-feedback .modus-wc-input-feedback,
+[data-theme='connect-dark'] modus-wc-input-feedback .modus-wc-input-feedback {
   background-color: transparent;
   border-radius: 0;
   font-weight: var(--modus-wc-font-weight-normal);
-  gap: 0;
   margin-top: 0;
   padding: 0;
-
-  .modus-wc-input-feedback-icon,
-  modus-wc-icon {
-    display: none;
-  }
 
   &.modus-wc-input-feedback {
     background-color: transparent;

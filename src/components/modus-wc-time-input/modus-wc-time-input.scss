@@ -72,4 +72,5 @@ modus-wc-time-input {
 [data-theme='connect-light'] modus-wc-time-input .modus-wc-time-input,
 [data-theme='connect-dark'] modus-wc-time-input .modus-wc-time-input {
   @include connect-input-styles;
+  @include connect-text-input-feedback;
 }
