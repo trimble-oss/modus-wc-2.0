@@ -1612,4 +1612,18 @@ describe('modus-wc-menu-item', () => {
     expect(options?.[0].getAttribute('aria-disabled')).toBe('true');
     expect(options?.[1].hasAttribute('aria-disabled')).toBe(false);
   });
+
+  it('should hide the checkbox from assistive tech in a listbox menu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu popup-role="listbox" aria-label="Listbox">
+          <modus-wc-menu-item checkbox="true" label="One" value="1"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const checkbox = page.root?.querySelector('modus-wc-checkbox');
+    expect(checkbox?.getAttribute('aria-hidden')).toBe('true');
+  });
 });

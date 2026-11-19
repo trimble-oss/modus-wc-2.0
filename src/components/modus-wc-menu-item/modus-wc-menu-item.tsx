@@ -308,6 +308,7 @@ export class ModusWcMenuItem {
         <div class="modus-wc-menu-item-content">
           {(this.checkbox || mode === 'multiple') && (
             <modus-wc-checkbox
+              aria-hidden={listboxMode ? 'true' : undefined}
               aria-label="Checkbox"
               disabled={this.disabled}
               size={this.size}

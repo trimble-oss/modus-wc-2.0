@@ -1003,7 +1003,7 @@ export class ModusWcAutocomplete {
         : undefined,
       ariaAutocomplete: 'list' as const,
       ariaControls: showListbox ? listboxId : undefined,
-      ariaExpanded: this.menuVisible ? 'true' : 'false',
+      comboboxExpanded: this.menuVisible ? 'true' : 'false',
       inputRole: 'combobox',
     };
 

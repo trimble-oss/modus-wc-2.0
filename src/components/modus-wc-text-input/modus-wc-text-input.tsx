@@ -69,8 +69,9 @@ export class ModusWcTextInput {
   /**
    * Sets `aria-expanded` on the native input when provided (`"true"` or `"false"`).
    * Leave unset so non-combobox inputs do not expose the attribute.
+   * Named `comboboxExpanded` so the host does not shadow `HTMLElement.ariaExpanded`.
    */
-  @Prop() ariaExpanded?: string;
+  @Prop() comboboxExpanded?: string;
 
   /** Controls automatic correction in inputted text. Support by browser varies. */
   @Prop() autoCorrect?: 'on' | 'off';
@@ -361,11 +362,14 @@ export class ModusWcTextInput {
             value={this.value}
             {...this.inheritedAttributes}
             {...(this.inputRole ? { role: this.inputRole } : {})}
+            {...(this.inputRole === 'combobox'
+              ? { 'aria-haspopup': 'listbox' }
+              : {})}
             {...(this.ariaAutocomplete
               ? { 'aria-autocomplete': this.ariaAutocomplete }
               : {})}
-            {...(this.ariaExpanded !== undefined
-              ? { 'aria-expanded': this.ariaExpanded }
+            {...(this.comboboxExpanded !== undefined
+              ? { 'aria-expanded': String(this.comboboxExpanded) }
               : {})}
             {...(this.ariaControls
               ? { 'aria-controls': this.ariaControls }

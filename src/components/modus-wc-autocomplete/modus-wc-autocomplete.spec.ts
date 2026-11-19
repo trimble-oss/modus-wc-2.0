@@ -7438,6 +7438,7 @@ describe('feedback prop', () => {
     const input = page.root!.querySelector('input') as HTMLInputElement;
     expect(input.getAttribute('role')).toBe('combobox');
     expect(input.getAttribute('aria-autocomplete')).toBe('list');
+    expect(input.getAttribute('aria-haspopup')).toBe('listbox');
     expect(input.getAttribute('aria-expanded')).toBe('false');
     expect(input.hasAttribute('aria-activedescendant')).toBe(false);
     expect(input.hasAttribute('aria-controls')).toBe(false);

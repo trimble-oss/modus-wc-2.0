@@ -76,7 +76,7 @@ export class ModusWcMenu {
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
 
-    if (!this.el.ariaLabel) {
+    if (!this.el.ariaLabel && this.popupRole !== 'listbox') {
       this.el.ariaLabel = 'Menu';
     }
     this.inheritedAttributes = inheritAriaAttributes(this.el);

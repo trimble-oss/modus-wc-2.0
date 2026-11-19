@@ -559,13 +559,15 @@ interface RenderNoResultsParams {
 
 export function renderNoResults(params: RenderNoResultsParams): JSX.Element {
   return (
-    <div class="modus-wc-autocomplete-no-results" role="presentation">
-      <div class="icon-label" aria-label={params.noResults?.ariaLabel}>
-        <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
-        <div class="label">{params.noResults?.label}</div>
+    <li role="presentation">
+      <div class="modus-wc-autocomplete-no-results">
+        <div class="icon-label" aria-label={params.noResults?.ariaLabel}>
+          <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
+          <div class="label">{params.noResults?.label}</div>
+        </div>
+        <div class="sub-label">{params.noResults?.subLabel}</div>
       </div>
-      <div class="sub-label">{params.noResults?.subLabel}</div>
-    </div>
+    </li>
   );
 }
 
@@ -749,7 +751,7 @@ interface RenderInputParams {
   ariaActiveDescendant?: string;
   ariaAutocomplete?: 'none' | 'inline' | 'list' | 'both';
   ariaControls?: string;
-  ariaExpanded?: string;
+  comboboxExpanded?: string;
   bordered?: boolean;
   multiSelect?: boolean;
   disabled?: boolean;
@@ -780,7 +782,7 @@ export function renderInput(params: RenderInputParams): JSX.Element {
       ariaActiveDescendant={params.ariaActiveDescendant}
       ariaAutocomplete={params.ariaAutocomplete}
       ariaControls={params.ariaControls}
-      ariaExpanded={params.ariaExpanded}
+      comboboxExpanded={params.comboboxExpanded}
       autoComplete={params.autoComplete}
       bordered={params.bordered && !params.multiSelect}
       customClass={params.customClass}
@@ -822,7 +824,7 @@ interface RenderMenuItemsParams {
 export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
   if (params.showSpinner) {
     return (
-      <li>
+      <li role="presentation">
         <modus-wc-loader variant="spinner" size={params.size}></modus-wc-loader>
       </li>
     );
