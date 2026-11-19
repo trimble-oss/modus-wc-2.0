@@ -100,4 +100,70 @@ describe('modus-wc-status', () => {
     const status = page.root?.querySelector('.modus-wc-status');
     expect(status?.getAttribute('aria-label')).toBe('System health');
   });
+
+  it('should add the info class and label when variant is info', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status variant="info"></modus-wc-status>',
+    });
+    expect(page.root?.querySelector('.modus-wc-status')).toHaveClass(
+      'modus-wc-status--info'
+    );
+    expect(
+      page.root?.querySelector('.modus-wc-status-label')?.textContent?.trim()
+    ).toBe('Info');
+  });
+
+  it('should render the pulse when variant is inactive and pulse is not set', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status variant="inactive"></modus-wc-status>',
+    });
+    expect(page.root?.querySelector('.modus-wc-status')).toHaveClass(
+      'modus-wc-status--inactive'
+    );
+    expect(page.root?.querySelector('.modus-wc-status-pulse')).not.toBeNull();
+    expect(
+      page.root?.querySelector('.modus-wc-status-label')?.textContent?.trim()
+    ).toBe('Inactive');
+  });
+
+  it('should hide pulse for inactive variant when pulse is false', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status variant="inactive" pulse="false"></modus-wc-status>',
+    });
+    expect(page.root?.querySelector('.modus-wc-status-pulse')).toBeNull();
+  });
+
+  it('should not render the pulse when pulse is false and size is lg', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status size="lg" pulse="false"></modus-wc-status>',
+    });
+    expect(page.root?.querySelector('.modus-wc-status-pulse')).toBeNull();
+  });
+
+  it('should add the xs size class when size is not set', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcStatus],
+      html: '<modus-wc-status></modus-wc-status>',
+    });
+    expect(page.root?.querySelector('.modus-wc-status')).toHaveClass(
+      'modus-wc-status--xs'
+    );
+  });
+
+  it.each(['sm', 'md', 'lg', 'xl'])(
+    'should add the size class when size is %s',
+    async (size) => {
+      const page = await newSpecPage({
+        components: [ModusWcStatus],
+        html: `<modus-wc-status size="${size}"></modus-wc-status>`,
+      });
+      expect(page.root?.querySelector('.modus-wc-status')).toHaveClass(
+        `modus-wc-status--${size}`
+      );
+    }
+  );
 });
