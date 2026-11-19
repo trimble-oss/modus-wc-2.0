@@ -223,3 +223,11 @@ modus-wc-pagination .modus-wc-pagination {
     }
   }
 }
+
+// Modern only: 2px primary focus halo.
+[data-theme^='modus-modern']
+  modus-wc-pagination
+  .modus-wc-pagination-btn:focus-visible {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}
