@@ -746,6 +746,34 @@ describe('modus-wc-menu-item', () => {
     expect(selectSpy).toHaveBeenCalled();
   });
 
+  it('should not clear checkbox siblings when a plain item is selected in single mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu selection-mode="single">
+          <modus-wc-menu-item label="Select All" value="all"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Other" value="other" selected="true"></modus-wc-menu-item>
+          <modus-wc-menu-item checkbox="true" label="Option A" value="a"></modus-wc-menu-item>
+          <modus-wc-menu-item checkbox="true" label="Option B" value="b" selected="true"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const items = page.doc.querySelectorAll('modus-wc-menu-item');
+    const selectAll = items[0] as HTMLElement & { selected?: boolean };
+    const plainSibling = items[1] as HTMLElement & { selected?: boolean };
+    const unchecked = items[2] as HTMLElement & { selected?: boolean };
+    const checked = items[3] as HTMLElement & { selected?: boolean };
+
+    selectAll.querySelector('button')?.click();
+    await page.waitForChanges();
+
+    expect(selectAll.selected).toBe(true);
+    expect(plainSibling.selected).toBe(false);
+    expect(unchecked.selected).toBeFalsy();
+    expect(checked.selected).toBe(true);
+  });
+
   it('should render checkbox automatically in multi-select mode', async () => {
     const page = await newSpecPage({
       components: [ModusWcMenu, ModusWcMenuItem],

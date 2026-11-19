@@ -171,8 +171,13 @@ export class ModusWcMenuItem {
 
     const allItems = rootMenu.querySelectorAll('modus-wc-menu-item');
     allItems.forEach((item) => {
-      if (item !== this.el) {
-        (item as HTMLElement & { selected?: boolean }).selected = false;
+      const sibling = item as HTMLElement & {
+        checkbox?: boolean;
+        selected?: boolean;
+      };
+      // Checkbox rows stay under the consumer's control in single mode.
+      if (item !== this.el && !sibling.checkbox) {
+        sibling.selected = false;
       }
     });
   }
