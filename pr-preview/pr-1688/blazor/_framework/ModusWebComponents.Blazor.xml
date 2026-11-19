@@ -3551,11 +3551,6 @@
             Sets aria-controls on the native input when provided.
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.AriaExpanded">
-            <summary>
-            Sets aria-expanded on the native input when provided (&quot;true&quot; or &quot;false&quot;). Leave unset so non-combobox inputs do not expose the attribute.
-            </summary>
-        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.AutoCapitalize">
             <summary>
             Controls automatic capitalization in inputted text.
@@ -3575,6 +3570,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.ClearAriaLabel">
             <summary>
             Aria label for the clear icon button.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.ComboboxExpanded">
+            <summary>
+            Sets aria-expanded on the native input when provided (&quot;true&quot; or &quot;false&quot;). Leave unset so non-combobox inputs do not expose the attribute. Named comboboxExpanded so the host does not shadow HTMLElement.ariaExpanded.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.CustomClass">
