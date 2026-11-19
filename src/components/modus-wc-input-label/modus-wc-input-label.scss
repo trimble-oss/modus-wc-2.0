@@ -36,6 +36,14 @@ modus-wc-input-label .modus-wc-input-label {
   }
 }
 
+[data-theme='modus-modern-light'] modus-wc-input-label .modus-wc-input-label {
+  color: var(--modus-wc-color-gray-6); // #6A6E79
+}
+
+[data-theme='modus-modern-dark'] modus-wc-input-label .modus-wc-input-label {
+  color: var(--modus-wc-color-gray-3); // #A3A6B1
+}
+
 [data-theme='modus-classic-light'] modus-wc-input-label .modus-wc-input-label {
   color: var(--modus-wc-color-gray-8);
 }
