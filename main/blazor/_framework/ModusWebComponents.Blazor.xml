@@ -3064,10 +3064,15 @@
             Whether the dot displays a pulsing halo animation.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcStatus.Size">
+            <summary>
+            Dot size. Default xs (8px).
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcStatus.Variant">
             <summary>
             The semantic status variant.
-            Allowed values: "active", "warning", "danger"
+            Allowed values: "active", "warning", "danger", "info", "inactive"
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcStatus.ChildContent">
