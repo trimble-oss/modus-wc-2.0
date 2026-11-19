@@ -54,6 +54,17 @@ export class ModusWcMenu {
   /** Indicates that this menu is a submenu (dropdown). */
   @Prop() isSubMenu?: boolean;
 
+  /** Id applied to the list element when `popupRole` is `listbox`. */
+  @Prop() listboxId?: string;
+
+  /** Sets `aria-multiselectable` when `popupRole` is `listbox`. */
+  @Prop() multiselectable?: boolean = false;
+
+  /**
+   * `menu` keeps menubar/menu semantics. `listbox` is the autocomplete popup.
+   */
+  @Prop() popupRole?: 'menu' | 'listbox' = 'menu';
+
   /** Event emitted when the menu loses focus. */
   @StencilEvent() menuFocusout!: EventEmitter<FocusEvent>;
 
@@ -119,6 +130,10 @@ export class ModusWcMenu {
 
   @Listen('keydown')
   handleKeyDown(e: KeyboardEvent) {
+    // Combobox listboxes keep DOM focus on the input and move the highlight
+    // with aria-activedescendant. Do not move focus into the options.
+    if (this.popupRole === 'listbox') return;
+
     if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
 
     e.preventDefault();
@@ -167,10 +182,18 @@ export class ModusWcMenu {
     return (
       <Host class={this.isSubMenu ? 'modus-wc-menu-submenu' : undefined}>
         <ul
-          aria-orientation={this.orientation}
+          aria-multiselectable={
+            this.popupRole === 'listbox' && this.multiselectable
+              ? 'true'
+              : undefined
+          }
+          aria-orientation={
+            this.popupRole === 'listbox' ? undefined : this.orientation
+          }
           class={this.getClasses()}
-          role={this.getMenuRole()}
+          id={this.popupRole === 'listbox' ? this.listboxId : undefined}
           {...this.inheritedAttributes}
+          role={this.popupRole === 'listbox' ? 'listbox' : this.getMenuRole()}
         >
           <slot />
         </ul>

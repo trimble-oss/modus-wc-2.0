@@ -88,6 +88,15 @@ export function syncMenuItemSelection(
   });
 }
 
+/** Stable id for an autocomplete option inside its listbox. */
+export function getAutocompleteOptionId(
+  listboxId: string,
+  value: string
+): string {
+  const safeValue = value.replace(/[^A-Za-z0-9_-]/g, '_');
+  return `${listboxId}-option-${safeValue}`;
+}
+
 export function syncFilteredItems(
   items: IAutocompleteItem[] | undefined,
   value: string,
@@ -550,7 +559,7 @@ interface RenderNoResultsParams {
 
 export function renderNoResults(params: RenderNoResultsParams): JSX.Element {
   return (
-    <div class="modus-wc-autocomplete-no-results">
+    <div class="modus-wc-autocomplete-no-results" role="presentation">
       <div class="icon-label" aria-label={params.noResults?.ariaLabel}>
         <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
         <div class="label">{params.noResults?.label}</div>
@@ -737,6 +746,10 @@ export function renderMoreChipsIndicator(
 
 interface RenderInputParams {
   autoComplete?: AutocompleteTypes;
+  ariaActiveDescendant?: string;
+  ariaAutocomplete?: 'none' | 'inline' | 'list' | 'both';
+  ariaControls?: string;
+  ariaExpanded?: boolean;
   bordered?: boolean;
   multiSelect?: boolean;
   disabled?: boolean;
@@ -745,6 +758,7 @@ interface RenderInputParams {
   includeClear?: boolean;
   includeSearch?: boolean;
   inputId?: string;
+  inputRole?: string;
   inputTabIndex?: number;
   name?: string;
   placeholder?: string;
@@ -763,6 +777,10 @@ interface RenderInputParams {
 export function renderInput(params: RenderInputParams): JSX.Element {
   return (
     <modus-wc-text-input
+      ariaActiveDescendant={params.ariaActiveDescendant}
+      ariaAutocomplete={params.ariaAutocomplete}
+      ariaControls={params.ariaControls}
+      ariaExpanded={params.ariaExpanded}
       autoComplete={params.autoComplete}
       bordered={params.bordered && !params.multiSelect}
       customClass={params.customClass}
@@ -771,6 +789,7 @@ export function renderInput(params: RenderInputParams): JSX.Element {
       includeClear={!params.multiSelect && params.includeClear}
       includeSearch={!params.multiSelect && params.includeSearch}
       inputId={params.inputId}
+      inputRole={params.inputRole}
       inputTabIndex={params.inputTabIndex}
       name={params.name}
       onClearClick={params.onClear}
@@ -796,6 +815,7 @@ interface RenderMenuItemsParams {
   items?: IAutocompleteItem[];
   noResults?: IAutocompleteNoResults;
   hasSlottedContent: boolean;
+  listboxId?: string;
   onItemSelect: (value: string) => void;
 }
 
@@ -824,6 +844,11 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
               disabled={item.disabled}
               focused={item.focused}
               label={item.label}
+              optionId={
+                params.listboxId
+                  ? getAutocompleteOptionId(params.listboxId, item.value)
+                  : undefined
+              }
               onItemSelect={(e: CustomEvent) => {
                 e.stopPropagation();
                 params.onItemSelect(item.value);

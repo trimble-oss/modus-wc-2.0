@@ -2,6 +2,7 @@ import {
   Component,
   Element,
   EventEmitter,
+  Fragment,
   h,
   Host,
   Listen,
@@ -64,6 +65,9 @@ export class ModusWcMenuItem {
   /** The position of the tooltip relative to the menu item. */
   @Prop() tooltipPosition?: 'auto' | 'top' | 'right' | 'bottom' | 'left' =
     'auto';
+
+  /** Id of the option element when this item is inside a listbox popup. */
+  @Prop() optionId?: string;
 
   /** The unique identifying value of the menu item. */
   @Prop() value: string = '';
@@ -185,6 +189,16 @@ export class ModusWcMenuItem {
     )?.selectionMode;
   }
 
+  private isListboxPopup(): boolean {
+    return (
+      (
+        this.el.closest('modus-wc-menu') as HTMLElement & {
+          popupRole?: 'menu' | 'listbox';
+        }
+      )?.popupRole === 'listbox'
+    );
+  }
+
   private getClasses(): string {
     const classList: string[] = ['modus-wc-menu-item'];
 
@@ -223,6 +237,14 @@ export class ModusWcMenuItem {
     if (this.hasCheckbox(mode)) return undefined;
     if (mode === 'single') return this.selected ? 'true' : 'false';
     return undefined;
+  }
+
+  /** Listbox: selection state when multi-select, highlight state when single. */
+  private getListboxAriaSelected(mode?: SelectionMode): string {
+    if (this.checkbox || mode === 'multiple') {
+      return this.selected ? 'true' : 'false';
+    }
+    return this.focused ? 'true' : 'false';
   }
 
   private handleItemSelect = () => {
@@ -280,60 +302,85 @@ export class ModusWcMenuItem {
 
   render() {
     const mode = this._selectionMode;
+    const listboxMode = this.isListboxPopup();
+    const itemContent = (
+      <Fragment>
+        <div class="modus-wc-menu-item-content">
+          {(this.checkbox || mode === 'multiple') && (
+            <modus-wc-checkbox
+              aria-label="Checkbox"
+              disabled={this.disabled}
+              size={this.size}
+              value={!!this.selected}
+            />
+          )}
+          <slot name="start-icon"></slot>
+          <div class="modus-wc-menu-item-labels">
+            {this.tooltipContent ? (
+              <modus-wc-tooltip
+                content={this.tooltipContent}
+                position={this.tooltipPosition}
+                customClass="modus-wc-menu-item-tooltip"
+              >
+                <div>{this.label}</div>
+              </modus-wc-tooltip>
+            ) : (
+              <div>{this.label}</div>
+            )}
+            {this.subLabel && (
+              <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
+            )}
+          </div>
+        </div>
+        {this.hasSubmenu && (
+          <modus-wc-icon
+            class="modus-wc-menu-submenu-chevron"
+            decorative
+            name="expand_more"
+            size="md"
+          ></modus-wc-icon>
+        )}
+      </Fragment>
+    );
 
     return (
       <Host>
         <li
-          aria-checked={this.getAriaChecked(mode)}
-          aria-selected={this.getAriaSelected(mode)}
-          aria-disabled={this.disabled}
+          aria-checked={listboxMode ? undefined : this.getAriaChecked(mode)}
+          aria-disabled={
+            listboxMode ? (this.disabled ? 'true' : undefined) : this.disabled
+          }
+          aria-selected={
+            listboxMode
+              ? this.getListboxAriaSelected(mode)
+              : this.getAriaSelected(mode)
+          }
           class={this.getClasses()}
-          role={this.getRole(mode)}
-          tabIndex={this.disabled ? -1 : 0}
+          id={listboxMode ? this.optionId : undefined}
+          role={listboxMode ? 'option' : this.getRole(mode)}
+          tabIndex={listboxMode || this.disabled ? -1 : 0}
           {...this.inheritedAttributes}
         >
-          <button
-            disabled={this.disabled}
-            onClick={this.handleItemSelect}
-            tabIndex={-1}
-            type="button"
-          >
-            <div class="modus-wc-menu-item-content">
-              {(this.checkbox || mode === 'multiple') && (
-                <modus-wc-checkbox
-                  aria-label="Checkbox"
-                  disabled={this.disabled}
-                  size={this.size}
-                  value={!!this.selected}
-                />
-              )}
-              <slot name="start-icon"></slot>
-              <div class="modus-wc-menu-item-labels">
-                {this.tooltipContent ? (
-                  <modus-wc-tooltip
-                    content={this.tooltipContent}
-                    position={this.tooltipPosition}
-                    customClass="modus-wc-menu-item-tooltip"
-                  >
-                    <div>{this.label}</div>
-                  </modus-wc-tooltip>
-                ) : (
-                  <div>{this.label}</div>
-                )}
-                {this.subLabel && (
-                  <div class="modus-wc-menu-item-sublabel">{this.subLabel}</div>
-                )}
-              </div>
+          {listboxMode ? (
+            <div
+              class="modus-wc-menu-item-option"
+              onClick={() => {
+                if (!this.disabled) this.handleItemSelect();
+              }}
+              role="presentation"
+            >
+              {itemContent}
             </div>
-            {this.hasSubmenu && (
-              <modus-wc-icon
-                class="modus-wc-menu-submenu-chevron"
-                decorative
-                name="expand_more"
-                size="md"
-              ></modus-wc-icon>
-            )}
-          </button>
+          ) : (
+            <button
+              disabled={this.disabled}
+              onClick={this.handleItemSelect}
+              tabIndex={-1}
+              type="button"
+            >
+              {itemContent}
+            </button>
+          )}
           <slot></slot>
         </li>
       </Host>

@@ -9,9 +9,31 @@ import { ModusWcTextInput } from '../modus-wc-text-input/modus-wc-text-input';
 import { IAutocompleteItem } from '../types';
 import { expectLabelLinkedToControl } from '../utils';
 import { ModusWcAutocomplete } from './modus-wc-autocomplete';
+
+function findMenuItemVNode(
+  node: unknown
+): { $attrs$?: { optionId?: string } } | undefined {
+  if (!node || typeof node !== 'object') return undefined;
+  if (Array.isArray(node)) {
+    for (const child of node) {
+      const found = findMenuItemVNode(child);
+      if (found) return found;
+    }
+    return undefined;
+  }
+
+  const vnode = node as {
+    $tag$?: string;
+    $attrs$?: { optionId?: string };
+    $children$?: unknown;
+  };
+  if (vnode.$tag$ === 'modus-wc-menu-item') return vnode;
+  return findMenuItemVNode(vnode.$children$);
+}
 import * as autocompleteCore from './modus-wc-autocomplete-core';
 import {
   renderExpandCollapseButton,
+  renderMenuItems,
   renderNoResults,
   syncFilteredItems,
   syncMenuItemSelection,
@@ -2269,6 +2291,17 @@ describe('modus-wc-autocomplete', () => {
     expandButtonElement.$attrs$.onButtonClick(new Event('click'));
 
     expect(onToggleExpansion).toHaveBeenCalledTimes(1);
+  });
+
+  it('should omit optionId when listboxId is not provided', () => {
+    const vnode = renderMenuItems({
+      hasSlottedContent: false,
+      items: [{ label: 'Item 1', value: '1' }],
+      onItemSelect: jest.fn(),
+    });
+
+    const menuItem = findMenuItemVNode(vnode);
+    expect(menuItem?.$attrs$?.optionId).toBeUndefined();
   });
 
   // Test expanded state rendering
@@ -5567,10 +5600,14 @@ describe('modus-wc-autocomplete', () => {
     const bananaItem = menuItems[1] as HTMLElement & { selected?: boolean };
     const cherryItem = menuItems[2] as HTMLElement & { selected?: boolean };
 
-    menuItems[0].querySelector('button')?.click();
+    menuItems[0]
+      .querySelector<HTMLElement>('.modus-wc-menu-item-option')
+      ?.click();
     await page.waitForChanges();
 
-    menuItems[1].querySelector('button')?.click();
+    menuItems[1]
+      .querySelector<HTMLElement>('.modus-wc-menu-item-option')
+      ?.click();
     await page.waitForChanges();
 
     expect(appleItem.selected).toBe(true);
@@ -5735,7 +5772,9 @@ describe('modus-wc-autocomplete', () => {
         (element) =>
           (element as HTMLElement & { value?: string }).value === value
       );
-      menuItem?.querySelector('button')?.click();
+      menuItem
+        ?.querySelector<HTMLElement>('.modus-wc-menu-item-option')
+        ?.click();
       await page.waitForChanges();
     };
 
@@ -7379,5 +7418,65 @@ describe('feedback prop', () => {
     expect(label?.getAttribute('customClass')).toContain(
       'modus-wc-input-label--error'
     );
+  });
+
+  it('should expose a combobox, listbox, and result count', async () => {
+    const page = await newSpecPage({
+      components: [
+        ModusWcAutocomplete,
+        ModusWcMenu,
+        ModusWcMenuItem,
+        ModusWcTextInput,
+      ],
+      html: '<modus-wc-autocomplete aria-label="City"></modus-wc-autocomplete>',
+    });
+
+    const component = page.rootInstance as ModusWcAutocomplete;
+    component.items = items;
+    await page.waitForChanges();
+
+    const input = page.root!.querySelector('input') as HTMLInputElement;
+    expect(input.getAttribute('role')).toBe('combobox');
+    expect(input.getAttribute('aria-autocomplete')).toBe('list');
+    expect(input.getAttribute('aria-expanded')).toBe('false');
+    expect(input.hasAttribute('aria-activedescendant')).toBe(false);
+    expect(input.hasAttribute('aria-controls')).toBe(false);
+
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(input.getAttribute('aria-expanded')).toBe('true');
+    const listbox = page.root!.querySelector('[role="listbox"]');
+    expect(listbox).not.toBeNull();
+    expect(page.root!.querySelector('[role="menu"]')).toBeNull();
+    expect(input.getAttribute('aria-controls')).toBe(listbox!.id);
+
+    const options = listbox!.querySelectorAll('[role="option"]');
+    expect(options.length).toBe(items.length);
+    options.forEach((option) => {
+      expect(option.getAttribute('tabindex')).toBe('-1');
+    });
+
+    const status = page.root!.querySelector('.modus-wc-autocomplete-status');
+    expect(status?.getAttribute('aria-live')).toBe('polite');
+    expect(status?.textContent).toBe('3 results available.');
+
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(input.getAttribute('aria-activedescendant')).toBe(options[0].id);
+
+    input.value = 'Item 1';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await page.waitForChanges();
+
+    expect(status?.textContent).toBe('1 result available.');
+    expect(
+      page.root!.querySelectorAll('[role="listbox"] [role="option"]').length
+    ).toBe(1);
   });
 });

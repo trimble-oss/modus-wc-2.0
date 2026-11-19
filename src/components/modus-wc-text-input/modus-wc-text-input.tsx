@@ -57,6 +57,21 @@ export class ModusWcTextInput {
   /** Hint for form autofill feature. */
   @Prop() autoComplete?: AutocompleteTypes;
 
+  /** Sets `aria-activedescendant` on the native input when provided. */
+  @Prop() ariaActiveDescendant?: string;
+
+  /** Sets `aria-autocomplete` on the native input when provided. */
+  @Prop() ariaAutocomplete?: 'none' | 'inline' | 'list' | 'both';
+
+  /** Sets `aria-controls` on the native input when provided. */
+  @Prop() ariaControls?: string;
+
+  /**
+   * Sets `aria-expanded` on the native input when provided.
+   * Leave unset so non-combobox inputs do not expose the attribute.
+   */
+  @Prop() ariaExpanded?: boolean;
+
   /** Controls automatic correction in inputted text. Support by browser varies. */
   @Prop() autoCorrect?: 'on' | 'off';
 
@@ -93,6 +108,9 @@ export class ModusWcTextInput {
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
+
+  /** Role applied to the native input. Autocomplete uses `combobox`. */
+  @Prop() inputRole?: string;
 
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
@@ -342,6 +360,19 @@ export class ModusWcTextInput {
             type={this.getEffectiveInputType()}
             value={this.value}
             {...this.inheritedAttributes}
+            {...(this.inputRole ? { role: this.inputRole } : {})}
+            {...(this.ariaAutocomplete
+              ? { 'aria-autocomplete': this.ariaAutocomplete }
+              : {})}
+            {...(this.ariaExpanded !== undefined
+              ? { 'aria-expanded': this.ariaExpanded ? 'true' : 'false' }
+              : {})}
+            {...(this.ariaControls
+              ? { 'aria-controls': this.ariaControls }
+              : {})}
+            {...(this.ariaActiveDescendant
+              ? { 'aria-activedescendant': this.ariaActiveDescendant }
+              : {})}
           />
           {showPasswordToggle && (
             <div class="modus-wc-password-toggle-container">

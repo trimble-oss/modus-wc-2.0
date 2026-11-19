@@ -1595,4 +1595,21 @@ describe('modus-wc-menu-item', () => {
       ).toBe(false);
     });
   });
+
+  it('should set aria-disabled on a disabled option in a listbox menu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu popup-role="listbox" aria-label="Listbox">
+          <modus-wc-menu-item label="Off" value="off" disabled="true"></modus-wc-menu-item>
+          <modus-wc-menu-item label="On" value="on"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const options = page.root?.querySelectorAll('li');
+    expect(options?.[0].getAttribute('role')).toBe('option');
+    expect(options?.[0].getAttribute('aria-disabled')).toBe('true');
+    expect(options?.[1].hasAttribute('aria-disabled')).toBe(false);
+  });
 });
