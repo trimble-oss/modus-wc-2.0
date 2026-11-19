@@ -749,7 +749,7 @@ interface RenderInputParams {
   ariaActiveDescendant?: string;
   ariaAutocomplete?: 'none' | 'inline' | 'list' | 'both';
   ariaControls?: string;
-  ariaExpanded?: boolean;
+  ariaExpanded?: string;
   bordered?: boolean;
   multiSelect?: boolean;
   disabled?: boolean;
