@@ -185,6 +185,59 @@ export const sanitizeUrl = (url?: string): string | undefined => {
 };
 
 /**
+ * Links visible feedback copy to a form control.
+ * Error feedback sets `aria-invalid` to true. The message id is set only when the message has text.
+ */
+export function resolveControlFeedbackAria(
+  feedback: { level?: string; message?: string } | undefined,
+  effectiveId: string,
+  inherited: Attributes,
+  options?: {
+    extraDescribedBy?: string;
+    ariaInvalid?: string;
+  }
+): { messageId?: string; describedBy?: string; ariaInvalid?: string } {
+  const messageId = feedback?.message?.trim()
+    ? `${effectiveId}-feedback`
+    : undefined;
+  const describedByIds = [
+    inherited['aria-describedby'],
+    messageId,
+    options?.extraDescribedBy,
+  ].flatMap((value) => {
+    const trimmed = value?.trim();
+    return trimmed ? trimmed.split(/\s+/) : [];
+  });
+  const describedBy = [...new Set(describedByIds)].join(' ');
+  const ariaInvalid =
+    feedback?.level === 'error'
+      ? 'true'
+      : options?.ariaInvalid || inherited['aria-invalid'];
+
+  return {
+    messageId,
+    describedBy: describedBy || undefined,
+    ariaInvalid: ariaInvalid || undefined,
+  };
+}
+
+/**
+ * Copies control attributes and applies the resolved feedback aria values.
+ */
+export function assignFeedbackAria(
+  attributes: Attributes,
+  describedBy?: string,
+  ariaInvalid?: string
+): Attributes {
+  const next: Attributes = { ...attributes };
+  delete next['aria-describedby'];
+  delete next['aria-invalid'];
+  if (describedBy) next['aria-describedby'] = describedBy;
+  if (ariaInvalid) next['aria-invalid'] = ariaInvalid;
+  return next;
+}
+
+/**
  * Shared assertions for form control label ↔ input id linkage.
  */
 export function expectLabelLinkedToControl(

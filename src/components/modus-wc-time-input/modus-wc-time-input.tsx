@@ -11,10 +11,12 @@ import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import {
+  assignFeedbackAria,
   Attributes,
   createEffectiveIdResolver,
   generateRandomId,
   inheritAriaAttributes,
+  resolveControlFeedbackAria,
 } from '../utils';
 
 /**
@@ -190,6 +192,16 @@ export class ModusWcTimeInput {
 
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
+    const feedbackAria = resolveControlFeedbackAria(
+      this.feedback,
+      effectiveId,
+      this.inheritedAttributes
+    );
+    const controlAttributes = assignFeedbackAria(
+      this.inheritedAttributes,
+      feedbackAria.describedBy,
+      feedbackAria.ariaInvalid
+    );
 
     return (
       <Host>
@@ -220,13 +232,14 @@ export class ModusWcTimeInput {
           tabIndex={this.inputTabIndex}
           type="time"
           value={this.value}
-          {...this.inheritedAttributes}
+          {...controlAttributes}
         />
         {this.renderDatalist()}
         {this.feedback && (
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackAria.messageId}
             size={this.size}
           />
         )}

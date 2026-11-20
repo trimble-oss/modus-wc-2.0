@@ -9,6 +9,8 @@
 
 A customizable radio button component.
 
+Group related radios in a fieldset with a legend so the set has an accessible name.
+
 ## Properties
 
 | Property        | Attribute         | Description                                                                     | Type                                | Default     |

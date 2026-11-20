@@ -21,9 +21,11 @@ import {
   WeekStartDay,
 } from '../types';
 import {
+  assignFeedbackAria,
   Attributes,
   createEffectiveIdResolver,
   inheritAriaAttributes,
+  resolveControlFeedbackAria,
 } from '../utils';
 import DatePickerCalendar from './utils/calendar';
 import {
@@ -2192,11 +2194,31 @@ export class ModusWcDate {
     return attrs;
   }
 
+  private feedbackControlAttributes(effectiveId: string): {
+    attributes: Attributes;
+    messageId?: string;
+  } {
+    const feedbackAria = resolveControlFeedbackAria(
+      this.feedback,
+      effectiveId,
+      this.inheritedAttributes
+    );
+    return {
+      messageId: feedbackAria.messageId,
+      attributes: assignFeedbackAria(
+        this.inheritedAttributes,
+        feedbackAria.describedBy,
+        feedbackAria.ariaInvalid
+      ),
+    };
+  }
+
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
+    const feedbackControl = this.feedbackControlAttributes(effectiveId);
 
     if (this.isRange) {
-      return this.renderRangeMode(effectiveId);
+      return this.renderRangeMode(effectiveId, feedbackControl);
     }
 
     return (
@@ -2231,7 +2253,7 @@ export class ModusWcDate {
                 ? (this.inputRef?.value ?? '')
                 : this.inputDisplayValue
             }
-            {...this.inheritedAttributes}
+            {...feedbackControl.attributes}
           />
           <modus-wc-button
             aria-label="Open calendar"
@@ -2274,6 +2296,7 @@ export class ModusWcDate {
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackControl.messageId}
             size={this.size}
           />
         )}
@@ -2281,9 +2304,17 @@ export class ModusWcDate {
     );
   }
 
-  private renderRangeMode(effectiveId: string) {
+  private renderRangeMode(
+    effectiveId: string,
+    feedbackControl: { attributes: Attributes; messageId?: string }
+  ) {
     // istanbul ignore next (effectiveId is always resolved by createEffectiveIdResolver)
     const endId = effectiveId ? `${effectiveId}-end` : undefined;
+    const endAttributes = assignFeedbackAria(
+      this.endInputAttributes,
+      feedbackControl.attributes['aria-describedby'],
+      feedbackControl.attributes['aria-invalid']
+    );
 
     return (
       <Host>
@@ -2319,7 +2350,7 @@ export class ModusWcDate {
                     (this.inputRef?.value ?? '')
                   : this.inputDisplayValue
               }
-              {...this.inheritedAttributes}
+              {...feedbackControl.attributes}
             />
             <modus-wc-button
               aria-label="Open start calendar"
@@ -2360,7 +2391,7 @@ export class ModusWcDate {
                     (this.endInputRef?.value ?? '')
                   : this.endInputDisplayValue
               }
-              {...this.endInputAttributes}
+              {...endAttributes}
             />
             <modus-wc-button
               aria-label="Open end calendar"
@@ -2424,6 +2455,7 @@ export class ModusWcDate {
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackControl.messageId}
             size={this.size}
           />
         )}

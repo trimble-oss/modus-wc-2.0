@@ -110,6 +110,27 @@ describe('modus-wc-date', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should associate error feedback with both range inputs', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcDate, ModusWcInputFeedback],
+      html: '<modus-wc-date aria-label="Range" type="range" input-id="range-date"></modus-wc-date>',
+    });
+    const component = page.rootInstance as ModusWcDate;
+    component.feedback = { level: 'error', message: 'Choose a valid range.' };
+    await page.waitForChanges();
+
+    const inputs = page.root!.querySelectorAll('input');
+    const message = page.root!.querySelector('modus-wc-input-feedback span')!;
+    expect(inputs.length).toBe(2);
+    expect(message.id).toBe('range-date-feedback');
+    inputs.forEach((input) => {
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+      expect(input.getAttribute('aria-describedby')).toBe(
+        'range-date-feedback'
+      );
+    });
+  });
+
   it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcDate],

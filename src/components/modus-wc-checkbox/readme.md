@@ -7,7 +7,9 @@
 
 ## Overview
 
-A customizable checkbox component
+A customizable checkbox component.
+
+Group related checkboxes in a fieldset with a legend so the set has an accessible name.
 
 ## Properties
 

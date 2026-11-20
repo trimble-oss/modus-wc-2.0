@@ -11,10 +11,12 @@ import { convertPropsToClasses } from './modus-wc-textarea.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import {
+  assignFeedbackAria,
   Attributes,
   createEffectiveIdResolver,
   inheritAriaAttributes,
   inheritAttributes,
+  resolveControlFeedbackAria,
 } from '../utils';
 
 /**
@@ -142,6 +144,16 @@ export class ModusWcTextarea {
 
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
+    const feedbackAria = resolveControlFeedbackAria(
+      this.feedback,
+      effectiveId,
+      this.inheritedAttributes
+    );
+    const controlAttributes = assignFeedbackAria(
+      this.inheritedAttributes,
+      feedbackAria.describedBy,
+      feedbackAria.ariaInvalid
+    );
 
     return (
       <Host>
@@ -173,12 +185,13 @@ export class ModusWcTextarea {
           rows={this.rows}
           tabIndex={this.inputTabIndex}
           value={this.value}
-          {...this.inheritedAttributes}
+          {...controlAttributes}
         />
         {this.feedback && (
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackAria.messageId}
             size={this.size}
           />
         )}
