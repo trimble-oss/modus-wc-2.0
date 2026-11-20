@@ -1,5 +1,6 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcMenuItem } from './modus-wc-menu-item';
+import { ModusWcCheckbox } from '../modus-wc-checkbox/modus-wc-checkbox';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
 import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 
@@ -1594,5 +1595,83 @@ describe('modus-wc-menu-item', () => {
         (menuItems[0] as HTMLElement & { selected?: boolean }).selected
       ).toBe(false);
     });
+  });
+
+  it('should set aria-disabled on a disabled option in a listbox menu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu popup-role="listbox" aria-label="Listbox">
+          <modus-wc-menu-item label="Off" value="off" disabled="true"></modus-wc-menu-item>
+          <modus-wc-menu-item label="On" value="on"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const options = page.root?.querySelectorAll('li');
+    expect(options?.[0].getAttribute('role')).toBe('option');
+    expect(options?.[0].getAttribute('aria-disabled')).toBe('true');
+    expect(options?.[1].hasAttribute('aria-disabled')).toBe(false);
+  });
+
+  it('should hide the checkbox from assistive tech in a listbox menu', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu popup-role="listbox" aria-label="Listbox">
+          <modus-wc-menu-item checkbox="true" label="One" value="1"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const checkbox = page.root?.querySelector('modus-wc-checkbox');
+    expect(checkbox?.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('should expose selected state for multiselectable listbox options', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu popup-role="listbox" multiselectable="true" aria-label="Listbox">
+          <modus-wc-menu-item label="One" selected="true" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item focused="true" label="Two" value="2"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const options = page.root?.querySelectorAll('li');
+    expect(options?.[0].getAttribute('aria-selected')).toBe('true');
+    expect(options?.[1].getAttribute('aria-selected')).toBe('false');
+  });
+
+  it('should keep the listbox checkbox out of the tab order', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem, ModusWcCheckbox],
+      html: `
+        <modus-wc-menu popup-role="listbox" aria-label="Listbox">
+          <modus-wc-menu-item checkbox="true" label="One" value="1"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const checkboxInput = page.root?.querySelector(
+      'modus-wc-checkbox input'
+    ) as HTMLInputElement;
+    expect(checkboxInput.tabIndex).toBe(-1);
+  });
+
+  it('should treat a detached menu item as unselected for listbox aria-selected', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenuItem],
+      html: '<modus-wc-menu-item label="Orphan" value="orphan"></modus-wc-menu-item>',
+    });
+
+    expect(
+      (
+        page.rootInstance as unknown as {
+          getListboxAriaSelected: () => string;
+        }
+      ).getListboxAriaSelected()
+    ).toBe('false');
   });
 });

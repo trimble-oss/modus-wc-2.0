@@ -670,4 +670,37 @@ describe('modus-wc-menu', () => {
     // Verify stopPropagation was called for submenu
     expect(stopPropagationSpy).toHaveBeenCalled();
   });
+
+  it('should not move focus on arrow keys when popup role is listbox', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcMenu, ModusWcMenuItem],
+      html: `
+        <modus-wc-menu popup-role="listbox" aria-label="Listbox">
+          <modus-wc-menu-item label="Item 1" value="1"></modus-wc-menu-item>
+          <modus-wc-menu-item label="Item 2" value="2"></modus-wc-menu-item>
+        </modus-wc-menu>
+      `,
+    });
+
+    const items = page.doc.querySelectorAll('modus-wc-menu-item');
+    const firstLi = items[0].querySelector('li') as HTMLLIElement;
+    const secondLi = items[1].querySelector('li') as HTMLLIElement;
+    firstLi.focus();
+    Object.defineProperty(document, 'activeElement', {
+      value: firstLi,
+      writable: true,
+      configurable: true,
+    });
+
+    const focusSpy = jest.spyOn(secondLi, 'focus');
+    const event = new KeyboardEvent('keydown', {
+      key: 'ArrowDown',
+      bubbles: true,
+      cancelable: true,
+    });
+    page.root?.querySelector('ul')?.dispatchEvent(event);
+
+    expect(focusSpy).not.toHaveBeenCalled();
+    expect(event.defaultPrevented).toBe(false);
+  });
 });

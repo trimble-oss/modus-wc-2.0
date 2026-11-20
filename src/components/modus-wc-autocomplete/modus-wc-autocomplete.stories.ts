@@ -930,6 +930,22 @@ export const CustomMenuItems: Story = {
       );
     };
 
+    const highlightSlottedOption = (
+      autocomplete: Element,
+      items: HTMLElement[],
+      index: number
+    ) => {
+      items.forEach((item, itemIndex) => {
+        (item as HTMLElement & { focused?: boolean }).focused =
+          itemIndex === index;
+      });
+      const input = autocomplete.querySelector('input');
+      const option = items[index]?.querySelector('[role="option"]');
+      if (input && option?.id) {
+        input.setAttribute('aria-activedescendant', option.id);
+      }
+    };
+
     const handleCustomKeyDown = (e: KeyboardEvent) => {
       const autocomplete = (e.target as HTMLInputElement).closest(
         'modus-wc-autocomplete'
@@ -945,49 +961,44 @@ export const CustomMenuItems: Story = {
       if (autocomplete.disabled || autocomplete.readOnly) return;
 
       const visibleItems = getVisibleItems(autocomplete);
-
-      // Get all button elements within visible menu items
-      const buttons = visibleItems
-        .map((item) => item.querySelector('button'))
-        .filter(Boolean) as HTMLButtonElement[];
-      const currentFocusedButton = document.activeElement as HTMLButtonElement;
-      const currentIndex = buttons.indexOf(currentFocusedButton);
+      const currentIndex = visibleItems.findIndex(
+        (item) => (item as HTMLElement & { focused?: boolean }).focused
+      );
+      const input = autocomplete.querySelector('input');
 
       switch (e.key) {
         case 'ArrowDown': {
           e.preventDefault();
-          // Open menu when arrow key is pressed
           void autocomplete.openMenu();
 
           let nextIndex = currentIndex + 1;
-          // Stop at the last item instead of wrapping
-          if (nextIndex >= buttons.length) return;
+          if (nextIndex >= visibleItems.length) return;
           if (nextIndex < 0) nextIndex = 0;
 
-          buttons[nextIndex]?.focus();
+          highlightSlottedOption(autocomplete, visibleItems, nextIndex);
+          input?.focus();
           break;
         }
 
         case 'ArrowUp': {
           e.preventDefault();
-          // Open menu when arrow key is pressed
           void autocomplete.openMenu();
 
-          let prevIndex = currentIndex - 1;
-          // Stop at the first item instead of wrapping
+          const prevIndex = currentIndex - 1;
           if (prevIndex < 0) return;
 
-          buttons[prevIndex]?.focus();
+          highlightSlottedOption(autocomplete, visibleItems, prevIndex);
+          input?.focus();
           break;
         }
 
         case 'Enter': {
           e.preventDefault();
-          // If a button is focused, click it
-          if (buttons.includes(currentFocusedButton)) {
-            currentFocusedButton.click();
-          }
-          const input = autocomplete.querySelector('input');
+          const activeItem = visibleItems[currentIndex];
+          const option = activeItem?.querySelector(
+            '.modus-wc-menu-item-option'
+          );
+          option?.click();
           input?.focus();
           break;
         }
@@ -995,8 +1006,10 @@ export const CustomMenuItems: Story = {
         case 'Escape': {
           e.preventDefault();
           void autocomplete.closeMenu();
-          // Return focus to input
-          const input = autocomplete.querySelector('input');
+          visibleItems.forEach((item) => {
+            (item as HTMLElement & { focused?: boolean }).focused = false;
+          });
+          input?.removeAttribute('aria-activedescendant');
           input?.focus();
           break;
         }

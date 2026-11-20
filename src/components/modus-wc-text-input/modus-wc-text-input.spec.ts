@@ -722,6 +722,32 @@ describe('modus-wc-text-input', () => {
     expect(input?.getAttribute('type')).toBe('text');
   });
 
+  it('should map combobox expanded and haspopup onto the native input', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTextInput],
+      html: `<modus-wc-text-input
+        aria-label="City"
+        aria-autocomplete="list"
+        aria-haspopup="listbox"
+        combobox-expanded="false"
+        role="combobox"
+      ></modus-wc-text-input>`,
+    });
+
+    const input = page.root!.querySelector('input');
+    expect(input?.getAttribute('role')).toBe('combobox');
+    expect(input?.getAttribute('aria-autocomplete')).toBe('list');
+    expect(input?.getAttribute('aria-haspopup')).toBe('listbox');
+    expect(input?.getAttribute('aria-expanded')).toBe('false');
+
+    const component = page.rootInstance as ModusWcTextInput;
+    component.comboboxExpanded = 'true';
+    await page.waitForChanges();
+    expect(
+      page.root!.querySelector('input')?.getAttribute('aria-expanded')
+    ).toBe('true');
+  });
+
   it('should use md label size when size is unset', async () => {
     const page = await newSpecPage({
       components: [ModusWcTextInput, ModusWcInputLabel],

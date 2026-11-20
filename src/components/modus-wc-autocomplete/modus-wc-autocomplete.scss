@@ -169,6 +169,15 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     display: block;
   }
 
+  .modus-wc-autocomplete-status {
+    block-size: 1px;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+
   .modus-wc-autocomplete-no-results {
     padding: var(--modus-wc-spacing-md);
 
