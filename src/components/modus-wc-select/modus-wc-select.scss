@@ -133,3 +133,9 @@ modus-wc-select .modus-wc-select {
   @include connect-input-styles;
   @include connect-text-input-feedback;
 }
+
+// Modern only: 2px primary focus halo.
+[data-theme^='modus-modern'] modus-wc-select .modus-wc-select:focus {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}
