@@ -2028,7 +2028,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcMenu.PopupRole">
             <summary>
-            menu keeps menubar/menu semantics. listbox is the autocomplete popup.
+            menu keeps menubar/menu semantics. listbox is the autocomplete popup. Host role is inherited, but this prop also skips menu arrow-key focus moves and aria-orientation, which a host role alone does not.
             Allowed values: "menu", "listbox"
             </summary>
         </member>
@@ -3537,13 +3537,7 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.AriaActiveDescendant">
             <summary>
-            Sets aria-activedescendant on the native input when provided.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.AriaAutocomplete">
-            <summary>
-            Sets aria-autocomplete on the native input when provided.
-            Allowed values: "none", "inline", "list", "both"
+            Sets aria-activedescendant on the native input when provided. This, ariaControls, and comboboxExpanded change while the popup is open. inheritAriaAttributes copies host ARIA once in componentWillLoad and removes it, so these stay props. Static combobox ARIA is inherited instead.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.AriaControls">
@@ -3605,11 +3599,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.InputId">
             <summary>
             The ID of the input element.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.InputRole">
-            <summary>
-            Role applied to the native input. Autocomplete uses combobox.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.InputTabIndex">
