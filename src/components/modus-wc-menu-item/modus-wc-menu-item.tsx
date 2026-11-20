@@ -181,22 +181,22 @@ export class ModusWcMenuItem {
     });
   }
 
-  private resolveSelectionMode() {
-    return (
-      this.el.closest('modus-wc-menu') as HTMLElement & {
+  private getParentMenu():
+    | (HTMLElement & {
+        multiselectable?: boolean;
+        popupRole?: 'menu' | 'listbox';
         selectionMode?: SelectionMode;
-      }
-    )?.selectionMode;
+      })
+    | null {
+    return this.el.closest('modus-wc-menu');
+  }
+
+  private resolveSelectionMode() {
+    return this.getParentMenu()?.selectionMode;
   }
 
   private isListboxPopup(): boolean {
-    return (
-      (
-        this.el.closest('modus-wc-menu') as HTMLElement & {
-          popupRole?: 'menu' | 'listbox';
-        }
-      )?.popupRole === 'listbox'
-    );
+    return this.getParentMenu()?.popupRole === 'listbox';
   }
 
   private getClasses(): string {
@@ -241,7 +241,11 @@ export class ModusWcMenuItem {
 
   /** Listbox: selection state when multi-select, highlight state when single. */
   private getListboxAriaSelected(mode?: SelectionMode): string {
-    if (this.checkbox || mode === 'multiple') {
+    if (
+      this.checkbox ||
+      mode === 'multiple' ||
+      this.getParentMenu()?.multiselectable
+    ) {
       return this.selected ? 'true' : 'false';
     }
     return this.focused ? 'true' : 'false';
@@ -309,8 +313,9 @@ export class ModusWcMenuItem {
           {(this.checkbox || mode === 'multiple') && (
             <modus-wc-checkbox
               aria-hidden={listboxMode ? 'true' : undefined}
-              aria-label="Checkbox"
+              aria-label={listboxMode ? undefined : 'Checkbox'}
               disabled={this.disabled}
+              inputTabIndex={listboxMode ? -1 : undefined}
               size={this.size}
               value={!!this.selected}
             />

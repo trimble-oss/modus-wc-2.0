@@ -285,6 +285,13 @@ export class ModusWcAutocomplete {
     document.removeEventListener('click', this.handleOutsideClick);
   }
 
+  componentDidRender() {
+    const listboxId = this.getListboxDomId(
+      this.resolveEffectiveId(this.inputId)
+    );
+    this.syncSlottedOptionIds(listboxId);
+  }
+
   /**
    * `openMenu()` is often called from a click handler, so the same click must not
    * immediately close the menu again. The flag only guards that originating click;
@@ -338,12 +345,45 @@ export class ModusWcAutocomplete {
     return `${inputId}-listbox`;
   }
 
+  private getSlottedMenuItems(): HTMLElement[] {
+    return Array.from(
+      this.el.querySelectorAll(
+        '[slot="menu-items"] modus-wc-menu-item, modus-wc-menu-item[slot="menu-items"]'
+      )
+    );
+  }
+
+  private isSlottedMenuItemVisible(item: HTMLElement): boolean {
+    if (item.hidden || item.classList.contains('hidden')) return false;
+    const style = item.getAttribute('style');
+    if (style && /display\s*:\s*none/i.test(style)) return false;
+    return true;
+  }
+
+  private getVisibleSlottedSuggestionCount(): number {
+    return this.getSlottedMenuItems().filter((item) =>
+      this.isSlottedMenuItemVisible(item)
+    ).length;
+  }
+
   private getActiveOptionId(listboxId: string): string | undefined {
     const active = (this.filteredItems ?? []).find(
       (item) => item.focused && !item.disabled
     );
-    if (!active) return undefined;
-    return getAutocompleteOptionId(listboxId, active.value);
+    if (active) return getAutocompleteOptionId(listboxId, active.value);
+
+    const focusedSlotted = this.getSlottedMenuItems().find((item) => {
+      const slotted = item as HTMLElement & {
+        disabled?: boolean;
+        focused?: boolean;
+      };
+      return slotted.focused && !slotted.disabled;
+    });
+    if (!focusedSlotted) return undefined;
+    return getAutocompleteOptionId(
+      listboxId,
+      focusedSlotted.getAttribute('value') ?? ''
+    );
   }
 
   /** Polite announcement of how many suggestions match the current query. */
@@ -351,7 +391,9 @@ export class ModusWcAutocomplete {
     if (!this.menuVisible) return '';
     if (this.showSpinner) return 'Loading results.';
 
-    const count = this.filteredItems?.length ?? 0;
+    const itemCount = this.filteredItems?.length ?? 0;
+    const count =
+      itemCount > 0 ? itemCount : this.getVisibleSlottedSuggestionCount();
     if (count === 0) {
       return (
         this.noResults?.ariaLabel ||
@@ -360,6 +402,22 @@ export class ModusWcAutocomplete {
       );
     }
     return count === 1 ? '1 result available.' : `${count} results available.`;
+  }
+
+  private syncSlottedOptionIds(listboxId: string): void {
+    this.getSlottedMenuItems().forEach((item) => {
+      const slotted = item as HTMLElement & {
+        optionId?: string;
+        value?: string;
+      };
+      const optionId = getAutocompleteOptionId(
+        listboxId,
+        slotted.getAttribute('value') ?? ''
+      );
+      if (slotted.optionId !== optionId) {
+        slotted.optionId = optionId;
+      }
+    });
   }
 
   /** Remount menu when the visible option set changes (avoids orphan menu-item nodes). */
@@ -998,9 +1056,10 @@ export class ModusWcAutocomplete {
     const listboxId = this.getListboxDomId(effectiveId);
     const showListbox = hasSlottedMenuItems || this.menuVisible;
     const comboboxProps = {
-      ariaActiveDescendant: showListbox
-        ? this.getActiveOptionId(listboxId)
-        : undefined,
+      ariaActiveDescendant:
+        this.menuVisible && !this.showSpinner
+          ? this.getActiveOptionId(listboxId)
+          : undefined,
       ariaAutocomplete: 'list' as const,
       ariaControls: showListbox ? listboxId : undefined,
       comboboxExpanded: this.menuVisible ? 'true' : 'false',

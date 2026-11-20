@@ -88,12 +88,14 @@ export function syncMenuItemSelection(
   });
 }
 
-/** Stable id for an autocomplete option inside its listbox. */
+/** Stable, collision-free id for an autocomplete option inside its listbox. */
 export function getAutocompleteOptionId(
   listboxId: string,
   value: string
 ): string {
-  const safeValue = value.replace(/[^A-Za-z0-9_-]/g, '_');
+  const safeValue = Array.from(value)
+    .map((character) => character.codePointAt(0)?.toString(16))
+    .join('-');
   return `${listboxId}-option-${safeValue}`;
 }
 
