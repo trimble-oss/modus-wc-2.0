@@ -15,6 +15,7 @@ interface BadgeArgs {
     | 'warning'
     | 'danger';
   'custom-class'?: string;
+  shape?: 'ellipse' | 'rectangle';
   size: ModusSize;
   variant: 'counter' | 'filled' | 'outlined' | 'text';
 }
@@ -41,6 +42,10 @@ const meta: Meta<BadgeArgs> = {
         'danger',
       ],
     },
+    shape: {
+      control: { type: 'select' },
+      options: ['ellipse', 'rectangle'],
+    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
@@ -63,6 +68,7 @@ const Template: Story = {
 <modus-wc-badge
   color="${args.color}"
   custom-class="${ifDefined(args['custom-class'])}"
+  shape="${ifDefined(args.shape)}"
   size="${args.size}"
   variant="${args.variant}"
 >
@@ -74,6 +80,30 @@ const Template: Story = {
 
 export const Default: Story = {
   ...Template,
+};
+
+export const ShapeVariants: Story = {
+  render: (args) => {
+    const variants = ['counter', 'filled', 'outlined', 'text'] as const;
+    const shapes = [undefined, 'ellipse', 'rectangle'] as const;
+    // prettier-ignore
+    return html`
+<div style="display: grid; grid-template-columns: repeat(4, max-content); gap: 16px; align-items: center;">
+  <span></span>
+  ${shapes.map((shape) => html`<strong>${shape ?? 'unset (default)'}</strong>`)}
+  ${variants.map(
+    (variant) => html`
+  <strong>${variant}</strong>
+  ${shapes.map(
+    (shape) => html`
+  <modus-wc-badge color="${args.color}" shape="${ifDefined(shape)}" size="${args.size}" variant="${variant}">
+    ${variant === 'counter' ? '5' : 'Badge'}
+  </modus-wc-badge>`
+  )}`
+  )}
+</div>
+    `;
+  },
 };
 
 export const WithIcon: Story = {
@@ -102,11 +132,13 @@ export const ShadowDomParent: Story = {
           const badgeEl = el as unknown as {
             color: string;
             customClass: string;
+            shape?: string;
             size: string;
             variant: string;
           };
           badgeEl.color = v.color;
           badgeEl.customClass = v['custom-class'] || '';
+          badgeEl.shape = v.shape;
           badgeEl.size = v.size;
           badgeEl.variant = v.variant;
         },
@@ -137,6 +169,10 @@ export const Migration: Story = {
 | color      | color      | \`dark\` is now \`high-contrast\`                           |
 | size       | size       | \`small\` → \`sm\`, \`medium\` → \`md\`, \`large\` → \`lg\` |
 | type       | variant    | \`default\` is now \`filled\`                               |
+
+#### New (non-breaking)
+
+  - \`shape\` (\`ellipse\` | \`rectangle\`) is optional. When unset, each variant keeps its existing geometry. It is ignored for the \`text\` variant.
         `,
       },
     },

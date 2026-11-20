@@ -438,7 +438,7 @@ export class ModusWcNavbar {
                   <MenuSolidIcon />
                 </modus-wc-button>
                 <div
-                  class={`main-menu ${this.mainMenuOpen ? 'visible' : 'hidden'}`}
+                  class={`main-menu ${this.mainMenuOpen ? 'visible moduswc:visible' : 'hidden moduswc:hidden'}`}
                   ref={(el) => (this.menuRef = el)}
                 >
                   <slot name="main-menu" />
@@ -574,7 +574,7 @@ export class ModusWcNavbar {
                   <NotificationsSolidIcon />
                 </modus-wc-button>
                 <div
-                  class={`notifications ${this.notificationsMenuOpen ? 'visible' : 'hidden'}`}
+                  class={`notifications ${this.notificationsMenuOpen ? 'visible moduswc:visible' : 'hidden moduswc:hidden'}`}
                   ref={(el) => (this.notificationsRef = el)}
                 >
                   <slot name="notifications" />
@@ -606,7 +606,7 @@ export class ModusWcNavbar {
                   <AppsSolidIcon />
                 </modus-wc-button>
                 <div
-                  class={`apps ${this.appsMenuOpen ? 'visible' : 'hidden'}`}
+                  class={`apps ${this.appsMenuOpen ? 'visible moduswc:visible' : 'hidden moduswc:hidden'}`}
                   ref={(el) => (this.appsRef = el)}
                 >
                   <slot name="apps" />
@@ -632,7 +632,7 @@ export class ModusWcNavbar {
                   />
                 </modus-wc-button>
                 <div
-                  class={`user ${this.userMenuOpen ? 'visible' : 'hidden'}`}
+                  class={`user ${this.userMenuOpen ? 'visible moduswc:visible' : 'hidden moduswc:hidden'}`}
                   ref={(el) => (this.userRef = el)}
                 >
                   <modus-wc-card>

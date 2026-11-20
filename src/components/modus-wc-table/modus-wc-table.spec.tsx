@@ -595,7 +595,7 @@ describe('modus-wc-table', () => {
     await page.waitForChanges();
 
     // Test page size selector
-    expect(component['renderPageSizeSelector']).toBeDefined();
+    expect(typeof component['renderPageSizeSelector']).toBe('function');
     const result = component['renderPageSizeSelector']();
     expect(result).not.toBeNull();
 

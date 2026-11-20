@@ -4,6 +4,28 @@
 */
 
 modus-wc-link a.modus-wc-link {
+  // One icon or both: either populated slot opts the link into the row layout.
+  &:has([slot='start-icon']),
+  &:has([slot='end-icon']) {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--modus-wc-spacing-xs);
+  }
+
+  &,
+  &:link,
+  &:visited,
+  &:hover,
+  &:active,
+  &:focus,
+  &:focus-visible {
+    text-decoration: none;
+  }
+
+  .modus-wc-link-label {
+    text-decoration: underline;
+  }
+
   &.modus-wc-link-color-primary {
     color: var(--modus-wc-color-primary);
   }
@@ -34,5 +56,34 @@ modus-wc-link a.modus-wc-link {
 
   &.modus-wc-link-color-inherit {
     color: inherit;
+  }
+
+  &.modus-wc-link-hover .modus-wc-link-label {
+    text-decoration: none;
+  }
+
+  &.modus-wc-link-hover:hover .modus-wc-link-label,
+  &.modus-wc-link-hover:focus-visible .modus-wc-link-label {
+    text-decoration: underline;
+  }
+
+  &.modus-wc-no-underline .modus-wc-link-label,
+  &.modus-wc-no-underline:hover .modus-wc-link-label,
+  &.modus-wc-no-underline:focus-visible .modus-wc-link-label {
+    text-decoration: none;
+  }
+
+  [slot='start-icon'],
+  [slot='end-icon'] {
+    flex-shrink: 0;
+    height: var(--modus-wc-font-size-xl);
+    width: var(--modus-wc-font-size-xl);
+
+    i.modus-wc-icon {
+      font-size: var(--modus-wc-font-size-xl);
+      height: var(--modus-wc-font-size-xl);
+      line-height: 1;
+      width: var(--modus-wc-font-size-xl);
+    }
   }
 }

@@ -221,11 +221,14 @@ export class ModusWcButtonGroup {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-button-group'];
+    const classList = [
+      'modus-wc-button-group',
+      'moduswc:join',
+      'modus-wc-join',
+    ];
 
-    // Add vertical class if needed
     if (this.orientation === 'vertical') {
-      classList.push('modus-wc-join-vertical');
+      classList.push('moduswc:join-vertical', 'modus-wc-join-vertical');
     }
 
     return classList.join(' ');

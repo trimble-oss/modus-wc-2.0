@@ -68,7 +68,7 @@ export class ModusWcStepper {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-steps'];
+    const classList = ['modus-wc-steps', 'moduswc:steps'];
 
     const propClasses = convertPropsToClasses({
       interactive: this.interactive,
@@ -97,10 +97,14 @@ export class ModusWcStepper {
   }
 
   private getClassesForStep(step: IStepperItem): string {
-    const classList = ['modus-wc-step'];
+    const classList = ['modus-wc-step', 'moduswc:step'];
 
-    // The order CSS classes are added matters to CSS specificity
-    if (step.color) classList.push(`modus-wc-step-${step.color}`);
+    if (step.color) {
+      classList.push(
+        `moduswc:step-${step.color}`,
+        `modus-wc-step-${step.color}`
+      );
+    }
     if (step.customClass) classList.push(step.customClass);
 
     return classList.join(' ');

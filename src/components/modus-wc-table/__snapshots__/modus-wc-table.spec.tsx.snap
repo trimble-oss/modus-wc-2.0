@@ -3,7 +3,7 @@
 exports[`modus-wc-table renders with default props (empty table) 1`] = `
 <modus-wc-table>
   <div class="table-container">
-    <div aria-label="Default table" class="modus-wc-overflow-x-auto">
+    <div aria-label="Default table" class="modus-wc-overflow-x-auto moduswc:overflow-x-auto">
       <table class="modus-wc-table modus-wc-table-density-comfortable modus-wc-table-hover">
         <thead>
           <tr></tr>
@@ -24,7 +24,7 @@ exports[`modus-wc-table renders with default props (empty table) 1`] = `
 exports[`modus-wc-table renders with default props 1`] = `
 <modus-wc-table>
   <div class="table-container">
-    <div class="modus-wc-overflow-x-auto">
+    <div class="modus-wc-overflow-x-auto moduswc:overflow-x-auto">
       <table class="modus-wc-table modus-wc-table-density-comfortable modus-wc-table-hover">
         <thead>
           <tr></tr>
@@ -45,7 +45,7 @@ exports[`modus-wc-table renders with default props 1`] = `
 exports[`modus-wc-table should render with custom props 1`] = `
 <modus-wc-table custom-class="test-class" density="compact" zebra="true">
   <div class="table-container">
-    <div aria-label="Default table" class="modus-wc-overflow-x-auto">
+    <div aria-label="Default table" class="modus-wc-overflow-x-auto moduswc:overflow-x-auto">
       <table class="modus-wc-table modus-wc-table-density-compact modus-wc-table-hover modus-wc-table-zebra test-class">
         <thead>
           <tr>

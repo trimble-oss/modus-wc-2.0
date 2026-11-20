@@ -196,10 +196,6 @@ export class ModusWcTooltip {
     document.body.appendChild(this.tooltipElement);
     this.tooltipElement.style.display = 'none';
 
-    if (this.triggerElement && this.tooltipElement) {
-      this.initializePopper();
-    }
-
     this.attachFocusOwner();
     this.observeContent();
 
@@ -210,10 +206,7 @@ export class ModusWcTooltip {
 
   disconnectedCallback() {
     clearTimeout(this.showDelayTimer);
-    if (this.popperInstance) {
-      this.popperInstance.destroy();
-      this.popperInstance = null;
-    }
+    this.destroyPopper();
     if (this.tooltipElement) {
       if (typeof this.tooltipElement.hidePopover === 'function') {
         try {
@@ -358,7 +351,9 @@ export class ModusWcTooltip {
     }
   }
 
+  /** Popper and global scroll/resize listeners are created on first show, not on load, so idle tooltips stay cheap. */
   private initializePopper() {
+    if (this.popperInstance) return;
     if (!this.triggerElement || !this.tooltipElement) return;
 
     const placement = this.position === 'auto' ? 'top' : this.position;
@@ -424,6 +419,15 @@ export class ModusWcTooltip {
     window.addEventListener('scroll', this.handleWindowScroll, true);
   }
 
+  private destroyPopper() {
+    if (this.popperInstance) {
+      this.popperInstance.destroy();
+      this.popperInstance = null;
+    }
+    window.removeEventListener('resize', this.handleWindowResize);
+    window.removeEventListener('scroll', this.handleWindowScroll, true);
+  }
+
   private handleWindowResize = () => {
     if (this.popperInstance && this.isVisible) {
       void this.popperInstance.update();
@@ -454,6 +458,7 @@ export class ModusWcTooltip {
 
   private showTooltip() {
     if (this.disabled || this.escapeDismissed || !this.tooltipElement) return;
+    this.initializePopper();
     this.tooltipElement.style.display = 'block';
     if (typeof this.tooltipElement.showPopover === 'function') {
       try {
@@ -490,6 +495,7 @@ export class ModusWcTooltip {
       }
       this.tooltipElement.style.display = 'none';
       this.isVisible = false;
+      this.destroyPopper();
     }
   }
 

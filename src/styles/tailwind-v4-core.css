@@ -4,14 +4,10 @@
  */
 @import 'tailwindcss' source(none) prefix(moduswc);
 
-/* SPIKE: five component groups */
-@source '../components/modus-wc-button/**/*.{ts,tsx,scss}';
-@source '../components/modus-wc-text-input/**/*.{ts,tsx,scss}';
-@source '../components/modus-wc-card/**/*.{ts,tsx,scss}';
-@source '../components/modus-wc-tabs/**/*.{ts,tsx,scss}';
-@source '../components/modus-wc-menu/**/*.{ts,tsx,scss}';
-@source '../components/modus-wc-menu-item/**/*.{ts,tsx,scss}';
+/* Phase 3: full catalog. SCSS hooks stay modus-wc-*; do not scan SCSS for utilities. */
+@source '../components/**/*.{ts,tsx}';
 @source './tailwind-v4-themeable.ts';
+@source './tailwind-themeable.ts';
 
 @plugin 'daisyui' {
   themes:

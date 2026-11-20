@@ -74,7 +74,10 @@ export class ModusWcMenu {
   private getClasses(): string {
     // For submenus, only add the dropdown class
     if (this.isSubMenu) {
-      const classList: string[] = ['modus-wc-menu-dropdown'];
+      const classList: string[] = [
+        'moduswc:menu-dropdown',
+        'modus-wc-menu-dropdown',
+      ];
       if (this.customClass) classList.push(this.customClass);
       return classList.join(' ');
     }

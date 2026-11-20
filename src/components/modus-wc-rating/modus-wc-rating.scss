@@ -10,10 +10,58 @@ modus-wc-rating.modus-wc-rating-container {
     // Intentionally empty to allow fallbacks while still enabling consumer overrides
     --modus-wc-rating-item-color: ;
 
+    display: inline-flex;
     margin-inline-end: var(--modus-wc-spacing-sm);
+    position: relative;
+    vertical-align: middle;
+
+    &.modus-wc-rating-sm {
+      --modus-wc-rating-item-size: 1.25rem;
+    }
+
+    &.modus-wc-rating-md {
+      --modus-wc-rating-item-size: 1.5rem;
+    }
+
+    &.modus-wc-rating-lg {
+      --modus-wc-rating-item-size: 1.75rem;
+    }
+
+    &.modus-wc-rating-half
+      .modus-wc-rating-item:not(.modus-wc-rating-hidden) {
+      width: calc(var(--modus-wc-rating-item-size, 1.5rem) * 0.5);
+    }
+
+    .modus-wc-rating-hidden {
+      border: 0;
+      clip: rect(0, 0, 0, 0);
+      height: 1px;
+      margin: -1px;
+      opacity: 0;
+      overflow: hidden;
+      padding: 0;
+      pointer-events: none;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
 
     .modus-wc-rating-item {
+      appearance: none;
       background-color: var(--modus-wc-rating-item-color, currentColor);
+      border-radius: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+      height: var(--modus-wc-rating-item-size, 1.5rem);
+      width: var(--modus-wc-rating-item-size, 1.5rem);
+
+      &.modus-wc-mask {
+        display: inline-block;
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        vertical-align: middle;
+      }
 
       &:not(.modus-wc-mask-smiley):not(.modus-wc-mask-thumb):not(:disabled) {
         opacity: 0.2;
@@ -27,12 +75,15 @@ modus-wc-rating.modus-wc-rating-container {
       }
 
       &:disabled {
-        &:not(.modus-wc-mask-star-2):not(.modus-wc-mask-heart) {
-          opacity: 0.3;
+        cursor: not-allowed;
+
+        &.modus-wc-mask-smiley,
+        &.modus-wc-mask-thumb {
+          opacity: 0.55;
         }
 
         &:not(.modus-wc-mask-smiley):not(.modus-wc-mask-thumb) {
-          opacity: 0.1;
+          opacity: 0.35;
 
           &:checked,
           &[aria-checked='true'],
@@ -42,7 +93,7 @@ modus-wc-rating.modus-wc-rating-container {
             ~ *[aria-checked='true'],
             ~ *[aria-current='true']
           ) {
-            opacity: 0.3;
+            opacity: 0.55;
           }
         }
       }

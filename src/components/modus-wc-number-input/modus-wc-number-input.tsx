@@ -133,11 +133,13 @@ export class ModusWcNumberInput {
     const classList = [
       'modus-wc-number-input',
       'modus-wc-input',
+      'moduswc:input',
       'modus-wc-w-full',
+      'moduswc:w-full',
     ];
 
     if (this.currencySymbol) {
-      classList.push('modus-wc-join-item');
+      classList.push('moduswc:join-item', 'modus-wc-join-item');
     }
 
     if (this.feedback) {
@@ -150,8 +152,11 @@ export class ModusWcNumberInput {
   private getCurrencyClasses(): string {
     const classList = [
       'modus-wc-input-currency',
+      'moduswc:join-item',
       'modus-wc-join-item',
+      'moduswc:flex',
       'modus-wc-flex',
+      'moduswc:items-center',
       'modus-wc-items-center',
     ];
 
@@ -162,8 +167,8 @@ export class ModusWcNumberInput {
     const classList = ['modus-wc-number-input-container'];
 
     if (this.currencySymbol) {
-      classList.push('modus-wc-join');
-      classList.push('modus-wc-flex');
+      classList.push('moduswc:join', 'modus-wc-join');
+      classList.push('moduswc:flex', 'modus-wc-flex');
     }
 
     return classList.join(' ');

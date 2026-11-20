@@ -39,6 +39,15 @@ const meta: Meta<ModalArgs> = {
   },
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `
+Open the dialog with \`showModal()\` on the element identified by \`modal-id\`. The browser traps focus inside the dialog and restores the element focused before \`showModal()\` when the dialog closes, including Escape (WCAG 2.4.3). This component leaves that behavior to the browser. If your app needs a specific return target, or the previously focused element is hidden or removed, use a \`close\` listener on the inner dialog to focus a logical control, for example: \`dialog.addEventListener('close', () => returnTarget.focus())\`. If the dialog itself is removed, restore focus as part of that removal.
+
+When \`aria-label\` and \`aria-labelledby\` are omitted, the dialog name is the header slot (WCAG 4.1.2). That reference stays on the header, so a title that appears later is included without rendering the modal again. An \`aria-label\` or \`aria-labelledby\` set on \`modus-wc-modal\` is kept. Put the title in that slot. When the slot also contains an icon or extra buttons, set \`aria-label\` or \`aria-labelledby\` so the dialog name stays the title.
+        `,
+      },
+    },
   },
 };
 
@@ -199,6 +208,14 @@ const illustrativeScript = html`
 `;
 
 export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This example does not set `aria-label`. The dialog name is the header slot text, "Modal Title". `showModal()` traps focus and restores the previously focused element on close.',
+      },
+    },
+  },
   render: (args) => {
     const modalId = `${args['modal-id']}${generateRandomId(4)}}`;
 
@@ -219,7 +236,6 @@ export const Default: Story = {
   Open modal
 </modus-wc-button>
 <modus-wc-modal
-  aria-label="Example modal"
   custom-class=${ifDefined(args['custom-class'])}
   fullscreen=${args.fullscreen}
   modal-id=${modalId}
@@ -615,7 +631,7 @@ export const Migration: Story = {
 
 | 1.0 Prop                     | 2.0 Prop                | Notes                                         |
 |------------------------------|-------------------------|-----------------------------------------------|
-| aria-label                   | aria-label              |                                               |
+| aria-label                   | aria-label              | Still supported. When omitted, the dialog is named from the header slot |
 | backdrop                     | backdrop                |                                               |
 | fullscreen                   | fullscreen              |                                               |
 | header-text                  |                         | Not carried over, use \`header\` slot instead |

@@ -89,10 +89,6 @@ modus-wc-navbar .modus-wc-navbar {
       padding-inline-start: var(--modus-wc-spacing-sm);
     }
 
-    button.ai svg {
-      padding: 3px 0 3px 3px;
-    }
-
     // Condensed menu; direct child only so menus inside slotted dropdowns are untouched
     > modus-wc-menu {
       @extend %dropdown-menu;
@@ -185,11 +181,6 @@ modus-wc-navbar .modus-wc-navbar {
   &:not(.logo) .modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary {
     background: transparent;
     color: var(--modus-wc-color-white);
-  }
-
-  // Trimble logo button
-  .logo.modus-wc-btn.modus-wc-btn-borderless.modus-wc-btn-primary path {
-    fill: var(--modus-wc-color-white);
   }
 
   // Sign out button

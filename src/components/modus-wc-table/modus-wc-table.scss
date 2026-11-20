@@ -27,6 +27,11 @@
 }
 
 modus-wc-table .modus-wc-table {
+  --modus-wc-table-cell-border: var(--modus-wc-border-width-xs) solid
+    var(--modus-wc-color-base-200);
+
+  border-collapse: collapse;
+
   &.modus-wc-table-zebra tbody tr:nth-child(2n) {
     background-color: var(--modus-wc-color-base-page);
   }
@@ -35,12 +40,9 @@ modus-wc-table .modus-wc-table {
     background-color: var(--modus-wc-color-base-100);
   }
 
-  &:where(
-    thead tr,
-    tbody tr:not(:last-child),
-    tbody tr:first-child:last-child
-  ) {
-    border-bottom-color: var(--modus-wc-color-base-100);
+  th,
+  td {
+    border: var(--modus-wc-table-cell-border);
   }
 }
 
@@ -103,22 +105,18 @@ modus-wc-table .modus-wc-overflow-x-auto {
     border: none;
     border-collapse: collapse;
     border-radius: 0;
-
-    th,
-    td {
-      border-right: 1px solid transparent;
-    }
   }
 
   th {
     background-color: var(--modus-wc-color-base-100) !important;
-    border: none !important;
+    border: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-200) !important;
     color: var(--modus-wc-color-base-content-low-contrast) !important;
   }
 
   td {
-    border: none !important;
-    border-bottom: 1px solid var(--modus-wc-color-base-100);
+    border: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-200) !important;
   }
 
   .modus-wc-table.modus-wc-table-hover tbody tr:hover {
@@ -292,4 +290,10 @@ tr.selected {
 .modus-wc-table td.editing > * {
   margin: 0; /* strip default margins (e.g., Host blocks) */
   width: 100%;
+}
+
+// Modern only: 2px primary focus halo on sortable headers.
+[data-theme^='modus-modern'] .modus-wc-table th.sortable:focus-visible {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: -2px;
 }
