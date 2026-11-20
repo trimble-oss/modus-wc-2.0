@@ -219,3 +219,12 @@ modus-wc-tabs .modus-wc-tab {
     background-color: var(--modus-wc-color-gray-9);
   }
 }
+
+// Modern only: remove the gray fill on focused non-active tabs.
+[data-theme^='modus-modern']
+  modus-wc-tabs
+  .modus-wc-tab:focus-visible:not(.modus-wc-tab-active):not(
+    .modus-wc-tab-disabled
+  ) {
+  background-color: transparent;
+}

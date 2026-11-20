@@ -1,11 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`modus-wc-modal renders with default props 1`] = `
-<modus-wc-modal>
+<modus-wc-modal data-modus-title-id="modus-wc-modal-title-1">
   <!---->
-  <dialog class="modus-wc-modal">
-    <div class="modus-wc-modal-box">
+  <dialog aria-labelledby="modus-wc-modal-title-1" class="modus-wc-modal moduswc:modal">
+    <div class="modus-wc-modal-box moduswc:modal-box">
       <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-header-title" id="modus-wc-modal-title-1"></div>
         <div class="modus-wc-modal-top-icon-buttons">
           <modus-wc-button aria-label="Close modal">
             <!---->
@@ -17,10 +18,10 @@ exports[`modus-wc-modal renders with default props 1`] = `
           </modus-wc-button>
         </div>
       </div>
-      <div class="modus-wc-modal-content modus-wc-py-4"></div>
-      <div class="modus-wc-modal-action"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4 moduswc:py-4"></div>
+      <div class="modus-wc-modal-action moduswc:modal-action"></div>
     </div>
-    <form class="modus-wc-modal-backdrop" method="dialog">
+    <form class="modus-wc-modal-backdrop moduswc:modal-backdrop" method="dialog">
       <button>
         close
       </button>
@@ -30,11 +31,12 @@ exports[`modus-wc-modal renders with default props 1`] = `
 `;
 
 exports[`modus-wc-modal should not render backdrop form when backdrop is static 1`] = `
-<modus-wc-modal backdrop="static" modal-id="test7">
+<modus-wc-modal backdrop="static" data-modus-title-id="modus-wc-modal-title-1" modal-id="test7">
   <!---->
-  <dialog class="modus-wc-modal" id="test7">
-    <div class="modus-wc-modal-box">
+  <dialog aria-labelledby="modus-wc-modal-title-1" class="modus-wc-modal moduswc:modal" id="test7">
+    <div class="modus-wc-modal-box moduswc:modal-box">
       <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-header-title" id="modus-wc-modal-title-1"></div>
         <div class="modus-wc-modal-top-icon-buttons">
           <modus-wc-button aria-label="Close modal">
             <!---->
@@ -46,25 +48,26 @@ exports[`modus-wc-modal should not render backdrop form when backdrop is static 
           </modus-wc-button>
         </div>
       </div>
-      <div class="modus-wc-modal-content modus-wc-py-4"></div>
-      <div class="modus-wc-modal-action"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4 moduswc:py-4"></div>
+      <div class="modus-wc-modal-action moduswc:modal-action"></div>
     </div>
   </dialog>
 </modus-wc-modal>
 `;
 
 exports[`modus-wc-modal should not render button when show-close is false 1`] = `
-<modus-wc-modal modal-id="test4" show-close="false">
+<modus-wc-modal data-modus-title-id="modus-wc-modal-title-1" modal-id="test4" show-close="false">
   <!---->
-  <dialog class="modus-wc-modal" id="test4">
-    <div class="modus-wc-modal-box">
+  <dialog aria-labelledby="modus-wc-modal-title-1" class="modus-wc-modal moduswc:modal" id="test4">
+    <div class="modus-wc-modal-box moduswc:modal-box">
       <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-header-title" id="modus-wc-modal-title-1"></div>
         <div class="modus-wc-modal-top-icon-buttons"></div>
       </div>
-      <div class="modus-wc-modal-content modus-wc-py-4"></div>
-      <div class="modus-wc-modal-action"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4 moduswc:py-4"></div>
+      <div class="modus-wc-modal-action moduswc:modal-action"></div>
     </div>
-    <form class="modus-wc-modal-backdrop" method="dialog">
+    <form class="modus-wc-modal-backdrop moduswc:modal-backdrop" method="dialog">
       <button>
         close
       </button>
@@ -74,11 +77,12 @@ exports[`modus-wc-modal should not render button when show-close is false 1`] = 
 `;
 
 exports[`modus-wc-modal should render backdrop form when backdrop is default 1`] = `
-<modus-wc-modal modal-id="test6">
+<modus-wc-modal data-modus-title-id="modus-wc-modal-title-1" modal-id="test6">
   <!---->
-  <dialog class="modus-wc-modal" id="test6">
-    <div class="modus-wc-modal-box">
+  <dialog aria-labelledby="modus-wc-modal-title-1" class="modus-wc-modal moduswc:modal" id="test6">
+    <div class="modus-wc-modal-box moduswc:modal-box">
       <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-header-title" id="modus-wc-modal-title-1"></div>
         <div class="modus-wc-modal-top-icon-buttons">
           <modus-wc-button aria-label="Close modal">
             <!---->
@@ -90,10 +94,10 @@ exports[`modus-wc-modal should render backdrop form when backdrop is default 1`]
           </modus-wc-button>
         </div>
       </div>
-      <div class="modus-wc-modal-content modus-wc-py-4"></div>
-      <div class="modus-wc-modal-action"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4 moduswc:py-4"></div>
+      <div class="modus-wc-modal-action moduswc:modal-action"></div>
     </div>
-    <form class="modus-wc-modal-backdrop" method="dialog">
+    <form class="modus-wc-modal-backdrop moduswc:modal-backdrop" method="dialog">
       <button>
         close
       </button>
@@ -103,11 +107,12 @@ exports[`modus-wc-modal should render backdrop form when backdrop is default 1`]
 `;
 
 exports[`modus-wc-modal should render button when show-close is true 1`] = `
-<modus-wc-modal modal-id="test3" show-close="true">
+<modus-wc-modal data-modus-title-id="modus-wc-modal-title-1" modal-id="test3" show-close="true">
   <!---->
-  <dialog class="modus-wc-modal" id="test3">
-    <div class="modus-wc-modal-box">
+  <dialog aria-labelledby="modus-wc-modal-title-1" class="modus-wc-modal moduswc:modal" id="test3">
+    <div class="modus-wc-modal-box moduswc:modal-box">
       <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-header-title" id="modus-wc-modal-title-1"></div>
         <div class="modus-wc-modal-top-icon-buttons">
           <modus-wc-button aria-label="Close modal">
             <!---->
@@ -119,10 +124,10 @@ exports[`modus-wc-modal should render button when show-close is true 1`] = `
           </modus-wc-button>
         </div>
       </div>
-      <div class="modus-wc-modal-content modus-wc-py-4"></div>
-      <div class="modus-wc-modal-action"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4 moduswc:py-4"></div>
+      <div class="modus-wc-modal-action moduswc:modal-action"></div>
     </div>
-    <form class="modus-wc-modal-backdrop" method="dialog">
+    <form class="modus-wc-modal-backdrop moduswc:modal-backdrop" method="dialog">
       <button>
         close
       </button>
@@ -132,11 +137,12 @@ exports[`modus-wc-modal should render button when show-close is true 1`] = `
 `;
 
 exports[`modus-wc-modal should render collapse icon when show-fullscreen-toggle is true and fullscreen is true 1`] = `
-<modus-wc-modal modal-id="test5" show-fullscreen-toggle="true">
+<modus-wc-modal data-modus-title-id="modus-wc-modal-title-1" modal-id="test5" show-fullscreen-toggle="true">
   <!---->
-  <dialog class="modus-wc-modal" id="test5">
-    <div class="modus-wc-modal-box">
+  <dialog aria-labelledby="modus-wc-modal-title-1" class="modus-wc-modal moduswc:modal" id="test5">
+    <div class="modus-wc-modal-box moduswc:modal-box">
       <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-header-title" id="modus-wc-modal-title-1"></div>
         <div class="modus-wc-modal-top-icon-buttons">
           <modus-wc-button aria-label="Fullscreen toggle">
             <!---->
@@ -156,10 +162,10 @@ exports[`modus-wc-modal should render collapse icon when show-fullscreen-toggle 
           </modus-wc-button>
         </div>
       </div>
-      <div class="modus-wc-modal-content modus-wc-py-4"></div>
-      <div class="modus-wc-modal-action"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4 moduswc:py-4"></div>
+      <div class="modus-wc-modal-action moduswc:modal-action"></div>
     </div>
-    <form class="modus-wc-modal-backdrop" method="dialog">
+    <form class="modus-wc-modal-backdrop moduswc:modal-backdrop" method="dialog">
       <button>
         close
       </button>
@@ -169,11 +175,12 @@ exports[`modus-wc-modal should render collapse icon when show-fullscreen-toggle 
 `;
 
 exports[`modus-wc-modal should render expand icon when show-fullscreen-toggle is true 1`] = `
-<modus-wc-modal modal-id="test5" show-fullscreen-toggle="true">
+<modus-wc-modal data-modus-title-id="modus-wc-modal-title-1" modal-id="test5" show-fullscreen-toggle="true">
   <!---->
-  <dialog class="modus-wc-modal" id="test5">
-    <div class="modus-wc-modal-box">
+  <dialog aria-labelledby="modus-wc-modal-title-1" class="modus-wc-modal moduswc:modal" id="test5">
+    <div class="modus-wc-modal-box moduswc:modal-box">
       <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-header-title" id="modus-wc-modal-title-1"></div>
         <div class="modus-wc-modal-top-icon-buttons">
           <modus-wc-button aria-label="Fullscreen toggle">
             <!---->
@@ -193,10 +200,10 @@ exports[`modus-wc-modal should render expand icon when show-fullscreen-toggle is
           </modus-wc-button>
         </div>
       </div>
-      <div class="modus-wc-modal-content modus-wc-py-4"></div>
-      <div class="modus-wc-modal-action"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4 moduswc:py-4"></div>
+      <div class="modus-wc-modal-action moduswc:modal-action"></div>
     </div>
-    <form class="modus-wc-modal-backdrop" method="dialog">
+    <form class="modus-wc-modal-backdrop moduswc:modal-backdrop" method="dialog">
       <button>
         close
       </button>
@@ -206,11 +213,12 @@ exports[`modus-wc-modal should render expand icon when show-fullscreen-toggle is
 `;
 
 exports[`modus-wc-modal should render with custom props 1`] = `
-<modus-wc-modal backdrop="static" custom-class="test-class" fullscreen="true" modal-id="test2" position="top" show-close="false" show-fullscreen-toggle="true">
+<modus-wc-modal backdrop="static" custom-class="test-class" data-modus-title-id="modus-wc-modal-title-1" fullscreen="true" modal-id="test2" position="top" show-close="false" show-fullscreen-toggle="true">
   <!---->
-  <dialog class="modus-wc-modal modus-wc-modal-top test-class" id="test2">
-    <div class="modus-wc-modal-box modus-wc-modal-fullscreen">
+  <dialog aria-labelledby="modus-wc-modal-title-1" class="modus-wc-modal modus-wc-modal-top moduswc:modal moduswc:modal-top test-class" id="test2">
+    <div class="modus-wc-modal-box modus-wc-modal-fullscreen moduswc:modal-box">
       <div class="modus-wc-font-bold modus-wc-modal-header modus-wc-text-lg">
+        <div class="modus-wc-modal-header-title" id="modus-wc-modal-title-1"></div>
         <div class="modus-wc-modal-top-icon-buttons">
           <modus-wc-button aria-label="Fullscreen toggle">
             <!---->
@@ -222,8 +230,8 @@ exports[`modus-wc-modal should render with custom props 1`] = `
           </modus-wc-button>
         </div>
       </div>
-      <div class="modus-wc-modal-content modus-wc-py-4"></div>
-      <div class="modus-wc-modal-action"></div>
+      <div class="modus-wc-modal-content modus-wc-py-4 moduswc:py-4"></div>
+      <div class="modus-wc-modal-action moduswc:modal-action"></div>
     </div>
   </dialog>
 </modus-wc-modal>

@@ -21,9 +21,13 @@ modus-wc-modal .modus-wc-modal {
       align-items: center;
       display: flex;
 
-      > span {
-        border-radius: var(--radius-box);
-        display: block;
+      .modus-wc-modal-header-title {
+        min-width: 0;
+
+        > span {
+          border-radius: var(--radius-box);
+          display: block;
+        }
       }
 
       .modus-wc-modal-top-icon-buttons {

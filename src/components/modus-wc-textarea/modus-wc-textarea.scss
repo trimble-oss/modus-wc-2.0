@@ -96,3 +96,9 @@ modus-wc-textarea {
 [data-theme='connect-dark'] modus-wc-textarea .modus-wc-textarea {
   @include connect-input-styles;
 }
+
+// Modern only: 2px primary focus halo.
+[data-theme^='modus-modern'] modus-wc-textarea .modus-wc-textarea:focus {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}
