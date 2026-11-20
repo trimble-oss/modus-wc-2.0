@@ -62,6 +62,8 @@ export class ModusWcMenu {
 
   /**
    * `menu` keeps menubar/menu semantics. `listbox` is the autocomplete popup.
+   * Host `role` is inherited, but this prop also skips menu arrow-key focus
+   * moves and `aria-orientation`, which a host role alone does not.
    */
   @Prop() popupRole?: 'menu' | 'listbox' = 'menu';
 
@@ -193,6 +195,7 @@ export class ModusWcMenu {
           class={this.getClasses()}
           id={this.popupRole === 'listbox' ? this.listboxId : undefined}
           {...this.inheritedAttributes}
+          // After the spread so listbox is not replaced by an inherited menu role.
           role={this.popupRole === 'listbox' ? 'listbox' : this.getMenuRole()}
         >
           <slot />

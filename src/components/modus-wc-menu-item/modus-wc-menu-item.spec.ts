@@ -1666,9 +1666,12 @@ describe('modus-wc-menu-item', () => {
       html: '<modus-wc-menu-item label="Orphan" value="orphan"></modus-wc-menu-item>',
     });
 
-    const instance = page.rootInstance as ModusWcMenuItem & {
-      getListboxAriaSelected: () => string;
-    };
-    expect(instance.getListboxAriaSelected()).toBe('false');
+    expect(
+      (
+        page.rootInstance as unknown as {
+          getListboxAriaSelected: () => string;
+        }
+      ).getListboxAriaSelected()
+    ).toBe('false');
   });
 });

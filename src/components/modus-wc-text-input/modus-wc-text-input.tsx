@@ -57,11 +57,13 @@ export class ModusWcTextInput {
   /** Hint for form autofill feature. */
   @Prop() autoComplete?: AutocompleteTypes;
 
-  /** Sets `aria-activedescendant` on the native input when provided. */
+  /**
+   * Sets `aria-activedescendant` on the native input when provided.
+   * This, `ariaControls`, and `comboboxExpanded` change while the popup is open.
+   * `inheritAriaAttributes` copies host ARIA once in `componentWillLoad` and
+   * removes it, so these stay props. Static combobox ARIA is inherited instead.
+   */
   @Prop() ariaActiveDescendant?: string;
-
-  /** Sets `aria-autocomplete` on the native input when provided. */
-  @Prop() ariaAutocomplete?: 'none' | 'inline' | 'list' | 'both';
 
   /** Sets `aria-controls` on the native input when provided. */
   @Prop() ariaControls?: string;
@@ -109,9 +111,6 @@ export class ModusWcTextInput {
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
-
-  /** Role applied to the native input. Autocomplete uses `combobox`. */
-  @Prop() inputRole?: string;
 
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
@@ -361,13 +360,6 @@ export class ModusWcTextInput {
             type={this.getEffectiveInputType()}
             value={this.value}
             {...this.inheritedAttributes}
-            {...(this.inputRole ? { role: this.inputRole } : {})}
-            {...(this.inputRole === 'combobox'
-              ? { 'aria-haspopup': 'listbox' }
-              : {})}
-            {...(this.ariaAutocomplete
-              ? { 'aria-autocomplete': this.ariaAutocomplete }
-              : {})}
             {...(this.comboboxExpanded !== undefined
               ? { 'aria-expanded': String(this.comboboxExpanded) }
               : {})}

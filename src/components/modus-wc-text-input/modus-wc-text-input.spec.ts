@@ -727,13 +727,16 @@ describe('modus-wc-text-input', () => {
       components: [ModusWcTextInput],
       html: `<modus-wc-text-input
         aria-label="City"
+        aria-autocomplete="list"
+        aria-haspopup="listbox"
         combobox-expanded="false"
-        input-role="combobox"
+        role="combobox"
       ></modus-wc-text-input>`,
     });
 
     const input = page.root!.querySelector('input');
     expect(input?.getAttribute('role')).toBe('combobox');
+    expect(input?.getAttribute('aria-autocomplete')).toBe('list');
     expect(input?.getAttribute('aria-haspopup')).toBe('listbox');
     expect(input?.getAttribute('aria-expanded')).toBe('false');
 

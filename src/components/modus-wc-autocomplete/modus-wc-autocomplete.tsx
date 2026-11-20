@@ -1060,10 +1060,8 @@ export class ModusWcAutocomplete {
         this.menuVisible && !this.showSpinner
           ? this.getActiveOptionId(listboxId)
           : undefined,
-      ariaAutocomplete: 'list' as const,
       ariaControls: showListbox ? listboxId : undefined,
       comboboxExpanded: this.menuVisible ? 'true' : 'false',
-      inputRole: 'combobox',
     };
 
     return (

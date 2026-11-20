@@ -1,4 +1,4 @@
-import { Fragment, h, JSX } from '@stencil/core';
+import { Fragment, h } from '@stencil/core';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import {
@@ -559,7 +559,7 @@ interface RenderNoResultsParams {
   noResults?: IAutocompleteNoResults;
 }
 
-export function renderNoResults(params: RenderNoResultsParams): JSX.Element {
+export function renderNoResults(params: RenderNoResultsParams) {
   return (
     <li role="presentation">
       <div class="modus-wc-autocomplete-no-results">
@@ -583,7 +583,7 @@ interface RenderChipsParams {
   onChipRemove: (item: IAutocompleteItem) => void;
 }
 
-export function renderChips(params: RenderChipsParams): JSX.Element {
+export function renderChips(params: RenderChipsParams) {
   // Get selected items in selection order
   const selectedItems = params.selectionOrder
     .map((value) =>
@@ -634,9 +634,7 @@ interface RenderClearButtonParams {
   onClearAll: () => void;
 }
 
-export function renderClearButton(
-  params: RenderClearButtonParams
-): JSX.Element | null {
+export function renderClearButton(params: RenderClearButtonParams) {
   const showClear =
     params.includeClear &&
     !params.disabled &&
@@ -676,7 +674,7 @@ interface RenderExpandCollapseButtonParams {
 
 export function renderExpandCollapseButton(
   params: RenderExpandCollapseButtonParams
-): JSX.Element | null {
+) {
   const selectedItemsCount = params.selectionOrder.length;
 
   // Show expand/collapse button when there are more chips than maxChips
@@ -725,7 +723,7 @@ interface RenderMoreChipsIndicatorParams {
 
 export function renderMoreChipsIndicator(
   params: RenderMoreChipsIndicatorParams
-): JSX.Element | null {
+) {
   const selectedItemsCount = params.selectionOrder.length;
 
   // Show "+N more" when there are more chips than maxChips and not expanded
@@ -751,7 +749,6 @@ export function renderMoreChipsIndicator(
 interface RenderInputParams {
   autoComplete?: AutocompleteTypes;
   ariaActiveDescendant?: string;
-  ariaAutocomplete?: 'none' | 'inline' | 'list' | 'both';
   ariaControls?: string;
   comboboxExpanded?: string;
   bordered?: boolean;
@@ -762,7 +759,6 @@ interface RenderInputParams {
   includeClear?: boolean;
   includeSearch?: boolean;
   inputId?: string;
-  inputRole?: string;
   inputTabIndex?: number;
   name?: string;
   placeholder?: string;
@@ -778,11 +774,10 @@ interface RenderInputParams {
   onFocus: (event: CustomEvent<FocusEvent>) => void;
 }
 
-export function renderInput(params: RenderInputParams): JSX.Element {
+export function renderInput(params: RenderInputParams) {
   return (
     <modus-wc-text-input
       ariaActiveDescendant={params.ariaActiveDescendant}
-      ariaAutocomplete={params.ariaAutocomplete}
       ariaControls={params.ariaControls}
       comboboxExpanded={params.comboboxExpanded}
       autoComplete={params.autoComplete}
@@ -793,7 +788,6 @@ export function renderInput(params: RenderInputParams): JSX.Element {
       includeClear={!params.multiSelect && params.includeClear}
       includeSearch={!params.multiSelect && params.includeSearch}
       inputId={params.inputId}
-      inputRole={params.inputRole}
       inputTabIndex={params.inputTabIndex}
       name={params.name}
       onClearClick={params.onClear}
@@ -806,6 +800,9 @@ export function renderInput(params: RenderInputParams): JSX.Element {
       size={params.size}
       value={params.value}
       {...params.inheritedAttributes}
+      aria-autocomplete="list"
+      aria-haspopup="listbox"
+      role="combobox"
     >
       {params.customIconSlot ? <slot name="custom-icon" /> : undefined}
     </modus-wc-text-input>
@@ -823,7 +820,7 @@ interface RenderMenuItemsParams {
   onItemSelect: (value: string) => void;
 }
 
-export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
+export function renderMenuItems(params: RenderMenuItemsParams) {
   if (params.showSpinner) {
     return (
       <li role="presentation">

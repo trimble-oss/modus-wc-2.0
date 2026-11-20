@@ -13,17 +13,17 @@ The component supports a `<slot>` for injecting custom li elements inside the ul
 
 ## Properties
 
-| Property          | Attribute         | Description                                                               | Type                                      | Default      |
-| ----------------- | ----------------- | ------------------------------------------------------------------------- | ----------------------------------------- | ------------ |
-| `bordered`        | `bordered`        | Indicates that the menu should have a border.                             | `boolean \| undefined`                    | `undefined`  |
-| `customClass`     | `custom-class`    | Custom CSS class to apply to the ul element.                              | `string \| undefined`                     | `''`         |
-| `isSubMenu`       | `is-sub-menu`     | Indicates that this menu is a submenu (dropdown).                         | `boolean \| undefined`                    | `undefined`  |
-| `listboxId`       | `listbox-id`      | Id applied to the list element when `popupRole` is `listbox`.             | `string \| undefined`                     | `undefined`  |
-| `multiselectable` | `multiselectable` | Sets `aria-multiselectable` when `popupRole` is `listbox`.                | `boolean \| undefined`                    | `false`      |
-| `orientation`     | `orientation`     | The orientation of the menu.                                              | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
-| `popupRole`       | `popup-role`      | `menu` keeps menubar/menu semantics. `listbox` is the autocomplete popup. | `"listbox" \| "menu" \| undefined`        | `'menu'`     |
-| `selectionMode`   | `selection-mode`  | The selection mode of the menu.                                           | `"multiple" \| "single" \| undefined`     | `'single'`   |
-| `size`            | `size`            | The size of the menu.                                                     | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
+| Property          | Attribute         | Description                                                                                                                                                                                                       | Type                                      | Default      |
+| ----------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ------------ |
+| `bordered`        | `bordered`        | Indicates that the menu should have a border.                                                                                                                                                                     | `boolean \| undefined`                    | `undefined`  |
+| `customClass`     | `custom-class`    | Custom CSS class to apply to the ul element.                                                                                                                                                                      | `string \| undefined`                     | `''`         |
+| `isSubMenu`       | `is-sub-menu`     | Indicates that this menu is a submenu (dropdown).                                                                                                                                                                 | `boolean \| undefined`                    | `undefined`  |
+| `listboxId`       | `listbox-id`      | Id applied to the list element when `popupRole` is `listbox`.                                                                                                                                                     | `string \| undefined`                     | `undefined`  |
+| `multiselectable` | `multiselectable` | Sets `aria-multiselectable` when `popupRole` is `listbox`.                                                                                                                                                        | `boolean \| undefined`                    | `false`      |
+| `orientation`     | `orientation`     | The orientation of the menu.                                                                                                                                                                                      | `"horizontal" \| "vertical" \| undefined` | `'vertical'` |
+| `popupRole`       | `popup-role`      | `menu` keeps menubar/menu semantics. `listbox` is the autocomplete popup. Host `role` is inherited, but this prop also skips menu arrow-key focus moves and `aria-orientation`, which a host role alone does not. | `"listbox" \| "menu" \| undefined`        | `'menu'`     |
+| `selectionMode`   | `selection-mode`  | The selection mode of the menu.                                                                                                                                                                                   | `"multiple" \| "single" \| undefined`     | `'single'`   |
+| `size`            | `size`            | The size of the menu.                                                                                                                                                                                             | `"lg" \| "md" \| "sm" \| undefined`       | `'md'`       |
 
 
 ## Events
