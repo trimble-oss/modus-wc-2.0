@@ -35,6 +35,65 @@ describe('modus-wc-file-dropzone', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should apply a default aria-label to the dropzone when one is not provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone></modus-wc-file-dropzone>',
+    });
+
+    const dropzone = page.root?.querySelector('.dropzone-content');
+    expect(dropzone?.getAttribute('aria-label')).toBe('File dropzone');
+    expect(dropzone?.getAttribute('role')).toBe('button');
+    expect(dropzone?.getAttribute('tabindex')).toBe('0');
+  });
+
+  it('should use visible instructions as the dropzone name when provided', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone instructions="Upload documents here"></modus-wc-file-dropzone>',
+    });
+
+    const dropzone = page.root?.querySelector('.dropzone-content');
+    expect(dropzone?.getAttribute('aria-label')).toBeNull();
+    expect(dropzone?.textContent).toContain('Upload documents here');
+  });
+
+  it('should use visible slotted dropzone instructions as the accessible name', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: `<modus-wc-file-dropzone>
+        <span slot="dropzone">Upload invoices</span>
+      </modus-wc-file-dropzone>`,
+    });
+
+    const dropzone = page.root?.querySelector('.dropzone-content');
+    expect(dropzone?.getAttribute('aria-label')).toBeNull();
+    expect(dropzone?.textContent).toContain('Upload invoices');
+  });
+
+  it('should keep the default aria-label when the dropzone slot has no visible text', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: `<modus-wc-file-dropzone>
+        <span slot="dropzone">   </span>
+      </modus-wc-file-dropzone>`,
+    });
+
+    const dropzone = page.root?.querySelector('.dropzone-content');
+    expect(dropzone?.getAttribute('aria-label')).toBe('File dropzone');
+  });
+
+  it('should preserve a custom aria-label on the dropzone', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcFileDropzone],
+      html: '<modus-wc-file-dropzone aria-label="Upload invoices" instructions="Drag files here"></modus-wc-file-dropzone>',
+    });
+
+    const dropzone = page.root?.querySelector('.dropzone-content');
+    expect(dropzone?.getAttribute('aria-label')).toBe('Upload invoices');
+    expect(page.root).not.toHaveAttribute('aria-label');
+  });
+
   it('should render with custom drag-over instructions', async () => {
     const page = await newSpecPage({
       components: [ModusWcFileDropzone],

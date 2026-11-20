@@ -21,6 +21,11 @@ modus-wc-collapse .modus-wc-collapse {
     font-weight: var(--modus-wc-font-weight-semibold);
     min-height: unset;
 
+    // DaisyUI's prefixed `.collapse` uses Tailwind `outline-none`
+    // (`outline: 2px solid transparent`). Draw an inset primary ring instead
+    // so keyboard focus meets WCAG 1.4.11 / 2.4.7 and is not clipped.
+    outline: none;
+
     // In-flow chevron sits near the old absolute caret (was inset ~spacing-lg
     // inside the previous 3xl horizontal padding gutter).
     padding: var(--modus-wc-spacing-lg);
@@ -34,6 +39,11 @@ modus-wc-collapse .modus-wc-collapse {
     &:focus {
       background-color: transparent;
       color: var(--modus-wc-color-base-content);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--modus-wc-color-primary);
+      outline-offset: -2px;
     }
   }
 
@@ -266,14 +276,7 @@ modus-wc-collapse .modus-wc-collapse {
   }
 }
 
-// Modern only: collapsed title halo, inset, following the container radius for non-bordered items.
-[data-theme^='modus-modern']
-  modus-wc-collapse
-  .modus-wc-collapse-title:focus-visible {
-  outline: 2px solid var(--modus-wc-color-primary);
-  outline-offset: -2px;
-}
-
+// Modern only: collapsed title halo follows the container radius for non-bordered items.
 [data-theme^='modus-modern']
   modus-wc-collapse
   .modus-wc-collapse:not(.modus-wc-border)
@@ -303,4 +306,14 @@ modus-wc-collapse .modus-wc-collapse {
   .modus-wc-collapse[open]
   .modus-wc-collapse-title:focus-visible {
   outline: none;
+}
+
+// Automatic dark (no data-theme) uses primary #019aeb on base-100 #464b52,
+// which is below WCAG 1.4.11 3:1. Named dark themes use a darker base-100.
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme])
+    modus-wc-collapse
+    .modus-wc-collapse-title:focus-visible {
+    outline-color: var(--modus-wc-color-base-content);
+  }
 }

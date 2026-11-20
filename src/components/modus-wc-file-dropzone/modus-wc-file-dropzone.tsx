@@ -328,6 +328,32 @@ export class ModusWcFileDropzone {
     }
   };
 
+  private hasVisibleDropzoneSlotText(): boolean {
+    return Array.from(this.el.querySelectorAll('[slot="dropzone"]')).some(
+      (node) => Boolean(node.textContent && node.textContent.trim())
+    );
+  }
+
+  private getDropzoneAriaLabel(
+    visibleMessage?: string,
+    slotIsVisible?: boolean
+  ): string | undefined {
+    const inheritedLabel = this.inheritedAttributes['aria-label'];
+    if (inheritedLabel) {
+      return inheritedLabel;
+    }
+
+    if (visibleMessage) {
+      return undefined;
+    }
+
+    if (slotIsVisible && this.hasVisibleDropzoneSlotText()) {
+      return undefined;
+    }
+
+    return 'File dropzone';
+  }
+
   // Helper method to format file size in human-readable format
   private formatFileSize(bytes?: number): string {
     if (!bytes) return '0 Bytes';
@@ -476,6 +502,10 @@ export class ModusWcFileDropzone {
             role="button"
             tabindex={this.disabled ? -1 : 0}
             {...this.inheritedAttributes}
+            aria-label={this.getDropzoneAriaLabel(
+              message,
+              showDropzoneSlot === 'block'
+            )}
           >
             <div class="default-content">
               {showIcon && (
