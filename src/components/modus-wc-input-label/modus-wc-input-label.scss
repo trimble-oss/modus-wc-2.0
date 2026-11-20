@@ -46,10 +46,15 @@ modus-wc-input-label .modus-wc-input-label {
 
 [data-theme='connect-light'] modus-wc-input-label .modus-wc-input-label {
   color: oklch(var(--s));
+}
+
+[data-theme='connect-light'] modus-wc-input-label .modus-wc-input-label,
+[data-theme='connect-dark'] modus-wc-input-label .modus-wc-input-label {
   font-weight: var(--modus-wc-font-weight-normal);
   margin-bottom: 0;
 }
 
-[data-theme='connect-light'] {
+[data-theme='connect-light'],
+[data-theme='connect-dark'] {
   @include connect-form-label-host-spacing;
 }

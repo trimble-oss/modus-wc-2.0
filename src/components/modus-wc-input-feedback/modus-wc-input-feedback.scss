@@ -128,25 +128,4 @@ modus-wc-input-feedback .modus-wc-input-feedback {
   font-weight: var(--modus-wc-font-weight-normal);
   margin-top: 0;
   padding: 0;
-
-  &.modus-wc-input-feedback {
-    background-color: transparent;
-    padding: 0;
-  }
-
-  &.modus-wc-input-feedback--error {
-    color: var(--modus-wc-color-error);
-  }
-
-  &.modus-wc-input-feedback--info {
-    color: var(--modus-wc-color-info);
-  }
-
-  &.modus-wc-input-feedback--success {
-    color: var(--modus-wc-color-success);
-  }
-
-  &.modus-wc-input-feedback--warning {
-    color: var(--modus-wc-color-warning);
-  }
 }
