@@ -65,3 +65,11 @@ modus-wc-theme-switcher {
     fill: var(--modus-wc-color-base-100);
   }
 }
+
+// Modern only: 2px primary focus halo on the toggle.
+[data-theme^='modus-modern']
+  modus-wc-theme-switcher
+  .modus-wc-theme-controller:focus-visible {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}

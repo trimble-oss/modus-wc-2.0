@@ -1,12 +1,18 @@
 import { Component, Element, h, Host, Prop } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-status.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
+import { ModusSize } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 
-const VARIANT_LABELS: Record<'active' | 'warning' | 'danger', string> = {
+const VARIANT_LABELS: Record<
+  'active' | 'warning' | 'danger' | 'info' | 'inactive',
+  string
+> = {
   active: 'Active',
   warning: 'Warning',
   danger: 'Danger',
+  info: 'Info',
+  inactive: 'Inactive',
 };
 
 /**
@@ -32,8 +38,12 @@ export class ModusWcStatus {
   /** Whether the dot displays a pulsing halo animation. */
   @Prop() pulse: boolean = true;
 
+  /** Dot size. Default xs (8px). */
+  @Prop() size: ModusSize | 'xs' | 'xl' = 'xs';
+
   /** The semantic status variant. */
-  @Prop() variant: 'active' | 'warning' | 'danger' = 'active';
+  @Prop() variant: 'active' | 'warning' | 'danger' | 'info' | 'inactive' =
+    'active';
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -58,6 +68,7 @@ export class ModusWcStatus {
     const classList = ['modus-wc-status'];
     const propClasses = convertPropsToClasses({
       pulse: this.isPulseEnabled(),
+      size: this.size,
       variant: this.variant,
     });
 
