@@ -3,6 +3,11 @@ import { ModusWcTabs } from './modus-wc-tabs';
 import { ITab } from './modus-wc-tabs';
 
 describe('modus-wc-tabs', () => {
+  const activeElementDescriptor = Object.getOwnPropertyDescriptor(
+    document,
+    'activeElement'
+  );
+
   const defaultTabs: ITab[] = [
     {
       label: 'Tab 1',
@@ -50,8 +55,8 @@ describe('modus-wc-tabs', () => {
   };
 
   afterEach(() => {
-    if (Object.prototype.hasOwnProperty.call(document, 'activeElement')) {
-      delete (document as Partial<Document>).activeElement;
+    if (activeElementDescriptor) {
+      Object.defineProperty(document, 'activeElement', activeElementDescriptor);
     }
   });
 
@@ -618,11 +623,13 @@ describe('modus-wc-tabs', () => {
     const tabChangeSpy = jest.fn();
     page.root!.addEventListener('tabChange', tabChangeSpy);
 
-    component.handleKeyDown({
+    const event = new KeyboardEvent('keydown', {
       key: 'ArrowRight',
-      target: null,
-      preventDefault: jest.fn(),
-    } as unknown as KeyboardEvent);
+      bubbles: true,
+    });
+    Object.defineProperty(event, 'target', { value: null });
+
+    component.handleKeyDown(event);
 
     expect(tabChangeSpy).not.toHaveBeenCalled();
   });
@@ -695,6 +702,102 @@ describe('modus-wc-tabs', () => {
     expect(component['getFocusedTabIndex']()).toBe(0);
     component['activateTabAt'](0);
     expect(tabs[0].getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('should ignore keydown from a nested tab group', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTabs],
+      html: '<modus-wc-tabs aria-label="Tab Group"></modus-wc-tabs>',
+    });
+
+    const component = page.rootInstance as ModusWcTabs;
+    component.tabs = defaultTabs;
+
+    await page.waitForChanges();
+
+    const nestedTablist = document.createElement('div');
+    nestedTablist.setAttribute('role', 'tablist');
+    const nestedTab = document.createElement('button');
+    nestedTab.setAttribute('role', 'tab');
+    nestedTab.textContent = 'Inner tab';
+    nestedTablist.appendChild(nestedTab);
+    page.root!.querySelector('[role="tabpanel"]')!.appendChild(nestedTablist);
+
+    const tabChangeSpy = jest.fn();
+    page.root!.addEventListener('tabChange', tabChangeSpy);
+
+    nestedTab.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })
+    );
+    await page.waitForChanges();
+
+    expect(tabChangeSpy).not.toHaveBeenCalled();
+    expect(getTabButtons(page.root!)[0].getAttribute('aria-selected')).toBe(
+      'true'
+    );
+  });
+
+  it('should reverse arrow-key navigation when the tab list is RTL', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTabs],
+      html: '<modus-wc-tabs aria-label="Tab Group"></modus-wc-tabs>',
+    });
+
+    const component = page.rootInstance as ModusWcTabs;
+    component.tabs = defaultTabs;
+
+    await page.waitForChanges();
+
+    component.el.dir = 'rtl';
+
+    const tabs = getTabButtons(page.root!);
+    focusTab(tabs[0]);
+
+    dispatchTabKey(page.root!, 'ArrowRight');
+    await page.waitForChanges();
+
+    expect(tabs[5].getAttribute('aria-selected')).toBe('true');
+
+    component.activeTabIndex = 0;
+    await page.waitForChanges();
+    focusTab(tabs[0]);
+
+    dispatchTabKey(page.root!, 'ArrowLeft');
+    await page.waitForChanges();
+
+    expect(tabs[2].getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('should detect RTL from the host dir attribute', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTabs],
+      html: '<modus-wc-tabs aria-label="Tab Group"></modus-wc-tabs>',
+    });
+
+    const component = page.rootInstance as ModusWcTabs;
+    component.tabs = defaultTabs;
+
+    await page.waitForChanges();
+
+    expect(component['isRtl']()).toBe(false);
+    component.el.dir = 'rtl';
+    expect(component['isRtl']()).toBe(true);
+  });
+
+  it('should return no tab buttons when the tab list is missing', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTabs],
+      html: '<modus-wc-tabs aria-label="Tab Group"></modus-wc-tabs>',
+    });
+
+    const component = page.rootInstance as ModusWcTabs;
+    component.tabs = defaultTabs;
+
+    await page.waitForChanges();
+
+    page.root!.querySelector('[role="tablist"]')?.remove();
+
+    expect(component['getTabButtons']()).toEqual([]);
   });
 
   it('should keep the first enabled tab in the tab order when the active index is invalid', async () => {

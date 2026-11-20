@@ -98,7 +98,8 @@ export class ModusWcTabs {
   @Listen('keydown')
   handleKeyDown(event: KeyboardEvent) {
     const target = event.target as HTMLElement | null;
-    if (!target?.closest('[role="tab"]')) {
+    const tab = target?.closest('[role="tab"]');
+    if (!tab || tab.parentElement !== this.getTabList()) {
       return;
     }
 
@@ -129,8 +130,9 @@ export class ModusWcTabs {
     } else {
       const currentPosition = focusableIndices.indexOf(currentIndex);
       const start = currentPosition === -1 ? 0 : currentPosition;
+      const moveToNext = (key === 'ArrowRight') !== this.isRtl();
 
-      if (key === 'ArrowRight') {
+      if (moveToNext) {
         nextIndex = focusableIndices[(start + 1) % focusableIndices.length];
       } else {
         nextIndex =
@@ -153,11 +155,24 @@ export class ModusWcTabs {
     }, []);
   }
 
+  private getTabList(): HTMLElement | null {
+    return this.el.querySelector('[role="tablist"]');
+  }
+
   private getTabButtons(): HTMLButtonElement[] {
-    return Array.from(
-      this.el.querySelectorAll<HTMLButtonElement>(
-        '[role="tablist"] > button[role="tab"]'
-      )
+    const tabList = this.getTabList();
+    if (!tabList) {
+      return [];
+    }
+
+    return Array.from(tabList.children).filter(
+      (child) => child.getAttribute('role') === 'tab'
+    ) as HTMLButtonElement[];
+  }
+
+  private isRtl(): boolean {
+    return (
+      this.el.dir === 'rtl' || getComputedStyle(this.el).direction === 'rtl'
     );
   }
 

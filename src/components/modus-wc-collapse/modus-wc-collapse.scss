@@ -307,3 +307,13 @@ modus-wc-collapse .modus-wc-collapse {
   .modus-wc-collapse-title:focus-visible {
   outline: none;
 }
+
+// Automatic dark (no data-theme) uses primary #019aeb on base-100 #464b52,
+// which is below WCAG 1.4.11 3:1. Named dark themes use a darker base-100.
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme])
+    modus-wc-collapse
+    .modus-wc-collapse-title:focus-visible {
+    outline-color: var(--modus-wc-color-base-content);
+  }
+}
