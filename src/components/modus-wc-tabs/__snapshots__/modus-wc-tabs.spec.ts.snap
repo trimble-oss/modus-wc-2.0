@@ -4,24 +4,24 @@ exports[`modus-wc-tabs should render tabs with slotName property 1`] = `
 <modus-wc-tabs>
   <!---->
   <div aria-label="Tab Group with Slots" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
-    <button aria-selected="true" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-0" aria-selected="true" class="modus-wc-tab modus-wc-tab-active" id="modus-wc-tab-test-random-id-0" role="tab" tabindex="0">
       <div slot="custom-tab-slot-1">
         Custom Tab Content
       </div>
     </button>
-    <button aria-label="Regular Tab" aria-selected="false" class="modus-wc-tab" id="tab-1" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-1" aria-label="Regular Tab" aria-selected="false" class="modus-wc-tab" id="modus-wc-tab-test-random-id-1" role="tab" tabindex="-1">
       <span>
         Regular Tab
       </span>
     </button>
   </div>
-  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
-    <div class="modus-wc-tab-active">
+  <div class="modus-wc-tab-panel">
+    <div aria-labelledby="modus-wc-tab-test-random-id-0" class="modus-wc-tab-active" id="modus-wc-tabpanel-test-random-id-0" role="tabpanel" tabindex="0">
       <div slot="tab-0">
         Tab Panel Content
       </div>
     </div>
-    <div hidden=""></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-1" hidden="" id="modus-wc-tabpanel-test-random-id-1" role="tabpanel" tabindex="-1"></div>
   </div>
 </modus-wc-tabs>
 `;
@@ -30,44 +30,44 @@ exports[`modus-wc-tabs should render with custom props 1`] = `
 <modus-wc-tabs custom-class="test-class" size="sm" tab-style="boxed">
   <!---->
   <div aria-label="Custom Tab Group" class="modus-wc-tabs modus-wc-tabs-boxed modus-wc-tabs-sm test-class" role="tablist">
-    <button aria-label="Tab 1" aria-selected="true" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-0" aria-label="Tab 1" aria-selected="true" class="modus-wc-tab modus-wc-tab-active" id="modus-wc-tab-test-random-id-0" role="tab" tabindex="0">
       <span>
         Tab 1
       </span>
     </button>
-    <button aria-disabled="true" aria-label="Tab 2" aria-selected="false" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="tab-1" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-1" aria-disabled="true" aria-label="Tab 2" aria-selected="false" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="modus-wc-tab-test-random-id-1" role="tab" tabindex="-1">
       <span>
         Tab 2
       </span>
     </button>
-    <button aria-label="home" aria-selected="false" class="modus-wc-tab" id="tab-2" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-2" aria-label="home" aria-selected="false" class="modus-wc-tab" id="modus-wc-tab-test-random-id-2" role="tab" tabindex="-1">
       <modus-wc-icon name="home" size="sm"></modus-wc-icon>
     </button>
-    <button aria-label="Settings" aria-selected="false" class="modus-wc-tab" id="tab-3" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-3" aria-label="Settings" aria-selected="false" class="modus-wc-tab" id="modus-wc-tab-test-random-id-3" role="tab" tabindex="-1">
       <modus-wc-icon name="settings" size="sm"></modus-wc-icon>
       <span>
         Settings
       </span>
     </button>
-    <button aria-label="Alerts" aria-selected="false" class="modus-wc-tab" id="tab-4" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-4" aria-label="Alerts" aria-selected="false" class="modus-wc-tab" id="modus-wc-tab-test-random-id-4" role="tab" tabindex="-1">
       <span>
         Alerts
       </span>
       <modus-wc-icon name="alert" size="sm"></modus-wc-icon>
     </button>
-    <button aria-label="Custom Tab" aria-selected="false" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-5" aria-label="Custom Tab" aria-selected="false" class="custom-tab-class modus-wc-tab" id="modus-wc-tab-test-random-id-5" role="tab" tabindex="-1">
       <span>
         Custom Tab
       </span>
     </button>
   </div>
-  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
-    <div class="modus-wc-tab-active"></div>
-    <div hidden=""></div>
-    <div hidden=""></div>
-    <div hidden=""></div>
-    <div hidden=""></div>
-    <div hidden=""></div>
+  <div class="modus-wc-tab-panel">
+    <div aria-labelledby="modus-wc-tab-test-random-id-0" class="modus-wc-tab-active" id="modus-wc-tabpanel-test-random-id-0" role="tabpanel" tabindex="0"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-1" hidden="" id="modus-wc-tabpanel-test-random-id-1" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-2" hidden="" id="modus-wc-tabpanel-test-random-id-2" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-3" hidden="" id="modus-wc-tabpanel-test-random-id-3" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-4" hidden="" id="modus-wc-tabpanel-test-random-id-4" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-5" hidden="" id="modus-wc-tabpanel-test-random-id-5" role="tabpanel" tabindex="-1"></div>
   </div>
 </modus-wc-tabs>
 `;
@@ -76,7 +76,7 @@ exports[`modus-wc-tabs should render with default props (empty tabs) 1`] = `
 <modus-wc-tabs>
   <!---->
   <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist"></div>
-  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0"></div>
+  <div class="modus-wc-tab-panel"></div>
 </modus-wc-tabs>
 `;
 
@@ -84,44 +84,44 @@ exports[`modus-wc-tabs should render with default props (with tab data) 1`] = `
 <modus-wc-tabs>
   <!---->
   <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
-    <button aria-label="Tab 1" aria-selected="true" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-0" aria-label="Tab 1" aria-selected="true" class="modus-wc-tab modus-wc-tab-active" id="modus-wc-tab-test-random-id-0" role="tab" tabindex="0">
       <span>
         Tab 1
       </span>
     </button>
-    <button aria-disabled="true" aria-label="Tab 2" aria-selected="false" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="tab-1" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-1" aria-disabled="true" aria-label="Tab 2" aria-selected="false" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="modus-wc-tab-test-random-id-1" role="tab" tabindex="-1">
       <span>
         Tab 2
       </span>
     </button>
-    <button aria-label="home" aria-selected="false" class="modus-wc-tab" id="tab-2" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-2" aria-label="home" aria-selected="false" class="modus-wc-tab" id="modus-wc-tab-test-random-id-2" role="tab" tabindex="-1">
       <modus-wc-icon name="home" size="md"></modus-wc-icon>
     </button>
-    <button aria-label="Settings" aria-selected="false" class="modus-wc-tab" id="tab-3" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-3" aria-label="Settings" aria-selected="false" class="modus-wc-tab" id="modus-wc-tab-test-random-id-3" role="tab" tabindex="-1">
       <modus-wc-icon name="settings" size="md"></modus-wc-icon>
       <span>
         Settings
       </span>
     </button>
-    <button aria-label="Alerts" aria-selected="false" class="modus-wc-tab" id="tab-4" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-4" aria-label="Alerts" aria-selected="false" class="modus-wc-tab" id="modus-wc-tab-test-random-id-4" role="tab" tabindex="-1">
       <span>
         Alerts
       </span>
       <modus-wc-icon name="alert" size="md"></modus-wc-icon>
     </button>
-    <button aria-label="Custom Tab" aria-selected="false" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-5" aria-label="Custom Tab" aria-selected="false" class="custom-tab-class modus-wc-tab" id="modus-wc-tab-test-random-id-5" role="tab" tabindex="-1">
       <span>
         Custom Tab
       </span>
     </button>
   </div>
-  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
-    <div class="modus-wc-tab-active"></div>
-    <div hidden=""></div>
-    <div hidden=""></div>
-    <div hidden=""></div>
-    <div hidden=""></div>
-    <div hidden=""></div>
+  <div class="modus-wc-tab-panel">
+    <div aria-labelledby="modus-wc-tab-test-random-id-0" class="modus-wc-tab-active" id="modus-wc-tabpanel-test-random-id-0" role="tabpanel" tabindex="0"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-1" hidden="" id="modus-wc-tabpanel-test-random-id-1" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-2" hidden="" id="modus-wc-tabpanel-test-random-id-2" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-3" hidden="" id="modus-wc-tabpanel-test-random-id-3" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-4" hidden="" id="modus-wc-tabpanel-test-random-id-4" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-5" hidden="" id="modus-wc-tabpanel-test-random-id-5" role="tabpanel" tabindex="-1"></div>
   </div>
 </modus-wc-tabs>
 `;
@@ -130,52 +130,52 @@ exports[`modus-wc-tabs should render with default props (with tab panel) 1`] = `
 <modus-wc-tabs>
   <!---->
   <div aria-label="Tab Group" class="modus-wc-tabs modus-wc-tabs-bordered modus-wc-tabs-md" role="tablist">
-    <button aria-label="Tab 1" aria-selected="true" class="modus-wc-tab modus-wc-tab-active" id="tab-0" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-0" aria-label="Tab 1" aria-selected="true" class="modus-wc-tab modus-wc-tab-active" id="modus-wc-tab-test-random-id-0" role="tab" tabindex="0">
       <span>
         Tab 1
       </span>
     </button>
-    <button aria-disabled="true" aria-label="Tab 2" aria-selected="false" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="tab-1" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-1" aria-disabled="true" aria-label="Tab 2" aria-selected="false" class="modus-wc-tab modus-wc-tab-disabled" disabled="" id="modus-wc-tab-test-random-id-1" role="tab" tabindex="-1">
       <span>
         Tab 2
       </span>
     </button>
-    <button aria-label="home" aria-selected="false" class="modus-wc-tab" id="tab-2" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-2" aria-label="home" aria-selected="false" class="modus-wc-tab" id="modus-wc-tab-test-random-id-2" role="tab" tabindex="-1">
       <modus-wc-icon name="home" size="md"></modus-wc-icon>
     </button>
-    <button aria-label="Settings" aria-selected="false" class="modus-wc-tab" id="tab-3" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-3" aria-label="Settings" aria-selected="false" class="modus-wc-tab" id="modus-wc-tab-test-random-id-3" role="tab" tabindex="-1">
       <modus-wc-icon name="settings" size="md"></modus-wc-icon>
       <span>
         Settings
       </span>
     </button>
-    <button aria-label="Alerts" aria-selected="false" class="modus-wc-tab" id="tab-4" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-4" aria-label="Alerts" aria-selected="false" class="modus-wc-tab" id="modus-wc-tab-test-random-id-4" role="tab" tabindex="-1">
       <span>
         Alerts
       </span>
       <modus-wc-icon name="alert" size="md"></modus-wc-icon>
     </button>
-    <button aria-label="Custom Tab" aria-selected="false" class="custom-tab-class modus-wc-tab" id="tab-5" role="tab">
+    <button aria-controls="modus-wc-tabpanel-test-random-id-5" aria-label="Custom Tab" aria-selected="false" class="custom-tab-class modus-wc-tab" id="modus-wc-tab-test-random-id-5" role="tab" tabindex="-1">
       <span>
         Custom Tab
       </span>
     </button>
   </div>
-  <div class="modus-wc-tab-panel" role="tabpanel" tabindex="0">
-    <div class="modus-wc-tab-active">
+  <div class="modus-wc-tab-panel">
+    <div aria-labelledby="modus-wc-tab-test-random-id-0" class="modus-wc-tab-active" id="modus-wc-tabpanel-test-random-id-0" role="tabpanel" tabindex="0">
       <p slot="tab-0">
         Modus (noun) : a mode of procedure : a way of doing something
       </p>
     </div>
-    <div hidden="">
+    <div aria-labelledby="modus-wc-tab-test-random-id-1" hidden="" id="modus-wc-tabpanel-test-random-id-1" role="tabpanel" tabindex="-1">
       <p slot="tab-1">
         secret (noun) : kept from knowledge or view : hidden
       </p>
     </div>
-    <div hidden=""></div>
-    <div hidden=""></div>
-    <div hidden=""></div>
-    <div hidden=""></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-2" hidden="" id="modus-wc-tabpanel-test-random-id-2" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-3" hidden="" id="modus-wc-tabpanel-test-random-id-3" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-4" hidden="" id="modus-wc-tabpanel-test-random-id-4" role="tabpanel" tabindex="-1"></div>
+    <div aria-labelledby="modus-wc-tab-test-random-id-5" hidden="" id="modus-wc-tabpanel-test-random-id-5" role="tabpanel" tabindex="-1"></div>
   </div>
 </modus-wc-tabs>
 `;

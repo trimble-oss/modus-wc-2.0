@@ -328,6 +328,19 @@ export class ModusWcFileDropzone {
     }
   };
 
+  private getDropzoneAriaLabel(visibleMessage?: string): string | undefined {
+    const inheritedLabel = this.inheritedAttributes['aria-label'];
+    if (inheritedLabel) {
+      return inheritedLabel;
+    }
+
+    if (visibleMessage) {
+      return undefined;
+    }
+
+    return 'File dropzone';
+  }
+
   // Helper method to format file size in human-readable format
   private formatFileSize(bytes?: number): string {
     if (!bytes) return '0 Bytes';
@@ -476,6 +489,7 @@ export class ModusWcFileDropzone {
             role="button"
             tabindex={this.disabled ? -1 : 0}
             {...this.inheritedAttributes}
+            aria-label={this.getDropzoneAriaLabel(message)}
           >
             <div class="default-content">
               {showIcon && (
