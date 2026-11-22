@@ -98,6 +98,44 @@ describe('modus-wc-number-input', () => {
     expect(input!).toHaveClass('modus-wc-input--info');
   });
 
+  it('should include a visible label and hint in the accessible name when feedback is an error', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcNumberInput, ModusWcInputLabel, ModusWcInputFeedback],
+      html: '<modus-wc-number-input input-id="qty" label="Quantity" aria-describedby="hint"></modus-wc-number-input>',
+    });
+    const component = page.rootInstance as ModusWcNumberInput;
+    component.feedback = { level: 'error', message: 'Enter a number' };
+    await page.waitForChanges();
+
+    const input = page.root!.querySelector('input')!;
+    const feedback = page.root!.querySelector('.modus-wc-input-feedback')!;
+    expect(input.getAttribute('aria-labelledby')).toBe(
+      'qty-label qty-feedback'
+    );
+    expect(input.getAttribute('aria-describedby')).toBe('hint');
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(page.root!.querySelector('label')!.id).toBe('qty-label');
+    expect(feedback.getAttribute('role')).toBe('alert');
+  });
+
+  it('should keep aria-describedby on a range input', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcNumberInput, ModusWcInputFeedback],
+      html: '<modus-wc-number-input type="range" aria-label="Volume"></modus-wc-number-input>',
+    });
+    const component = page.rootInstance as ModusWcNumberInput;
+    component.feedback = { level: 'error', message: 'Too high' };
+    await page.waitForChanges();
+
+    const input = page.root!.querySelector('input')!;
+    expect(input.getAttribute('aria-describedby')).toContain('-feedback');
+    expect(input.hasAttribute('aria-labelledby')).toBe(false);
+    expect(input.getAttribute('aria-label')).toBe('Volume');
+    expect(
+      page.root!.querySelector('.modus-wc-input-feedback')!.hasAttribute('role')
+    ).toBe(false);
+  });
+
   it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcNumberInput],

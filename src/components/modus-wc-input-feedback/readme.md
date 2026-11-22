@@ -15,6 +15,7 @@ A customizable feedback component used to provide additional context related to 
 
 | Property             | Attribute      | Description                                                                     | Type                                          | Default     |
 | -------------------- | -------------- | ------------------------------------------------------------------------------- | --------------------------------------------- | ----------- |
+| `announceError`      | `announce-error` | Expose an error message as an alert. Used when the related control does not announce aria-describedby (time and number inputs). | `boolean \| undefined`                        | `false`     |
 | `customClass`        | `custom-class` | Custom CSS class to apply to the outer div element.                             | `string \| undefined`                         | `''`        |
 | `icon`               | `icon`         | The Modus icon to use instead of the pre-defined icons.                         | `string \| undefined`                         | `''`        |
 | `level` _(required)_ | `level`        | The level informs which icon and color that will be rendered.                   | `"error" \| "info" \| "success" \| "warning"` | `undefined` |

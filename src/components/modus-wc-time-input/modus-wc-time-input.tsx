@@ -11,6 +11,7 @@ import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import {
+  applySpinbuttonFeedbackName,
   assignFeedbackAria,
   Attributes,
   createEffectiveIdResolver,
@@ -195,23 +196,38 @@ export class ModusWcTimeInput {
     const feedbackAria = resolveControlFeedbackAria(
       this.feedback,
       effectiveId,
-      this.inheritedAttributes
-    );
-    const controlAttributes = assignFeedbackAria(
       this.inheritedAttributes,
-      feedbackAria.describedBy,
-      feedbackAria.ariaInvalid
+      { omitMessageFromDescribedBy: true }
     );
+    const feedbackName = applySpinbuttonFeedbackName(
+      assignFeedbackAria(
+        this.inheritedAttributes,
+        feedbackAria.describedBy,
+        feedbackAria.ariaInvalid
+      ),
+      feedbackAria.messageId,
+      {
+        labelId: this.label ? `${effectiveId}-label` : undefined,
+        nameId: `${effectiveId}-name`,
+      }
+    );
+    const controlAttributes = feedbackName.attributes;
 
     return (
       <Host>
         {this.label && (
           <modus-wc-input-label
             forId={effectiveId}
+            labelId={feedbackName.labelId}
             labelText={this.label}
             required={this.required}
             size={this.size}
           />
+        )}
+        {feedbackName.hiddenName && (
+          <span class="modus-wc-sr-only" id={feedbackName.hiddenName.id}>
+            {feedbackName.hiddenName.text}
+          </span>
         )}
         <input
           aria-required={this.required}
@@ -237,6 +253,7 @@ export class ModusWcTimeInput {
         {this.renderDatalist()}
         {this.feedback && (
           <modus-wc-input-feedback
+            announceError={this.feedback.level === 'error'}
             level={this.feedback.level}
             message={this.feedback.message}
             messageId={feedbackAria.messageId}

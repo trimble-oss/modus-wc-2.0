@@ -195,6 +195,12 @@ export function resolveControlFeedbackAria(
   options?: {
     extraDescribedBy?: string;
     ariaInvalid?: string;
+    /**
+     * Keep the feedback id out of aria-describedby.
+     * Time and number inputs are spin buttons, and Chromium does not expose
+     * aria-describedby on that role. Callers include the id in the accessible name.
+     */
+    omitMessageFromDescribedBy?: boolean;
   }
 ): { messageId?: string; describedBy?: string; ariaInvalid?: string } {
   const messageId = feedback?.message?.trim()
@@ -202,7 +208,7 @@ export function resolveControlFeedbackAria(
     : undefined;
   const describedByIds = [
     inherited['aria-describedby'],
-    messageId,
+    options?.omitMessageFromDescribedBy ? undefined : messageId,
     options?.extraDescribedBy,
   ].flatMap((value) => {
     const trimmed = value?.trim();
@@ -219,6 +225,52 @@ export function resolveControlFeedbackAria(
     describedBy: describedBy || undefined,
     ariaInvalid: ariaInvalid || undefined,
   };
+}
+
+/**
+ * Puts feedback into the accessible name of a time or number field.
+ * Chromium does not expose aria-describedby on those spin buttons.
+ * An existing aria-labelledby is kept and the feedback id is appended.
+ */
+export function applySpinbuttonFeedbackName(
+  attributes: Attributes,
+  messageId: string | undefined,
+  options: { labelId?: string; nameId: string }
+): {
+  attributes: Attributes;
+  hiddenName?: { id: string; text: string };
+  labelId?: string;
+} {
+  if (!messageId) {
+    return { attributes };
+  }
+
+  const next: Attributes = { ...attributes };
+  const existingLabelledBy =
+    next['aria-labelledby']
+      ?.trim()
+      .split(/\s+/)
+      .filter((id) => id.length > 0) ?? [];
+  const nameIds = [...existingLabelledBy];
+  let hiddenName: { id: string; text: string } | undefined;
+  let labelId: string | undefined;
+
+  if (!existingLabelledBy.length) {
+    const ariaLabel = next['aria-label']?.trim();
+    if (ariaLabel) {
+      hiddenName = { id: options.nameId, text: ariaLabel };
+      nameIds.push(options.nameId);
+    } else if (options.labelId) {
+      labelId = options.labelId;
+      nameIds.push(options.labelId);
+    }
+    delete next['aria-label'];
+  }
+
+  nameIds.push(messageId);
+  next['aria-labelledby'] = [...new Set(nameIds)].join(' ');
+
+  return { attributes: next, hiddenName, labelId };
 }
 
 /**

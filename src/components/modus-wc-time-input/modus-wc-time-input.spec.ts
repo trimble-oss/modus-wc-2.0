@@ -75,6 +75,27 @@ describe('modus-wc-time-input', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should append error feedback to an existing accessible name and keep the hint', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcInputLabel, ModusWcInputFeedback],
+      html: '<modus-wc-time-input input-id="start" label="Start" aria-labelledby="start-name" aria-describedby="hint"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+    component.feedback = { level: 'info', message: 'Use 24-hour time' };
+    await page.waitForChanges();
+
+    const input = page.root!.querySelector('input')!;
+    expect(input.getAttribute('aria-labelledby')).toBe(
+      'start-name start-feedback'
+    );
+    expect(input.getAttribute('aria-describedby')).toBe('hint');
+    expect(input.hasAttribute('aria-invalid')).toBe(false);
+    expect(page.root!.querySelector('label')!.hasAttribute('id')).toBe(false);
+    expect(
+      page.root!.querySelector('.modus-wc-input-feedback')!.hasAttribute('role')
+    ).toBe(false);
+  });
+
   it('should emit blur event', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput],
