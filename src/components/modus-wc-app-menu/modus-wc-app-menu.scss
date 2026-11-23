@@ -137,6 +137,24 @@ modus-wc-app-menu.modus-wc-app-menu {
       /* No explicit width here: the menu item naturally fills its row,
          which is constrained by the surrounding `modus-wc-panel` width
          and its body padding. */
+      modus-wc-menu-item .modus-wc-menu-item.modus-wc-menu-item-md button {
+        font-size: var(--modus-wc-font-size-md);
+        gap: 0;
+        height: auto;
+        min-height: unset;
+        padding-block: var(--modus-wc-spacing-sm);
+        padding-inline: var(--modus-wc-spacing-lg);
+
+        .modus-wc-menu-item-labels {
+          line-height: var(--modus-wc-line-height-md);
+        }
+
+        &:has(.modus-wc-menu-item-sublabel) {
+          height: auto;
+          min-height: unset;
+        }
+      }
+
       .modus-wc-menu-item button {
         min-width: 0;
 

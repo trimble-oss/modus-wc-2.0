@@ -7,7 +7,7 @@ export const convertPropsToClasses = ({
 }: {
   bordered?: boolean;
   orientation?: Orientation;
-  size?: ModusSize;
+  size?: ModusSize | 'xs' | 'xl';
 }): string => {
   let classes = '';
 
