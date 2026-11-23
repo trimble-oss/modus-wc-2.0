@@ -1795,6 +1795,11 @@
             Custom CSS class to apply to the outer div element.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcInputFeedback.DisableIcon">
+            <summary>
+            Whether to disable the icon
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcInputFeedback.Icon">
             <summary>
             The Modus icon to use instead of the pre-defined icons.
