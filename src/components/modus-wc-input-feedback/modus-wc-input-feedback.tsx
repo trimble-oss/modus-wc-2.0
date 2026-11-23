@@ -97,14 +97,8 @@ export class ModusWcInputFeedback {
     return (
       <Host>
         <div class={this.getClasses()} {...this.inheritedAttributes}>
-          {this.icon ? (
-            <modus-wc-icon decorative name={this.icon} />
-          ) : (
-            this.getPresetIcon()
-          )}
-          <span id={this.messageId}>{this.message}</span>
           {this.getIcon()}
-          <span>{this.message}</span>
+          <span id={this.messageId}>{this.message}</span>
         </div>
       </Host>
     );
