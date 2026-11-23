@@ -15,7 +15,7 @@ import {
 } from './modus-wc-tabs.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { ModusSize } from '../types';
-import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes } from '../utils';
 
 export interface ITab {
   /** Custom CSS class to apply to the inner button. */
@@ -49,7 +49,6 @@ export interface ITab {
 })
 export class ModusWcTabs {
   private inheritedAttributes: Attributes = {};
-  private readonly instanceId = generateRandomId();
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -176,14 +175,6 @@ export class ModusWcTabs {
     );
   }
 
-  private getTabId(index: number): string {
-    return `modus-wc-tab-${this.instanceId}-${index}`;
-  }
-
-  private getTabPanelId(index: number): string {
-    return `modus-wc-tabpanel-${this.instanceId}-${index}`;
-  }
-
   private getFocusedTabIndex(): number {
     const activeElement = document.activeElement as HTMLElement | null;
     if (!activeElement || !this.el.contains(activeElement)) {
@@ -277,13 +268,12 @@ export class ModusWcTabs {
     const tabs = this.tabs.map((tab, index) => (
       <button
         role="tab"
-        aria-controls={this.getTabPanelId(index)}
         aria-disabled={tab.disabled ? 'true' : undefined}
         aria-label={tab.label ?? tab.icon}
         aria-selected={index === this.activeTabIndex ? 'true' : 'false'}
         class={this.getTabClasses(tab, index)}
         disabled={tab.disabled}
-        id={this.getTabId(index)}
+        id={`tab-${index}`}
         onClick={() => this.handleClick(tab, index)}
         tabIndex={this.getRovingTabIndex(tab, index)}
       >
@@ -304,19 +294,15 @@ export class ModusWcTabs {
         >
           {tabs}
         </div>
-        <div class="modus-wc-tab-panel">
+        <div class="modus-wc-tab-panel" role="tabpanel" tabIndex={0}>
           {this.tabs.map((_, index) => (
             <div
-              aria-labelledby={this.getTabId(index)}
               class={
                 this.activeTabIndex === index
                   ? 'modus-wc-tab-active'
                   : undefined
               }
               hidden={this.activeTabIndex !== index}
-              id={this.getTabPanelId(index)}
-              role="tabpanel"
-              tabIndex={this.activeTabIndex === index ? 0 : -1}
             >
               <slot name={`tab-${index}`} />
             </div>

@@ -107,7 +107,7 @@ exports[`modus-wc-file-dropzone feedback should display custom icon when feedbac
   <!---->
   <div class="modus-wc-file-dropzone">
     <input class="file-input modus-wc-file-input" type="file">
-    <div aria-disabled="false" aria-label="File dropzone" class="dropzone-content invalid-file-type" role="button" tabindex="0">
+    <div aria-disabled="false" class="dropzone-content invalid-file-type" role="button" tabindex="0">
       <div class="default-content">
         <modus-wc-icon class="error-icon" name="warning" size="lg" variant="solid"></modus-wc-icon>
         <span></span>
@@ -123,7 +123,7 @@ exports[`modus-wc-file-dropzone feedback should display custom icon when feedbac
   <!---->
   <div class="modus-wc-file-dropzone">
     <input class="file-input modus-wc-file-input" type="file">
-    <div aria-disabled="false" aria-label="File dropzone" class="dragging-over dropzone-content" role="button" tabindex="0">
+    <div aria-disabled="false" class="dragging-over dropzone-content" role="button" tabindex="0">
       <div class="default-content">
         <modus-wc-icon class="upload-icon" name="info" size="lg" variant="solid"></modus-wc-icon>
         <span></span>
@@ -139,7 +139,7 @@ exports[`modus-wc-file-dropzone feedback should display custom icon when feedbac
   <!---->
   <div class="modus-wc-file-dropzone">
     <input class="file-input modus-wc-file-input" type="file">
-    <div aria-disabled="false" aria-label="File dropzone" class="dropzone-content upload-success" role="button" tabindex="0">
+    <div aria-disabled="false" class="dropzone-content upload-success" role="button" tabindex="0">
       <div class="default-content">
         <modus-wc-icon class="success-icon" name="calendar_check" size="lg" variant="solid"></modus-wc-icon>
         <span></span>
@@ -191,7 +191,7 @@ exports[`modus-wc-file-dropzone feedback should display no message when feedback
   <!---->
   <div class="modus-wc-file-dropzone">
     <input class="file-input modus-wc-file-input" type="file">
-    <div aria-disabled="false" aria-label="File dropzone" class="dropzone-content invalid-file-type" role="button" tabindex="0">
+    <div aria-disabled="false" class="dropzone-content invalid-file-type" role="button" tabindex="0">
       <div class="default-content">
         <modus-wc-icon class="error-icon" name="alert" size="lg" variant="solid"></modus-wc-icon>
         <span></span>
@@ -207,7 +207,7 @@ exports[`modus-wc-file-dropzone feedback should display no message when feedback
   <!---->
   <div class="modus-wc-file-dropzone">
     <input class="file-input modus-wc-file-input" type="file">
-    <div aria-disabled="false" aria-label="File dropzone" class="dragging-over dropzone-content" role="button" tabindex="0">
+    <div aria-disabled="false" class="dragging-over dropzone-content" role="button" tabindex="0">
       <div class="default-content">
         <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
         <span></span>
@@ -223,7 +223,7 @@ exports[`modus-wc-file-dropzone feedback should display no message when feedback
   <!---->
   <div class="modus-wc-file-dropzone">
     <input class="file-input modus-wc-file-input" type="file">
-    <div aria-disabled="false" aria-label="File dropzone" class="dropzone-content upload-success" role="button" tabindex="0">
+    <div aria-disabled="false" class="dropzone-content upload-success" role="button" tabindex="0">
       <div class="default-content">
         <modus-wc-icon class="success-icon" name="check_circle" size="lg" variant="solid"></modus-wc-icon>
         <span></span>
@@ -311,7 +311,7 @@ exports[`modus-wc-file-dropzone should render with accept-file-types prop 1`] = 
   <!---->
   <div class="modus-wc-file-dropzone">
     <input accept=".jpg,.png,image/*" class="file-input modus-wc-file-input" type="file">
-    <div aria-disabled="false" aria-label="File dropzone" class="dropzone-content" role="button" tabindex="0">
+    <div aria-disabled="false" class="dropzone-content" role="button" tabindex="0">
       <div class="default-content">
         <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
         <span></span>
@@ -327,7 +327,7 @@ exports[`modus-wc-file-dropzone should render with custom drag-over instructions
   <!---->
   <div class="modus-wc-file-dropzone">
     <input class="file-input modus-wc-file-input" type="file">
-    <div aria-disabled="false" aria-label="File dropzone" class="dropzone-content" role="button" tabindex="0">
+    <div aria-disabled="false" class="dropzone-content" role="button" tabindex="0">
       <div class="default-content">
         <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
         <span></span>
@@ -361,7 +361,7 @@ exports[`modus-wc-file-dropzone should render with default props 1`] = `
   <!---->
   <div class="modus-wc-file-dropzone">
     <input class="file-input modus-wc-file-input" type="file">
-    <div aria-disabled="false" aria-label="File dropzone" class="dropzone-content" role="button" tabindex="0">
+    <div aria-disabled="false" class="dropzone-content" role="button" tabindex="0">
       <div class="default-content">
         <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
         <span></span>
@@ -377,7 +377,7 @@ exports[`modus-wc-file-dropzone should render with disabled prop 1`] = `
   <!---->
   <div class="modus-wc-file-dropzone">
     <input class="file-input file-input-disabled modus-wc-file-input" disabled="" type="file">
-    <div aria-disabled="true" aria-label="File dropzone" class="dropzone-content" role="button" tabindex="-1">
+    <div aria-disabled="true" class="dropzone-content" role="button" tabindex="-1">
       <div class="default-content">
         <modus-wc-icon class="upload-icon" name="cloud_upload" size="lg" variant="solid"></modus-wc-icon>
         <span></span>

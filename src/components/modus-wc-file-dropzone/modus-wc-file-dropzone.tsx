@@ -18,6 +18,8 @@ import { Attributes, inheritAriaAttributes } from '../utils';
  * File dropzone component that allows users to drag and drop files for upload.
  *
  * The component supports a `<slot>` called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
+ *
+ * The dropzone is a focusable control. Give it an accessible name with `instructions`, visible `dropzone` slot text, or `aria-label`. If none of those are set, the control is unnamed.
  */
 
 @Component({
@@ -328,32 +330,6 @@ export class ModusWcFileDropzone {
     }
   };
 
-  private hasVisibleDropzoneSlotText(): boolean {
-    return Array.from(this.el.querySelectorAll('[slot="dropzone"]')).some(
-      (node) => Boolean(node.textContent && node.textContent.trim())
-    );
-  }
-
-  private getDropzoneAriaLabel(
-    visibleMessage?: string,
-    slotIsVisible?: boolean
-  ): string | undefined {
-    const inheritedLabel = this.inheritedAttributes['aria-label'];
-    if (inheritedLabel) {
-      return inheritedLabel;
-    }
-
-    if (visibleMessage) {
-      return undefined;
-    }
-
-    if (slotIsVisible && this.hasVisibleDropzoneSlotText()) {
-      return undefined;
-    }
-
-    return 'File dropzone';
-  }
-
   // Helper method to format file size in human-readable format
   private formatFileSize(bytes?: number): string {
     if (!bytes) return '0 Bytes';
@@ -502,10 +478,6 @@ export class ModusWcFileDropzone {
             role="button"
             tabindex={this.disabled ? -1 : 0}
             {...this.inheritedAttributes}
-            aria-label={this.getDropzoneAriaLabel(
-              message,
-              showDropzoneSlot === 'block'
-            )}
           >
             <div class="default-content">
               {showIcon && (

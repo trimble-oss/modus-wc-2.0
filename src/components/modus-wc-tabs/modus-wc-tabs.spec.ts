@@ -283,29 +283,13 @@ describe('modus-wc-tabs', () => {
     const tabs = getTabButtons(page.root!);
 
     expect(tabs[0].tabIndex).toBe(0);
-    expect(tabs[0].getAttribute('aria-controls')).toBe(
-      'modus-wc-tabpanel-test-random-id-0'
-    );
-    expect(tabs[0].id).toBe('modus-wc-tab-test-random-id-0');
+    expect(tabs[0].id).toBe('tab-0');
     expect(
       Array.from(tabs)
         .slice(1)
         .every((tab) => tab.tabIndex === -1)
     ).toBe(true);
-
-    const activePanel = page.root!.querySelector(
-      '#modus-wc-tabpanel-test-random-id-0'
-    );
-    expect(activePanel?.getAttribute('role')).toBe('tabpanel');
-    expect(activePanel?.getAttribute('aria-labelledby')).toBe(
-      'modus-wc-tab-test-random-id-0'
-    );
-    expect(activePanel?.getAttribute('tabindex')).toBe('0');
-    expect(
-      page
-        .root!.querySelector('#modus-wc-tabpanel-test-random-id-2')
-        ?.getAttribute('tabindex')
-    ).toBe('-1');
+    expect(tabs[0].hasAttribute('aria-controls')).toBe(false);
   });
 
   it('should move to the next enabled tab on ArrowRight', async () => {
