@@ -18,25 +18,25 @@ exports[`modus-wc-app-menu should render with apps in grid layout 1`] = `
         <div class="modus-wc-app-menu-grid">
           <div class="modus-wc-app-menu-grid-row" role="list">
             <div aria-label="Trimble Connect" class="modus-wc-app-menu-grid-item" draggable="false" role="listitem" tabindex="0">
-              <modus-wc-logo custom-class="modus-wc-app-menu-grid-emblem" emblem="" name="connect"></modus-wc-logo>
+              <modus-wc-logo custom-class="modus-wc-app-menu-grid-emblem" decorative="" emblem="" name="connect"></modus-wc-logo>
               <modus-wc-tooltip content="Trimble Connect" disabled="" position="auto">
                 <modus-wc-typography custom-class="modus-wc-app-menu-grid-item-label" label="Trimble Connect" size="sm"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>
             <div aria-label="Viewpoint" class="modus-wc-app-menu-grid-item" draggable="false" role="listitem" tabindex="0">
-              <modus-wc-logo custom-class="modus-wc-app-menu-grid-emblem" emblem="" name="viewpoint"></modus-wc-logo>
+              <modus-wc-logo custom-class="modus-wc-app-menu-grid-emblem" decorative="" emblem="" name="viewpoint"></modus-wc-logo>
               <modus-wc-tooltip content="Viewpoint" disabled="" position="auto">
                 <modus-wc-typography custom-class="modus-wc-app-menu-grid-item-label" label="Viewpoint" size="sm"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>
             <div aria-label="SketchUp" class="modus-wc-app-menu-grid-item" draggable="false" role="listitem" tabindex="0">
-              <modus-wc-logo custom-class="modus-wc-app-menu-grid-emblem" emblem="" name="sketchup"></modus-wc-logo>
+              <modus-wc-logo custom-class="modus-wc-app-menu-grid-emblem" decorative="" emblem="" name="sketchup"></modus-wc-logo>
               <modus-wc-tooltip content="SketchUp" disabled="" position="auto">
                 <modus-wc-typography custom-class="modus-wc-app-menu-grid-item-label" label="SketchUp" size="sm"></modus-wc-typography>
               </modus-wc-tooltip>
             </div>
             <div aria-label="Tekla" class="modus-wc-app-menu-grid-item" draggable="false" role="listitem" tabindex="0">
-              <modus-wc-logo custom-class="modus-wc-app-menu-grid-emblem" emblem="" name="tekla"></modus-wc-logo>
+              <modus-wc-logo custom-class="modus-wc-app-menu-grid-emblem" decorative="" emblem="" name="tekla"></modus-wc-logo>
               <modus-wc-tooltip content="Tekla" disabled="" position="auto">
                 <modus-wc-typography custom-class="modus-wc-app-menu-grid-item-label" label="Tekla" size="sm"></modus-wc-typography>
               </modus-wc-tooltip>
@@ -68,22 +68,22 @@ exports[`modus-wc-app-menu should render with apps in list layout 1`] = `
           <modus-wc-menu>
             <div aria-label="Trimble Connect" class="modus-wc-app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Trimble Connect" tooltipposition="auto">
-                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" emblem="" name="connect" slot="start-icon"></modus-wc-logo>
+                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" decorative="" emblem="" name="connect" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
             <div aria-label="Viewpoint" class="modus-wc-app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Viewpoint" tooltipposition="auto">
-                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" emblem="" name="viewpoint" slot="start-icon"></modus-wc-logo>
+                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" decorative="" emblem="" name="viewpoint" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
             <div aria-label="SketchUp" class="modus-wc-app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="SketchUp" tooltipposition="auto">
-                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" emblem="" name="sketchup" slot="start-icon"></modus-wc-logo>
+                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" decorative="" emblem="" name="sketchup" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
             <div aria-label="Tekla" class="modus-wc-app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Tekla" tooltipposition="auto">
-                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" emblem="" name="tekla" slot="start-icon"></modus-wc-logo>
+                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" decorative="" emblem="" name="tekla" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
           </modus-wc-menu>
@@ -113,22 +113,22 @@ exports[`modus-wc-app-menu should render with custom class 1`] = `
           <modus-wc-menu>
             <div aria-label="Trimble Connect" class="modus-wc-app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Trimble Connect" tooltipposition="auto">
-                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" emblem="" name="connect" slot="start-icon"></modus-wc-logo>
+                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" decorative="" emblem="" name="connect" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
             <div aria-label="Viewpoint" class="modus-wc-app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Viewpoint" tooltipposition="auto">
-                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" emblem="" name="viewpoint" slot="start-icon"></modus-wc-logo>
+                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" decorative="" emblem="" name="viewpoint" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
             <div aria-label="SketchUp" class="modus-wc-app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="SketchUp" tooltipposition="auto">
-                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" emblem="" name="sketchup" slot="start-icon"></modus-wc-logo>
+                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" decorative="" emblem="" name="sketchup" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
             <div aria-label="Tekla" class="modus-wc-app-menu-item-row" draggable="false" role="listitem" tabindex="-1">
               <modus-wc-menu-item label="Tekla" tooltipposition="auto">
-                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" emblem="" name="tekla" slot="start-icon"></modus-wc-logo>
+                <modus-wc-logo custom-class="modus-wc-app-menu-app-logo" decorative="" emblem="" name="tekla" slot="start-icon"></modus-wc-logo>
               </modus-wc-menu-item>
             </div>
           </modus-wc-menu>

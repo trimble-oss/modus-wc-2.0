@@ -23,7 +23,12 @@ import { NotificationsSolidIcon } from '../../icons/notifications-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import { handleShadowDOMStyles } from '../base-component';
 import { LogoName } from '../types';
-import { Attributes, inheritAriaAttributes, isLightMode } from '../utils';
+import {
+  Attributes,
+  generateRandomId,
+  inheritAriaAttributes,
+  isLightMode,
+} from '../utils';
 export interface INavbarTextOverrides {
   /** Replaces the text for "Apps" in the condensed menu. */
   apps?: string;
@@ -83,6 +88,7 @@ export class ModusWcNavbar {
   private appsRef?: HTMLDivElement;
   private condensedMenuRef?: HTMLElement;
   private inheritedAttributes: Attributes = {};
+  private mainMenuPanelId = '';
   private menuRef?: HTMLDivElement;
   private notificationsRef?: HTMLDivElement;
   private searchDebounceTimer: number | null = null;
@@ -196,6 +202,7 @@ export class ModusWcNavbar {
     handleShadowDOMStyles(this.el, true);
 
     this.inheritedAttributes = inheritAriaAttributes(this.el);
+    this.mainMenuPanelId = `modus-wc-navbar-main-menu-${generateRandomId()}`;
 
     this.isLight = isLightMode();
 
@@ -429,6 +436,8 @@ export class ModusWcNavbar {
             {this.visibility?.mainMenu && (
               <Fragment>
                 <modus-wc-button
+                  aria-controls={this.mainMenuPanelId}
+                  aria-expanded={this.mainMenuOpen ? 'true' : 'false'}
                   aria-label="Main menu"
                   onButtonClick={this.toggleMainMenu}
                   shape="square"
@@ -439,6 +448,7 @@ export class ModusWcNavbar {
                 </modus-wc-button>
                 <div
                   class={`main-menu ${this.mainMenuOpen ? 'visible' : 'hidden'}`}
+                  id={this.mainMenuPanelId}
                   ref={(el) => (this.menuRef = el)}
                 >
                   <slot name="main-menu" />
@@ -455,8 +465,9 @@ export class ModusWcNavbar {
                 variant="borderless"
               >
                 <modus-wc-logo
-                  name={this.logoName || 'trimble'}
+                  decorative
                   emblem={this.condensed}
+                  name={this.logoName || 'trimble'}
                 ></modus-wc-logo>
               </modus-wc-button>
             )}

@@ -1,6 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { ModusWcNavbar } from './modus-wc-navbar';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
+import { ModusWcLogo } from '../modus-wc-logo/modus-wc-logo';
 import { ModusWcToolbar } from '../modus-wc-toolbar/modus-wc-toolbar';
 
 describe('modus-wc-navbar', () => {
@@ -79,5 +80,48 @@ describe('modus-wc-navbar', () => {
     };
     await page.waitForChanges();
     expect(page.root?.querySelector('modus-wc-logo')).toBeNull();
+  });
+
+  it('should hide the logo from assistive technology when the button already names it', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcNavbar, ModusWcToolbar, ModusWcButton, ModusWcLogo],
+      html: '<modus-wc-navbar></modus-wc-navbar>',
+    });
+
+    const button = page.root?.querySelector('button.logo');
+    const logo = page.root?.querySelector('.modus-wc-logo');
+
+    expect(button?.getAttribute('aria-label')).toBe('Trimble logo');
+    expect(logo?.getAttribute('aria-hidden')).toBe('true');
+    expect(logo?.getAttribute('role')).toBeNull();
+    expect(logo?.getAttribute('aria-label')).toBeNull();
+  });
+
+  it('should expose whether the main menu is open and which panel it controls', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcNavbar, ModusWcToolbar, ModusWcButton],
+      html: '<modus-wc-navbar></modus-wc-navbar>',
+    });
+
+    page.rootInstance.visibility = {
+      ...page.rootInstance.visibility,
+      mainMenu: true,
+    };
+    await page.waitForChanges();
+
+    const button = page.root?.querySelector(
+      'modus-wc-button[aria-label="Main menu"] button'
+    );
+    const panel = page.root?.querySelector('.main-menu');
+
+    expect(panel?.id).toBe('modus-wc-navbar-main-menu-test-random-id');
+    expect(button?.getAttribute('aria-expanded')).toBe('false');
+    expect(button?.getAttribute('aria-controls')).toBe(panel?.id);
+
+    page.rootInstance.mainMenuOpen = true;
+    await page.waitForChanges();
+
+    expect(button?.getAttribute('aria-expanded')).toBe('true');
+    expect(button?.getAttribute('aria-controls')).toBe(panel?.id);
   });
 });

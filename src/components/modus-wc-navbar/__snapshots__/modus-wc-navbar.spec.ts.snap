@@ -11,7 +11,7 @@ exports[`modus-wc-navbar should render with custom props and slots 1`] = `
           <modus-wc-button aria-label="Trimble logo">
             <!---->
             <button aria-label="Trimble logo" class="logo modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
-              <modus-wc-logo name="trimble"></modus-wc-logo>
+              <modus-wc-logo decorative="" name="trimble"></modus-wc-logo>
             </button>
           </modus-wc-button>
           <div slot="start">
@@ -80,7 +80,7 @@ exports[`modus-wc-navbar should render with no props 1`] = `
           <modus-wc-button aria-label="Trimble logo">
             <!---->
             <button aria-label="Trimble logo" class="logo modus-wc-btn modus-wc-btn-borderless modus-wc-btn-primary modus-wc-btn-sm" tabindex="0" type="button">
-              <modus-wc-logo name="trimble"></modus-wc-logo>
+              <modus-wc-logo decorative="" name="trimble"></modus-wc-logo>
             </button>
           </modus-wc-button>
         </div>

@@ -196,7 +196,12 @@ export class ModusWcCollapse {
           ref={(el) => (this.detailsRef = el as HTMLDetailsElement)}
           {...this.inheritedAttributes}
         >
-          <summary class={this.getTitleClasses()} id={titleId}>
+          <summary
+            aria-controls={contentId}
+            aria-expanded={this.expanded ? 'true' : 'false'}
+            class={this.getTitleClasses()}
+            id={titleId}
+          >
             {this.options ? (
               <div class="modus-wc-summary-main-content">
                 {this.options.startIcon && (

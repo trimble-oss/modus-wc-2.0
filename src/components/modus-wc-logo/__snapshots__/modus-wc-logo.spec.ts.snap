@@ -2,10 +2,13 @@
 
 exports[`modus-wc-logo should render full logo without emblem prop 1`] = `
 <modus-wc-logo name="siteworks">
-  <span aria-label="siteworks" class="logo-combined logo-full modus-wc-logo" role="img">
+  <span aria-label="siteworks logo" class="logo-combined logo-full modus-wc-logo" role="img">
     <span class="logo-combined-emblem">
       <span>
-        <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+          <title>
+            siteworks logo
+          </title>
           <path class="logo-accent" d="M14.6483 11.02H13.5345V12.3374C13.0394 12.5584 12.5855 12.8273 12.2128 13.1131L14.6983 8.49996V10.9271L14.6483 11.02Z"></path>
           <path class="logo-accent" d="M17.8517 11.02L17.8017 10.9271V8.49996L20.2872 13.1131C19.9145 12.8273 19.4606 12.5584 18.9655 12.3374V11.02H17.8517Z"></path>
           <path class="logo-accent" d="M21.4456 15.34H21.4871L27.5 26.5H18.1049L18.4298 25.4145H25.6074L20.9933 16.8507L21.4456 15.34Z"></path>
@@ -17,7 +20,10 @@ exports[`modus-wc-logo should render full logo without emblem prop 1`] = `
     </span>
     <span class="logo-combined-wordmark">
       <span>
-        <svg fill="none" height="30" viewBox="0 0 81 30" width="81" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" fill="none" height="30" viewBox="0 0 81 30" width="81" xmlns="http://www.w3.org/2000/svg">
+          <title>
+            siteworks logo
+          </title>
           <path class="logo-accent" d="M3.65277 7.8974H2.0514V1.78668H0V0.476562H5.70418V1.78595H3.65277V7.89666V7.8974Z"></path>
           <path class="logo-accent" d="M8.56749 2.11597C8.647 2.11597 8.7385 2.12039 8.84426 2.1285C8.94927 2.13734 9.03478 2.14766 9.10003 2.16166L8.98152 3.61325C8.92977 3.59631 8.85626 3.58378 8.76175 3.57494C8.66725 3.56683 8.58549 3.56241 8.51648 3.56241C8.31322 3.56241 8.11596 3.5882 7.92469 3.63831C7.73343 3.68915 7.56241 3.77094 7.4109 3.88442C7.25939 3.99789 7.13938 4.14673 7.05163 4.33095C6.96387 4.51516 6.91962 4.74137 6.91962 5.00885V7.89657H5.34375V2.22281H6.53709L6.76961 3.17704H6.84686C6.96087 2.98398 7.10263 2.80714 7.27289 2.6465C7.44316 2.48587 7.63817 2.35692 7.85644 2.26039C8.07545 2.16387 8.31172 2.11523 8.56674 2.11523L8.56749 2.11597Z"></path>
           <path class="logo-accent" d="M10.2284 0C10.4624 0 10.6642 0.0530533 10.833 0.159897C11.0017 0.26674 11.0865 0.464954 11.0865 0.75601C11.0865 1.04707 11.0017 1.24233 10.833 1.35212C10.6642 1.46191 10.4624 1.51718 10.2284 1.51718C9.99439 1.51718 9.78812 1.46191 9.62161 1.35212C9.45435 1.24233 9.37109 1.04338 9.37109 0.75601C9.37109 0.468638 9.45435 0.266004 9.62161 0.159897C9.78887 0.0530533 9.99139 0 10.2284 0ZM11.0137 2.22308V7.89758H9.43785V2.22308H11.0137Z"></path>
@@ -36,10 +42,13 @@ exports[`modus-wc-logo should render full logo without emblem prop 1`] = `
 
 exports[`modus-wc-logo should render viewpoint logo 1`] = `
 <modus-wc-logo name="viewpoint_field_view">
-  <span aria-label="viewpoint field view" class="logo-combined logo-full modus-wc-logo" role="img">
+  <span aria-label="viewpoint field view logo" class="logo-combined logo-full modus-wc-logo" role="img">
     <span class="logo-combined-emblem">
       <span>
-        <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+          <title>
+            viewpoint field view logo
+          </title>
           <path class="logo-accent" d="M8 27.9988C8 27.9988 8.00364 13.2844 8.00729 13.1932C8.07528 11.5923 8.73702 10.1148 9.80794 9.00435C10.6178 8.16249 11.662 7.53051 12.8592 7.21391L25 4C25 4.29861 24.9794 4.59481 24.9393 4.88383C24.8749 5.34193 24.7632 5.78684 24.6066 6.21256C24.3759 6.83736 24.0505 7.42018 23.645 7.94184C22.7877 9.04392 21.5735 9.87498 20.1396 10.2539H20.1335L12.8592 12.1811V21.7449C12.8592 24.6302 10.9286 27.1617 8.13356 27.9628C8.12871 27.9652 8.12263 27.9664 8.11656 27.9676L8 27.9988Z"></path>
           <path class="logo-accent" d="M8 27.9999L8.11656 27.9675C8.07771 27.9783 8.03885 27.9891 8 27.9999Z"></path>
           <path class="logo-accent" d="M15.2471 14.0327V18.0069L16.2172 17.7503C18.5096 17.1435 20.1039 15.0916 20.1039 12.7471L15.2471 14.0327Z"></path>
@@ -49,7 +58,10 @@ exports[`modus-wc-logo should render viewpoint logo 1`] = `
     </span>
     <span class="logo-combined-wordmark">
       <span>
-        <svg fill="none" height="30" viewBox="0 0 80 30" width="80" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" fill="none" height="30" viewBox="0 0 80 30" width="80" xmlns="http://www.w3.org/2000/svg">
+          <title>
+            viewpoint field view logo
+          </title>
           <path class="logo-accent" d="M3.65277 7.8974H2.0514V1.78668H0V0.476562H5.70418V1.78595H3.65277V7.89666V7.8974Z"></path>
           <path class="logo-accent" d="M8.56749 2.11597C8.647 2.11597 8.7385 2.12039 8.84426 2.1285C8.94927 2.13734 9.03478 2.14766 9.10003 2.16166L8.98152 3.61325C8.92977 3.59631 8.85626 3.58378 8.76175 3.57494C8.66725 3.56683 8.58549 3.56241 8.51648 3.56241C8.31322 3.56241 8.11596 3.5882 7.92469 3.63831C7.73343 3.68915 7.56241 3.77094 7.4109 3.88442C7.25939 3.99789 7.13938 4.14673 7.05163 4.33095C6.96387 4.51516 6.91962 4.74137 6.91962 5.00885V7.89657H5.34375V2.22281H6.53709L6.76961 3.17704H6.84686C6.96087 2.98398 7.10263 2.80714 7.27289 2.6465C7.44316 2.48587 7.63817 2.35692 7.85644 2.26039C8.07545 2.16387 8.31172 2.11523 8.56674 2.11523L8.56749 2.11597Z"></path>
           <path class="logo-accent" d="M10.2284 0C10.4624 0 10.6642 0.0530533 10.833 0.159897C11.0017 0.26674 11.0865 0.464954 11.0865 0.75601C11.0865 1.04707 11.0017 1.24233 10.833 1.35212C10.6642 1.46191 10.4624 1.51718 10.2284 1.51718C9.99439 1.51718 9.78812 1.46191 9.62161 1.35212C9.45435 1.24233 9.37109 1.04338 9.37109 0.75601C9.37109 0.468638 9.45435 0.266004 9.62161 0.159897C9.78887 0.0530533 9.99139 0 10.2284 0ZM11.0137 2.22308V7.89758H9.43785V2.22308H11.0137Z"></path>
@@ -68,10 +80,13 @@ exports[`modus-wc-logo should render viewpoint logo 1`] = `
 
 exports[`modus-wc-logo should render with default props 1`] = `
 <modus-wc-logo name="trimble">
-  <span aria-label="trimble" class="logo-full modus-wc-logo" role="img">
+  <span aria-label="trimble logo" class="logo-full modus-wc-logo" role="img">
     <span>
       <span>
-        <svg fill="none" height="32" viewBox="0 0 106 32" width="106" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" fill="none" height="32" viewBox="0 0 106 32" width="106" xmlns="http://www.w3.org/2000/svg">
+          <title>
+            trimble logo
+          </title>
           <path class="logo-accent" d="M27.4549 24.9271V10.0545H22.0273V6.70557H36.8767V10.0545H31.4245V24.9271H27.4549Z"></path>
           <path class="logo-accent" d="M33.6377 24.9273V11.8755H37.5582V13.9944H37.5828C38.2885 12.8859 39.5307 11.5317 41.966 11.5317H42.0875V15.0532C41.9415 15.0283 41.2603 14.98 41.0159 14.98C39.457 14.98 38.2885 15.8166 37.5582 16.7773V24.9273H33.6377Z"></path>
           <path class="logo-accent" d="M43.3252 10.005V6.82861H47.2703V10.005H43.3252ZM43.3498 24.9273V11.8023H47.2457V24.9259H43.3498V24.9273Z"></path>
@@ -103,10 +118,13 @@ exports[`modus-wc-logo should render with default props 1`] = `
 
 exports[`modus-wc-logo should render with emblem prop 1`] = `
 <modus-wc-logo emblem="" name="trimble">
-  <span aria-label="trimble" class="logo-emblem modus-wc-logo" role="img">
+  <span aria-label="trimble logo" class="logo-emblem modus-wc-logo" role="img">
     <span>
       <span>
-        <svg fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" fill="none" height="32" viewBox="0 0 32 32" width="32" xmlns="http://www.w3.org/2000/svg">
+          <title>
+            trimble logo
+          </title>
           <path class="logo-accent" d="M5.60095 22.7632V28.869L10.9065 25.8093C8.86902 25.3723 7.01981 24.3098 5.60095 22.7699V22.7632Z"></path>
           <path class="logo-accent" d="M10.8662 6.03271L5.60095 3V9.06543C7.08033 7.45829 8.98334 6.44963 10.8662 6.03271Z"></path>
           <path class="logo-accent" d="M28 15.9311C27.7512 15.7831 23.0038 13.0463 22.6945 12.8715C23.3198 14.8552 23.3199 17.0003 22.681 19.0041L28 15.9311Z"></path>
