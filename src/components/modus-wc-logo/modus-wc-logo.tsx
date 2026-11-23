@@ -142,10 +142,9 @@ export class ModusWcLogo {
       ? `<title>${this.escapeSvgText(title)}</title>`
       : '';
 
-    return svgText.replace(
-      /<svg\b([^>]*)>/,
-      `<svg$1 aria-hidden="true">${titleMarkup}`
-    );
+    return svgText.replace(/<svg\b([^>]*)>/, (_match, attributes: string) => {
+      return `<svg${attributes} aria-hidden="true">${titleMarkup}`;
+    });
   }
 
   render() {
@@ -163,7 +162,9 @@ export class ModusWcLogo {
         <span
           class={`modus-wc-logo ${classes} ${this.emblem ? 'logo-emblem' : 'logo-full'} ${isCombined ? 'logo-combined' : ''}`}
           {...this.inheritedAttributes}
-          aria-hidden={this.decorative ? 'true' : undefined}
+          aria-hidden={
+            this.decorative ? 'true' : this.inheritedAttributes['aria-hidden']
+          }
           aria-label={altText}
           role={this.decorative ? undefined : 'img'}
         >

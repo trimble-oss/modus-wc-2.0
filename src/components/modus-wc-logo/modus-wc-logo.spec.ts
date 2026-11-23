@@ -376,6 +376,31 @@ describe('modus-wc-logo', () => {
     expect(title?.textContent).toBe('Tom & "J" <logo>');
   });
 
+  it('should insert dollar signs in the svg title literally', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="trimble" alt="Cost $1 $$ $&amp;"></modus-wc-logo>',
+    });
+    const title = page.root?.querySelector('svg title');
+    const svg = page.root?.querySelector('svg');
+
+    expect(title?.textContent).toBe('Cost $1 $$ $&');
+    expect(svg?.getAttribute('aria-hidden')).toBe('true');
+    expect(title?.textContent).not.toContain('viewBox');
+  });
+
+  it('should keep an inherited aria-hidden value when the logo is not decorative', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcLogo],
+      html: '<modus-wc-logo name="trimble" aria-hidden="true"></modus-wc-logo>',
+    });
+    const logoSpan = page.root?.querySelector('.modus-wc-logo');
+
+    expect(logoSpan?.getAttribute('aria-hidden')).toBe('true');
+    expect(logoSpan?.getAttribute('role')).toBe('img');
+    expect(logoSpan?.getAttribute('aria-label')).toBe('trimble logo');
+  });
+
   it('should hide a decorative logo from assistive technology', async () => {
     const page = await newSpecPage({
       components: [ModusWcLogo],
