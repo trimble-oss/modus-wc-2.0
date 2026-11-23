@@ -50,4 +50,42 @@ describe('modus-wc-input-feedback', () => {
     });
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should keep disableIcon false and render the preset icon when disable-icon is omitted', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcInputFeedback],
+      html: '<modus-wc-input-feedback level="info" message="Default icon"></modus-wc-input-feedback>',
+    });
+
+    const component = page.rootInstance as ModusWcInputFeedback;
+    expect(component.disableIcon).toBe(false);
+    expect(
+      page.root?.querySelector('.modus-wc-input-feedback-icon')
+    ).not.toBeNull();
+  });
+
+  it('should not render the preset icon when disable-icon is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcInputFeedback],
+      html: '<modus-wc-input-feedback level="error" message="No icon" disable-icon="true"></modus-wc-input-feedback>',
+    });
+
+    expect(
+      page.root?.querySelector('.modus-wc-input-feedback-icon')
+    ).toBeNull();
+    expect(page.root?.querySelector('modus-wc-icon')).toBeNull();
+    expect(page.root?.querySelector('span')?.textContent).toBe('No icon');
+  });
+
+  it('should not render the custom icon when disable-icon is true', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcInputFeedback],
+      html: '<modus-wc-input-feedback icon="alert" message="Custom icon hidden" disable-icon="true"></modus-wc-input-feedback>',
+    });
+
+    expect(page.root?.querySelector('modus-wc-icon')).toBeNull();
+    expect(
+      page.root?.querySelector('.modus-wc-input-feedback-icon')
+    ).toBeNull();
+  });
 });

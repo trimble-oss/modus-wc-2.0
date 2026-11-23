@@ -413,6 +413,7 @@ modus-wc-date {
 [data-theme='connect-light'] modus-wc-date .modus-wc-date-input,
 [data-theme='connect-dark'] modus-wc-date .modus-wc-date-input {
   @include connect-input-styles;
+  @include connect-text-input-feedback;
 }
 
 [data-theme='modus-modern-dark'] modus-wc-date {
