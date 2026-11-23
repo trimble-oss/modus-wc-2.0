@@ -34,15 +34,17 @@ export const convertPropsToClasses = ({
   if (variant) {
     switch (variant) {
       case 'star':
-        ratingItemClasses = `${ratingItemClasses} modus-wc-mask-star-2`;
+        ratingItemClasses = `${ratingItemClasses} moduswc:mask-star-2 modus-wc-mask-star-2`;
         break;
       case 'heart':
-        ratingItemClasses = `${ratingItemClasses} modus-wc-mask-heart`;
+        ratingItemClasses = `${ratingItemClasses} moduswc:mask-heart modus-wc-mask-heart`;
         break;
       case 'smiley':
+        // Daisy 5 dropped mask-smiley. Keep the Modus hook for SCSS.
         ratingItemClasses = `${ratingItemClasses} modus-wc-mask-smiley`;
         break;
       case 'thumb':
+        // Daisy 5 dropped mask-thumb. Keep the Modus hook for SCSS.
         ratingItemClasses = `${ratingItemClasses} modus-wc-mask-thumb`;
         break;
     }
@@ -84,8 +86,8 @@ export const getIndexedRatingItemClass = (
  */
 const getMaskHalfClasses = (index: number): string => {
   return (index + 1) % 2 !== 0
-    ? 'modus-wc-mask-half-1'
-    : 'modus-wc-mask-half-2';
+    ? 'moduswc:mask-half-1 modus-wc-mask-half-1'
+    : 'moduswc:mask-half-2 modus-wc-mask-half-2';
 };
 
 /**

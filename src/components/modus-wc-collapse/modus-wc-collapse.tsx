@@ -108,7 +108,7 @@ export class ModusWcCollapse {
   };
 
   private getOuterDivClasses(): string {
-    const classList: string[] = ['modus-wc-collapse'];
+    const classList: string[] = ['modus-wc-collapse', 'moduswc:collapse'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,
@@ -130,7 +130,15 @@ export class ModusWcCollapse {
   // istanbul ignore next
   private getTitleClasses(): string {
     const classList: string[] = [
-      'modus-wc-collapse-title modus-wc-inline-flex modus-wc-items-center modus-wc-justify-between modus-wc-min-h-4',
+      'modus-wc-collapse-title',
+      'moduswc:inline-flex',
+      'modus-wc-inline-flex',
+      'moduswc:items-center',
+      'modus-wc-items-center',
+      'moduswc:justify-between',
+      'modus-wc-justify-between',
+      'moduswc:min-h-4',
+      'modus-wc-min-h-4',
     ];
 
     const paddingClass = convertPropsToTitleDivClasses({
@@ -145,7 +153,11 @@ export class ModusWcCollapse {
   // istanbul ignore next
   private getTitleChildDivClasses(): string {
     const classList: string[] = [
-      'modus-wc-title-main-row modus-wc-inline-flex modus-wc-items-center',
+      'modus-wc-title-main-row',
+      'moduswc:inline-flex',
+      'modus-wc-inline-flex',
+      'moduswc:items-center',
+      'modus-wc-items-center',
     ];
 
     const titleFontSize = convertPropsToTitleChildDivClasses({

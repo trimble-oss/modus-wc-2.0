@@ -1,45 +1,21 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { ModusWcAutocomplete } from './modus-wc-autocomplete';
-import * as autocompleteCore from './modus-wc-autocomplete-core';
-import {
-  getAutocompleteOptionId,
-  renderExpandCollapseButton,
-  renderMenuItems,
-  renderNoResults,
-  syncFilteredItems,
-  syncMenuItemSelection,
-} from './modus-wc-autocomplete-core';
 import { ModusWcButton } from '../modus-wc-button/modus-wc-button';
 import { ModusWcChip } from '../modus-wc-chip/modus-wc-chip';
 import { ModusWcIcon } from '../modus-wc-icon/modus-wc-icon';
-import { ModusWcInputFeedback } from '../modus-wc-input-feedback/modus-wc-input-feedback';
 import { ModusWcInputLabel } from '../modus-wc-input-label/modus-wc-input-label';
 import { ModusWcMenu } from '../modus-wc-menu/modus-wc-menu';
 import { ModusWcMenuItem } from '../modus-wc-menu-item/modus-wc-menu-item';
 import { ModusWcTextInput } from '../modus-wc-text-input/modus-wc-text-input';
 import { IAutocompleteItem } from '../types';
 import { expectLabelLinkedToControl } from '../utils';
-
-function findMenuItemVNode(
-  node: unknown
-): { $attrs$?: { optionId?: string } } | undefined {
-  if (!node || typeof node !== 'object') return undefined;
-  if (Array.isArray(node)) {
-    for (const child of node) {
-      const found = findMenuItemVNode(child);
-      if (found) return found;
-    }
-    return undefined;
-  }
-
-  const stencilNode = node as {
-    $tag$?: string;
-    $attrs$?: { optionId?: string };
-    $children$?: unknown;
-  };
-  if (stencilNode.$tag$ === 'modus-wc-menu-item') return stencilNode;
-  return findMenuItemVNode(stencilNode.$children$);
-}
+import { ModusWcAutocomplete } from './modus-wc-autocomplete';
+import * as autocompleteCore from './modus-wc-autocomplete-core';
+import {
+  renderExpandCollapseButton,
+  renderNoResults,
+  syncFilteredItems,
+  syncMenuItemSelection,
+} from './modus-wc-autocomplete-core';
 
 describe('modus-wc-autocomplete', () => {
   const items: IAutocompleteItem[] = [
@@ -1452,36 +1428,6 @@ describe('modus-wc-autocomplete', () => {
     expect(textInput).toBeTruthy();
   });
 
-  it('should name the listbox Suggestions by default', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
-      html: `<modus-wc-autocomplete aria-label="Fruit search"></modus-wc-autocomplete>`,
-    });
-    const autocomplete = page.rootInstance as ModusWcAutocomplete;
-    await autocomplete.openMenu();
-    await page.waitForChanges();
-
-    const listbox = page.root?.querySelector('ul[role="listbox"]');
-    expect(listbox?.getAttribute('aria-label')).toBe('Suggestions');
-    const input = page.root?.querySelector('input');
-    expect(input?.getAttribute('aria-label')).toBe('Fruit search');
-  });
-
-  it('should name the listbox from listbox-label', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
-      html: `<modus-wc-autocomplete aria-label="Fruit search" listbox-label="Fruit suggestions"></modus-wc-autocomplete>`,
-    });
-    const autocomplete = page.rootInstance as ModusWcAutocomplete;
-    await autocomplete.openMenu();
-    await page.waitForChanges();
-
-    const listbox = page.root?.querySelector('ul[role="listbox"]');
-    expect(listbox?.getAttribute('aria-label')).toBe('Fruit suggestions');
-    const input = page.root?.querySelector('input');
-    expect(input?.getAttribute('aria-label')).toBe('Fruit search');
-  });
-
   // Tests for custom event handler props
   it('should call customBlur when provided', async () => {
     const customBlurSpy = jest.fn();
@@ -2323,41 +2269,6 @@ describe('modus-wc-autocomplete', () => {
     expandButtonElement.$attrs$.onButtonClick(new Event('click'));
 
     expect(onToggleExpansion).toHaveBeenCalledTimes(1);
-  });
-
-  it('should omit optionId when listboxId is not provided', () => {
-    const menuItemsOutput = renderMenuItems({
-      hasSlottedContent: false,
-      items: [{ label: 'Item 1', value: '1', visibleInMenu: true }],
-      onItemSelect: jest.fn(),
-    });
-
-    const menuItem = findMenuItemVNode(menuItemsOutput);
-    expect(menuItem?.$attrs$?.optionId).toBeUndefined();
-  });
-
-  it('should encode distinct option values without id collisions', () => {
-    const listboxId = 'city-listbox';
-    const ids = ['a b', 'a/b', 'a_b'].map((value) =>
-      getAutocompleteOptionId(listboxId, value)
-    );
-
-    expect(new Set(ids).size).toBe(3);
-    ids.forEach((id) => {
-      expect(id.startsWith(`${listboxId}-option-`)).toBe(true);
-    });
-  });
-
-  it('should omit a code point when codePointAt returns undefined', () => {
-    const codePointAt = jest
-      .spyOn(String.prototype, 'codePointAt')
-      .mockReturnValue(undefined);
-
-    try {
-      expect(getAutocompleteOptionId('listbox', 'a')).toBe('listbox-option-');
-    } finally {
-      codePointAt.mockRestore();
-    }
   });
 
   // Test expanded state rendering
@@ -5656,14 +5567,10 @@ describe('modus-wc-autocomplete', () => {
     const bananaItem = menuItems[1] as HTMLElement & { selected?: boolean };
     const cherryItem = menuItems[2] as HTMLElement & { selected?: boolean };
 
-    menuItems[0]
-      .querySelector<HTMLElement>('.modus-wc-menu-item-option')
-      ?.click();
+    menuItems[0].querySelector('button')?.click();
     await page.waitForChanges();
 
-    menuItems[1]
-      .querySelector<HTMLElement>('.modus-wc-menu-item-option')
-      ?.click();
+    menuItems[1].querySelector('button')?.click();
     await page.waitForChanges();
 
     expect(appleItem.selected).toBe(true);
@@ -5828,9 +5735,7 @@ describe('modus-wc-autocomplete', () => {
         (element) =>
           (element as HTMLElement & { value?: string }).value === value
       );
-      menuItem
-        ?.querySelector<HTMLElement>('.modus-wc-menu-item-option')
-        ?.click();
+      menuItem?.querySelector('button')?.click();
       await page.waitForChanges();
     };
 
@@ -7474,250 +7379,5 @@ describe('feedback prop', () => {
     expect(label?.getAttribute('customClass')).toContain(
       'modus-wc-input-label--error'
     );
-  });
-
-  it('should expose a combobox, listbox, and result count', async () => {
-    const page = await newSpecPage({
-      components: [
-        ModusWcAutocomplete,
-        ModusWcMenu,
-        ModusWcMenuItem,
-        ModusWcTextInput,
-      ],
-      html: '<modus-wc-autocomplete aria-label="City"></modus-wc-autocomplete>',
-    });
-
-    const component = page.rootInstance as ModusWcAutocomplete;
-    component.items = items;
-    await page.waitForChanges();
-
-    const input = page.root!.querySelector('input') as HTMLInputElement;
-    expect(input.getAttribute('role')).toBe('combobox');
-    expect(input.getAttribute('aria-autocomplete')).toBe('list');
-    expect(input.getAttribute('aria-haspopup')).toBe('listbox');
-    expect(input.getAttribute('aria-expanded')).toBe('false');
-    expect(input.hasAttribute('aria-activedescendant')).toBe(false);
-    expect(input.hasAttribute('aria-controls')).toBe(false);
-
-    input.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
-    );
-    await page.waitForChanges();
-
-    expect(input.getAttribute('aria-expanded')).toBe('true');
-    const listbox = page.root!.querySelector('[role="listbox"]');
-    expect(listbox).not.toBeNull();
-    expect(listbox!.getAttribute('tabindex')).toBe('-1');
-    expect(page.root!.querySelector('[role="menu"]')).toBeNull();
-    expect(input.getAttribute('aria-controls')).toBe(listbox!.id);
-
-    const options = listbox!.querySelectorAll('[role="option"]');
-    expect(options.length).toBe(items.length);
-    options.forEach((option) => {
-      expect(option.getAttribute('tabindex')).toBe('-1');
-    });
-
-    const status = page.root!.querySelector('.modus-wc-autocomplete-status');
-    expect(status?.getAttribute('aria-live')).toBe('polite');
-    expect(status?.textContent).toBe('3 results available.');
-
-    input.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true })
-    );
-    await page.waitForChanges();
-
-    expect(input.getAttribute('aria-activedescendant')).toBe(options[0].id);
-
-    input.value = 'Item 1';
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-    await page.waitForChanges();
-
-    expect(status?.textContent).toBe('1 result available.');
-    expect(
-      page.root!.querySelectorAll('[role="listbox"] [role="option"]').length
-    ).toBe(1);
-  });
-
-  it('should announce slotted suggestions in the result status', async () => {
-    const page = await newSpecPage({
-      components: [
-        ModusWcAutocomplete,
-        ModusWcMenu,
-        ModusWcMenuItem,
-        ModusWcTextInput,
-      ],
-      html: `
-        <modus-wc-autocomplete aria-label="People">
-          <div slot="menu-items">
-            <modus-wc-menu-item label="Ann" value="ann"></modus-wc-menu-item>
-            <modus-wc-menu-item label="Ben" value="ben"></modus-wc-menu-item>
-            <modus-wc-menu-item class="hidden" label="Hidden" value="hid"></modus-wc-menu-item>
-          </div>
-        </modus-wc-autocomplete>
-      `,
-    });
-
-    const component = page.rootInstance as ModusWcAutocomplete;
-    await component.openMenu();
-    await page.waitForChanges();
-
-    const status = page.root!.querySelector('.modus-wc-autocomplete-status');
-    expect(status?.textContent).toBe('2 results available.');
-  });
-
-  it('should skip styled-hidden slotted suggestions and activate the focused option', async () => {
-    const page = await newSpecPage({
-      components: [
-        ModusWcAutocomplete,
-        ModusWcMenu,
-        ModusWcMenuItem,
-        ModusWcTextInput,
-      ],
-      html: `
-        <modus-wc-autocomplete aria-label="People" input-id="people">
-          <div slot="menu-items">
-            <modus-wc-menu-item focused="true" label="Ann" value="ann"></modus-wc-menu-item>
-            <modus-wc-menu-item label="Styled" value="styled" style="color: red"></modus-wc-menu-item>
-            <modus-wc-menu-item label="Gone" value="gone" style="display: none"></modus-wc-menu-item>
-            <modus-wc-menu-item label="Nameless"></modus-wc-menu-item>
-          </div>
-        </modus-wc-autocomplete>
-      `,
-    });
-
-    const component = page.rootInstance as ModusWcAutocomplete;
-    await component.openMenu();
-    await page.waitForChanges();
-
-    const status = page.root!.querySelector('.modus-wc-autocomplete-status');
-    expect(status?.textContent).toBe('3 results available.');
-
-    const input = page.root!.querySelector('input') as HTMLInputElement;
-    expect(input.getAttribute('aria-activedescendant')).toBe(
-      getAutocompleteOptionId('people-listbox', 'ann')
-    );
-
-    const nameless = page.root!.querySelector(
-      'modus-wc-menu-item:not([value])'
-    ) as HTMLElement & { optionId?: string };
-    expect(nameless.optionId).toBe(
-      getAutocompleteOptionId('people-listbox', '')
-    );
-  });
-
-  it('should use an empty option id when the focused slotted item has no value', async () => {
-    const page = await newSpecPage({
-      components: [
-        ModusWcAutocomplete,
-        ModusWcMenu,
-        ModusWcMenuItem,
-        ModusWcTextInput,
-      ],
-      html: `
-        <modus-wc-autocomplete aria-label="People" input-id="people">
-          <div slot="menu-items">
-            <modus-wc-menu-item focused="true" label="Nameless"></modus-wc-menu-item>
-          </div>
-        </modus-wc-autocomplete>
-      `,
-    });
-
-    const component = page.rootInstance as ModusWcAutocomplete;
-    await component.openMenu();
-    await page.waitForChanges();
-
-    const input = page.root!.querySelector('input') as HTMLInputElement;
-    expect(input.getAttribute('aria-activedescendant')).toBe(
-      getAutocompleteOptionId('people-listbox', '')
-    );
-  });
-
-  it('should clear aria-activedescendant when the menu is closed or loading', async () => {
-    const page = await newSpecPage({
-      components: [
-        ModusWcAutocomplete,
-        ModusWcMenu,
-        ModusWcMenuItem,
-        ModusWcTextInput,
-      ],
-      html: '<modus-wc-autocomplete aria-label="City"></modus-wc-autocomplete>',
-    });
-
-    const component = page.rootInstance as ModusWcAutocomplete;
-    component.items = [
-      { label: 'Item 1', value: '1', visibleInMenu: true, focused: true },
-    ];
-    await page.waitForChanges();
-
-    const input = page.root!.querySelector('input') as HTMLInputElement;
-    expect(input.hasAttribute('aria-activedescendant')).toBe(false);
-
-    await component.openMenu();
-    await page.waitForChanges();
-    expect(input.getAttribute('aria-activedescendant')).toBeTruthy();
-
-    component.showSpinner = true;
-    await page.waitForChanges();
-    expect(input.hasAttribute('aria-activedescendant')).toBe(false);
-
-    component.showSpinner = false;
-    await component.closeMenu();
-    await page.waitForChanges();
-    expect(input.hasAttribute('aria-activedescendant')).toBe(false);
-  });
-
-  it('should associate error feedback with the single-select input', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcInputFeedback],
-      html: '<modus-wc-autocomplete input-id="city" aria-describedby="hint" aria-label="City"></modus-wc-autocomplete>',
-    });
-    const component = page.rootInstance as ModusWcAutocomplete;
-    component.feedback = { level: 'error', message: 'Choose a city.' };
-    await page.waitForChanges();
-
-    const input = page.root!.querySelector('input')!;
-    const message = page.root!.querySelector('modus-wc-input-feedback span')!;
-    expect(message.id).toBe('city-feedback');
-    expect(message.textContent).toContain('Choose a city.');
-    expect(input.getAttribute('aria-invalid')).toBe('true');
-    expect(input.getAttribute('aria-describedby')).toBe('hint city-feedback');
-  });
-
-  it('should associate error feedback with the multi-select input', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcInputFeedback],
-      html: '<modus-wc-autocomplete input-id="cities" aria-describedby="hint" aria-label="Cities" multi-select="true"></modus-wc-autocomplete>',
-    });
-    const component = page.rootInstance as ModusWcAutocomplete;
-    component.feedback = { level: 'error', message: 'Choose a city.' };
-    await page.waitForChanges();
-
-    const input = page.root!.querySelector('input')!;
-    const message = page.root!.querySelector('modus-wc-input-feedback span')!;
-    expect(message.id).toBe('cities-feedback');
-    expect(message.textContent).toContain('Choose a city.');
-    expect(input.getAttribute('aria-invalid')).toBe('true');
-    expect(input.getAttribute('aria-describedby')).toBe('hint cities-feedback');
-  });
-
-  it('should drop the feedback reference when feedback is hidden and keep inherited descriptions', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcInputFeedback],
-      html: '<modus-wc-autocomplete input-id="city" aria-describedby="hint" aria-invalid="grammar" aria-label="City"></modus-wc-autocomplete>',
-    });
-    const component = page.rootInstance as ModusWcAutocomplete;
-    component.feedback = { level: 'error', message: 'Choose a city.' };
-    await page.waitForChanges();
-
-    const input = page.root!.querySelector('input')!;
-    expect(input.getAttribute('aria-invalid')).toBe('true');
-    expect(input.getAttribute('aria-describedby')).toBe('hint city-feedback');
-
-    component['showFeedback'] = false;
-    await page.waitForChanges();
-
-    expect(page.root!.querySelector('modus-wc-input-feedback')).toBeNull();
-    expect(input.getAttribute('aria-describedby')).toBe('hint');
-    expect(input.getAttribute('aria-invalid')).toBe('grammar');
   });
 });

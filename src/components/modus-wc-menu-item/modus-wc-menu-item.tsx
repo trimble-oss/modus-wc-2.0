@@ -151,7 +151,10 @@ export class ModusWcMenuItem {
       const liElement = this.el.querySelector('li');
 
       if (submenu && liElement) {
-        submenu.classList.remove('modus-wc-menu-dropdown-show');
+        submenu.classList.remove(
+          'modus-wc-menu-dropdown-show',
+          'moduswc:menu-dropdown-show'
+        );
         liElement.classList.remove('modus-wc-menu-item-expanded');
         this.isExpanded = false;
       }
@@ -273,6 +276,7 @@ export class ModusWcMenuItem {
 
       if (submenu && liElement) {
         submenu.classList.toggle('modus-wc-menu-dropdown-show');
+        submenu.classList.toggle('moduswc:menu-dropdown-show');
         const buttonElement = liElement.querySelector('button');
 
         // Update internal expanded state and add/remove class
@@ -283,12 +287,18 @@ export class ModusWcMenuItem {
         if (this.isExpanded) {
           liElement.classList.add('modus-wc-menu-item-expanded');
           if (buttonElement) {
-            buttonElement.classList.add('modus-wc-menu-dropdown-show');
+            buttonElement.classList.add(
+              'modus-wc-menu-dropdown-show',
+              'moduswc:menu-dropdown-show'
+            );
           }
         } else {
           liElement.classList.remove('modus-wc-menu-item-expanded');
           if (buttonElement) {
-            buttonElement.classList.remove('modus-wc-menu-dropdown-show');
+            buttonElement.classList.remove(
+              'modus-wc-menu-dropdown-show',
+              'moduswc:menu-dropdown-show'
+            );
           }
         }
       }

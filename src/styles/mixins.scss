@@ -16,54 +16,6 @@
   }
 }
 
-// Connect inputs: `feedback-levels` paints the full border with `!important`
-// so it wins over DaisyUI. A higher-specificity rule without `!important`
-// cannot override that, so these declarations use `!important` too, then keep
-// the semantic color on the bottom edge only. Select uses `modus-wc-select--*`;
-// the other fields use `modus-wc-input--*`.
-@mixin connect-text-input-feedback {
-  $default-border: var(--fallback-bc, oklch(var(--bc) / 0.2));
-  $levels: (
-    error: var(--modus-wc-color-error),
-    info: var(--modus-wc-color-info),
-    success: var(--modus-wc-color-success),
-    warning: var(--modus-wc-color-warning),
-  );
-
-  @each $level, $color in $levels {
-    &:is(.modus-wc-input--#{$level}, .modus-wc-select--#{$level}) {
-      border-color: $default-border !important;
-      border-bottom-color: $color !important;
-
-      &:focus,
-      &:focus-within {
-        border-color: $default-border !important;
-        border-bottom-color: $color !important;
-        box-shadow: none;
-        outline: none;
-      }
-    }
-  }
-}
-
-// Label gap only. Autocomplete is listed because it renders
-// `modus-wc-input-label`. Its feedback border is separate: single-value
-// uses the inner text input, and multi-select uses
-// `.modus-wc-autocomplete-multi-select--*`, which
-// `connect-text-input-feedback` does not target.
-@mixin connect-form-label-host-spacing {
-  modus-wc-date,
-  modus-wc-number-input,
-  modus-wc-select,
-  modus-wc-text-input,
-  modus-wc-textarea,
-  modus-wc-time-input {
-    .modus-wc-input-label {
-      padding-bottom: 0;
-    }
-  }
-}
-
 @mixin sizing-tokens {
   &-xs {
     height: var(--modus-wc-size-xs);
@@ -174,39 +126,6 @@
   &[aria-pressed='true'] {
     background-color: var(--modus-wc-color-primary);
     color: var(--modus-wc-color-primary-content);
-  }
-}
-
-@mixin input-disabled-state {
-  &:disabled,
-  &:has(> :is(input, select, textarea)[disabled]),
-  &.modus-wc-input-disabled,
-  &:has(.modus-wc-autocomplete-multi-select--disabled) {
-    background-color: var(--modus-wc-color-base-200);
-    border: none;
-    color: var(--modus-wc-color-base-inverted);
-  }
-}
-
-@mixin input-disabled-overlay {
-  &[disabled],
-  &:has(input[disabled], textarea[disabled], select[disabled]) {
-    opacity: var(--modus-wc-opacity-overlay);
-
-    // Host overlay dims labels/icons; don't stack with tailwind.css input:disabled
-    // opacity (0.6 × 0.6 washes base-200 to ~#f7f7f9 instead of ~#f2f2f6).
-    input:disabled,
-    textarea:disabled,
-    select:disabled {
-      opacity: 1;
-    }
-
-    // Nested input hosts (e.g. autocomplete → text-input) inherit parent dimming.
-    modus-wc-text-input:has(input[disabled]),
-    modus-wc-textarea:has(textarea[disabled]),
-    modus-wc-select:has(select[disabled]) {
-      opacity: 1;
-    }
   }
 }
 
@@ -337,20 +256,13 @@
     padding: 0 var(--modus-wc-spacing-sm);
   }
 
-  &:not(
-    .modus-wc-input--error,
-    .modus-wc-input--info,
-    .modus-wc-input--success,
-    .modus-wc-input--warning,
-    .modus-wc-select--error,
-    .modus-wc-select--info,
-    .modus-wc-select--success,
-    .modus-wc-select--warning
-  ) {
-    &:focus,
-    &:focus-within {
-      border-bottom-color: var(--modus-wc-color-primary);
-      outline: none;
-    }
+  &:focus {
+    border-bottom-color: var(--modus-wc-color-primary);
+    outline: none;
+  }
+
+  &:focus-within {
+    border-bottom-color: var(--modus-wc-color-primary);
+    outline: none;
   }
 }

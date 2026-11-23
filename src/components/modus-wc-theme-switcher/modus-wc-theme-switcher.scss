@@ -1,68 +1,135 @@
 /**
-* This component uses Tailwind CSS and DaisyUI.
-* Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
+* Theme switcher uses a 2-column grid: track checkbox spans both columns;
+* sun and moon icons sit centered in each column on top of the track.
 */
+
 modus-wc-theme-switcher {
-  display: grid;
+  display: inline-block;
+
+  .modus-wc-theme-switcher-label {
+    cursor: pointer;
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    height: 2rem;
+    position: relative;
+    width: 4.5rem;
+  }
+
+  .modus-wc-theme-switcher-toggle {
+    --handleoffset: 2.125rem;
+    --handleoffsetcalculator: 0;
+    --modus-wc-theme-switcher-thumb: var(--modus-wc-color-white);
+    --modus-wc-theme-switcher-track: var(--modus-wc-color-base-200);
+    --modus-wc-toggle-padding: 2px;
+
+    appearance: none;
+    background-color: var(--modus-wc-theme-switcher-track);
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
+    border-radius: var(--modus-wc-border-radius-rounded);
+    cursor: pointer;
+    display: inline-block;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 100%;
+
+    &::before {
+      background-color: var(--modus-wc-theme-switcher-thumb);
+      border-radius: var(--modus-wc-border-radius-rounded);
+      box-shadow: 0 0 0 var(--modus-wc-border-width-xs)
+        var(--modus-wc-color-base-200);
+      content: '';
+      height: calc(100% - var(--modus-wc-toggle-padding) * 2);
+      inset-inline-start: var(--modus-wc-toggle-padding);
+      pointer-events: none;
+      position: absolute;
+      top: var(--modus-wc-toggle-padding);
+      translate: var(--handleoffsetcalculator) 0;
+      transition:
+        translate 0.2s ease,
+        background-color 0.15s ease;
+      width: calc(
+        100% - var(--handleoffset) - var(--modus-wc-toggle-padding) * 2
+      );
+    }
+
+    &:checked {
+      --handleoffsetcalculator: var(--handleoffset);
+    }
+
+    &:focus-visible {
+      outline: var(--modus-wc-border-width-sm) solid
+        var(--modus-wc-color-primary);
+      outline-offset: var(--modus-wc-border-width-sm);
+    }
+  }
+
+  .modus-wc-theme-switcher-icon {
+    grid-row: 1;
+    height: 0.875rem;
+    pointer-events: none;
+    place-self: center;
+    width: 0.875rem;
+    z-index: 1;
+  }
+
+  .modus-wc-theme-switcher-icon-sun {
+    grid-column: 1;
+  }
+
+  .modus-wc-theme-switcher-icon-moon {
+    grid-column: 2;
+  }
 }
 
-[data-theme='modus-modern-dark'] {
-  .modus-wc-toggle {
-    --tglbg: var(--modus-wc-color-gray-9);
+[data-theme='modus-modern-dark'] modus-wc-theme-switcher {
+  .modus-wc-theme-switcher-toggle {
+    --modus-wc-theme-switcher-thumb: var(--modus-wc-color-white);
+    --modus-wc-theme-switcher-track: var(--modus-wc-color-gray-9);
 
     border-color: var(--modus-wc-color-black);
   }
 
-  .modus-wc-stroke-base-100 {
+  .modus-wc-theme-switcher-icon {
+    fill: var(--modus-wc-color-gray-9);
     stroke: var(--modus-wc-color-white);
   }
+}
 
-  .modus-wc-fill-base-100 {
+[data-theme='modus-modern-light'] modus-wc-theme-switcher {
+  .modus-wc-theme-switcher-toggle {
+    --modus-wc-theme-switcher-thumb: var(--modus-wc-color-white);
+    --modus-wc-theme-switcher-track: var(--modus-wc-color-base-200);
+
+    border-color: var(--modus-wc-color-base-200);
+
+    &:checked {
+      --modus-wc-theme-switcher-track: var(--modus-wc-color-gray-9);
+      --modus-wc-theme-switcher-thumb: var(--modus-wc-color-white);
+
+      border-color: var(--modus-wc-color-gray-9);
+    }
+  }
+
+  .modus-wc-theme-switcher-icon-sun,
+  .modus-wc-theme-switcher-icon-moon {
+    fill: var(--modus-wc-color-base-200);
+    stroke: var(--modus-wc-color-gray-10);
+  }
+
+  .modus-wc-theme-switcher-toggle:not(:checked)
+    ~ .modus-wc-theme-switcher-icon-sun {
+    fill: var(--modus-wc-color-white);
+    stroke: var(--modus-wc-color-gray-10);
+  }
+
+  .modus-wc-theme-switcher-toggle:checked
+    ~ .modus-wc-theme-switcher-icon-moon {
     fill: var(--modus-wc-color-gray-9);
-  }
-
-  .modus-wc-bg-base-content {
-    background-color: var(--modus-wc-color-black);
-  }
-}
-
-[data-theme='modus-modern-light'] {
-  .modus-wc-toggle {
-    --tglbg: var(--modus-wc-color-gray-0);
-
-    border-color: var(--modus-wc-white);
-  }
-
-  .modus-wc-stroke-base-100 {
-    stroke: var(--modus-wc-color-black);
-  }
-
-  .modus-wc-fill-base-100 {
-    fill: var(--modus-wc-color-gray-0);
-  }
-
-  .modus-wc-bg-base-content {
-    background-color: var(--modus-wc-color-white);
-  }
-}
-
-.modus-wc-toggle {
-  &.modus-wc-stroke-base-100 {
-    stroke: var(--modus-wc-color-base-300);
-  }
-
-  &.modus-wc-fill-base-100 {
-    fill: var(--modus-wc-color-base-300);
-  }
-}
-
-.modus-wc-toggle:checked {
-  &.modus-wc-stroke-base-100 {
-    stroke: var(--modus-wc-color-base-100);
-  }
-
-  &.modus-wc-fill-base-100 {
-    fill: var(--modus-wc-color-base-100);
+    stroke: var(--modus-wc-color-white);
   }
 }
 

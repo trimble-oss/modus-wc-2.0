@@ -421,6 +421,8 @@
         "src/styles/tailwind-v4-core.css",
         "src/styles/tailwind-v4-button-overrides.css",
         "src/styles/tailwind-v4-themeable.ts",
+        "src/styles/tailwind-themeable.ts",
+        "src/components/**/*.{ts,tsx}",
         "src/styles/generated/daisyui-themes.css",
         "src/styles/variables.css",
         "src/styles/assets/fonts/**"
@@ -507,6 +509,8 @@
         "src/styles/tailwind-v4-core.css",
         "src/styles/tailwind-v4-button-overrides.css",
         "src/styles/tailwind-v4-themeable.ts",
+        "src/styles/tailwind-themeable.ts",
+        "src/components/**/*.{ts,tsx}",
         "src/styles/generated/daisyui-themes.css",
         "src/styles/variables.css",
         "src/styles/assets/fonts/**"

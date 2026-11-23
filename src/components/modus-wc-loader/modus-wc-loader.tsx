@@ -58,7 +58,7 @@ export class ModusWcLoader {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-loader'];
+    const classList = ['modus-wc-loader', 'moduswc:loading'];
 
     const propClasses = convertPropsToClasses({
       color: this.color,

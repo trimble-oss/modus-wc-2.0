@@ -88,3 +88,14 @@ modus-wc-time-input {
   outline: 2px solid var(--modus-wc-color-primary);
   outline-offset: 2px;
 }
+
+// Modern only: 2px primary focus halo for mouse and keyboard focus, including the clock icon click.
+[data-theme^='modus-modern']
+  modus-wc-time-input
+  .modus-wc-time-input.modus-wc-input:focus,
+[data-theme^='modus-modern']
+  modus-wc-time-input
+  .modus-wc-time-input.modus-wc-input:focus-within {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}

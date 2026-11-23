@@ -58,10 +58,8 @@ export class ModusWcThemeSwitcher {
     this.modeUnsubscribe?.();
   }
 
-  private getClasses(): string {
-    const classList = [
-      'modus-wc-inline-grid modus-wc-cursor-pointer modus-wc-justify-center modus-wc-place-items-center',
-    ];
+  private getLabelClasses(): string {
+    const classList = ['modus-wc-theme-switcher-label'];
 
     if (this.customClass) classList.push(this.customClass);
 
@@ -78,19 +76,19 @@ export class ModusWcThemeSwitcher {
 
   render() {
     return (
-      <label class={this.getClasses()} {...this.inheritedAttributes}>
+      <label class={this.getLabelClasses()} {...this.inheritedAttributes}>
         <input
           aria-checked={this.isDarkMode}
           aria-label={this.isDarkMode ? 'Dark theme' : 'Light theme'}
           checked={this.isDarkMode}
-          class="modus-wc-toggle modus-wc-theme-controller modus-wc-bg-base-content modus-wc-col-span-2 modus-wc-col-start-1 modus-wc-row-start-1"
+          class="modus-wc-theme-switcher-toggle"
           onChange={(event) => this.handleModeToggle(event)}
           type="checkbox"
           value="default"
         />
         <svg
           aria-hidden="true"
-          class="modus-wc-stroke-base-100 modus-wc-fill-base-100 modus-wc-col-start-1 modus-wc-row-start-1"
+          class="modus-wc-theme-switcher-icon modus-wc-theme-switcher-icon-sun"
           fill="none"
           height="14"
           role="presentation"
@@ -107,7 +105,7 @@ export class ModusWcThemeSwitcher {
         </svg>
         <svg
           aria-hidden="true"
-          class="modus-wc-stroke-base-100 modus-wc-fill-base-100 modus-wc-col-start-2 modus-wc-row-start-1"
+          class="modus-wc-theme-switcher-icon modus-wc-theme-switcher-icon-moon"
           fill="none"
           height="14"
           role="presentation"

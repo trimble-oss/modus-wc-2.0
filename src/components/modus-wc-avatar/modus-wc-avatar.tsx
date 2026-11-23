@@ -98,7 +98,10 @@ export class ModusWcAvatar {
 
     return (
       <Host>
-        <div class="modus-wc-avatar" {...this.inheritedAttributes}>
+        <div
+          class="modus-wc-avatar moduswc:avatar"
+          {...this.inheritedAttributes}
+        >
           <div class={this.getClasses()}>
             {this.imgSrc ? (
               <img

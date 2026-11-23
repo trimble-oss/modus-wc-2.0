@@ -96,3 +96,21 @@
 [data-theme='connect-dark'] .modus-wc-tooltip-arrow::before {
   background-color: var(--modus-wc-color-base-content);
 }
+
+[data-theme^='modus-modern-light'] .modus-wc-tooltip-content {
+  background-color: var(--modus-wc-color-gray-10);
+  color: var(--modus-wc-color-white);
+}
+
+[data-theme^='modus-modern-light'] .modus-wc-tooltip-arrow::before {
+  background-color: var(--modus-wc-color-gray-10);
+}
+
+[data-theme^='modus-modern-dark'] .modus-wc-tooltip-content {
+  background-color: var(--modus-wc-color-gray-0);
+  color: var(--modus-wc-color-gray-10);
+}
+
+[data-theme^='modus-modern-dark'] .modus-wc-tooltip-arrow::before {
+  background-color: var(--modus-wc-color-gray-0);
+}

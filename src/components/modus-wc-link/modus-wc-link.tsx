@@ -61,7 +61,7 @@ export class ModusWcLink {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-link'];
+    const classList = ['modus-wc-link', 'moduswc:link'];
 
     const propClasses = convertPropsToClasses({
       color: this.color,

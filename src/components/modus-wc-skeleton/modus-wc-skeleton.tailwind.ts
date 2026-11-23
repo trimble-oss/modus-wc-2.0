@@ -6,7 +6,7 @@ export const convertPropsToClasses = ({
   let classes = '';
 
   if (shape === 'circle') {
-    classes = `${classes} modus-wc-rounded-full`;
+    classes = `${classes} moduswc:rounded-full modus-wc-rounded-full`;
   }
 
   return classes.trim();

@@ -11,7 +11,9 @@ export const convertPropsToClasses = ({
 }): string => {
   let classes = '';
 
-  if (bordered) {
+  if (bordered === false) {
+    classes = `${classes} moduswc:textarea-ghost`;
+  } else {
     classes = `${classes} modus-wc-textarea-bordered`;
   }
 
@@ -20,7 +22,7 @@ export const convertPropsToClasses = ({
   }
 
   if (size) {
-    classes = `${classes} modus-wc-textarea-${size}`;
+    classes = `${classes} moduswc:textarea-${size} modus-wc-textarea-${size}`;
   }
 
   return classes.trim();

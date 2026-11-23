@@ -6,17 +6,60 @@
 // TODO - see if we can simplify this styling by overriding tailwind classes (see modus-wc-checkbox.scss)
 
 modus-wc-badge .modus-wc-badge {
+  align-items: center;
   display: flex;
   font-weight: var(--modus-wc-font-weight-semibold);
+  gap: var(--modus-wc-spacing-xs);
   height: fit-content;
 
   &.modus-wc-badge-sm {
     font-size: var(--modus-wc-font-size-xs);
     max-height: var(--modus-wc-size-xs);
+    padding: var(--modus-wc-spacing-2xs) var(--modus-wc-spacing-xs);
   }
 
   &.modus-wc-badge-md {
     font-size: var(--modus-wc-font-size-sm);
+    padding: var(--modus-wc-spacing-xs) var(--modus-wc-spacing-sm);
+  }
+
+  &.modus-wc-badge-lg {
+    font-size: var(--modus-wc-font-size-md);
+    padding: var(--modus-wc-spacing-sm) var(--modus-wc-spacing-md);
+  }
+
+  &:not(.modus-wc-badge-text):not(.modus-wc-badge-outlined) {
+    border-radius: var(--modus-wc-border-radius-badge);
+
+    &.modus-wc-badge-primary {
+      background-color: var(--modus-wc-color-primary);
+      color: var(--modus-wc-color-primary-content);
+    }
+
+    &.modus-wc-badge-secondary {
+      background-color: var(--modus-wc-color-secondary);
+      color: var(--modus-wc-color-secondary-content);
+    }
+
+    &.modus-wc-badge-neutral {
+      background-color: var(--modus-wc-color-base-200);
+      color: var(--modus-wc-color-base-content);
+    }
+
+    &.modus-wc-badge-success {
+      background-color: var(--modus-wc-color-success);
+      color: var(--modus-wc-color-success-content);
+    }
+
+    &.modus-wc-badge-warning {
+      background-color: var(--modus-wc-color-warning);
+      color: var(--modus-wc-color-warning-content);
+    }
+
+    &.modus-wc-badge-error {
+      background-color: var(--modus-wc-color-error);
+      color: var(--modus-wc-color-error-content);
+    }
   }
 
   // Colors

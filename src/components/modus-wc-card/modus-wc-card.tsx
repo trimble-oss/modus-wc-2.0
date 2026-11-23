@@ -40,7 +40,8 @@ export class ModusWcCard {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-card', 'moduswc:card', 'moduswc:rounded-box'];
+    // Modus SCSS owns card chrome; Daisy card utilities target moduswc:card-body/title, not our hooks.
+    const classList = ['modus-wc-card'];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,

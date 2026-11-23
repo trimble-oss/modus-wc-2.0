@@ -11,9 +11,11 @@ modus-wc-tabs {
 }
 
 modus-wc-tabs .modus-wc-tabs {
-  align-items: center;
+  align-items: flex-end;
   display: inline-flex;
+  flex-wrap: wrap;
   font-weight: var(--modus-wc-font-weight-bold);
+  gap: 0;
 
   @include sizing-tokens;
 
@@ -37,12 +39,21 @@ modus-wc-tabs .modus-wc-tabs {
   }
 
   &.modus-wc-tabs-bordered {
-    .modus-wc-tab:is(.modus-wc-tab-active, [aria-selected='true']):not(
-        .modus-wc-tab-disabled
-      ):not([disabled]) {
-      background-color: var(--modus-wc-color-base-page);
-      border-bottom-color: var(--modus-wc-color-primary);
-      border-bottom-width: var(--modus-wc-border-width-lg);
+    border-bottom: var(--modus-wc-border-width-xs) solid
+      var(--modus-wc-color-base-200);
+
+    & > .modus-wc-tab {
+      border-bottom: var(--modus-wc-border-width-lg) solid transparent;
+      color: var(--modus-wc-color-base-content-low-contrast);
+      margin-bottom: calc(-1 * var(--modus-wc-border-width-xs));
+
+      &:is(.modus-wc-tab-active, [aria-selected='true']):not(
+          .modus-wc-tab-disabled
+        ):not([disabled]) {
+        background-color: var(--modus-wc-color-base-page);
+        border-bottom-color: var(--modus-wc-color-primary);
+        color: var(--modus-wc-color-primary);
+      }
     }
   }
 
@@ -106,9 +117,24 @@ modus-wc-tabs .modus-wc-tabs {
 }
 
 modus-wc-tabs .modus-wc-tab {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: none;
   border-radius: var(--tab-radius) var(--tab-radius) 0 0;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--modus-wc-font-size-md);
   height: inherit;
+  justify-content: center;
   min-height: var(--modus-wc-input-height-sm);
+  padding-block: var(--modus-wc-spacing-sm);
+  padding-inline: var(--modus-wc-spacing-md);
+
+  &::before {
+    content: none;
+    display: none;
+  }
 
   @include common-states;
 
@@ -117,7 +143,10 @@ modus-wc-tabs .modus-wc-tab {
     color: inherit;
   }
 
-  &:disabled {
+  &:disabled,
+  &.modus-wc-tab-disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
     pointer-events: none;
   }
 }

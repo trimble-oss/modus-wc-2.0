@@ -35,11 +35,16 @@ export const convertPropsToClasses = ({
   size?: DaisySize;
   variant?: BadgeVariant;
 }): string => {
+  const colorSuffix = color ? BADGE_COLOR_CLASS_SUFFIX[color] : undefined;
   const classes = [
-    color && `modus-wc-badge-${BADGE_COLOR_CLASS_SUFFIX[color]}`,
+    colorSuffix && `modus-wc-badge-${colorSuffix}`,
     shape && variant !== 'text' && `modus-wc-badge-${shape}`,
     size && `modus-wc-badge-${size}`,
-    variant && variant !== 'filled' && `modus-wc-badge-${variant}`,
+    variant === 'outlined' && 'modus-wc-badge-outlined',
+    variant &&
+      variant !== 'filled' &&
+      variant !== 'outlined' &&
+      `modus-wc-badge-${variant}`,
   ].filter(Boolean);
 
   return classes.join(' ');
