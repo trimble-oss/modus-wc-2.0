@@ -1379,95 +1379,15 @@ export const CustomEventHandlers: Story = {
       void (open ? autocomplete.openMenu() : autocomplete.closeMenu());
     };
 
-    // Custom keydown handler with skip navigation and escape animation
-    const customKeyDown = (e: KeyboardEvent) => {
-      const autocomplete = document.getElementById(
-        'autocomplete-custom-event-handlers'
-      ) as AutocompleteElement;
+    // Play a short scale animation when Escape is pressed.
+    const customEscapeKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      const autocomplete = e.currentTarget as HTMLElement | null;
       if (!autocomplete) return;
-
-      // Prevent default for navigation keys
-      if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
-        e.preventDefault();
-      }
-
-      const visibleItems = args.items.filter(
-        (item) => item.visibleInMenu && !item.disabled
-      );
-
-      switch (e.key) {
-        case 'Escape':
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: false,
-          }));
-          autocomplete.items = [...args.items];
-          requestMenu(autocomplete, false);
-          // Custom: Show escape animation
-          autocomplete.style.transform = 'scale(0.98)';
-          setTimeout(() => {
-            autocomplete.style.transform = '';
-          }, 200);
-          break;
-
-        case 'ArrowDown': {
-          // Open menu if not already open
-          requestMenu(autocomplete, true);
-
-          const currentIndex = visibleItems.findIndex((item) => item.focused);
-          const nextIndex =
-            currentIndex < 0
-              ? 0
-              : Math.min(currentIndex + 1, visibleItems.length - 1);
-
-          // Custom: Skip every other item for faster navigation
-          const skipIndex =
-            nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
-
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: visibleItems[skipIndex]?.value === item.value,
-          }));
-          break;
-        }
-
-        case 'ArrowUp': {
-          const currentIndex = visibleItems.findIndex((item) => item.focused);
-          const prevIndex =
-            currentIndex < 0
-              ? visibleItems.length - 1
-              : Math.max(currentIndex - 1, 0);
-
-          // Custom: Skip every other item for faster navigation
-          const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
-
-          args.items = args.items.map((item) => ({
-            ...item,
-            focused: visibleItems[skipIndex]?.value === item.value,
-          }));
-          break;
-        }
-
-        case 'Enter': {
-          const focusedItem = visibleItems.find((item) => item.focused);
-          if (focusedItem) {
-            // For single select, clear previous selection
-            args.items = args.items.map((item) => ({
-              ...item,
-              selected: item.value === focusedItem.value,
-              focused: false,
-            }));
-            autocomplete.value = focusedItem.label;
-            requestMenu(autocomplete, false);
-          }
-          break;
-        }
-
-        default:
-          return;
-      }
-
-      autocomplete.items = [...args.items];
+      autocomplete.style.transform = 'scale(0.98)';
+      setTimeout(() => {
+        autocomplete.style.transform = '';
+      }, 200);
     };
 
     // Custom input change handler with fuzzy character matching
@@ -1627,9 +1547,9 @@ export const CustomEventHandlers: Story = {
         ?show-spinner=${args['show-spinner']}
         size=${ifDefined(args.size)}
         value=${args.value}
-        .customKeyDown=${customKeyDown}
         .customInputChange=${customInputChange}
         .customItemSelect=${customItemSelect}
+        @keydown=${customEscapeKeyDown}
         @inputBlur=${() => { menuRequestedOpen = false; }}
       ></modus-wc-autocomplete>
       <script>
@@ -1645,71 +1565,14 @@ export const CustomEventHandlers: Story = {
         //   void (open ? autocomplete.openMenu() : autocomplete.closeMenu());
         // };
         //
-        // const customKeyDown = (e) => {
-        //   if (!autocomplete) return;
-        //   if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(e.key)) {
-        //     e.preventDefault();
-        //   }
-        //   const visibleItems = autocomplete.items.filter(
-        //     (item) => item.visibleInMenu && !item.disabled
-        //   );
-        //   switch (e.key) {
-        //     case 'Escape':
-        //       autocomplete.items = autocomplete.items.map((item) => ({
-        //         ...item,
-        //         focused: false,
-        //       }));
-        //       requestMenu(false);
-        //       autocomplete.style.transform = 'scale(0.98)';
-        //       setTimeout(() => {
-        //         autocomplete.style.transform = '';
-        //       }, 200);
-        //       break;
-        //     case 'ArrowDown': {
-        //       requestMenu(true);
-        //       const currentIndex = visibleItems.findIndex((item) => item.focused);
-        //       const nextIndex =
-        //         currentIndex < 0
-        //           ? 0
-        //           : Math.min(currentIndex + 1, visibleItems.length - 1);
-        //       const skipIndex =
-        //         nextIndex + 1 < visibleItems.length ? nextIndex + 1 : nextIndex;
-        //       autocomplete.items = autocomplete.items.map((item) => ({
-        //         ...item,
-        //         focused: visibleItems[skipIndex]?.value === item.value,
-        //       }));
-        //       break;
-        //     }
-        //     case 'ArrowUp': {
-        //       const currentIndex = visibleItems.findIndex((item) => item.focused);
-        //       const prevIndex =
-        //         currentIndex < 0
-        //           ? visibleItems.length - 1
-        //           : Math.max(currentIndex - 1, 0);
-        //       const skipIndex = prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
-        //       autocomplete.items = autocomplete.items.map((item) => ({
-        //         ...item,
-        //         focused: visibleItems[skipIndex]?.value === item.value,
-        //       }));
-        //       break;
-        //     }
-        //     case 'Enter': {
-        //       const focusedItem = visibleItems.find((item) => item.focused);
-        //       if (focusedItem) {
-        //         autocomplete.items = autocomplete.items.map((item) => ({
-        //           ...item,
-        //           selected: item.value === focusedItem.value,
-        //           focused: false,
-        //         }));
-        //         autocomplete.value = focusedItem.label;
-        //         requestMenu(false);
-        //       }
-        //       break;
-        //     }
-        //     default:
-        //       return;
-        //   }
-        // };
+        // // Play a short scale animation when Escape is pressed.
+        // autocomplete.addEventListener('keydown', (e) => {
+        //   if (e.key !== 'Escape') return;
+        //   autocomplete.style.transform = 'scale(0.98)';
+        //   setTimeout(() => {
+        //     autocomplete.style.transform = '';
+        //   }, 200);
+        // });
         //
         // const customInputChange = (value) => {
         //   if (!autocomplete) return;
@@ -1786,7 +1649,6 @@ export const CustomEventHandlers: Story = {
         //   }
         // };
         //
-        // autocomplete.customKeyDown = customKeyDown;
         // autocomplete.customInputChange = customInputChange;
         // autocomplete.customItemSelect = customItemSelect;
         // autocomplete.addEventListener('inputBlur', () => {
@@ -1820,11 +1682,10 @@ export const CustomEventHandlers: Story = {
   parameters: {
     docs: {
       description: {
-        story: `This example demonstrates custom event handlers with three specific behaviors:
+        story: `This example demonstrates custom event handlers:
 
-1. **Skip Navigation**: Arrow keys skip every other item for 2x faster navigation
-2. **Escape Animation**: Pressing Escape triggers a subtle scale animation
-3. **Fuzzy Character Search**: Instead of normal substring matching, this searches for items containing ALL typed characters in any order
+1. **Escape animation**: Pressing Escape plays a short scale animation
+2. **Fuzzy Character Search**: Instead of normal substring matching, this searches for items containing ALL typed characters in any order
 
 The fuzzy search allows finding items with scattered characters:
 - Type "pae" to find Pine**a**ppl**e**

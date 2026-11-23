@@ -364,6 +364,10 @@ export namespace Components {
          */
         "customClass": string;
         /**
+          * The shape of the badge. When unset, the variant's default geometry is used (counter: ellipse, others: rounded rectangle). Ignored for the text variant.
+         */
+        "shape"?: 'ellipse' | 'rectangle';
+        /**
           * The size of the badge.
           * @default 'md'
          */
@@ -1350,6 +1354,9 @@ export namespace Components {
     }
     /**
      * A customizable link component used to navigate to URLs.
+     * This component supports a 'start-icon' `<slot>` for a start icon, an
+     * 'end-icon' `<slot>` for an end icon, and a default slot for the link
+     * text. Either icon, both, or neither may be provided.
      */
     interface ModusWcLink {
         /**
@@ -2147,10 +2154,15 @@ export namespace Components {
          */
         "pulse": boolean;
         /**
+          * Dot size. Default xs (8px).
+          * @default 'xs'
+         */
+        "size": ModusSize | 'xs' | 'xl';
+        /**
           * The semantic status variant.
           * @default 'active'
          */
-        "variant": 'active' | 'warning' | 'danger';
+        "variant": 'active' | 'warning' | 'danger' | 'info' | 'inactive';
     }
     /**
      * Used to show a list of steps in a process.
@@ -3658,6 +3670,9 @@ declare global {
     };
     /**
      * A customizable link component used to navigate to URLs.
+     * This component supports a 'start-icon' `<slot>` for a start icon, an
+     * 'end-icon' `<slot>` for an end icon, and a default slot for the link
+     * text. Either icon, both, or neither may be provided.
      */
     interface HTMLModusWcLinkElement extends Components.ModusWcLink, HTMLStencilElement {
     }
@@ -4714,6 +4729,10 @@ declare namespace LocalJSX {
           * @default ''
          */
         "customClass"?: string;
+        /**
+          * The shape of the badge. When unset, the variant's default geometry is used (counter: ellipse, others: rounded rectangle). Ignored for the text variant.
+         */
+        "shape"?: 'ellipse' | 'rectangle';
         /**
           * The size of the badge.
           * @default 'md'
@@ -5891,6 +5910,9 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable link component used to navigate to URLs.
+     * This component supports a 'start-icon' `<slot>` for a start icon, an
+     * 'end-icon' `<slot>` for an end icon, and a default slot for the link
+     * text. Either icon, both, or neither may be provided.
      */
     interface ModusWcLink {
         /**
@@ -6829,10 +6851,15 @@ declare namespace LocalJSX {
          */
         "pulse"?: boolean;
         /**
+          * Dot size. Default xs (8px).
+          * @default 'xs'
+         */
+        "size"?: ModusSize | 'xs' | 'xl';
+        /**
           * The semantic status variant.
           * @default 'active'
          */
-        "variant"?: 'active' | 'warning' | 'danger';
+        "variant"?: 'active' | 'warning' | 'danger' | 'info' | 'inactive';
     }
     /**
      * Used to show a list of steps in a process.
@@ -7934,6 +7961,9 @@ declare module "@stencil/core" {
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
             /**
              * A customizable link component used to navigate to URLs.
+             * This component supports a 'start-icon' `<slot>` for a start icon, an
+             * 'end-icon' `<slot>` for an end icon, and a default slot for the link
+             * text. Either icon, both, or neither may be provided.
              */
             "modus-wc-link": LocalJSX.ModusWcLink & JSXBase.HTMLAttributes<HTMLModusWcLinkElement>;
             /**

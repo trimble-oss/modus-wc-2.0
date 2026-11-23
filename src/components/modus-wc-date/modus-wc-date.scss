@@ -464,3 +464,11 @@ modus-wc-date {
     }
   }
 }
+
+// Modern only: 2px primary focus halo on the date input (the calendar button uses the Modern button block).
+[data-theme^='modus-modern']
+  modus-wc-date
+  .modus-wc-date-input.modus-wc-input:focus {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}

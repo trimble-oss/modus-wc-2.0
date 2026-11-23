@@ -97,6 +97,7 @@ export class ModusWcAlert {
   }
 
   private getClasses(): string {
+    // Daisy .alert sets a uniform border and grid chrome; Modus keeps SCSS + theme tokens.
     const classList = ['modus-wc-alert'];
     const propClasses = convertPropsToClasses({
       variant: this.variant,

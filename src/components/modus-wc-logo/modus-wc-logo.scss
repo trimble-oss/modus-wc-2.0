@@ -19,6 +19,11 @@
     fill: var(--modus-wc-color-neutral-content);
   }
 
+  /* Label inside a logo-text badge chip; inverts against the chip in both themes. */
+  .logo-badge-label {
+    fill: var(--modus-wc-color-neutral);
+  }
+
   .logo-secondary {
     fill: var(--modus-wc-color-secondary);
   }

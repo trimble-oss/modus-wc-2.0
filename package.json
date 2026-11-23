@@ -1,6 +1,6 @@
 {
   "name": "@trimble-oss/moduswebcomponents",
-  "version": "1.20.0",
+  "version": "1.22.2",
   "description": "Modus Web Components is a modern, accessible UI library built with Stencil JS that provides reusable web components following Trimble's Modus design system. This updated version focuses on improved flexibility, enhanced theming options, comprehensive customization capabilities, and WCAG 2.2 compliance. The library offers a collection of enterprise-ready components that can be used in any web framework or vanilla JavaScript application. Separate SPA framework integrations are published for Angular and React.",
   "keywords": [
     "trimble",
@@ -199,7 +199,7 @@
     "brace-expansion@1": "1.1.21",
     "brace-expansion@2": "2.1.7",
     "brace-expansion@5": "5.0.12",
-    "fast-uri": "3.1.8",
+    "fast-uri": "^3.1.9",
     "ip-address": "10.4.0",
     "immutable": "5.1.8",
     "sharp": "0.35.5",
@@ -421,6 +421,8 @@
         "src/styles/tailwind-v4-core.css",
         "src/styles/tailwind-v4-button-overrides.css",
         "src/styles/tailwind-v4-themeable.ts",
+        "src/styles/tailwind-themeable.ts",
+        "src/components/**/*.{ts,tsx}",
         "src/styles/generated/daisyui-themes.css",
         "src/styles/variables.css",
         "src/styles/assets/fonts/**"
@@ -507,6 +509,8 @@
         "src/styles/tailwind-v4-core.css",
         "src/styles/tailwind-v4-button-overrides.css",
         "src/styles/tailwind-v4-themeable.ts",
+        "src/styles/tailwind-themeable.ts",
+        "src/components/**/*.{ts,tsx}",
         "src/styles/generated/daisyui-themes.css",
         "src/styles/variables.css",
         "src/styles/assets/fonts/**"

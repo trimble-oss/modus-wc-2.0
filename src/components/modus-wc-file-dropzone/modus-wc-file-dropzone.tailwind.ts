@@ -4,11 +4,11 @@ export const convertPropsToClasses = ({
   disabled?: boolean;
 }): string => {
   // Start with base DaisyUI class
-  let classes = 'file-input';
+  // Daisy 5 has no file-input-disabled; the disabled attribute styles the control.
+  let classes = 'moduswc:file-input';
 
-  // Disabled state
   if (disabled) {
-    classes = `${classes} file-input-disabled`;
+    classes = `${classes} modus-wc-file-input-disabled`;
   }
 
   return classes;

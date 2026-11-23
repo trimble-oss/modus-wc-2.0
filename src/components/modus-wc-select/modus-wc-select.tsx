@@ -96,7 +96,12 @@ export class ModusWcSelect {
   }
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-select', 'modus-wc-w-full'];
+    const classList: string[] = [
+      'modus-wc-select',
+      'moduswc:select',
+      'modus-wc-w-full',
+      'moduswc:w-full',
+    ];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,

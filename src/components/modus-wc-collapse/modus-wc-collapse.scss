@@ -3,8 +3,9 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-collapse details.modus-wc-collapse > summary {
+modus-wc-collapse details.modus-wc-collapse > summary.modus-wc-collapse-title {
   display: inline-flex;
+  width: 100%;
 }
 
 modus-wc-collapse .modus-wc-collapse {
@@ -59,6 +60,11 @@ modus-wc-collapse .modus-wc-collapse {
     justify-content: space-between;
     min-height: 1rem;
     width: 100%;
+  }
+
+  .modus-wc-title-main-row {
+    align-items: center;
+    display: inline-flex;
   }
 
   .modus-wc-title-main-row > modus-wc-icon {
@@ -264,4 +270,43 @@ modus-wc-collapse .modus-wc-collapse {
   &.modus-wc-collapse-open .modus-wc-collapse-title {
     color: var(--modus-wc-color-base-inverted);
   }
+}
+
+// Modern only: collapsed title halo, inset, following the container radius for non-bordered items.
+[data-theme^='modus-modern']
+  modus-wc-collapse
+  .modus-wc-collapse-title:focus-visible {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: -2px;
+}
+
+[data-theme^='modus-modern']
+  modus-wc-collapse
+  .modus-wc-collapse:not(.modus-wc-border)
+  > summary.modus-wc-collapse-title:focus-visible {
+  border-radius: var(--modus-wc-border-radius-box);
+}
+
+// Modern only: hide the container ring while collapsed, so the title halo is the only ring.
+[data-theme^='modus-modern']
+  modus-wc-collapse
+  .modus-wc-collapse.modus-wc-collapse:not([open]):has(
+    > summary:focus-visible
+  ) {
+  outline: none;
+}
+
+// Modern only: expanded item gets the halo on the whole item; the title halo is hidden.
+[data-theme^='modus-modern']
+  modus-wc-collapse
+  .modus-wc-collapse.modus-wc-collapse[open]:has(> summary:focus-visible) {
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}
+
+[data-theme^='modus-modern']
+  modus-wc-collapse
+  .modus-wc-collapse[open]
+  .modus-wc-collapse-title:focus-visible {
+  outline: none;
 }

@@ -1954,7 +1954,7 @@ export class ModusWcContentTree {
         {expanded ? (
           <modus-wc-tree-menu
             isSubMenu
-            customClass="modus-wc-menu-dropdown-show"
+            customClass="moduswc:menu-dropdown-show modus-wc-menu-dropdown-show"
           >
             {node.children === undefined
               ? this.renderLoadingRow(node)

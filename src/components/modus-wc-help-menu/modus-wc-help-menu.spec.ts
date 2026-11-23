@@ -965,7 +965,7 @@ describe('modus-wc-help-menu', () => {
     const animateMock = jest.fn().mockReturnValue({ cancel: jest.fn() });
     list.animate = animateMock;
 
-    const originalMatchMedia = window.matchMedia;
+    const originalMatchMedia = window.matchMedia?.bind(window);
     Object.defineProperty(window, 'matchMedia', {
       configurable: true,
       writable: true,

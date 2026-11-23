@@ -2757,9 +2757,8 @@ describe('modus-wc-date', () => {
     expect(html).toContain('year-select');
 
     // Create a mock event to test the blur handlers
-    const mockEvent = {
-      stopPropagation: jest.fn(),
-    } as unknown as CustomEvent;
+    const stopPropagation = jest.fn();
+    const mockEvent = { stopPropagation } as unknown as CustomEvent;
 
     // Extract the calendar rendering logic to test the blur handlers
     // Since the handlers are inline arrow functions in the JSX,
@@ -2784,7 +2783,7 @@ describe('modus-wc-date', () => {
 
     // Test the blur handler logic
     blurHandler(mockEvent);
-    expect(mockEvent['stopPropagation']).toHaveBeenCalled();
+    expect(stopPropagation).toHaveBeenCalled();
   });
 
   it('should not dispatch focus event on input when calendar opens', async () => {

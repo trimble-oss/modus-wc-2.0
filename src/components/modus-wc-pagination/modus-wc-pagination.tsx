@@ -120,18 +120,28 @@ export class ModusWcPagination {
   } {
     const sharedButtonClasses = [
       'modus-wc-pagination-btn',
+      'moduswc:join-item',
       'modus-wc-join-item',
+      'moduswc:btn',
       'modus-wc-btn',
     ];
 
-    const paginationClassList = ['modus-wc-pagination', 'modus-wc-join'];
+    const paginationClassList = [
+      'modus-wc-pagination',
+      'moduswc:join',
+      'modus-wc-join',
+    ];
 
     if (this.customClass) paginationClassList.push(this.customClass);
     const paginationClasses = paginationClassList.join(' ');
 
     const sizeClass = convertPropsToClasses({ size: this.size });
 
-    const iconButtonClassList = [...sharedButtonClasses, 'modus-wc-btn-square'];
+    const iconButtonClassList = [
+      ...sharedButtonClasses,
+      'moduswc:btn-square',
+      'modus-wc-btn-square',
+    ];
     const pageButtonClassList = [
       ...sharedButtonClasses,
       'modus-wc-pagination-page-btn',
@@ -186,10 +196,10 @@ export class ModusWcPagination {
     return (
       <button
         aria-current={isCurrentPage ? 'page' : undefined}
-        class={`${buttonClasses} ${isCurrentPage ? 'modus-wc-btn-active modus-wc-pagination-page-active' : ''}`}
+        class={`${buttonClasses} ${isCurrentPage ? 'moduswc:btn-active modus-wc-btn-active modus-wc-pagination-page-active' : ''}`}
         onClick={() => this.handlePageClick(page)}
       >
-        <span class="modus-wc-sr-only">{pageAriaLabel}</span>
+        <span class="moduswc:sr-only modus-wc-sr-only">{pageAriaLabel}</span>
         {isTruncated ? (
           <modus-wc-tooltip content={pageStr} position="top">
             {pageLabel}

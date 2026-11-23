@@ -114,3 +114,20 @@ modus-wc-file-dropzone .modus-wc-file-dropzone {
     }
   }
 }
+
+// Modern only: the halo replaces the dashed border on keyboard focus; mouse clicks show no ring.
+[data-theme^='modus-modern']
+  modus-wc-file-dropzone
+  .modus-wc-file-dropzone
+  .dropzone-content:focus:not(:focus-visible) {
+  outline: none;
+}
+
+[data-theme^='modus-modern']
+  modus-wc-file-dropzone
+  .modus-wc-file-dropzone
+  .dropzone-content:focus-visible {
+  border-color: transparent;
+  outline: 2px solid var(--modus-wc-color-primary);
+  outline-offset: 2px;
+}

@@ -4,12 +4,84 @@
 */
 
 modus-wc-card .modus-wc-card {
+  border-radius: var(--radius-box, var(--modus-wc-border-radius-md));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
   &:not(.modus-wc-card-bordered) {
     background-color: var(--modus-wc-color-base-100);
   }
 
+  &.modus-wc-card-bordered {
+    border: var(--modus-wc-border-width-xs) solid var(--modus-wc-color-base-200);
+  }
+
+  &.modus-wc-card-side {
+    align-items: stretch;
+    flex-direction: row;
+
+    :where(figure:first-child) {
+      border-end-end-radius: unset;
+      border-end-start-radius: inherit;
+      border-start-end-radius: unset;
+      border-start-start-radius: inherit;
+      overflow: hidden;
+    }
+
+    :where(figure:last-child) {
+      border-end-end-radius: inherit;
+      border-end-start-radius: unset;
+      border-start-end-radius: inherit;
+      border-start-start-radius: unset;
+      overflow: hidden;
+    }
+
+    figure > * {
+      max-width: unset;
+    }
+
+    :where(figure > *) {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  &.modus-wc-image-full figure img {
+    filter: brightness(28%);
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .modus-wc-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--modus-wc-spacing-sm);
+  }
+
+  // Compact matches pre-migration default card inset (1.5rem), not Daisy card-sm (1rem).
+  &.modus-wc-card-compact .modus-wc-card-body {
+    padding: var(--modus-wc-spacing-xl);
+  }
+
+  &.modus-wc-card-comfortable .modus-wc-card-body {
+    padding: var(--modus-wc-spacing-2xl);
+  }
+
   .modus-wc-card-title {
+    color: var(--modus-wc-color-base-content);
+    font-size: var(--modus-wc-font-size-lg);
+    font-weight: var(--modus-wc-font-weight-bold);
+    line-height: var(--modus-wc-line-height-md);
     margin-bottom: 0;
+  }
+
+  .modus-wc-card-subtitle:not(:empty) {
+    color: var(--modus-wc-color-base-content-low-contrast);
+    font-size: var(--modus-wc-font-size-sm);
+    font-weight: var(--modus-wc-font-weight-normal);
+    line-height: var(--modus-wc-line-height-sm);
   }
 
   .modus-wc-card-title:empty,
@@ -28,16 +100,18 @@ modus-wc-card .modus-wc-card {
     margin-bottom: unset;
   }
 
-  .modus-wc-card-body {
-    gap: var(--modus-wc-spacing-sm);
-  }
-
   .modus-wc-card-actions:not(:empty) {
     margin-bottom: var(--modus-wc-spacing-xs);
   }
 
   & > modus-wc-collapse .modus-wc-collapse {
     background-color: var(--modus-wc-color-base-page);
+  }
+}
+
+[data-theme^='modus-modern'] modus-wc-card .modus-wc-card {
+  &:not(.modus-wc-card-bordered) {
+    box-shadow: 0 0 2px 0 rgb(54 53 69 / 30%);
   }
 }
 

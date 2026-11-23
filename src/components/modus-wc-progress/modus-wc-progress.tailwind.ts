@@ -10,10 +10,10 @@ export const convertPropsToClasses = ({
   if (variant) {
     switch (variant) {
       case 'default':
-        classes = `${classes} modus-wc-progress modus-wc-w-full`;
+        classes = `${classes} moduswc:progress modus-wc-progress moduswc:w-full modus-wc-w-full`;
         break;
       case 'radial':
-        classes = `${classes} modus-wc-radial-progress`;
+        classes = `${classes} moduswc:radial-progress modus-wc-radial-progress`;
         break;
     }
   }

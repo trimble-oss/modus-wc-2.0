@@ -75,7 +75,7 @@ export class ModusWcRadio {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-radio'];
+    const classList = ['modus-wc-radio', 'moduswc:radio'];
 
     const propClasses = convertPropsToClasses({ size: this.size });
 
