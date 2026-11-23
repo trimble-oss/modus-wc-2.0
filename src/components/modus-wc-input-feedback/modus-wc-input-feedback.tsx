@@ -29,6 +29,9 @@ export class ModusWcInputFeedback {
   /** Custom CSS class to apply to the outer div element. */
   @Prop() customClass?: string = '';
 
+  /** Whether to disable the icon */
+  @Prop() disableIcon?: boolean = false;
+
   /** The Modus icon to use instead of the pre-defined icons. */
   @Prop() icon?: string = '';
 
@@ -65,6 +68,16 @@ export class ModusWcInputFeedback {
     return classList.join(' ');
   }
 
+  private getIcon() {
+    if (this.disableIcon) return null;
+
+    if (this.icon) {
+      return <modus-wc-icon decorative name={this.icon} />;
+    }
+
+    return this.getPresetIcon();
+  }
+
   private getPresetIcon() {
     switch (this.level) {
       case 'error':
@@ -90,6 +103,8 @@ export class ModusWcInputFeedback {
             this.getPresetIcon()
           )}
           <span id={this.messageId}>{this.message}</span>
+          {this.getIcon()}
+          <span>{this.message}</span>
         </div>
       </Host>
     );
