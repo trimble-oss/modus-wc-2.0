@@ -120,3 +120,12 @@ modus-wc-input-feedback .modus-wc-input-feedback {
     color: var(--modus-wc-color-black);
   }
 }
+
+[data-theme='connect-light'] modus-wc-input-feedback .modus-wc-input-feedback,
+[data-theme='connect-dark'] modus-wc-input-feedback .modus-wc-input-feedback {
+  background-color: transparent;
+  border-radius: 0;
+  font-weight: var(--modus-wc-font-weight-normal);
+  margin-top: 0;
+  padding: 0;
+}

@@ -95,6 +95,7 @@ modus-wc-textarea {
 [data-theme='connect-light'] modus-wc-textarea .modus-wc-textarea,
 [data-theme='connect-dark'] modus-wc-textarea .modus-wc-textarea {
   @include connect-input-styles;
+  @include connect-text-input-feedback;
 }
 
 // Modern only: 2px primary focus halo.
