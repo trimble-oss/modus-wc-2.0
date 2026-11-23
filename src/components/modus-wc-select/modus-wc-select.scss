@@ -130,6 +130,7 @@ modus-wc-select .modus-wc-select {
 [data-theme='connect-light'] modus-wc-select .modus-wc-select,
 [data-theme='connect-dark'] modus-wc-select .modus-wc-select {
   @include connect-input-styles;
+  @include connect-text-input-feedback;
 }
 
 // Modern only: 2px primary focus halo.
