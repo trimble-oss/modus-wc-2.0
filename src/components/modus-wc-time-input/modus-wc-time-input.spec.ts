@@ -75,6 +75,34 @@ describe('modus-wc-time-input', () => {
     expect(page.root).toMatchSnapshot();
   });
 
+  it('should follow the feedback level with the alert role', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTimeInput, ModusWcInputFeedback],
+      html: '<modus-wc-time-input aria-label="Start"></modus-wc-time-input>',
+    });
+    const component = page.rootInstance as ModusWcTimeInput;
+
+    component.feedback = { level: 'warning', message: 'Check the time' };
+    await page.waitForChanges();
+    expect(
+      page.root!.querySelector('.modus-wc-input-feedback')!.hasAttribute('role')
+    ).toBe(false);
+
+    component.feedback = { level: 'error', message: 'Required' };
+    await page.waitForChanges();
+    const feedback = page.root!.querySelector('.modus-wc-input-feedback')!;
+    expect(feedback.getAttribute('role')).toBe('alert');
+    expect(
+      page.root!.querySelector('modus-wc-input-feedback')!.hasAttribute('role')
+    ).toBe(false);
+
+    component.feedback = { level: 'warning', message: 'Check the time' };
+    await page.waitForChanges();
+    expect(
+      page.root!.querySelector('.modus-wc-input-feedback')!.hasAttribute('role')
+    ).toBe(false);
+  });
+
   it('should append error feedback to an existing accessible name and keep the hint', async () => {
     const page = await newSpecPage({
       components: [ModusWcTimeInput, ModusWcInputLabel, ModusWcInputFeedback],

@@ -252,11 +252,13 @@ export class ModusWcTimeInput {
         />
         {this.renderDatalist()}
         {this.feedback && (
+          // Recreate when level changes. Inherited role is read once, in componentWillLoad.
           <modus-wc-input-feedback
-            announceError={this.feedback.level === 'error'}
+            key={this.feedback.level}
             level={this.feedback.level}
             message={this.feedback.message}
             messageId={feedbackAria.messageId}
+            role={this.feedback.level === 'error' ? 'alert' : undefined}
             size={this.size}
           />
         )}

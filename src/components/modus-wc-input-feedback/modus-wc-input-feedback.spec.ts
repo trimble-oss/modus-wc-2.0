@@ -27,12 +27,14 @@ describe('modus-wc-input-feedback', () => {
     expect(page.root).toMatchSnapshot();
   });
 
-  it('should expose an error as an alert when announceError is set', async () => {
+  it('should move an inherited alert role onto the feedback container', async () => {
     const page = await newSpecPage({
       components: [ModusWcInputFeedback],
-      html: '<modus-wc-input-feedback announce-error level="error" message="Required"></modus-wc-input-feedback>',
+      html: '<modus-wc-input-feedback level="error" message="Required" role="alert"></modus-wc-input-feedback>',
     });
-    expect(page.root!.querySelector('[role="alert"]')).not.toBeNull();
+    const feedback = page.root!.querySelector('.modus-wc-input-feedback');
+    expect(feedback?.getAttribute('role')).toBe('alert');
+    expect(page.root!.hasAttribute('role')).toBe(false);
   });
 
   it('should render with success level', async () => {

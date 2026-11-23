@@ -41,12 +41,6 @@ export class ModusWcInputFeedback {
   /** Id of the message element, referenced by aria-describedby on the related field. */
   @Prop() messageId?: string;
 
-  /**
-   * Expose an error message as an alert.
-   * Used when the related control does not announce aria-describedby (time and number inputs).
-   */
-  @Prop() announceError?: boolean = false;
-
   /** The size of the feedback component. */
   @Prop() size?: ModusSize = 'md';
 
@@ -89,13 +83,7 @@ export class ModusWcInputFeedback {
   render() {
     return (
       <Host>
-        <div
-          class={this.getClasses()}
-          role={
-            this.announceError && this.level === 'error' ? 'alert' : undefined
-          }
-          {...this.inheritedAttributes}
-        >
+        <div class={this.getClasses()} {...this.inheritedAttributes}>
           {this.icon ? (
             <modus-wc-icon decorative name={this.icon} />
           ) : (

@@ -251,13 +251,17 @@ export class ModusWcNumberInput {
           />
         </div>
         {this.feedback && (
+          // Recreate when the alert role must change. Inherited role is read once, in componentWillLoad.
           <modus-wc-input-feedback
-            announceError={
-              !exposesDescription && this.feedback.level === 'error'
-            }
+            key={exposesDescription ? 'described' : this.feedback.level}
             level={this.feedback.level}
             message={this.feedback.message}
             messageId={feedbackAria.messageId}
+            role={
+              !exposesDescription && this.feedback.level === 'error'
+                ? 'alert'
+                : undefined
+            }
             size={this.size}
           />
         )}
