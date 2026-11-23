@@ -1790,14 +1790,14 @@
             A customizable feedback component used to provide additional context related to form input interactions.  &lt;b&gt;To use a custom icon, this component requires Modus icons to be installed in the host application. See [Modus Icon Usage](/docs/documentation-modus-icon-usage--docs) for steps.&lt;/b&gt;
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcInputFeedback.AnnounceError">
-            <summary>
-            Expose an error message as an alert. Used when the related control does not announce aria-describedby (time and number inputs).
-            </summary>
-        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcInputFeedback.CustomClass">
             <summary>
             Custom CSS class to apply to the outer div element.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcInputFeedback.DisableIcon">
+            <summary>
+            Whether to disable the icon
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcInputFeedback.Icon">
