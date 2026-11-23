@@ -161,6 +161,7 @@ interface AutocompleteArgs {
   initialNavigation?: boolean;
   label?: string;
   'leave-menu-open'?: boolean;
+  'listbox-label'?: string;
   'max-chips'?: number;
   'min-chars': number;
   'min-input-width'?: number;
@@ -193,6 +194,7 @@ const meta: Meta<AutocompleteArgs> = {
     items: items,
     label: 'Label',
     'leave-menu-open': false,
+    'listbox-label': 'Suggestions',
     'max-chips': 4,
     'min-chars': 0,
     'min-input-width': 15,
@@ -452,6 +454,7 @@ const Template: Story = {
   .items=${args.items}
   label=${ifDefined(args.label)}
   ?leave-menu-open=${args['leave-menu-open']}
+  listbox-label=${ifDefined(args['listbox-label'])}
   min-chars=${args['min-chars']}
   min-input-width=${ifDefined(args['min-input-width'])}
   ?multi-select=${false}
@@ -501,6 +504,7 @@ export const WithCustomIconSlot: Story = {
   .items=${args.items}
   label=${ifDefined(args.label)}
   ?leave-menu-open=${args['leave-menu-open']}
+  listbox-label=${ifDefined(args['listbox-label'])}
   min-chars=${args['min-chars']}
   min-input-width=${ifDefined(args['min-input-width'])}
   ?multi-select=${false}
@@ -995,7 +999,7 @@ export const CustomMenuItems: Story = {
         case 'Enter': {
           e.preventDefault();
           const activeItem = visibleItems[currentIndex];
-          const option = activeItem?.querySelector(
+          const option = activeItem?.querySelector<HTMLElement>(
             '.modus-wc-menu-item-option'
           );
           option?.click();
@@ -1152,6 +1156,7 @@ modus-wc-menu-item.hidden {
   input-tab-index=${ifDefined(args['input-tab-index'])}
   label=${ifDefined(args.label)}
   ?leave-menu-open=${args['leave-menu-open']}
+  listbox-label=${ifDefined(args['listbox-label'])}
   min-chars=${args['min-chars']}
   ?multi-select=${false}
   name=${ifDefined(args.name)}
@@ -2283,6 +2288,7 @@ export const ShadowDomParent: Story = {
             items: IAutocompleteItem[];
             label: string;
             leaveMenuOpen: boolean;
+            listboxLabel: string;
             maxChips: number;
             minChars: number;
             minInputWidth: number;
@@ -2317,6 +2323,9 @@ export const ShadowDomParent: Story = {
           }
           if (typeof v['leave-menu-open'] === 'boolean') {
             autocompleteEl.leaveMenuOpen = v['leave-menu-open'];
+          }
+          if (typeof v['listbox-label'] === 'string') {
+            autocompleteEl.listboxLabel = v['listbox-label'];
           }
           if (typeof v['max-chips'] === 'number') {
             autocompleteEl.maxChips = v['max-chips'];

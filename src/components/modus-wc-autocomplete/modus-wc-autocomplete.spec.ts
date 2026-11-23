@@ -1451,6 +1451,36 @@ describe('modus-wc-autocomplete', () => {
     expect(textInput).toBeTruthy();
   });
 
+  it('should name the listbox Suggestions by default', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Fruit search"></modus-wc-autocomplete>`,
+    });
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    await autocomplete.openMenu();
+    await page.waitForChanges();
+
+    const listbox = page.root?.querySelector('ul[role="listbox"]');
+    expect(listbox?.getAttribute('aria-label')).toBe('Suggestions');
+    const input = page.root?.querySelector('input');
+    expect(input?.getAttribute('aria-label')).toBe('Fruit search');
+  });
+
+  it('should name the listbox from listbox-label', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAutocomplete, ModusWcTextInput, ModusWcMenu],
+      html: `<modus-wc-autocomplete aria-label="Fruit search" listbox-label="Fruit suggestions"></modus-wc-autocomplete>`,
+    });
+    const autocomplete = page.rootInstance as ModusWcAutocomplete;
+    await autocomplete.openMenu();
+    await page.waitForChanges();
+
+    const listbox = page.root?.querySelector('ul[role="listbox"]');
+    expect(listbox?.getAttribute('aria-label')).toBe('Fruit suggestions');
+    const input = page.root?.querySelector('input');
+    expect(input?.getAttribute('aria-label')).toBe('Fruit search');
+  });
+
   // Tests for custom event handler props
   it('should call customBlur when provided', async () => {
     const customBlurSpy = jest.fn();

@@ -7,6 +7,9 @@ modus-wc-menu-item .modus-wc-menu-item {
   button,
   .modus-wc-menu-item-option {
     align-items: center;
+    appearance: none;
+    background-color: transparent;
+    border: 0;
     border-radius: inherit;
     color: inherit;
     cursor: pointer;
@@ -74,12 +77,6 @@ modus-wc-menu-item .modus-wc-menu-item {
         margin-left: auto;
       }
     }
-  }
-
-  .modus-wc-menu-item-option {
-    background-color: transparent;
-    border: 0;
-    padding: 0;
   }
 
   &.modus-wc-menu-item-sm {

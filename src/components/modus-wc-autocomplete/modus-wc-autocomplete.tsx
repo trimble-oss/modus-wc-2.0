@@ -125,6 +125,9 @@ export class ModusWcAutocomplete {
   /** Whether the menu should remain open after an item is selected. */
   @Prop() leaveMenuOpen?: boolean = false;
 
+  /** Accessible name of the suggestion listbox. Host `aria-label` names the combobox, not this popup. */
+  @Prop() listboxLabel?: string = 'Suggestions';
+
   /** The minimum number of characters required to render the menu. */
   @Prop() minChars: number = 0;
 
@@ -1194,7 +1197,7 @@ export class ModusWcAutocomplete {
         {hasSlottedMenuItems ? (
           // When using custom slots, keep menu in DOM and use CSS to hide/show
           <modus-wc-menu
-            aria-label="Suggestions"
+            aria-label={this.listboxLabel}
             bordered={this.bordered}
             class={this.menuVisible ? 'menu-visible' : 'menu-hidden'}
             key={this.getMenuItemsListKey()}
@@ -1221,7 +1224,7 @@ export class ModusWcAutocomplete {
           // When NOT using slots, conditionally render menu (automatic scroll reset)
           this.menuVisible && (
             <modus-wc-menu
-              aria-label="Suggestions"
+              aria-label={this.listboxLabel}
               bordered={this.bordered}
               class="menu-visible"
               key={this.getMenuItemsListKey()}

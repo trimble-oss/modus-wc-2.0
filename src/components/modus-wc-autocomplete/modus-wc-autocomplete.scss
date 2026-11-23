@@ -148,7 +148,17 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     }
   }
 
-  .modus-wc-menu {
+  // Host is display:contents so the ul % width is the autocomplete, not a
+  // shrink-wrapped custom element. Do not use display:block on .menu-visible.
+  > modus-wc-menu.menu-hidden {
+    display: none;
+  }
+
+  > modus-wc-menu.menu-visible {
+    display: contents;
+  }
+
+  ul.modus-wc-menu {
     border-radius: 0 0 var(--modus-wc-border-radius-md)
       var(--modus-wc-border-radius-md);
     display: block;
@@ -158,15 +168,8 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     overflow: auto;
     position: absolute;
     top: 100%;
+    width: 100%;
     z-index: 99;
-  }
-
-  .menu-hidden {
-    display: none;
-  }
-
-  .menu-visible {
-    display: block;
   }
 
   .modus-wc-autocomplete-status {
@@ -266,7 +269,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     }
   }
 
-  .modus-wc-menu {
+  ul.modus-wc-menu {
     background-color: var(--modus-wc-color-white);
   }
 }
@@ -283,13 +286,13 @@ modus-wc-autocomplete.modus-wc-autocomplete {
     }
   }
 
-  .modus-wc-menu {
+  ul.modus-wc-menu {
     background-color: var(--modus-wc-color-gray-10);
   }
 }
 
 [data-theme='modus-modern-light'] modus-wc-autocomplete.modus-wc-autocomplete {
-  .modus-wc-menu {
+  ul.modus-wc-menu {
     background-color: var(--modus-wc-color-base-page);
   }
 
@@ -303,7 +306,7 @@ modus-wc-autocomplete.modus-wc-autocomplete {
 }
 
 [data-theme='modus-modern-dark'] modus-wc-autocomplete.modus-wc-autocomplete {
-  .modus-wc-menu {
+  ul.modus-wc-menu {
     background-color: var(--modus-wc-color-base-page);
   }
 

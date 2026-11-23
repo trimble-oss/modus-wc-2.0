@@ -136,7 +136,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 1`] = `
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-autocomplete="list" aria-controls="mwc_id_86-listbox" aria-expanded="true" aria-haspopup="listbox" aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_86" placeholder="" role="combobox" type="text" value="">
+      <input aria-autocomplete="list" aria-controls="mwc_id_88-listbox" aria-expanded="true" aria-haspopup="listbox" aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_88" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
   <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status">
@@ -144,7 +144,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 1`] = `
   </div>
   <modus-wc-menu class="menu-visible" selection-mode="single">
     <!---->
-    <ul aria-label="Suggestions" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" id="mwc_id_86-listbox" role="listbox">
+    <ul aria-label="Suggestions" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" id="mwc_id_88-listbox" role="listbox">
       <li role="presentation">
         <div class="modus-wc-autocomplete-no-results">
           <div aria-label="No results found" class="icon-label">
@@ -171,7 +171,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 2`] = `
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-autocomplete="list" aria-controls="mwc_id_96-listbox" aria-expanded="true" aria-haspopup="listbox" aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_96" placeholder="" role="combobox" type="text" value="">
+      <input aria-autocomplete="list" aria-controls="mwc_id_98-listbox" aria-expanded="true" aria-haspopup="listbox" aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_98" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
   <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status">
@@ -179,7 +179,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 2`] = `
   </div>
   <modus-wc-menu class="menu-visible" selection-mode="single">
     <!---->
-    <ul aria-label="Suggestions" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" id="mwc_id_96-listbox" role="listbox">
+    <ul aria-label="Suggestions" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" id="mwc_id_98-listbox" role="listbox">
       <li role="presentation">
         <div class="modus-wc-autocomplete-no-results">
           <div aria-label="No results found" class="icon-label">
