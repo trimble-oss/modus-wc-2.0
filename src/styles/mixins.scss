@@ -16,9 +16,10 @@
   }
 }
 
-// Connect inputs: `feedback-levels` tints the full border. Keep the default
-// side borders and put the semantic color on the bottom underline only
-// (!important beats `feedback-levels`). Select uses `modus-wc-select--*`;
+// Connect inputs: `feedback-levels` paints the full border with `!important`
+// so it wins over DaisyUI. A higher-specificity rule without `!important`
+// cannot override that, so these declarations use `!important` too, then keep
+// the semantic color on the bottom edge only. Select uses `modus-wc-select--*`;
 // the other fields use `modus-wc-input--*`.
 @mixin connect-text-input-feedback {
   $default-border: var(--fallback-bc, oklch(var(--bc) / 0.2));
@@ -45,8 +46,12 @@
   }
 }
 
+// Label gap only. Autocomplete is listed because it renders
+// `modus-wc-input-label`. Its feedback border is separate: single-value
+// uses the inner text input, and multi-select uses
+// `.modus-wc-autocomplete-multi-select--*`, which
+// `connect-text-input-feedback` does not target.
 @mixin connect-form-label-host-spacing {
-  modus-wc-autocomplete,
   modus-wc-date,
   modus-wc-number-input,
   modus-wc-select,
@@ -308,29 +313,6 @@
     .modus-wc-select--info,
     .modus-wc-select--success,
     .modus-wc-select--warning
-  ) {
-    &:focus,
-    &:focus-within {
-      border-bottom-color: var(--modus-wc-color-primary);
-      outline: none;
-    }
-  }
-}
-
-// Connect-light inputs: focus underline only (no hover/active primary) and no primary on feedback states.
-@mixin connect-input-styles-light {
-  border-bottom-width: var(--input-bottom-border-width);
-  outline-width: 0 !important;
-
-  &:not(.modus-wc-select, .modus-wc-number-input) {
-    padding: 0 var(--modus-wc-spacing-sm);
-  }
-
-  &:not(
-    .modus-wc-input--error,
-    .modus-wc-input--info,
-    .modus-wc-input--success,
-    .modus-wc-input--warning
   ) {
     &:focus,
     &:focus-within {

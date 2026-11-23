@@ -542,11 +542,7 @@ modus-wc-text-input {
   }
 }
 
-[data-theme='connect-light'] modus-wc-text-input .modus-wc-text-input {
-  @include connect-input-styles-light;
-  @include connect-text-input-feedback;
-}
-
+[data-theme='connect-light'] modus-wc-text-input .modus-wc-text-input,
 [data-theme='connect-dark'] modus-wc-text-input .modus-wc-text-input {
   @include connect-input-styles;
   @include connect-text-input-feedback;
