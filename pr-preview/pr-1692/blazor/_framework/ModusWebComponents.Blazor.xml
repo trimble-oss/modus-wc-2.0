@@ -2234,11 +2234,6 @@
             Custom CSS class to apply to the host element.
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcNavbar.MainMenuControls">
-            <summary>
-            Id of the element the main-menu button controls. When omitted, the button controls the navbar's own main-menu panel. Set this to a side navigation panel id (navId) when that button toggles modus-wc-side-navigation.
-            </summary>
-        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcNavbar.MainMenuOpen">
             <summary>
             The open state of the main menu.
@@ -2926,11 +2921,6 @@
             <summary>
             Mode to make side navigation either overlay or push the content for the selector specified in targetContent
             Allowed values: "overlay", "push"
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcSideNavigation.NavId">
-            <summary>
-            Id of the navigation panel. Defaults to a generated id so a controlling button can reference it with aria-controls.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcSideNavigation.TargetContent">
