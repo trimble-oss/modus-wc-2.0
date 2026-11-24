@@ -185,6 +185,111 @@ export const sanitizeUrl = (url?: string): string | undefined => {
 };
 
 /**
+ * Links visible feedback copy to a form control.
+ * Error feedback sets `aria-invalid` to true. The message id is set only when the message has text.
+ */
+export function resolveControlFeedbackAria(
+  feedback: { level?: string; message?: string } | undefined,
+  effectiveId: string,
+  inherited: Attributes,
+  options?: {
+    extraDescribedBy?: string;
+    ariaInvalid?: string;
+    /**
+     * Keep the feedback id out of aria-describedby.
+     * Time and number inputs are spin buttons, and Chromium does not expose
+     * aria-describedby on that role. Callers include the id in the accessible name.
+     */
+    omitMessageFromDescribedBy?: boolean;
+  }
+): { messageId?: string; describedBy?: string; ariaInvalid?: string } {
+  const messageId = feedback?.message?.trim()
+    ? `${effectiveId}-feedback`
+    : undefined;
+  const describedByIds = [
+    inherited['aria-describedby'],
+    options?.omitMessageFromDescribedBy ? undefined : messageId,
+    options?.extraDescribedBy,
+  ].flatMap((value) => {
+    const trimmed = value?.trim();
+    return trimmed ? trimmed.split(/\s+/) : [];
+  });
+  const describedBy = [...new Set(describedByIds)].join(' ');
+  const ariaInvalid =
+    feedback?.level === 'error'
+      ? 'true'
+      : options?.ariaInvalid || inherited['aria-invalid'];
+
+  return {
+    messageId,
+    describedBy: describedBy || undefined,
+    ariaInvalid: ariaInvalid || undefined,
+  };
+}
+
+/**
+ * Puts feedback into the accessible name of a time or number field.
+ * Chromium does not expose aria-describedby on those spin buttons.
+ * An existing aria-labelledby is kept and the feedback id is appended.
+ */
+export function applySpinbuttonFeedbackName(
+  attributes: Attributes,
+  messageId: string | undefined,
+  options: { labelId?: string; nameId: string }
+): {
+  attributes: Attributes;
+  hiddenName?: { id: string; text: string };
+  labelId?: string;
+} {
+  if (!messageId) {
+    return { attributes };
+  }
+
+  const next: Attributes = { ...attributes };
+  const existingLabelledBy =
+    next['aria-labelledby']
+      ?.trim()
+      .split(/\s+/)
+      .filter((id) => id.length > 0) ?? [];
+  const nameIds = [...existingLabelledBy];
+  let hiddenName: { id: string; text: string } | undefined;
+  let labelId: string | undefined;
+
+  if (!existingLabelledBy.length) {
+    const ariaLabel = next['aria-label']?.trim();
+    if (ariaLabel) {
+      hiddenName = { id: options.nameId, text: ariaLabel };
+      nameIds.push(options.nameId);
+    } else if (options.labelId) {
+      labelId = options.labelId;
+      nameIds.push(options.labelId);
+    }
+    delete next['aria-label'];
+  }
+
+  nameIds.push(messageId);
+  next['aria-labelledby'] = [...new Set(nameIds)].join(' ');
+
+  return { attributes: next, hiddenName, labelId };
+}
+
+/**
+ * Copies control attributes and applies the resolved feedback aria values.
+ */
+export function assignFeedbackAria(
+  attributes: Attributes,
+  describedBy?: string,
+  ariaInvalid?: string
+): Attributes {
+  const next: Attributes = { ...attributes };
+  delete next['aria-describedby'];
+  delete next['aria-invalid'];
+  if (describedBy) next['aria-describedby'] = describedBy;
+  if (ariaInvalid) next['aria-invalid'] = ariaInvalid;
+  return next;
+}
+
+/**
  * Shared assertions for form control label ↔ input id linkage.
  */
 export function expectLabelLinkedToControl(

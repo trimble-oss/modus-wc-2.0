@@ -26,6 +26,7 @@ import {
   createEffectiveIdResolver,
   inheritAriaAttributes,
   KEY,
+  resolveControlFeedbackAria,
 } from '../utils';
 import {
   BLUR_FOCUSOUT_DELAY_MS,
@@ -1066,6 +1067,11 @@ export class ModusWcAutocomplete {
       ariaControls: showListbox ? listboxId : undefined,
       comboboxExpanded: this.menuVisible ? 'true' : 'false',
     };
+    const feedbackAria = resolveControlFeedbackAria(
+      this.showFeedback ? this.feedback : undefined,
+      effectiveId,
+      this.inheritedAttributes
+    );
 
     return (
       <Host class={this.getClasses()} style={cssVariables}>
@@ -1114,6 +1120,8 @@ export class ModusWcAutocomplete {
                     : undefined,
                 includeClear: this.includeClear,
                 includeSearch: this.includeSearch,
+                describedBy: feedbackAria.messageId,
+                inputAriaInvalid: feedbackAria.ariaInvalid,
                 inputId: effectiveId,
                 inputTabIndex: this.inputTabIndex,
                 name: this.name,
@@ -1163,6 +1171,8 @@ export class ModusWcAutocomplete {
                   : '',
               includeClear: this.includeClear,
               includeSearch: this.includeSearch,
+              describedBy: feedbackAria.messageId,
+              inputAriaInvalid: feedbackAria.ariaInvalid,
               inputId: effectiveId,
               inputTabIndex: this.inputTabIndex,
               name: this.name,
@@ -1184,6 +1194,7 @@ export class ModusWcAutocomplete {
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackAria.messageId}
             size={this.size}
           />
         )}
@@ -1253,6 +1264,7 @@ export class ModusWcAutocomplete {
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackAria.messageId}
             size={this.size}
           />
         )}

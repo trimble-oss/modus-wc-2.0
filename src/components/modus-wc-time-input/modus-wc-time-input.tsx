@@ -11,10 +11,13 @@ import { convertPropsToClasses } from './modus-wc-time-input.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import {
+  applySpinbuttonFeedbackName,
+  assignFeedbackAria,
   Attributes,
   createEffectiveIdResolver,
   generateRandomId,
   inheritAriaAttributes,
+  resolveControlFeedbackAria,
 } from '../utils';
 
 /**
@@ -190,16 +193,41 @@ export class ModusWcTimeInput {
 
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
+    const feedbackAria = resolveControlFeedbackAria(
+      this.feedback,
+      effectiveId,
+      this.inheritedAttributes,
+      { omitMessageFromDescribedBy: true }
+    );
+    const feedbackName = applySpinbuttonFeedbackName(
+      assignFeedbackAria(
+        this.inheritedAttributes,
+        feedbackAria.describedBy,
+        feedbackAria.ariaInvalid
+      ),
+      feedbackAria.messageId,
+      {
+        labelId: this.label ? `${effectiveId}-label` : undefined,
+        nameId: `${effectiveId}-name`,
+      }
+    );
+    const controlAttributes = feedbackName.attributes;
 
     return (
       <Host>
         {this.label && (
           <modus-wc-input-label
             forId={effectiveId}
+            labelId={feedbackName.labelId}
             labelText={this.label}
             required={this.required}
             size={this.size}
           />
+        )}
+        {feedbackName.hiddenName && (
+          <span class="modus-wc-sr-only" id={feedbackName.hiddenName.id}>
+            {feedbackName.hiddenName.text}
+          </span>
         )}
         <input
           aria-required={this.required}
@@ -220,13 +248,17 @@ export class ModusWcTimeInput {
           tabIndex={this.inputTabIndex}
           type="time"
           value={this.value}
-          {...this.inheritedAttributes}
+          {...controlAttributes}
         />
         {this.renderDatalist()}
         {this.feedback && (
+          // Recreate when level changes. Inherited role is read once, in componentWillLoad.
           <modus-wc-input-feedback
+            key={this.feedback.level}
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackAria.messageId}
+            role={this.feedback.level === 'error' ? 'alert' : undefined}
             size={this.size}
           />
         )}

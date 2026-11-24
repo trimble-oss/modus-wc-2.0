@@ -3,12 +3,17 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-modus-wc-select .modus-wc-select {
-  background-color: var(--modus-wc-color-base-page);
-  color: var(--modus-wc-color-base-content);
+modus-wc-select {
+  @include input-disabled-overlay;
 
-  @include sizing-tokens;
-  @include feedback-levels;
+  .modus-wc-select {
+    background-color: var(--modus-wc-color-base-page);
+    color: var(--modus-wc-color-base-inverted);
+
+    @include sizing-tokens;
+    @include feedback-levels;
+    @include input-disabled-state;
+  }
 }
 
 [data-theme='modus-modern-light'] modus-wc-select .modus-wc-input-label,
