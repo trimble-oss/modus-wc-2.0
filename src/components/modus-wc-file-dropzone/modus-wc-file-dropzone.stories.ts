@@ -64,7 +64,8 @@ const meta: Meta<FileDropzoneArgs> = {
     },
     instructions: {
       control: 'text',
-      description: 'Default instructions displayed in the dropzone',
+      description:
+        'Default instructions displayed in the dropzone. Visible instructions, dropzone slot text, or aria-label name the focusable dropzone. If none are set, the control is unnamed.',
     },
     'invalid-file-type-message': {
       control: 'text',
