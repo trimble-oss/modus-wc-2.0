@@ -41,7 +41,6 @@ The component supports a `<slot>` for injecting additional custom content inside
 | `placeholder`          | `placeholder`            | Text that appears in the form control when it has no value set.                                                                                                                                                                                                                                   | `string \| undefined`                                                                                                                                 | `''`           |
 | `readOnly`             | `read-only`              | Whether the value is editable.                                                                                                                                                                                                                                                                    | `boolean \| undefined`                                                                                                                                | `false`        |
 | `required`             | `required`               | A value is required for the form to be submittable.                                                                                                                                                                                                                                               | `boolean \| undefined`                                                                                                                                | `false`        |
-| `showCharacterCount`   | `show-character-count`   | Whether to display the current character count and maximum length. Only shown when maxLength is set.                                                                                                                                                                                              | `boolean \| undefined`                                                                                                                                | `false`        |
 | `size`                 | `size`                   | The size of the input.                                                                                                                                                                                                                                                                            | `"lg" \| "md" \| "sm" \| "xl" \| "xs" \| undefined`                                                                                                   | `'md'`         |
 | `type`                 | `type`                   | Type of form control.                                                                                                                                                                                                                                                                             | `"date" \| "datetime-local" \| "email" \| "month" \| "number" \| "password" \| "search" \| "tel" \| "text" \| "time" \| "url" \| "week" \| undefined` | `'text'`       |
 | `value`                | `value`                  | The value of the control.                                                                                                                                                                                                                                                                         | `string`                                                                                                                                              | `''`           |
@@ -67,18 +66,18 @@ The component supports a `<slot>` for injecting additional custom content inside
 
 ### Depends on
 
-- [modus-wc-input-feedback](../modus-wc-input-feedback)
 - [modus-wc-input-label](../modus-wc-input-label)
 - [modus-wc-icon](../modus-wc-icon)
 - [modus-wc-button](../modus-wc-button)
+- [modus-wc-input-feedback](../modus-wc-input-feedback)
 
 ### Graph
 ```mermaid
 graph TD;
-  modus-wc-text-input --> modus-wc-input-feedback
   modus-wc-text-input --> modus-wc-input-label
   modus-wc-text-input --> modus-wc-icon
   modus-wc-text-input --> modus-wc-button
+  modus-wc-text-input --> modus-wc-input-feedback
   modus-wc-input-feedback --> modus-wc-icon
   modus-wc-autocomplete --> modus-wc-text-input
   modus-wc-content-tree --> modus-wc-text-input

@@ -147,9 +147,6 @@ export class ModusWcTextInput {
   /** A value is required for the form to be submittable. */
   @Prop() required?: boolean = false;
 
-  /** Whether to display the current character count and maximum length. Only shown when maxLength is set. */
-  @Prop() showCharacterCount?: boolean = false;
-
   /** The size of the input. */
   @Prop() size?: ModusSize | 'xs' | 'xl' = 'md';
 
@@ -314,62 +311,16 @@ export class ModusWcTextInput {
     return this.type === 'password' && !this.disabled && !this.readOnly;
   }
 
-  private renderFeedback(messageId?: string) {
-    return (
-      this.feedback && (
-        <modus-wc-input-feedback
-          level={this.feedback.level}
-          message={this.feedback.message}
-          messageId={messageId}
-          size={this.getLabelSize()}
-        />
-      )
-    );
-  }
-
-  private shouldShowCharacterCount(): boolean {
-    return !!this.showCharacterCount && typeof this.maxLength === 'number';
-  }
-
-  private renderCharacterCount(characterCountId: string) {
-    const length = (this.value ?? '').length;
-    const atLimit = length >= this.maxLength!;
-
-    return [
-      <div
-        class={`modus-wc-character-count${atLimit ? ' modus-wc-character-count--limit' : ''}`}
-        id={characterCountId}
-      >
-        {`${length}/${this.maxLength}`}
-      </div>,
-      <div
-        aria-atomic="true"
-        aria-live="polite"
-        class="modus-wc-sr-only"
-        role="status"
-      >
-        {atLimit ? 'Character limit reached' : ''}
-      </div>,
-    ];
-  }
-
   render() {
     const showClear = this.shouldIncludeClear();
     const showPasswordToggle = this.shouldShowPasswordToggle();
-    const showCharacterCount = this.shouldShowCharacterCount();
     const effectiveId = this.resolveEffectiveId(this.inputId);
-    const characterCountId = `${effectiveId}-character-count`;
     const feedbackAria = resolveControlFeedbackAria(
       this.feedback,
       effectiveId,
       this.inheritedAttributes,
       {
-        extraDescribedBy: [
-          this.describedBy,
-          showCharacterCount ? characterCountId : undefined,
-        ]
-          .filter(Boolean)
-          .join(' '),
+        extraDescribedBy: this.describedBy,
         ariaInvalid: this.inputAriaInvalid,
       }
     );
@@ -476,13 +427,13 @@ export class ModusWcTextInput {
             </div>
           )}
         </label>
-        {showCharacterCount ? (
-          <div class="modus-wc-input-footer">
-            {this.renderFeedback(feedbackAria.messageId)}
-            {this.renderCharacterCount(characterCountId)}
-          </div>
-        ) : (
-          this.renderFeedback(feedbackAria.messageId)
+        {this.feedback && (
+          <modus-wc-input-feedback
+            level={this.feedback.level}
+            message={this.feedback.message}
+            messageId={feedbackAria.messageId}
+            size={this.getLabelSize()}
+          />
         )}
       </Host>
     );

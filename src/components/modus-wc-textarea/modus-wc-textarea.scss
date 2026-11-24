@@ -9,7 +9,6 @@
 
 modus-wc-textarea {
   @include input-disabled-overlay;
-  @include input-character-count;
 
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
@@ -22,12 +21,6 @@ modus-wc-textarea {
 
     &:read-only:not(:disabled) {
       background-color: var(--modus-wc-color-base-100);
-    }
-
-    &.modus-wc-textarea--auto-resize {
-      field-sizing: content;
-      min-height: calc(var(--modus-wc-textarea-rows, 2) * 1lh);
-      resize: none;
     }
   }
 }

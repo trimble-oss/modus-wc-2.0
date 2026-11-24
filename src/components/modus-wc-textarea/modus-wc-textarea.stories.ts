@@ -7,7 +7,6 @@ import { IInputFeedbackProp, ModusSize } from '../types';
 
 interface TextAreaArgs {
   'auto-correct': 'on' | 'off';
-  'auto-resize'?: boolean;
   bordered?: boolean;
   'custom-class'?: string;
   disabled?: boolean;
@@ -31,7 +30,6 @@ interface TextAreaArgs {
   readonly?: boolean;
   required?: boolean;
   rows?: number;
-  'show-character-count'?: boolean;
   size?: ModusSize;
   spellcheck?: boolean;
   value: string;
@@ -41,14 +39,12 @@ const meta: Meta<TextAreaArgs> = {
   title: 'Components/Forms/Textarea',
   component: 'modus-wc-textarea',
   args: {
-    'auto-resize': false,
     bordered: true,
     'custom-class': '',
     disabled: false,
     label: 'Label',
     readonly: false,
     required: false,
-    'show-character-count': false,
     size: 'md',
     spellcheck: false,
     value: '',
@@ -109,7 +105,6 @@ export const Default: Story = {
     return html`
       <modus-wc-textarea
         auto-correct=${ifDefined(args['auto-correct'])}
-        ?auto-resize=${args['auto-resize']}
         ?bordered=${args.bordered}
         custom-class=${ifDefined(args['custom-class'])}
         enterkeyhint=${ifDefined(args.enterkeyhint)}
@@ -126,47 +121,11 @@ export const Default: Story = {
         ?readonly=${args.readonly}
         ?required=${args.required}
         rows=${ifDefined(args.rows)}
-        ?show-character-count=${args['show-character-count']}
         size=${ifDefined(args.size)}
         spellcheck=${ifDefined(args.spellcheck)}
         .value=${args.value}
       ></modus-wc-textarea>
     `;
-  },
-};
-
-export const WithCharacterCount: Story = {
-  ...Default,
-  args: {
-    label: 'Comments',
-    'max-length': 200,
-    'show-character-count': true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Set `show-character-count` with `max-length` to show the current count and limit below the textarea. The count is linked to the textarea with `aria-describedby`, and screen readers announce once when the limit is reached.',
-      },
-    },
-  },
-};
-
-export const AutoResize: Story = {
-  ...Default,
-  args: {
-    'auto-resize': true,
-    label: 'Notes',
-    rows: 2,
-    value: 'Type more lines to see the textarea grow.',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Set `auto-resize` to grow the textarea with its content, starting from `rows`. Browsers that support `field-sizing: content` resize with CSS; others fall back to measuring `scrollHeight`. Use `auto-resize` instead of Angular CDK `cdkTextareaAutosize`, which measures the `modus-wc-textarea` host element rather than the inner textarea.',
-      },
-    },
   },
 };
 
@@ -201,7 +160,6 @@ export const ShadowDomParent: Story = {
         propsMapper: (v: TextAreaArgs, el: HTMLElement) => {
           const textareaEl = el as unknown as {
             autoCorrect: string;
-            autoResize: boolean;
             bordered: boolean;
             customClass: string;
             disabled: boolean;
@@ -217,11 +175,9 @@ export const ShadowDomParent: Story = {
             readonly: boolean;
             required: boolean;
             rows: number;
-            showCharacterCount: boolean;
             size: string;
           };
           textareaEl.autoCorrect = v['auto-correct'];
-          textareaEl.autoResize = Boolean(v['auto-resize']);
           textareaEl.bordered = Boolean(v.bordered);
           textareaEl.customClass = v['custom-class'] || '';
           textareaEl.disabled = Boolean(v.disabled);
@@ -237,7 +193,6 @@ export const ShadowDomParent: Story = {
           textareaEl.readonly = Boolean(v.readonly);
           textareaEl.required = Boolean(v.required);
           textareaEl.rows = typeof v.rows === 'number' ? v.rows : 2;
-          textareaEl.showCharacterCount = Boolean(v['show-character-count']);
           textareaEl.size = v.size || '';
         },
       });
@@ -249,6 +204,37 @@ export const ShadowDomParent: Story = {
     ></textarea-shadow-host>`;
   },
 };
+export const AutoResize: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+The inner \`<textarea>\` renders in light DOM, so \`field-sizing: content\` applied through \`custom-class\`
+(or a selector such as \`modus-wc-textarea textarea\`) grows it with its content. Set \`min-block-size\`
+for the starting height, since \`rows\` no longer controls the height once \`field-sizing\` is applied.
+
+Angular CDK \`cdkTextareaAutosize\` attaches to the host element instead of the inner \`<textarea>\`,
+so use this CSS approach instead. Browsers without \`field-sizing\` support keep the regular \`rows\` height.
+        `,
+      },
+    },
+  },
+  render: () => html`
+    <style>
+      .textarea-auto-resize {
+        field-sizing: content;
+        min-block-size: 4lh;
+        resize: none;
+      }
+    </style>
+    <modus-wc-textarea
+      custom-class="textarea-auto-resize"
+      label="Auto-resizing textarea"
+      placeholder="Type several lines to see the textarea grow"
+    ></modus-wc-textarea>
+  `,
+};
+
 export const Migration: Story = {
   parameters: {
     docs: {

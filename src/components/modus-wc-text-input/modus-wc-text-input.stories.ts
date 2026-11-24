@@ -49,7 +49,6 @@ interface TextInputArgs {
   placeholder?: string;
   'read-only'?: boolean;
   required?: boolean;
-  'show-character-count'?: boolean;
   size?: ModusSize | 'xs' | 'xl';
   spellcheck?: boolean;
   type?: 'email' | 'password' | 'search' | 'tel' | 'text' | 'url';
@@ -66,7 +65,6 @@ const meta: Meta<TextInputArgs> = {
     'include-search': false,
     inputmode: 'text',
     label: 'Label',
-    'show-character-count': false,
     size: 'md',
     spellcheck: false,
     type: 'text',
@@ -164,7 +162,6 @@ const Template: Story = {
       placeholder=${ifDefined(args.placeholder)}
       ?read-only=${args['read-only']}
       ?required=${args.required}
-      ?show-character-count=${args['show-character-count']}
       size=${ifDefined(args.size)}
       spellcheck=${ifDefined(args.spellcheck)}
       type=${ifDefined(args.type)}
@@ -198,23 +195,6 @@ export const WithErrorFeedback: Story = {
   `,
 };
 
-export const WithCharacterCount: Story = {
-  ...Template,
-  args: {
-    label: 'Display name',
-    'max-length': 20,
-    'show-character-count': true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Set `show-character-count` with `max-length` to show the current count and limit below the field. The count is linked to the input with `aria-describedby`, and screen readers announce once when the limit is reached.',
-      },
-    },
-  },
-};
-
 export const WithCustomIconSlot: Story = {
   // prettier-ignore
   render: (args) => html`
@@ -241,7 +221,6 @@ export const WithCustomIconSlot: Story = {
   placeholder=${ifDefined(args.placeholder)}
   ?read-only=${args['read-only']}
   ?required=${args.required}
-  ?show-character-count=${args['show-character-count']}
   size=${ifDefined(args.size)}
   spellcheck=${ifDefined(args.spellcheck)}
   type=${ifDefined(args.type)}
@@ -285,7 +264,6 @@ export const ShadowDomParent: Story = {
             placeholder: string;
             readOnly: boolean;
             required: boolean;
-            showCharacterCount: boolean;
             size: string;
             type: string;
             value: string;
@@ -311,7 +289,6 @@ export const ShadowDomParent: Story = {
           textInputEl.placeholder = v.placeholder || '';
           textInputEl.readOnly = Boolean(v['read-only']);
           textInputEl.required = Boolean(v.required);
-          textInputEl.showCharacterCount = Boolean(v['show-character-count']);
           textInputEl.size = v.size || '';
           textInputEl.type = v.type || '';
           textInputEl.value = v.value;
