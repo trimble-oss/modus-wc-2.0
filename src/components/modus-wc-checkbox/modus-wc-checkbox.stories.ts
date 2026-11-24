@@ -50,20 +50,60 @@ export default meta;
 type Story = StoryObj<CheckboxArgs>;
 
 export const Default: Story = {
+  render: (args) => html`
+    <modus-wc-checkbox
+      custom-class=${ifDefined(args['custom-class'])}
+      ?disabled=${args.disabled}
+      .indeterminate=${args.indeterminate}
+      input-id=${ifDefined(args['input-id'])}
+      input-tab-index=${ifDefined(args['input-tab-index'])}
+      label=${ifDefined(args.label)}
+      name=${ifDefined(args.name)}
+      ?required=${args.required}
+      size=${ifDefined(args.size)}
+      .value=${args.value}
+    ></modus-wc-checkbox>
+  `,
+};
+
+export const CheckboxGroup: Story = {
   render: (args) => {
     return html`
-      <modus-wc-checkbox
-        custom-class=${ifDefined(args['custom-class'])}
-        ?disabled=${args.disabled}
-        .indeterminate=${args.indeterminate}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        label=${ifDefined(args.label)}
-        name=${ifDefined(args.name)}
-        ?required=${args.required}
-        size=${ifDefined(args.size)}
-        .value=${args.value}
-      ></modus-wc-checkbox>
+      <style>
+        .checkbox-group {
+          border: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin: 0;
+          min-inline-size: 0;
+          padding: 0;
+        }
+
+        .checkbox-group legend {
+          margin-bottom: 0.5rem;
+          padding: 0;
+        }
+      </style>
+      <fieldset class="checkbox-group">
+        <legend>Notification preferences</legend>
+        <modus-wc-checkbox
+          label="Email"
+          name="notify"
+          input-id="notify-email"
+          ?disabled=${args.disabled}
+          size=${ifDefined(args.size)}
+          .value=${true}
+        ></modus-wc-checkbox>
+        <modus-wc-checkbox
+          label="SMS"
+          name="notify"
+          input-id="notify-sms"
+          ?disabled=${args.disabled}
+          size=${ifDefined(args.size)}
+          .value=${false}
+        ></modus-wc-checkbox>
+      </fieldset>
     `;
   },
 };
