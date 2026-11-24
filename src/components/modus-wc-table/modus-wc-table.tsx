@@ -657,15 +657,23 @@ export class ModusWcTable {
         asc: !!isAsc,
         desc: !!isDesc,
       },
-      role: canSort ? ('button' as const) : undefined,
       tabIndex: canSort ? 0 : undefined,
-      'aria-sort': isAsc
-        ? ('ascending' as const)
-        : isDesc
-          ? ('descending' as const)
-          : undefined,
+      'aria-sort': !canSort
+        ? undefined
+        : isAsc
+          ? ('ascending' as const)
+          : isDesc
+            ? ('descending' as const)
+            : ('none' as const),
     };
   }
+
+  private handleHeaderKeyDown = (event: KeyboardEvent, columnId: string) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+
+    event.preventDefault();
+    this.handleHeaderClick(columnId);
+  };
 
   private renderSortIcon(sortStatus: false | 'asc' | 'desc' | undefined) {
     const isAsc = sortStatus === 'asc';
@@ -1171,22 +1179,22 @@ export class ModusWcTable {
     return this.table.getHeaderGroups().map((headerGroup) => (
       <tr key={headerGroup.id}>
         {headerGroup.headers.map((header) => {
+          const scope = header.colSpan > 1 ? 'colgroup' : 'col';
+
           if (header.isPlaceholder) {
             return (
               <th
                 key={header.id}
                 colSpan={header.colSpan}
                 rowSpan={header.rowSpan}
+                scope={scope}
               />
             );
           }
 
           const sortStatus = header.column.getIsSorted();
           const canSort = header.column.getCanSort();
-          const sortClassFlags = this.getSortHeaderProps(
-            canSort,
-            sortStatus
-          ).classFlags;
+          const sortProps = this.getSortHeaderProps(canSort, sortStatus);
           const headerContent = renderColumnDefContent(
             header.column.columnDef.header,
             header.getContext()
@@ -1202,8 +1210,10 @@ export class ModusWcTable {
               key={header.id}
               colSpan={header.colSpan}
               rowSpan={header.rowSpan}
+              scope={scope}
+              aria-sort={sortProps['aria-sort']}
               class={{
-                ...sortClassFlags,
+                ...sortProps.classFlags,
                 'selection-column': this.isAdvancedSelectionColumn(
                   header.column.id
                 ),
@@ -1330,7 +1340,11 @@ export class ModusWcTable {
         <thead>
           <tr>
             {this.selectable !== 'none' && (
-              <th class="selection-column" style={{ width: '48px' }}>
+              <th
+                class="selection-column"
+                scope="col"
+                style={{ width: '48px' }}
+              >
                 {this.selectable === 'multi' && this.table && (
                   <modus-wc-checkbox
                     aria-label="Select all rows"
@@ -1364,8 +1378,14 @@ export class ModusWcTable {
                     ...sortProps.classFlags,
                   }}
                   style={{ width: column.width }}
+                  scope="col"
                   onClick={() => this.handleHeaderClick(column.id)}
-                  role={sortProps.role}
+                  onKeyDown={
+                    canSort
+                      ? (event: KeyboardEvent) =>
+                          this.handleHeaderKeyDown(event, column.id)
+                      : undefined
+                  }
                   tabIndex={sortProps.tabIndex}
                   aria-sort={sortProps['aria-sort']}
                 >

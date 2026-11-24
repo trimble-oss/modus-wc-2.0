@@ -3100,6 +3100,124 @@ describe('modus-wc-date', () => {
     expect(weekNumbers.length).toBeGreaterThan(0);
   });
 
+  describe('calendar grid semantics', () => {
+    it('should expose grid, rows and column headers when the calendar is open', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Grid test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const grid = page.root!.querySelector('[role="grid"]');
+      expect(grid).not.toBeNull();
+      expect(grid!.getAttribute('aria-label')).toBe(
+        new Intl.DateTimeFormat(component['locale'], {
+          month: 'long',
+          year: 'numeric',
+        }).format(new Date(2025, 9, 1))
+      );
+
+      const rows = grid!.querySelectorAll('[role="row"]');
+      expect(rows.length).toBe(7);
+
+      const columnHeaders = rows[0].querySelectorAll('[role="columnheader"]');
+      expect(columnHeaders.length).toBe(7);
+      expect(columnHeaders[0].textContent).toBe('Su');
+      expect(columnHeaders[0].getAttribute('aria-label')).toBe('Sunday');
+
+      Array.from(rows)
+        .slice(1)
+        .forEach((row) => {
+          const cells = Array.from(row.children);
+          expect(cells.length).toBe(7);
+          cells.forEach((cell) => {
+            expect(cell.getAttribute('role')).toBe('gridcell');
+          });
+        });
+    });
+
+    it('should mark only the selected day with aria-selected and label days with the full date', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Grid selection test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const selectedCells = page.root!.querySelectorAll(
+        '[role="gridcell"][aria-selected="true"]'
+      );
+      expect(selectedCells.length).toBe(1);
+
+      const selectedButton = selectedCells[0].querySelector('.calendar-day');
+      expect(selectedButton?.getAttribute('data-iso-date')).toBe('2025-10-15');
+      expect(selectedButton?.getAttribute('aria-label')).toBe(
+        new Intl.DateTimeFormat(component['locale'], {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }).format(new Date(2025, 9, 15))
+      );
+
+      expect(
+        page.root!.querySelectorAll('[role="gridcell"][aria-selected="false"]')
+          .length
+      ).toBe(41);
+    });
+
+    it('should render week numbers as row headers inside each row', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Grid week numbers test" value="2025-10-15" show-week-numbers="true"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const rows = page.root!.querySelectorAll('[role="grid"] [role="row"]');
+      expect(
+        rows[0].querySelector('.week-number-header')?.getAttribute('role')
+      ).toBe('columnheader');
+
+      Array.from(rows)
+        .slice(1)
+        .forEach((row) => {
+          expect(row.firstElementChild?.getAttribute('role')).toBe('rowheader');
+          expect(row.firstElementChild?.className).toBe('week-number');
+        });
+    });
+
+    it('should mark range start and end as selected in range mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Grid range test" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showStartCalendar'] = true;
+      await page.waitForChanges();
+
+      const selectedDates = Array.from(
+        page.root!.querySelectorAll('[role="gridcell"][aria-selected="true"]')
+      ).map((cell) =>
+        cell.querySelector('.calendar-day')?.getAttribute('data-iso-date')
+      );
+      expect(selectedDates).toEqual(['2026-06-10', '2026-06-20']);
+
+      const emptyCells = page.root!.querySelectorAll(
+        '.calendar-day-cell--empty'
+      );
+      expect(emptyCells.length).toBeGreaterThan(0);
+      emptyCells.forEach((cell) => {
+        expect(cell.getAttribute('role')).toBe('gridcell');
+        expect(cell.getAttribute('aria-selected')).toBeNull();
+      });
+    });
+  });
+
   // --- Tests for parseISODate anchored-regex fix ---
 
   it('should return undefined when value is a datetime string with time portion', async () => {
