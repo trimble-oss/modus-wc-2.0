@@ -3,7 +3,7 @@
 exports[`modus-wc-side-navigation should not set margin if mode or targetContent change without expanded changing 1`] = `
 <modus-wc-side-navigation mode="overlay" target-content=".main-content">
   <!---->
-  <nav class="modus-wc-side-navigation" style="width: 4rem;">
+  <nav class="modus-wc-side-navigation" id="modus-wc-side-navigation-test-random-id" style="width: 4rem;">
     <div class="side-navigation-content"></div>
   </nav>
 </modus-wc-side-navigation>
@@ -12,7 +12,7 @@ exports[`modus-wc-side-navigation should not set margin if mode or targetContent
 exports[`modus-wc-side-navigation should render with custom props 1`] = `
 <modus-wc-side-navigation expanded="" max-width="300px">
   <!---->
-  <nav class="modus-wc-side-navigation modus-wc-side-navigation-expanded" style="width: 300px;">
+  <nav class="modus-wc-side-navigation modus-wc-side-navigation-expanded" id="modus-wc-side-navigation-test-random-id" style="width: 300px;">
     <div class="side-navigation-content"></div>
   </nav>
 </modus-wc-side-navigation>
@@ -21,7 +21,7 @@ exports[`modus-wc-side-navigation should render with custom props 1`] = `
 exports[`modus-wc-side-navigation should render with default props 1`] = `
 <modus-wc-side-navigation>
   <!---->
-  <nav class="modus-wc-side-navigation" style="width: 4rem;">
+  <nav class="modus-wc-side-navigation" id="modus-wc-side-navigation-test-random-id" style="width: 4rem;">
     <div class="side-navigation-content"></div>
   </nav>
 </modus-wc-side-navigation>

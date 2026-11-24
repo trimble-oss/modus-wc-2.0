@@ -136,6 +136,7 @@ export const Default: Story = {
         <modus-wc-navbar
           app-title="Modus App"
           class="navbar"
+          main-menu-controls="side-navigation-panel"
           @mainMenuOpenChange=${handleMenuOpenChange}
           .userCard=${{
             avatarAlt: 'User Avatar',
@@ -164,6 +165,7 @@ export const Default: Story = {
             expanded=${args.expanded}
             max-width=${args['max-width']}
             mode=${ifDefined(args.mode)}
+            nav-id="side-navigation-panel"
             target-content=${ifDefined(args['target-content'])}
           >
             <modus-wc-menu size="lg">

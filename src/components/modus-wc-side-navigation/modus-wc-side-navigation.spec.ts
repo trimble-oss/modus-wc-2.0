@@ -16,6 +16,15 @@ describe('modus-wc-side-navigation', () => {
     });
     expect(page.root).toMatchSnapshot();
   });
+  it('should set an id on the navigation panel', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcSideNavigation],
+      html: '<modus-wc-side-navigation nav-id="app-side-nav"></modus-wc-side-navigation>',
+    });
+    const nav = page.root?.querySelector('nav.modus-wc-side-navigation');
+    expect(nav?.id).toBe('app-side-nav');
+  });
+
   it('applies expanded class when expanded is true', async () => {
     const page = await newSpecPage({
       components: [ModusWcSideNavigation],

@@ -20,6 +20,7 @@ The component supports a `<slot>` for injecting custom content inside the side n
 | `expanded`               | `expanded`                  | Whether the side navigation is expanded.                                                                                                | `boolean`             | `false`     |
 | `maxWidth`               | `max-width`                 | Maximum width of the side navigation panel in an expanded state.                                                                        | `string`              | `'256px'`   |
 | `mode`                   | `mode`                      | Mode to make side navigation either overlay or push the content for the selector specified in targetContent                             | `"overlay" \| "push"` | `'overlay'` |
+| `navId`                  | `nav-id`                    | Id of the navigation panel. Defaults to a generated id so a controlling button can reference it with aria-controls.                     | `string \| undefined` | `undefined` |
 | `targetContent`          | `target-content`            | (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode. | `string`              | `''`        |
 
 

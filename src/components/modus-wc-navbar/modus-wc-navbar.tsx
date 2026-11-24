@@ -12,6 +12,7 @@ import {
   Prop,
   State,
   Event as StencilEvent,
+  Watch,
 } from '@stencil/core';
 import { AiDarkIcon } from '../../icons/ai-dark.icon';
 import { AiLightIcon } from '../../icons/ai-light.icon';
@@ -112,6 +113,13 @@ export class ModusWcNavbar {
   /** Custom CSS class to apply to the host element. */
   @Prop() customClass?: string = '';
 
+  /**
+   * Id of the element the main-menu button controls. When omitted, the button
+   * controls the navbar's own main-menu panel. Set this to a side navigation
+   * panel id (`navId`) when that button toggles `modus-wc-side-navigation`.
+   */
+  @Prop() mainMenuControls?: string;
+
   /** The open state of the main menu. */
   @Prop({ mutable: true }) mainMenuOpen?: boolean = false;
 
@@ -196,6 +204,8 @@ export class ModusWcNavbar {
   @State() private searchValue: string = '';
 
   private themeObserver: MutationObserver | null = null;
+  private controlledSideNav: (HTMLElement & { expanded?: boolean }) | null =
+    null;
 
   componentWillLoad() {
     // Inject full CSS bundle (including per-component SCSS) for slotted children
@@ -218,9 +228,61 @@ export class ModusWcNavbar {
     });
   }
 
+  componentDidLoad() {
+    this.bindMainMenuControls();
+  }
+
   disconnectedCallback() {
+    this.unbindMainMenuControls();
     if (this.themeObserver) {
       this.themeObserver.disconnect();
+    }
+  }
+
+  @Watch('mainMenuControls')
+  handleMainMenuControlsChange() {
+    this.bindMainMenuControls();
+  }
+
+  private onControlledExpanded = (event: Event) => {
+    const expanded = (event as CustomEvent<boolean>).detail;
+    if (typeof expanded === 'boolean' && this.mainMenuOpen !== expanded) {
+      this.mainMenuOpen = expanded;
+    }
+  };
+
+  private unbindMainMenuControls() {
+    this.controlledSideNav?.removeEventListener(
+      'expandedChange',
+      this.onControlledExpanded
+    );
+    this.controlledSideNav = null;
+  }
+
+  private bindMainMenuControls() {
+    this.unbindMainMenuControls();
+    if (!this.mainMenuControls) return;
+
+    const panel = document.getElementById(this.mainMenuControls);
+    const sideNav = panel?.closest('modus-wc-side-navigation');
+    if (!sideNav) return;
+
+    this.controlledSideNav = sideNav;
+    this.controlledSideNav.addEventListener(
+      'expandedChange',
+      this.onControlledExpanded
+    );
+
+    const expanded = sideNav.expanded;
+    if (typeof expanded === 'boolean' && this.mainMenuOpen !== expanded) {
+      this.mainMenuOpen = expanded;
+    }
+  }
+
+  private syncControlledSideNav(expanded: boolean) {
+    const sideNav = this.controlledSideNav;
+    if (sideNav && sideNav.expanded !== expanded) {
+      sideNav.expanded = expanded;
     }
   }
 
@@ -392,6 +454,7 @@ export class ModusWcNavbar {
 
   private toggleMainMenu = () => {
     this.mainMenuOpen = !this.mainMenuOpen;
+    this.syncControlledSideNav(!!this.mainMenuOpen);
     this.mainMenuOpenChange.emit(this.mainMenuOpen);
   };
 
@@ -436,7 +499,7 @@ export class ModusWcNavbar {
             {this.visibility?.mainMenu && (
               <Fragment>
                 <modus-wc-button
-                  aria-controls={this.mainMenuPanelId}
+                  aria-controls={this.mainMenuControls || this.mainMenuPanelId}
                   aria-expanded={this.mainMenuOpen ? 'true' : 'false'}
                   aria-label="Main menu"
                   onButtonClick={this.toggleMainMenu}
