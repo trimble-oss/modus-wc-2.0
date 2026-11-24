@@ -7506,6 +7506,7 @@ describe('feedback prop', () => {
     expect(input.getAttribute('aria-expanded')).toBe('true');
     const listbox = page.root!.querySelector('[role="listbox"]');
     expect(listbox).not.toBeNull();
+    expect(listbox!.getAttribute('tabindex')).toBe('-1');
     expect(page.root!.querySelector('[role="menu"]')).toBeNull();
     expect(input.getAttribute('aria-controls')).toBe(listbox!.id);
 

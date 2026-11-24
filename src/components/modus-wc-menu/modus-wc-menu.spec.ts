@@ -702,5 +702,6 @@ describe('modus-wc-menu', () => {
 
     expect(focusSpy).not.toHaveBeenCalled();
     expect(event.defaultPrevented).toBe(false);
+    expect(page.root?.querySelector('ul')?.getAttribute('tabindex')).toBe('-1');
   });
 });

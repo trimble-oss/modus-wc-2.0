@@ -144,7 +144,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 1`] = `
   </div>
   <modus-wc-menu class="menu-visible" selection-mode="single">
     <!---->
-    <ul aria-label="Suggestions" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" id="mwc_id_88-listbox" role="listbox">
+    <ul aria-label="Suggestions" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" id="mwc_id_88-listbox" role="listbox" tabindex="-1">
       <li role="presentation">
         <div class="modus-wc-autocomplete-no-results">
           <div aria-label="No results found" class="icon-label">
@@ -179,7 +179,7 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 2`] = `
   </div>
   <modus-wc-menu class="menu-visible" selection-mode="single">
     <!---->
-    <ul aria-label="Suggestions" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" id="mwc_id_98-listbox" role="listbox">
+    <ul aria-label="Suggestions" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" id="mwc_id_98-listbox" role="listbox" tabindex="-1">
       <li role="presentation">
         <div class="modus-wc-autocomplete-no-results">
           <div aria-label="No results found" class="icon-label">

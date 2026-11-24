@@ -197,6 +197,10 @@ export class ModusWcMenu {
           {...this.inheritedAttributes}
           // After the spread so listbox is not replaced by an inherited menu role.
           role={this.popupRole === 'listbox' ? 'listbox' : this.getMenuRole()}
+          // A scrollable listbox is sequentially focusable in Chromium. APG
+          // combobox keeps the popup out of the Tab order; highlight stays on
+          // aria-activedescendant while DOM focus remains on the input.
+          tabIndex={this.popupRole === 'listbox' ? -1 : undefined}
         >
           <slot />
         </ul>
