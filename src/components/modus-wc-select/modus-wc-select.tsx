@@ -12,9 +12,11 @@ import { handleShadowDOMStyles } from '../base-component';
 import { INPUT_SIZE_TO_LABEL_SIZE } from '../constants';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import {
+  assignFeedbackAria,
   Attributes,
   createEffectiveIdResolver,
   inheritAriaAttributes,
+  resolveControlFeedbackAria,
 } from '../utils';
 
 export interface ISelectOption {
@@ -130,6 +132,16 @@ export class ModusWcSelect {
 
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
+    const feedbackAria = resolveControlFeedbackAria(
+      this.feedback,
+      effectiveId,
+      this.inheritedAttributes
+    );
+    const controlAttributes = assignFeedbackAria(
+      this.inheritedAttributes,
+      feedbackAria.describedBy,
+      feedbackAria.ariaInvalid
+    );
 
     return (
       <Host>
@@ -151,7 +163,7 @@ export class ModusWcSelect {
           onInput={this.handleInput}
           required={this.required}
           tabindex={this.inputTabIndex}
-          {...this.inheritedAttributes}
+          {...controlAttributes}
         >
           {this.options.map((option) => (
             <option
@@ -168,6 +180,7 @@ export class ModusWcSelect {
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackAria.messageId}
             size={this.getLabelSize()}
           />
         )}

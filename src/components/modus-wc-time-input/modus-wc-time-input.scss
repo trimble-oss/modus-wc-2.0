@@ -3,12 +3,15 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-input {
+modus-wc-time-input .modus-wc-time-input.modus-wc-input {
   @include feedback-levels;
   @include sizing-tokens;
+  @include input-disabled-state;
 }
 
 modus-wc-time-input {
+  @include input-disabled-overlay;
+
   .modus-wc-input-label {
     padding-bottom: var(--modus-wc-spacing-sm);
   }

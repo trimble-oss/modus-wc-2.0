@@ -11,10 +11,13 @@ import { convertPropsToClasses } from './modus-wc-number-input.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
 import { IInputFeedbackProp, ModusSize } from '../types';
 import {
+  applySpinbuttonFeedbackName,
+  assignFeedbackAria,
   Attributes,
   createEffectiveIdResolver,
   inheritAriaAttributes,
   inheritAttributes,
+  resolveControlFeedbackAria,
 } from '../utils';
 
 /**
@@ -184,16 +187,42 @@ export class ModusWcNumberInput {
 
   render() {
     const effectiveId = this.resolveEffectiveId(this.inputId);
+    const exposesDescription = this.type === 'range';
+    const feedbackAria = resolveControlFeedbackAria(
+      this.feedback,
+      effectiveId,
+      this.inheritedAttributes,
+      { omitMessageFromDescribedBy: !exposesDescription }
+    );
+    const feedbackName = applySpinbuttonFeedbackName(
+      assignFeedbackAria(
+        this.inheritedAttributes,
+        feedbackAria.describedBy,
+        feedbackAria.ariaInvalid
+      ),
+      exposesDescription ? undefined : feedbackAria.messageId,
+      {
+        labelId: this.label ? `${effectiveId}-label` : undefined,
+        nameId: `${effectiveId}-name`,
+      }
+    );
+    const controlAttributes = feedbackName.attributes;
 
     return (
       <Host class={this.customClass}>
         {this.label && (
           <modus-wc-input-label
             forId={effectiveId}
+            labelId={feedbackName.labelId}
             labelText={this.label}
             required={this.required}
             size={this.size}
           />
+        )}
+        {feedbackName.hiddenName && (
+          <span class="modus-wc-sr-only" id={feedbackName.hiddenName.id}>
+            {feedbackName.hiddenName.text}
+          </span>
         )}
         <div class={this.getWrapperClasses()}>
           {this.currencySymbol && (
@@ -218,13 +247,21 @@ export class ModusWcNumberInput {
             tabIndex={this.inputTabIndex}
             type={this.type}
             value={this.value}
-            {...this.inheritedAttributes}
+            {...controlAttributes}
           />
         </div>
         {this.feedback && (
+          // Recreate when the alert role must change. Inherited role is read once, in componentWillLoad.
           <modus-wc-input-feedback
+            key={exposesDescription ? 'described' : this.feedback.level}
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackAria.messageId}
+            role={
+              !exposesDescription && this.feedback.level === 'error'
+                ? 'alert'
+                : undefined
+            }
             size={this.size}
           />
         )}
