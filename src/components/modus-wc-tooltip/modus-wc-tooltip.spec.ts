@@ -470,6 +470,10 @@ describe('modus-wc-tooltip', () => {
       (page.rootInstance as unknown as { tooltipElement: HTMLElement })
         .tooltipElement;
 
+    afterEach(() => {
+      Reflect.deleteProperty(document, 'activeElement');
+    });
+
     it('should re-attach the floating element to the body when moved', async () => {
       const page = await newSpecPage({
         components: [ModusWcTooltip],
@@ -531,6 +535,34 @@ describe('modus-wc-tooltip', () => {
       expect(page.rootInstance.isVisible).toBe(true);
 
       await moveTooltip(page, '#new');
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      await page.waitForChanges();
+      page.root?.dispatchEvent(new MouseEvent('mouseleave'));
+      await page.waitForChanges();
+
+      expect(page.rootInstance.isVisible).toBe(false);
+    });
+
+    it('should not keep a moved tooltip open after suppressed mouse focus on its ancestor', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<ul><li id="owner" tabindex="0"><div id="first"><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></div><div id="second"></div></li></ul>`,
+      });
+      const owner = page.body.querySelector('#owner') as HTMLElement;
+      const pointerDown = new MouseEvent('pointerdown', { bubbles: true });
+      Object.defineProperty(pointerDown, 'pointerType', { value: 'mouse' });
+      owner.dispatchEvent(pointerDown);
+      owner.dispatchEvent(new Event('focus'));
+      owner.dispatchEvent(new MouseEvent('pointerup', { bubbles: true }));
+      await page.waitForChanges();
+      expect(page.rootInstance.isVisible).toBe(false);
+
+      Object.defineProperty(document, 'activeElement', {
+        configurable: true,
+        get: () => owner,
+      });
+      await moveTooltip(page, '#second');
+
       page.root?.dispatchEvent(new MouseEvent('mouseenter'));
       await page.waitForChanges();
       page.root?.dispatchEvent(new MouseEvent('mouseleave'));

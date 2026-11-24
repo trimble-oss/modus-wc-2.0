@@ -210,11 +210,10 @@ export class ModusWcTooltip {
     this.tooltipElement.style.display = 'none';
     this.isVisible = false;
     this.isHovered = false;
+    this.isFocused = false;
+    this.suppressNextFocus = false;
     this.attachFocusOwner();
     this.observeContent();
-    this.isFocused =
-      this.el.contains(document.activeElement) ||
-      document.activeElement === this.focusOwner;
 
     this.showIfForceOpen();
   }
