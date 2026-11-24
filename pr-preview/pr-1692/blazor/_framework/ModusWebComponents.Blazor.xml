@@ -197,6 +197,11 @@
             Whether the menu should remain open after an item is selected.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcAutocomplete.ListboxLabel">
+            <summary>
+            Accessible name of the suggestion listbox. Host aria-label names the combobox, not this popup.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcAutocomplete.MaxChips">
             <summary>
             Maximum number of chips to display. When exceeded, shows expand/collapse button. Set to -1 to disable limit.
@@ -1467,7 +1472,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcFileDropzone">
             <summary>
-            File dropzone component that allows users to drag and drop files for upload.  The component supports a slot called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
+            File dropzone component that allows users to drag and drop files for upload.  The component supports a slot called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.  The dropzone is a focusable control. Give it an accessible name with instructions, visible dropzone slot text, or aria-label. If none of those are set, the control is unnamed.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.AcceptFileTypes">
@@ -2036,9 +2041,25 @@
             Indicates that this menu is a submenu (dropdown).
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcMenu.ListboxId">
+            <summary>
+            Id applied to the list element when popupRole is listbox.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcMenu.Multiselectable">
+            <summary>
+            Sets aria-multiselectable when popupRole is listbox.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcMenu.Orientation">
             <summary>
             The orientation of the menu.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcMenu.PopupRole">
+            <summary>
+            menu keeps menubar/menu semantics. listbox is the autocomplete popup. Host role is inherited, but this prop also skips menu arrow-key focus moves and aria-orientation, which a host role alone does not.
+            Allowed values: "menu", "listbox"
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcMenu.SelectionMode">
@@ -2104,6 +2125,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcMenuItem.Label">
             <summary>
             The text rendered in the menu item.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcMenuItem.OptionId">
+            <summary>
+            Id of the option element when this item is inside a listbox popup.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcMenuItem.Selected">
@@ -3539,6 +3565,16 @@
             A customizable input component used to create text inputs with types.  The component supports a slot for injecting additional custom content inside the input, such as icons or formatted text.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.AriaActiveDescendant">
+            <summary>
+            Sets aria-activedescendant on the native input when provided. This, ariaControls, and comboboxExpanded change while the popup is open. inheritAriaAttributes copies host ARIA once in componentWillLoad and removes it, so these stay props. Static combobox ARIA is inherited instead.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.AriaControls">
+            <summary>
+            Sets aria-controls on the native input when provided.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.AutoCapitalize">
             <summary>
             Controls automatic capitalization in inputted text.
@@ -3558,6 +3594,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.ClearAriaLabel">
             <summary>
             Aria label for the clear icon button.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.ComboboxExpanded">
+            <summary>
+            Sets aria-expanded on the native input when provided (&quot;true&quot; or &quot;false&quot;). Leave unset so non-combobox inputs do not expose the attribute. Named comboboxExpanded so the host does not shadow HTMLElement.ariaExpanded.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.CustomClass">
