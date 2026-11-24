@@ -216,6 +216,41 @@ export const IconLeftAndRightButton: Story = {
   },
 };
 
+export const NotificationBadge: Story = {
+  render: () => {
+    // prettier-ignore
+    return html`
+<div style="display: flex; gap: 32px; align-items: center; padding-top: 12px; padding-inline-end: 16px;">
+  <span style="position: relative; display: inline-flex;">
+    <modus-wc-button aria-label="Notifications, 5 unread">
+      <modus-wc-icon decorative name="notifications"></modus-wc-icon>
+      Notifications
+    </modus-wc-button>
+    <modus-wc-badge
+      variant="counter"
+      color="danger"
+      size="sm"
+      style="position: absolute; top: 0; right: 0; transform: translate(50%, -50%);"
+    >5</modus-wc-badge>
+  </span>
+
+  <span style="position: relative; display: inline-flex;">
+    <modus-wc-button variant="outlined" color="secondary" aria-label="Messages, 99 or more unread">
+      <modus-wc-icon decorative name="chat"></modus-wc-icon>
+      Messages
+    </modus-wc-button>
+    <modus-wc-badge
+      variant="counter"
+      color="danger"
+      size="sm"
+      style="position: absolute; top: 0; right: 0; transform: translate(50%, -50%);"
+    >99+</modus-wc-badge>
+  </span>
+</div>
+    `;
+  },
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     // Create a unique shadow host for button component
