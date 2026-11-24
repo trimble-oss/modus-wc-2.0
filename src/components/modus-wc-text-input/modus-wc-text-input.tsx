@@ -59,6 +59,24 @@ export class ModusWcTextInput {
   /** Hint for form autofill feature. */
   @Prop() autoComplete?: AutocompleteTypes;
 
+  /**
+   * Sets `aria-activedescendant` on the native input when provided.
+   * This, `ariaControls`, and `comboboxExpanded` change while the popup is open.
+   * `inheritAriaAttributes` copies host ARIA once in `componentWillLoad` and
+   * removes it, so these stay props. Static combobox ARIA is inherited instead.
+   */
+  @Prop() ariaActiveDescendant?: string;
+
+  /** Sets `aria-controls` on the native input when provided. */
+  @Prop() ariaControls?: string;
+
+  /**
+   * Sets `aria-expanded` on the native input when provided (`"true"` or `"false"`).
+   * Leave unset so non-combobox inputs do not expose the attribute.
+   * Named `comboboxExpanded` so the host does not shadow `HTMLElement.ariaExpanded`.
+   */
+  @Prop() comboboxExpanded?: string;
+
   /** Controls automatic correction in inputted text. Support by browser varies. */
   @Prop() autoCorrect?: 'on' | 'off';
 
@@ -364,6 +382,15 @@ export class ModusWcTextInput {
             type={this.getEffectiveInputType()}
             value={this.value}
             {...controlAttributes}
+            {...(this.comboboxExpanded !== undefined
+              ? { 'aria-expanded': String(this.comboboxExpanded) }
+              : {})}
+            {...(this.ariaControls
+              ? { 'aria-controls': this.ariaControls }
+              : {})}
+            {...(this.ariaActiveDescendant
+              ? { 'aria-activedescendant': this.ariaActiveDescendant }
+              : {})}
           />
           {showPasswordToggle && (
             <div class="modus-wc-password-toggle-container">

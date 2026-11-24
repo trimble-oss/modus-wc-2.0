@@ -6,9 +6,10 @@ exports[`modus-wc-autocomplete should close the menu when clicking outside if le
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_20" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_20" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -18,9 +19,10 @@ exports[`modus-wc-autocomplete should close the menu when clicking outside if le
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_35" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_35" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -30,9 +32,10 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="No results test" class="modus-wc-grow" id="mwc_id_19" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="No results test" class="modus-wc-grow" id="mwc_id_19" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -42,9 +45,10 @@ exports[`modus-wc-autocomplete should display no results ui when no items are av
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="No results test" class="modus-wc-grow" id="mwc_id_34" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="No results test" class="modus-wc-grow" id="mwc_id_34" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -54,9 +58,10 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 1`
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_23" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_23" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -66,9 +71,10 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 2`
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" disabled="" id="mwc_id_23" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Leave menu open test" class="modus-wc-grow" disabled="" id="mwc_id_23" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -78,9 +84,10 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 3`
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-text-input--readonly modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_23" placeholder="" readonly="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_23" placeholder="" readonly="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -90,9 +97,10 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 4`
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_38" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_38" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -102,9 +110,10 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 5`
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-disabled modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" disabled="" id="mwc_id_38" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Leave menu open test" class="modus-wc-grow" disabled="" id="mwc_id_38" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -114,9 +123,10 @@ exports[`modus-wc-autocomplete should handle leaveMenuOpen behavior correctly 6`
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-text-input--readonly modus-wc-w-full">
-      <input aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_38" placeholder="" readonly="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Leave menu open test" class="modus-wc-grow" id="mwc_id_38" placeholder="" readonly="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -126,25 +136,30 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 1`] = `
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_86" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-controls="mwc_id_88-listbox" aria-expanded="true" aria-haspopup="listbox" aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_88" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status">
+    No results found
+  </div>
   <modus-wc-menu class="menu-visible" selection-mode="single">
     <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-      <div class="modus-wc-autocomplete-no-results">
-        <div aria-label="No results found" class="icon-label">
-          <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
-          </svg>
-          <div class="label">
-            No results found
+    <ul aria-label="Suggestions" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" id="mwc_id_88-listbox" role="listbox" tabindex="-1">
+      <li role="presentation">
+        <div class="modus-wc-autocomplete-no-results">
+          <div aria-label="No results found" class="icon-label">
+            <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
+            </svg>
+            <div class="label">
+              No results found
+            </div>
+          </div>
+          <div class="sub-label">
+            Check spelling or try a different keyword
           </div>
         </div>
-        <div class="sub-label">
-          Check spelling or try a different keyword
-        </div>
-      </div>
+      </li>
     </ul>
   </modus-wc-menu>
 </modus-wc-autocomplete>
@@ -156,25 +171,30 @@ exports[`modus-wc-autocomplete should handle undefined filtered items 2`] = `
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_96" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-controls="mwc_id_98-listbox" aria-expanded="true" aria-haspopup="listbox" aria-label="Undefined items test" class="modus-wc-grow" id="mwc_id_98" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status">
+    No results found
+  </div>
   <modus-wc-menu class="menu-visible" selection-mode="single">
     <!---->
-    <ul aria-label="Autocomplete menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" role="menu">
-      <div class="modus-wc-autocomplete-no-results">
-        <div aria-label="No results found" class="icon-label">
-          <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
-          </svg>
-          <div class="label">
-            No results found
+    <ul aria-label="Suggestions" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-md modus-wc-w-full" id="mwc_id_98-listbox" role="listbox" tabindex="-1">
+      <li role="presentation">
+        <div class="modus-wc-autocomplete-no-results">
+          <div aria-label="No results found" class="icon-label">
+            <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
+            </svg>
+            <div class="label">
+              No results found
+            </div>
+          </div>
+          <div class="sub-label">
+            Check spelling or try a different keyword
           </div>
         </div>
-        <div class="sub-label">
-          Check spelling or try a different keyword
-        </div>
-      </div>
+      </li>
     </ul>
   </modus-wc-menu>
 </modus-wc-autocomplete>
@@ -188,12 +208,13 @@ exports[`modus-wc-autocomplete should not pass feedback to text-input when both 
       <modus-wc-text-input inputmode="text" value="">
         <!---->
         <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-          <input aria-label="Feedback test" class="modus-wc-grow" id="mwc_id_8" placeholder="" type="text" value="">
+          <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Feedback test" class="modus-wc-grow" id="mwc_id_8" placeholder="" role="combobox" type="text" value="">
         </label>
       </modus-wc-text-input>
     </div>
     <div class="modus-wc-autocomplete-button-container"></div>
   </div>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -203,24 +224,29 @@ exports[`modus-wc-autocomplete should pass feedback to text-input when both show
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-describedby="mwc_id_7-feedback" aria-invalid="true" aria-label="Feedback test" class="modus-wc-grow" id="mwc_id_7" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-controls="mwc_id_7-listbox" aria-describedby="mwc_id_7-feedback" aria-expanded="true" aria-haspopup="listbox" aria-invalid="true" aria-label="Feedback test" class="modus-wc-grow" id="mwc_id_7" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
   <modus-wc-input-feedback level="error" message="Error message" messageid="mwc_id_7-feedback" size="md"></modus-wc-input-feedback>
-  <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-visible" size="md">
-    <div class="modus-wc-autocomplete-no-results">
-      <div aria-label="No results found" class="icon-label">
-        <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
-        </svg>
-        <div class="label">
-          No results found
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status">
+    No results found
+  </div>
+  <modus-wc-menu aria-label="Suggestions" bordered="" class="menu-visible" listboxid="mwc_id_7-listbox" popuprole="listbox" size="md">
+    <li role="presentation">
+      <div class="modus-wc-autocomplete-no-results">
+        <div aria-label="No results found" class="icon-label">
+          <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
+          </svg>
+          <div class="label">
+            No results found
+          </div>
+        </div>
+        <div class="sub-label">
+          Check spelling or try a different keyword
         </div>
       </div>
-      <div class="sub-label">
-        Check spelling or try a different keyword
-      </div>
-    </div>
+    </li>
   </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
@@ -231,23 +257,28 @@ exports[`modus-wc-autocomplete should pass feedback to text-input when showFeedb
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="Feedback test" class="modus-wc-grow" id="mwc_id_6" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-controls="mwc_id_6-listbox" aria-expanded="true" aria-haspopup="listbox" aria-label="Feedback test" class="modus-wc-grow" id="mwc_id_6" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
-  <modus-wc-menu aria-label="Autocomplete menu" bordered="" class="menu-visible" size="md">
-    <div class="modus-wc-autocomplete-no-results">
-      <div aria-label="No results found" class="icon-label">
-        <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
-        </svg>
-        <div class="label">
-          No results found
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status">
+    No results found
+  </div>
+  <modus-wc-menu aria-label="Suggestions" bordered="" class="menu-visible" listboxid="mwc_id_6-listbox" popuprole="listbox" size="md">
+    <li role="presentation">
+      <div class="modus-wc-autocomplete-no-results">
+        <div aria-label="No results found" class="icon-label">
+          <svg aria-hidden="true" class="modus-wc-autocomplete-search-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
+          </svg>
+          <div class="label">
+            No results found
+          </div>
+        </div>
+        <div class="sub-label">
+          Check spelling or try a different keyword
         </div>
       </div>
-      <div class="sub-label">
-        Check spelling or try a different keyword
-      </div>
-    </div>
+    </li>
   </modus-wc-menu>
 </modus-wc-autocomplete>
 `;
@@ -258,10 +289,11 @@ exports[`modus-wc-autocomplete should pass feedback to text-input when showFeedb
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input--error modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-describedby="mwc_id_5-feedback" aria-invalid="true" aria-label="Feedback test" class="modus-wc-grow" id="mwc_id_5" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-describedby="mwc_id_5-feedback" aria-expanded="false" aria-haspopup="listbox" aria-invalid="true" aria-label="Feedback test" class="modus-wc-grow" id="mwc_id_5" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
   <modus-wc-input-feedback level="error" message="Error message" messageid="mwc_id_5-feedback" size="md"></modus-wc-input-feedback>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -293,46 +325,72 @@ exports[`modus-wc-autocomplete should render chips for selected items in multi-s
       <modus-wc-text-input inputmode="text" value="">
         <!---->
         <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-          <input aria-label="MultiSelect Chip Test" class="modus-wc-grow" id="mwc_id_48" placeholder="" type="text" value="">
+          <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="MultiSelect Chip Test" class="modus-wc-grow" id="mwc_id_48" placeholder="" role="combobox" type="text" value="">
         </label>
       </modus-wc-text-input>
     </div>
     <div class="modus-wc-autocomplete-button-container"></div>
   </div>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
 exports[`modus-wc-autocomplete should render default no results values when noResults is undefined 1`] = `
 {
   "$attrs$": {
-    "class": "modus-wc-autocomplete-no-results",
+    "role": "presentation",
   },
   "$children$": [
     {
       "$attrs$": {
-        "aria-label": undefined,
-        "class": "icon-label",
+        "class": "modus-wc-autocomplete-no-results",
       },
       "$children$": [
         {
           "$attrs$": {
-            "aria-hidden": "true",
-            "class": "modus-wc-autocomplete-search-icon",
-            "fill": "currentColor",
-            "viewBox": "0 0 24 24",
-            "xmlns": "http://www.w3.org/2000/svg",
+            "aria-label": undefined,
+            "class": "icon-label",
           },
           "$children$": [
             {
               "$attrs$": {
-                "d": "m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08",
+                "aria-hidden": "true",
+                "class": "modus-wc-autocomplete-search-icon",
+                "fill": "currentColor",
+                "viewBox": "0 0 24 24",
+                "xmlns": "http://www.w3.org/2000/svg",
+              },
+              "$children$": [
+                {
+                  "$attrs$": {
+                    "d": "m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08",
+                  },
+                  "$children$": null,
+                  "$elm$": null,
+                  "$flags$": 0,
+                  "$key$": null,
+                  "$name$": null,
+                  "$tag$": "path",
+                  "$text$": null,
+                },
+              ],
+              "$elm$": null,
+              "$flags$": 0,
+              "$key$": null,
+              "$name$": null,
+              "$tag$": "svg",
+              "$text$": null,
+            },
+            {
+              "$attrs$": {
+                "class": "label",
               },
               "$children$": null,
               "$elm$": null,
               "$flags$": 0,
               "$key$": null,
               "$name$": null,
-              "$tag$": "path",
+              "$tag$": "div",
               "$text$": null,
             },
           ],
@@ -340,12 +398,12 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
           "$flags$": 0,
           "$key$": null,
           "$name$": null,
-          "$tag$": "svg",
+          "$tag$": "div",
           "$text$": null,
         },
         {
           "$attrs$": {
-            "class": "label",
+            "class": "sub-label",
           },
           "$children$": null,
           "$elm$": null,
@@ -363,24 +421,12 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
       "$tag$": "div",
       "$text$": null,
     },
-    {
-      "$attrs$": {
-        "class": "sub-label",
-      },
-      "$children$": null,
-      "$elm$": null,
-      "$flags$": 0,
-      "$key$": null,
-      "$name$": null,
-      "$tag$": "div",
-      "$text$": null,
-    },
   ],
   "$elm$": null,
   "$flags$": 0,
   "$key$": null,
   "$name$": null,
-  "$tag$": "div",
+  "$tag$": "li",
   "$text$": null,
 }
 `;
@@ -388,34 +434,59 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
 exports[`modus-wc-autocomplete should render default no results values when noResults is undefined 2`] = `
 {
   "$attrs$": {
-    "class": "modus-wc-autocomplete-no-results",
+    "role": "presentation",
   },
   "$children$": [
     {
       "$attrs$": {
-        "aria-label": undefined,
-        "class": "icon-label",
+        "class": "modus-wc-autocomplete-no-results",
       },
       "$children$": [
         {
           "$attrs$": {
-            "aria-hidden": "true",
-            "class": "modus-wc-autocomplete-search-icon",
-            "fill": "currentColor",
-            "viewBox": "0 0 24 24",
-            "xmlns": "http://www.w3.org/2000/svg",
+            "aria-label": undefined,
+            "class": "icon-label",
           },
           "$children$": [
             {
               "$attrs$": {
-                "d": "m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08",
+                "aria-hidden": "true",
+                "class": "modus-wc-autocomplete-search-icon",
+                "fill": "currentColor",
+                "viewBox": "0 0 24 24",
+                "xmlns": "http://www.w3.org/2000/svg",
+              },
+              "$children$": [
+                {
+                  "$attrs$": {
+                    "d": "m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08",
+                  },
+                  "$children$": null,
+                  "$elm$": null,
+                  "$flags$": 0,
+                  "$key$": null,
+                  "$name$": null,
+                  "$tag$": "path",
+                  "$text$": null,
+                },
+              ],
+              "$elm$": null,
+              "$flags$": 0,
+              "$key$": null,
+              "$name$": null,
+              "$tag$": "svg",
+              "$text$": null,
+            },
+            {
+              "$attrs$": {
+                "class": "label",
               },
               "$children$": null,
               "$elm$": null,
               "$flags$": 0,
               "$key$": null,
               "$name$": null,
-              "$tag$": "path",
+              "$tag$": "div",
               "$text$": null,
             },
           ],
@@ -423,12 +494,12 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
           "$flags$": 0,
           "$key$": null,
           "$name$": null,
-          "$tag$": "svg",
+          "$tag$": "div",
           "$text$": null,
         },
         {
           "$attrs$": {
-            "class": "label",
+            "class": "sub-label",
           },
           "$children$": null,
           "$elm$": null,
@@ -446,24 +517,12 @@ exports[`modus-wc-autocomplete should render default no results values when noRe
       "$tag$": "div",
       "$text$": null,
     },
-    {
-      "$attrs$": {
-        "class": "sub-label",
-      },
-      "$children$": null,
-      "$elm$": null,
-      "$flags$": 0,
-      "$key$": null,
-      "$name$": null,
-      "$tag$": "div",
-      "$text$": null,
-    },
   ],
   "$elm$": null,
   "$flags$": 0,
   "$key$": null,
   "$name$": null,
-  "$tag$": "div",
+  "$tag$": "li",
   "$text$": null,
 }
 `;
@@ -476,12 +535,13 @@ exports[`modus-wc-autocomplete should render multi select without border 1`] = `
       <modus-wc-text-input inputmode="text" value="">
         <!---->
         <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-          <input aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_2" placeholder="" type="text" value="">
+          <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Default autocomplete" class="modus-wc-grow" id="mwc_id_2" placeholder="" role="combobox" type="text" value="">
         </label>
       </modus-wc-text-input>
     </div>
     <div class="modus-wc-autocomplete-button-container"></div>
   </div>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -498,9 +558,10 @@ exports[`modus-wc-autocomplete should render with custom icon slot 1`] = `
           </i>
         </modus-wc-icon>
       </div>
-      <input aria-label="Custom icon test" class="modus-wc-grow" id="mwc_id_3" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="Custom icon test" class="modus-wc-grow" id="mwc_id_3" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -514,7 +575,7 @@ exports[`modus-wc-autocomplete should render with custom props 1`] = `
       <svg aria-hidden="true" class="modus-wc-text-input-icon modus-wc-text-input-icon-search" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="m16.38 14.92-.66.05-.41-.41c2.44-2.81 2.28-7.1-.5-9.7S7.8 2.4 5.17 4.94a6.99 6.99 0 0 0-.08 9.98c2.61 2.61 6.77 2.72 9.52.34l.41.41-.05.65 3.89 3.89a.996.996 0 1 0 1.41-1.41l-3.88-3.88Zm-2.81-1.41a5.016 5.016 0 0 1-7.08 0c-1.95-1.95-1.95-5.13 0-7.08s5.13-1.95 7.08 0 1.95 5.13 0 7.08"></path>
       </svg>
-      <input aria-describedby="description" aria-label="Test autocomplete" aria-required="" class="modus-wc-grow" disabled="" id="test-id" name="test-name" placeholder="Test placeholder" required="" tabindex="1" type="text" value="Item 1">
+      <input aria-autocomplete="list" aria-describedby="description" aria-expanded="false" aria-haspopup="listbox" aria-label="Test autocomplete" aria-required="" class="modus-wc-grow" disabled="" id="test-id" name="test-name" placeholder="Test placeholder" required="" role="combobox" tabindex="1" type="text" value="Item 1">
       <div class="modus-wc-clear-icon-container modus-wc-clear-icon-hidden">
         <svg aria-label="Clear text" class="modus-wc-text-input-icon modus-wc-text-input-icon-clear" fill="currentColor" role="button" tabindex="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path>
@@ -522,6 +583,7 @@ exports[`modus-wc-autocomplete should render with custom props 1`] = `
       </div>
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -531,9 +593,10 @@ exports[`modus-wc-autocomplete should render with default props 1`] = `
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input class="modus-wc-grow" id="mwc_id_0" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" class="modus-wc-grow" id="mwc_id_0" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
 
@@ -543,8 +606,9 @@ exports[`modus-wc-autocomplete should render without custom icon slot 1`] = `
   <modus-wc-text-input inputmode="text" value="">
     <!---->
     <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
-      <input aria-label="No custom icon test" class="modus-wc-grow" id="mwc_id_4" placeholder="" type="text" value="">
+      <input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" aria-label="No custom icon test" class="modus-wc-grow" id="mwc_id_4" placeholder="" role="combobox" type="text" value="">
     </label>
   </modus-wc-text-input>
+  <div aria-atomic="true" aria-live="polite" class="modus-wc-autocomplete-status"></div>
 </modus-wc-autocomplete>
 `;
