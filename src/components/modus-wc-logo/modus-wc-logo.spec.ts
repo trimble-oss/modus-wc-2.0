@@ -429,4 +429,45 @@ describe('modus-wc-logo', () => {
     expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
     consoleSpy.mockRestore();
   });
+
+  it.each([
+    ['assist', '0 0 116 24'],
+    ['agent_studio', '0 0 175 24'],
+  ])(
+    'should render combined AI emblem with wordmark for %s',
+    async (name, wordmarkViewBox) => {
+      const page = await newSpecPage({
+        components: [ModusWcLogo],
+        html: `<modus-wc-logo name="${name}"></modus-wc-logo>`,
+      });
+      const logoSpan = page.root?.querySelector('.modus-wc-logo');
+      expect(logoSpan?.classList.contains('logo-combined')).toBe(true);
+      expect(
+        page.root
+          ?.querySelector('.logo-combined-emblem svg')
+          ?.getAttribute('viewBox')
+      ).toBe('0 0 24 24');
+
+      const wordmark = page.root?.querySelector('.logo-combined-wordmark svg');
+      expect(wordmark?.getAttribute('viewBox')).toBe(wordmarkViewBox);
+      expect(wordmark?.querySelector('.logo-accent')).not.toBeNull();
+      expect(wordmark?.querySelector('.logo-text')).not.toBeNull();
+    }
+  );
+
+  it.each(['assist', 'agent_studio'])(
+    'should render only the AI emblem when %s has emblem prop',
+    async (name) => {
+      const page = await newSpecPage({
+        components: [ModusWcLogo],
+        html: `<modus-wc-logo name="${name}" emblem></modus-wc-logo>`,
+      });
+      const logoSpan = page.root?.querySelector('.modus-wc-logo');
+      expect(logoSpan?.classList.contains('logo-emblem')).toBe(true);
+      expect(logoSpan?.querySelector('svg')?.getAttribute('viewBox')).toBe(
+        '0 0 24 24'
+      );
+      expect(page.root?.querySelector('.logo-combined-emblem')).toBeNull();
+    }
+  );
 });
