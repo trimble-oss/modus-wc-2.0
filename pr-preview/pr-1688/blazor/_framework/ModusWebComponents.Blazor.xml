@@ -714,7 +714,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcCheckbox">
             <summary>
-            A customizable checkbox component
+            A customizable checkbox component.  Group related checkboxes in a fieldset with a legend so the set has an accessible name.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcCheckbox.CustomClass">
@@ -1820,6 +1820,11 @@
             The message.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcInputFeedback.MessageId">
+            <summary>
+            Id of the message element, referenced by aria-describedby on the related field.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcInputFeedback.Size">
             <summary>
             The size of the feedback component.
@@ -2680,7 +2685,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcRadio">
             <summary>
-            A customizable radio button component.
+            A customizable radio button component.  Group related radios in a fieldset with a legend so the set has an accessible name.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcRadio.CustomClass">
@@ -3586,6 +3591,11 @@
             Custom CSS class to apply to the input.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.DescribedBy">
+            <summary>
+            Ids appended to the input's aria-describedby. Use when feedback is rendered outside this component.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.Disabled">
             <summary>
             Whether the form control is disabled.
@@ -3604,6 +3614,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.IncludeSearch">
             <summary>
             Show the search icon within the input field.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.InputAriaInvalid">
+            <summary>
+            Sets aria-invalid on the input. Error feedback overrides this with &quot;true&quot;.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.InputId">
