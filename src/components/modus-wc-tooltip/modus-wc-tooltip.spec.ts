@@ -457,6 +457,86 @@ describe('modus-wc-tooltip', () => {
     removeEventListenerSpy.mockRestore();
   });
 
+  describe('reconnect', () => {
+    const moveTooltip = async (page: SpecPage, newParentSelector: string) => {
+      const tooltip = page.body.querySelector(
+        'modus-wc-tooltip'
+      ) as HTMLElement;
+      page.body.querySelector(newParentSelector)?.appendChild(tooltip);
+      await page.waitForChanges();
+    };
+
+    const getFloatingElement = (page: SpecPage) =>
+      (page.rootInstance as unknown as { tooltipElement: HTMLElement })
+        .tooltipElement;
+
+    it('should re-attach the floating element to the body when moved', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div id="old"><modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip></div><div id="new"></div>`,
+      });
+      const floating = getFloatingElement(page);
+      expect(document.body.contains(floating)).toBe(true);
+
+      await moveTooltip(page, '#new');
+
+      expect(document.body.contains(floating)).toBe(true);
+    });
+
+    it('should show on hover after being moved', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div id="old"><modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip></div><div id="new"></div>`,
+      });
+      await moveTooltip(page, '#new');
+
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      await page.waitForChanges();
+
+      expect(page.rootInstance.isVisible).toBe(true);
+      expect(document.body.contains(getFloatingElement(page))).toBe(true);
+    });
+
+    it('should show on ancestor focus after being moved', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<ul><li id="old" tabindex="0"><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></li><li id="new" tabindex="0"></li></ul>`,
+      });
+      await moveTooltip(page, '#new');
+
+      page.body.querySelector('#new')?.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+
+      expect(page.rootInstance.isVisible).toBe(true);
+    });
+
+    it('should re-show a forceOpen tooltip after being moved', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div id="old"><modus-wc-tooltip content="Tip" force-open="true"><span>Label</span></modus-wc-tooltip></div><div id="new"></div>`,
+      });
+      await moveTooltip(page, '#new');
+
+      expect(page.rootInstance.isVisible).toBe(true);
+      expect(document.body.contains(getFloatingElement(page))).toBe(true);
+    });
+
+    it('should hide a visible tooltip after being moved', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<div id="old"><modus-wc-tooltip content="Tip"><span>Label</span></modus-wc-tooltip></div><div id="new"></div>`,
+      });
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      await page.waitForChanges();
+      expect(page.rootInstance.isVisible).toBe(true);
+
+      await moveTooltip(page, '#new');
+
+      expect(page.rootInstance.isVisible).toBe(false);
+      expect(getFloatingElement(page).style.display).toBe('none');
+    });
+  });
+
   it('should initialize popper with correct configuration', async () => {
     const page = await newSpecPage({
       components: [ModusWcTooltip],

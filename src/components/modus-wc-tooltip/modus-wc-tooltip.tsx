@@ -199,6 +199,23 @@ export class ModusWcTooltip {
     this.attachFocusOwner();
     this.observeContent();
 
+    this.showIfForceOpen();
+  }
+
+  connectedCallback() {
+    // The first connect runs before componentDidLoad, which owns the initial setup.
+    if (!this.tooltipElement) return;
+
+    document.body.appendChild(this.tooltipElement);
+    this.tooltipElement.style.display = 'none';
+    this.isVisible = false;
+    this.attachFocusOwner();
+    this.observeContent();
+
+    this.showIfForceOpen();
+  }
+
+  private showIfForceOpen() {
     if (this.forceOpen && !this.disabled && !this.escapeDismissed) {
       this.showTooltip();
     }
