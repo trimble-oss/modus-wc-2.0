@@ -1171,15 +1171,13 @@ export class ModusWcTable {
     return this.table.getHeaderGroups().map((headerGroup) => (
       <tr key={headerGroup.id}>
         {headerGroup.headers.map((header) => {
-          const scope = header.colSpan > 1 ? 'colgroup' : 'col';
-
           if (header.isPlaceholder) {
             return (
               <th
                 key={header.id}
                 colSpan={header.colSpan}
                 rowSpan={header.rowSpan}
-                scope={scope}
+                scope="col"
               />
             );
           }
@@ -1202,7 +1200,7 @@ export class ModusWcTable {
               key={header.id}
               colSpan={header.colSpan}
               rowSpan={header.rowSpan}
-              scope={scope}
+              scope="col"
               aria-sort={sortProps['aria-sort']}
               class={{
                 ...sortProps.classFlags,

@@ -4606,7 +4606,7 @@ describe('modus-wc-table', () => {
       expect(topHeaders?.length).toBe(2);
       expect(topHeaders?.[0].textContent).toContain('Name');
       expect(topHeaders?.[0].getAttribute('colspan')).toBe('2');
-      expect(topHeaders?.[0].getAttribute('scope')).toBe('colgroup');
+      expect(topHeaders?.[0].getAttribute('scope')).toBe('col');
       expect(topHeaders?.[0].getAttribute('aria-sort')).toBeNull();
       expect(topHeaders?.[1].textContent?.trim()).toBe('');
       expect(topHeaders?.[1].getAttribute('scope')).toBe('col');

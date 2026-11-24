@@ -1888,7 +1888,11 @@ export class ModusWcDate {
           }
         }
       >
-        <div role="grid" class="calendar-grid">
+        <div
+          role="grid"
+          aria-multiselectable={this.isRange ? 'true' : undefined}
+          class="calendar-grid"
+        >
           <div
             role="row"
             class={`calendar-days-week${this.showWeekNumbers ? ' has-week-numbers' : ''}`}

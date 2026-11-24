@@ -3131,6 +3131,20 @@ describe('modus-wc-date', () => {
         });
     });
 
+    it('should not declare the grid multiselectable in single-date mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Single grid test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const grid = page.root!.querySelector('[role="grid"]');
+      expect(grid).not.toBeNull();
+      expect(grid!.hasAttribute('aria-multiselectable')).toBe(false);
+    });
+
     it('should mark only the selected day with aria-selected', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
@@ -3194,6 +3208,11 @@ describe('modus-wc-date', () => {
         cell.querySelector('.calendar-day')?.getAttribute('data-iso-date')
       );
       expect(selectedDates).toEqual(['2026-06-10', '2026-06-20']);
+      expect(
+        page
+          .root!.querySelector('[role="grid"]')
+          ?.getAttribute('aria-multiselectable')
+      ).toBe('true');
 
       const emptyCells = page.root!.querySelectorAll(
         '.calendar-day-cell--empty'
