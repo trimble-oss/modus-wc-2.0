@@ -545,6 +545,16 @@
             A customizable button component used to create buttons with different sizes, variants, and types.  The component supports a slot for injecting content within the button, similar to a native HTML button.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcButton.ButtonAriaControls">
+            <summary>
+            Maps to the inner button's aria-controls attribute.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcButton.ButtonAriaExpanded">
+            <summary>
+            Maps to the inner button's aria-expanded attribute.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcButton.ButtonAriaLabel">
             <summary>
             Maps to the inner button's aria-label attribute.
@@ -1462,7 +1472,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcFileDropzone">
             <summary>
-            File dropzone component that allows users to drag and drop files for upload.  The component supports a slot called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.
+            File dropzone component that allows users to drag and drop files for upload.  The component supports a slot called 'dropzone' for adding custom content such as progress indicators or additional instructions within the dropzone area.  The dropzone is a focusable control. Give it an accessible name with instructions, visible dropzone slot text, or aria-label. If none of those are set, the control is unnamed.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcFileDropzone.AcceptFileTypes">
@@ -1978,12 +1988,17 @@
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcLogo.Alt">
             <summary>
-            The alt text for accessibility. If not provided, defaults to the logo name.
+            The alt text for accessibility. If not provided, defaults to the logo name followed by &quot;logo&quot;.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcLogo.CustomClass">
             <summary>
             Custom CSS class to apply to the logo container.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcLogo.Decorative">
+            <summary>
+            Indicates that the logo is decorative. When true, sets aria-hidden to hide the logo from screen readers.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcLogo.Emblem">
