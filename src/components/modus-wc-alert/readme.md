@@ -23,7 +23,6 @@ The component supports `<slot>` elements for injecting custom content and button
 | `disableIcon`             | `disable-icon`         | Whether to disable the icon                                                               | `boolean \| undefined`                                                  | `false`     |
 | `dismissible`             | `dismissible`          | Whether the alert has a dismiss button                                                    | `boolean \| undefined`                                                  | `false`     |
 | `icon`                    | `icon`                 | The Modus icon to render.                                                                 | `string \| undefined`                                                   | `undefined` |
-| `titleHeadingLevel`       | `title-heading-level`  | The heading level of the alert title. When unset, the title renders as a div.             | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| undefined`                               | `undefined` |
 | `variant`                 | `variant`              | The variant of the alert.                                                                 | `"error" \| "info" \| "neutral" \| "success" \| "warning" \| undefined` | `'info'`    |
 
 

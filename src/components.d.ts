@@ -113,10 +113,6 @@ export namespace Components {
          */
         "icon"?: string;
         /**
-          * The heading level of the alert title. When unset, the title renders as a div.
-         */
-        "titleHeadingLevel"?: 1 | 2 | 3 | 4 | 5 | 6;
-        /**
           * The variant of the alert.
           * @default 'info'
          */
@@ -4446,10 +4442,6 @@ declare namespace LocalJSX {
           * The Modus icon to render.
          */
         "icon"?: string;
-        /**
-          * The heading level of the alert title. When unset, the title renders as a div.
-         */
-        "titleHeadingLevel"?: 1 | 2 | 3 | 4 | 5 | 6;
         /**
           * Fires when expandable body content is expanded or collapsed.
          */
