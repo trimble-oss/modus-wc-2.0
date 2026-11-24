@@ -10,7 +10,7 @@ import {
 } from '@stencil/core';
 import { convertPropsToClasses } from './modus-wc-side-navigation.tailwind';
 import { handleShadowDOMStyles } from '../base-component';
-import { Attributes, generateRandomId, inheritAriaAttributes } from '../utils';
+import { Attributes, inheritAriaAttributes } from '../utils';
 
 /**
  * A customizable side navigation component for organizing primary navigation and content areas in an application.
@@ -26,7 +26,6 @@ export class ModusWcSideNavigation {
   private inheritedAttributes: Attributes = {};
   private minWidth = '4rem';
   private navRef?: HTMLElement;
-  private generatedNavId = `modus-wc-side-navigation-${generateRandomId()}`;
 
   /** Reference to the host element */
   @Element() el!: HTMLElement;
@@ -45,12 +44,6 @@ export class ModusWcSideNavigation {
 
   /** Mode to make side navigation either overlay or push the content for the selector specified in targetContent */
   @Prop() mode: 'overlay' | 'push' = 'overlay';
-
-  /**
-   * Id of the navigation panel. Defaults to a generated id so a controlling
-   * button can reference it with aria-controls.
-   */
-  @Prop() navId?: string;
 
   /** (optional) Specify the selector for the page's content for which paddings and margins will be set by side navigation based on the mode. */
   @Prop() targetContent: string = '';
@@ -131,7 +124,6 @@ export class ModusWcSideNavigation {
         <nav
           {...this.inheritedAttributes}
           class={this.getClasses()}
-          id={this.navId || this.generatedNavId}
           ref={(el) => (this.navRef = el)}
           style={{ width: this.expanded ? this.maxWidth : this.minWidth }}
         >

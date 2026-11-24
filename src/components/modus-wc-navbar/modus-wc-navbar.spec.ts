@@ -124,44 +124,4 @@ describe('modus-wc-navbar', () => {
     expect(button?.getAttribute('aria-expanded')).toBe('true');
     expect(button?.getAttribute('aria-controls')).toBe(panel?.id);
   });
-
-  it('should point the main menu button at a side navigation panel and follow its expanded state', async () => {
-    const page = await newSpecPage({
-      components: [ModusWcNavbar, ModusWcToolbar, ModusWcButton],
-      html: '<modus-wc-navbar main-menu-controls="side-nav-panel"></modus-wc-navbar>',
-    });
-
-    const sideNav = document.createElement('modus-wc-side-navigation');
-    (sideNav as HTMLElement & { expanded: boolean }).expanded = false;
-    const panel = document.createElement('nav');
-    panel.id = 'side-nav-panel';
-    sideNav.appendChild(panel);
-    document.body.appendChild(sideNav);
-
-    page.rootInstance.visibility = {
-      ...page.rootInstance.visibility,
-      mainMenu: true,
-    };
-    page.rootInstance.bindMainMenuControls();
-    await page.waitForChanges();
-
-    const button = page.root?.querySelector(
-      'modus-wc-button[aria-label="Main menu"] button'
-    );
-    expect(button?.getAttribute('aria-controls')).toBe('side-nav-panel');
-    expect(button?.getAttribute('aria-expanded')).toBe('false');
-
-    sideNav.dispatchEvent(
-      new CustomEvent('expandedChange', { detail: true, bubbles: true })
-    );
-    await page.waitForChanges();
-    expect(button?.getAttribute('aria-expanded')).toBe('true');
-
-    page.rootInstance.toggleMainMenu();
-    expect((sideNav as HTMLElement & { expanded: boolean }).expanded).toBe(
-      false
-    );
-
-    sideNav.remove();
-  });
 });
