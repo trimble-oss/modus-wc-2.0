@@ -29,8 +29,14 @@ export class ModusWcButton {
   /** Reference to the host element */
   @Element() el!: HTMLElement;
 
+  /** Maps to the inner button's aria-controls attribute. */
+  @Prop({ attribute: 'aria-controls' }) buttonAriaControls?: string;
+
   /** Maps to the inner button's aria-current attribute. */
   @Prop({ attribute: 'aria-current' }) currentAria?: string;
+
+  /** Maps to the inner button's aria-expanded attribute. */
+  @Prop({ attribute: 'aria-expanded' }) buttonAriaExpanded?: string;
 
   /** Maps to the inner button's aria-label attribute. */
   @Prop({ attribute: 'aria-label' }) buttonAriaLabel?: string;
@@ -76,10 +82,12 @@ export class ModusWcButton {
     // Auto-inject CSS if component is used inside user's shadow DOM
     handleShadowDOMStyles(this.el);
 
-    // Keep aria-current / aria-label as reactive props so host updates
+    // Keep disclosure and naming ARIA as reactive props so host updates
     // after the initial load still reach the inner <button>.
     this.inheritedAttributes = inheritAriaAttributes(this.el, [
+      'aria-controls',
       'aria-current',
+      'aria-expanded',
       'aria-label',
     ]);
   }
@@ -135,7 +143,9 @@ export class ModusWcButton {
           tabIndex={this.disabled ? -1 : 0}
           type={this.type}
           {...this.inheritedAttributes}
+          aria-controls={this.buttonAriaControls}
           aria-current={this.currentAria}
+          aria-expanded={this.buttonAriaExpanded}
           aria-label={this.buttonAriaLabel}
         >
           <slot />

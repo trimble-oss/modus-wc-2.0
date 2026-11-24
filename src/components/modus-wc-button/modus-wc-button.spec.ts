@@ -214,6 +214,36 @@ describe('modus-wc-button', () => {
     expect(button?.getAttribute('aria-current')).toBeNull();
   });
 
+  it('should sync aria-controls and aria-expanded to the inner button when the host attributes change', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcButton],
+      html: '<modus-wc-button>Menu</modus-wc-button>',
+    });
+
+    const button = page.root?.querySelector('button');
+    expect(button?.getAttribute('aria-controls')).toBeNull();
+    expect(button?.getAttribute('aria-expanded')).toBeNull();
+
+    page.root?.setAttribute('aria-controls', 'main-menu');
+    page.root?.setAttribute('aria-expanded', 'false');
+    await page.waitForChanges();
+
+    expect(button?.getAttribute('aria-controls')).toBe('main-menu');
+    expect(button?.getAttribute('aria-expanded')).toBe('false');
+
+    page.root?.setAttribute('aria-expanded', 'true');
+    await page.waitForChanges();
+
+    expect(button?.getAttribute('aria-expanded')).toBe('true');
+
+    page.root?.removeAttribute('aria-controls');
+    page.root?.removeAttribute('aria-expanded');
+    await page.waitForChanges();
+
+    expect(button?.getAttribute('aria-controls')).toBeNull();
+    expect(button?.getAttribute('aria-expanded')).toBeNull();
+  });
+
   it('should sync aria-label to the inner button when the host attribute changes', async () => {
     const page = await newSpecPage({
       components: [ModusWcButton],

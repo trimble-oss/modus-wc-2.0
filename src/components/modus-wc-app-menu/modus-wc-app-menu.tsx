@@ -431,9 +431,10 @@ export class ModusWcAppMenu {
                 onItemSelect={(e) => e.stopPropagation()}
               >
                 <modus-wc-logo
-                  name={app.appName}
                   custom-class="modus-wc-app-menu-app-logo"
+                  decorative
                   emblem={true}
+                  name={app.appName}
                   slot="start-icon"
                 ></modus-wc-logo>
               </modus-wc-menu-item>
@@ -497,9 +498,10 @@ export class ModusWcAppMenu {
                 ></modus-wc-icon>
               )}
               <modus-wc-logo
-                name={app.appName}
                 custom-class="modus-wc-app-menu-grid-emblem"
+                decorative
                 emblem={true}
+                name={app.appName}
               ></modus-wc-logo>
               <modus-wc-tooltip
                 content={this.getDisplayName(app.appName)}

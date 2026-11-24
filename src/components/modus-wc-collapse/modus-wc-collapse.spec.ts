@@ -261,6 +261,47 @@ describe('modus-wc-collapse', () => {
     expect(expandedChangeSpy).not.toHaveBeenCalled();
   });
 
+  it('should expose expanded state and the content it controls on the summary', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse],
+      html: `<modus-wc-collapse collapse-id="123">
+              <div slot="header">Test Header</div>
+              <div slot="content">Test Content</div>
+            </modus-wc-collapse>`,
+    });
+
+    const summary = page.root!.querySelector('summary') as HTMLElement;
+    const content = page.root!.querySelector(
+      '.modus-wc-collapse-content'
+    ) as HTMLElement;
+
+    expect(summary.getAttribute('aria-expanded')).toBe('false');
+    expect(summary.getAttribute('aria-controls')).toBe('123-content');
+    expect(content.id).toBe('123-content');
+
+    const component = page.rootInstance as ModusWcCollapse;
+    component.expanded = true;
+    await page.waitForChanges();
+
+    expect(summary.getAttribute('aria-expanded')).toBe('true');
+    expect(summary.getAttribute('aria-controls')).toBe(content.id);
+  });
+
+  it('should expose expanded state when the header comes from options', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcCollapse],
+      html: '<modus-wc-collapse collapse-id="options-id" expanded="true"></modus-wc-collapse>',
+    });
+
+    const component = page.rootInstance as ModusWcCollapse;
+    component.options = options;
+    await page.waitForChanges();
+
+    const summary = page.root!.querySelector('summary') as HTMLElement;
+    expect(summary.getAttribute('aria-expanded')).toBe('true');
+    expect(summary.getAttribute('aria-controls')).toBe('options-id-content');
+  });
+
   it('should update details open attribute when expanded prop changes', async () => {
     const page = await newSpecPage({
       components: [ModusWcCollapse],

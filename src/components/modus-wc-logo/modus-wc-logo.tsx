@@ -6,11 +6,11 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
+import { LOGO_SVGS } from '../../svg-assets/generated/logo-svg-data';
 import { handleShadowDOMStyles } from '../base-component';
+import { LogoName } from '../types';
 import { Attributes, inheritAriaAttributes } from '../utils';
 import { LOGO_VARIANTS } from './logo-constants';
-import { LOGO_SVGS } from '../../svg-assets/generated/logo-svg-data';
-import { LogoName } from '../types';
 
 interface LogoSvgProps {
   svgText: string;
@@ -45,8 +45,11 @@ export class ModusWcLogo {
   /** Custom CSS class to apply to the logo container. */
   @Prop() customClass?: string = '';
 
-  /** The alt text for accessibility. If not provided, defaults to the logo name. */
+  /** The alt text for accessibility. If not provided, defaults to the logo name followed by "logo". */
   @Prop() alt?: string;
+
+  /** Indicates that the logo is decorative. When true, sets aria-hidden to hide the logo from screen readers. */
+  @Prop() decorative?: boolean = false;
 
   componentWillLoad() {
     handleShadowDOMStyles(this.el);
@@ -110,11 +113,48 @@ export class ModusWcLogo {
     return classList.join(' ');
   }
 
+  private getAccessibleName(): string {
+    if (this.alt) {
+      return this.alt;
+    }
+
+    return `${this.name.replace(/_/g, ' ')} logo`;
+  }
+
+  private escapeSvgText(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  /**
+   * The wrapper owns the accessible name. Hide each inline SVG from
+   * assistive tech and give it a title so the graphic is still labeled in the DOM.
+   */
+  private prepareSvg(svgText: string, title?: string): string {
+    if (!svgText) {
+      return svgText;
+    }
+
+    const titleMarkup = title
+      ? `<title>${this.escapeSvgText(title)}</title>`
+      : '';
+
+    return svgText.replace(/<svg\b([^>]*)>/, (_match, attributes: string) => {
+      return `<svg${attributes} aria-hidden="true">${titleMarkup}`;
+    });
+  }
+
   render() {
-    const altText = this.alt || this.name.replace(/_/g, ' ');
+    const altText = this.decorative ? undefined : this.getAccessibleName();
     const classes = this.getClasses();
-    const svgContent = this.getSvgContent();
-    const emblemSvgContent = this.getEmblemSvgContent();
+    const svgContent = this.prepareSvg(this.getSvgContent(), altText);
+    const emblemSvgContent = this.prepareSvg(
+      this.getEmblemSvgContent(),
+      altText
+    );
     const isCombined = !this.emblem && !!emblemSvgContent;
 
     return (
@@ -122,8 +162,11 @@ export class ModusWcLogo {
         <span
           class={`modus-wc-logo ${classes} ${this.emblem ? 'logo-emblem' : 'logo-full'} ${isCombined ? 'logo-combined' : ''}`}
           {...this.inheritedAttributes}
-          role="img"
+          aria-hidden={
+            this.decorative ? 'true' : this.inheritedAttributes['aria-hidden']
+          }
           aria-label={altText}
+          role={this.decorative ? undefined : 'img'}
         >
           {isCombined && (
             <span class="logo-combined-emblem">
