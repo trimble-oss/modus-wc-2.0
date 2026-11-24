@@ -719,7 +719,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcCheckbox">
             <summary>
-            A customizable checkbox component
+            A customizable checkbox component.  Group related checkboxes in a fieldset with a legend so the set has an accessible name.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcCheckbox.CustomClass">
@@ -1825,6 +1825,11 @@
             The message.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcInputFeedback.MessageId">
+            <summary>
+            Id of the message element, referenced by aria-describedby on the related field.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcInputFeedback.Size">
             <summary>
             The size of the feedback component.
@@ -2227,6 +2232,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcNavbar.CustomClass">
             <summary>
             Custom CSS class to apply to the host element.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcNavbar.MainMenuControls">
+            <summary>
+            Id of the element the main-menu button controls. When omitted, the button controls the navbar's own main-menu panel. Set this to a side navigation panel id (navId) when that button toggles modus-wc-side-navigation.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcNavbar.MainMenuOpen">
@@ -2669,7 +2679,7 @@
         </member>
         <member name="T:ModusWebComponents.Blazor.ModusWcRadio">
             <summary>
-            A customizable radio button component.
+            A customizable radio button component.  Group related radios in a fieldset with a legend so the set has an accessible name.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcRadio.CustomClass">
@@ -2916,6 +2926,11 @@
             <summary>
             Mode to make side navigation either overlay or push the content for the selector specified in targetContent
             Allowed values: "overlay", "push"
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcSideNavigation.NavId">
+            <summary>
+            Id of the navigation panel. Defaults to a generated id so a controlling button can reference it with aria-controls.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcSideNavigation.TargetContent">
@@ -3560,6 +3575,11 @@
             Custom CSS class to apply to the input.
             </summary>
         </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.DescribedBy">
+            <summary>
+            Ids appended to the input's aria-describedby. Use when feedback is rendered outside this component.
+            </summary>
+        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.Disabled">
             <summary>
             Whether the form control is disabled.
@@ -3578,6 +3598,11 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.IncludeSearch">
             <summary>
             Show the search icon within the input field.
+            </summary>
+        </member>
+        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.InputAriaInvalid">
+            <summary>
+            Sets aria-invalid on the input. Error feedback overrides this with &quot;true&quot;.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.InputId">
