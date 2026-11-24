@@ -31,6 +31,7 @@ import {
 import {
   BLUR_FOCUSOUT_DELAY_MS,
   clearAllFocus,
+  getAutocompleteOptionId,
   getClasses,
   getMultiSelectClasses,
   getVisibleItems,
@@ -124,6 +125,9 @@ export class ModusWcAutocomplete {
 
   /** Whether the menu should remain open after an item is selected. */
   @Prop() leaveMenuOpen?: boolean = false;
+
+  /** Accessible name of the suggestion listbox. Host `aria-label` names the combobox, not this popup. */
+  @Prop() listboxLabel?: string = 'Suggestions';
 
   /** The minimum number of characters required to render the menu. */
   @Prop() minChars: number = 0;
@@ -285,6 +289,13 @@ export class ModusWcAutocomplete {
     document.removeEventListener('click', this.handleOutsideClick);
   }
 
+  componentDidRender() {
+    const listboxId = this.getListboxDomId(
+      this.resolveEffectiveId(this.inputId)
+    );
+    this.syncSlottedOptionIds(listboxId);
+  }
+
   /**
    * `openMenu()` is often called from a click handler, so the same click must not
    * immediately close the menu again. The flag only guards that originating click;
@@ -332,6 +343,85 @@ export class ModusWcAutocomplete {
       this.searchText,
       this.customInputChange
     );
+  }
+
+  private getListboxDomId(inputId: string): string {
+    return `${inputId}-listbox`;
+  }
+
+  private getSlottedMenuItems(): HTMLElement[] {
+    return Array.from(
+      this.el.querySelectorAll(
+        '[slot="menu-items"] modus-wc-menu-item, modus-wc-menu-item[slot="menu-items"]'
+      )
+    );
+  }
+
+  private isSlottedMenuItemVisible(item: HTMLElement): boolean {
+    if (item.hidden || item.classList.contains('hidden')) return false;
+    const style = item.getAttribute('style');
+    if (style && /display\s*:\s*none/i.test(style)) return false;
+    return true;
+  }
+
+  private getVisibleSlottedSuggestionCount(): number {
+    return this.getSlottedMenuItems().filter((item) =>
+      this.isSlottedMenuItemVisible(item)
+    ).length;
+  }
+
+  private getActiveOptionId(listboxId: string): string | undefined {
+    const active = (this.filteredItems ?? []).find(
+      (item) => item.focused && !item.disabled
+    );
+    if (active) return getAutocompleteOptionId(listboxId, active.value);
+
+    const focusedSlotted = this.getSlottedMenuItems().find((item) => {
+      const slotted = item as HTMLElement & {
+        disabled?: boolean;
+        focused?: boolean;
+      };
+      return slotted.focused && !slotted.disabled;
+    });
+    if (!focusedSlotted) return undefined;
+    return getAutocompleteOptionId(
+      listboxId,
+      focusedSlotted.getAttribute('value') ?? ''
+    );
+  }
+
+  /** Polite announcement of how many suggestions match the current query. */
+  private getResultStatus(): string {
+    if (!this.menuVisible) return '';
+    if (this.showSpinner) return 'Loading results.';
+
+    const itemCount = this.filteredItems?.length ?? 0;
+    const count =
+      itemCount > 0 ? itemCount : this.getVisibleSlottedSuggestionCount();
+    if (count === 0) {
+      return (
+        this.noResults?.ariaLabel ||
+        this.noResults?.label ||
+        'No results found.'
+      );
+    }
+    return count === 1 ? '1 result available.' : `${count} results available.`;
+  }
+
+  private syncSlottedOptionIds(listboxId: string): void {
+    this.getSlottedMenuItems().forEach((item) => {
+      const slotted = item as HTMLElement & {
+        optionId?: string;
+        value?: string;
+      };
+      const optionId = getAutocompleteOptionId(
+        listboxId,
+        slotted.getAttribute('value') ?? ''
+      );
+      if (slotted.optionId !== optionId) {
+        slotted.optionId = optionId;
+      }
+    });
   }
 
   /** Remount menu when the visible option set changes (avoids orphan menu-item nodes). */
@@ -967,6 +1057,16 @@ export class ModusWcAutocomplete {
     const hasSlottedCustomIcon = !!this.el.querySelector(
       '[slot="custom-icon"]'
     );
+    const listboxId = this.getListboxDomId(effectiveId);
+    const showListbox = hasSlottedMenuItems || this.menuVisible;
+    const comboboxProps = {
+      ariaActiveDescendant:
+        this.menuVisible && !this.showSpinner
+          ? this.getActiveOptionId(listboxId)
+          : undefined,
+      ariaControls: showListbox ? listboxId : undefined,
+      comboboxExpanded: this.menuVisible ? 'true' : 'false',
+    };
     const feedbackAria = resolveControlFeedbackAria(
       this.showFeedback ? this.feedback : undefined,
       effectiveId,
@@ -1009,6 +1109,7 @@ export class ModusWcAutocomplete {
                 isChipsExpanded: this.isChipsExpanded,
               })}
               {renderInput({
+                ...comboboxProps,
                 autoComplete: this.autoComplete,
                 bordered: this.bordered,
                 multiSelect: this.multiSelect,
@@ -1058,6 +1159,7 @@ export class ModusWcAutocomplete {
         ) : (
           <Fragment>
             {renderInput({
+              ...comboboxProps,
               autoComplete: this.autoComplete,
               bordered: this.bordered,
               multiSelect: this.multiSelect,
@@ -1096,15 +1198,25 @@ export class ModusWcAutocomplete {
             size={this.size}
           />
         )}
+        <div
+          aria-atomic="true"
+          aria-live="polite"
+          class="modus-wc-autocomplete-status"
+        >
+          {this.getResultStatus()}
+        </div>
         {hasSlottedMenuItems ? (
           // When using custom slots, keep menu in DOM and use CSS to hide/show
           <modus-wc-menu
-            aria-label="Autocomplete menu"
+            aria-label={this.listboxLabel}
             bordered={this.bordered}
             class={this.menuVisible ? 'menu-visible' : 'menu-hidden'}
             key={this.getMenuItemsListKey()}
+            listboxId={listboxId}
+            multiselectable={this.multiSelect}
             onMenuFocusout={this.handleMenuFocusout}
             onMouseDown={(e) => e.preventDefault()}
+            popupRole="listbox"
             size={this.size}
           >
             {renderMenuItems({
@@ -1114,6 +1226,7 @@ export class ModusWcAutocomplete {
               items: this.items,
               noResults: this.noResults,
               hasSlottedContent: hasSlottedMenuItems,
+              listboxId,
               onItemSelect: this.handleItemSelectByValue,
             })}
             <slot name="menu-items"></slot>
@@ -1122,12 +1235,15 @@ export class ModusWcAutocomplete {
           // When NOT using slots, conditionally render menu (automatic scroll reset)
           this.menuVisible && (
             <modus-wc-menu
-              aria-label="Autocomplete menu"
+              aria-label={this.listboxLabel}
               bordered={this.bordered}
               class="menu-visible"
               key={this.getMenuItemsListKey()}
+              listboxId={listboxId}
+              multiselectable={this.multiSelect}
               onMenuFocusout={this.handleMenuFocusout}
               onMouseDown={(e) => e.preventDefault()}
+              popupRole="listbox"
               size={this.size}
             >
               {renderMenuItems({
@@ -1137,6 +1253,7 @@ export class ModusWcAutocomplete {
                 items: this.items,
                 noResults: this.noResults,
                 hasSlottedContent: hasSlottedMenuItems,
+                listboxId,
                 onItemSelect: this.handleItemSelectByValue,
               })}
               <slot name="menu-items"></slot>

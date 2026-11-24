@@ -1,4 +1,4 @@
-import { Fragment, h, JSX } from '@stencil/core';
+import { Fragment, h } from '@stencil/core';
 import { CloseSolidIcon } from '../../icons/close-solid.icon';
 import { SearchSolidIcon } from '../../icons/search-solid.icon';
 import {
@@ -86,6 +86,17 @@ export function syncMenuItemSelection(
       menuItem.selected = !!sourceItem.selected;
     }
   });
+}
+
+/** Stable, collision-free id for an autocomplete option inside its listbox. */
+export function getAutocompleteOptionId(
+  listboxId: string,
+  value: string
+): string {
+  const safeValue = Array.from(value)
+    .map((character) => character.codePointAt(0)?.toString(16))
+    .join('-');
+  return `${listboxId}-option-${safeValue}`;
 }
 
 export function syncFilteredItems(
@@ -548,15 +559,17 @@ interface RenderNoResultsParams {
   noResults?: IAutocompleteNoResults;
 }
 
-export function renderNoResults(params: RenderNoResultsParams): JSX.Element {
+export function renderNoResults(params: RenderNoResultsParams) {
   return (
-    <div class="modus-wc-autocomplete-no-results">
-      <div class="icon-label" aria-label={params.noResults?.ariaLabel}>
-        <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
-        <div class="label">{params.noResults?.label}</div>
+    <li role="presentation">
+      <div class="modus-wc-autocomplete-no-results">
+        <div class="icon-label" aria-label={params.noResults?.ariaLabel}>
+          <SearchSolidIcon className="modus-wc-autocomplete-search-icon" />
+          <div class="label">{params.noResults?.label}</div>
+        </div>
+        <div class="sub-label">{params.noResults?.subLabel}</div>
       </div>
-      <div class="sub-label">{params.noResults?.subLabel}</div>
-    </div>
+    </li>
   );
 }
 
@@ -570,7 +583,7 @@ interface RenderChipsParams {
   onChipRemove: (item: IAutocompleteItem) => void;
 }
 
-export function renderChips(params: RenderChipsParams): JSX.Element {
+export function renderChips(params: RenderChipsParams) {
   // Get selected items in selection order
   const selectedItems = params.selectionOrder
     .map((value) =>
@@ -621,9 +634,7 @@ interface RenderClearButtonParams {
   onClearAll: () => void;
 }
 
-export function renderClearButton(
-  params: RenderClearButtonParams
-): JSX.Element | null {
+export function renderClearButton(params: RenderClearButtonParams) {
   const showClear =
     params.includeClear &&
     !params.disabled &&
@@ -663,7 +674,7 @@ interface RenderExpandCollapseButtonParams {
 
 export function renderExpandCollapseButton(
   params: RenderExpandCollapseButtonParams
-): JSX.Element | null {
+) {
   const selectedItemsCount = params.selectionOrder.length;
 
   // Show expand/collapse button when there are more chips than maxChips
@@ -712,7 +723,7 @@ interface RenderMoreChipsIndicatorParams {
 
 export function renderMoreChipsIndicator(
   params: RenderMoreChipsIndicatorParams
-): JSX.Element | null {
+) {
   const selectedItemsCount = params.selectionOrder.length;
 
   // Show "+N more" when there are more chips than maxChips and not expanded
@@ -737,6 +748,9 @@ export function renderMoreChipsIndicator(
 
 interface RenderInputParams {
   autoComplete?: AutocompleteTypes;
+  ariaActiveDescendant?: string;
+  ariaControls?: string;
+  comboboxExpanded?: string;
   bordered?: boolean;
   multiSelect?: boolean;
   disabled?: boolean;
@@ -762,9 +776,12 @@ interface RenderInputParams {
   onFocus: (event: CustomEvent<FocusEvent>) => void;
 }
 
-export function renderInput(params: RenderInputParams): JSX.Element {
+export function renderInput(params: RenderInputParams) {
   return (
     <modus-wc-text-input
+      ariaActiveDescendant={params.ariaActiveDescendant}
+      ariaControls={params.ariaControls}
+      comboboxExpanded={params.comboboxExpanded}
       autoComplete={params.autoComplete}
       bordered={params.bordered && !params.multiSelect}
       customClass={params.customClass}
@@ -787,6 +804,9 @@ export function renderInput(params: RenderInputParams): JSX.Element {
       size={params.size}
       value={params.value}
       {...params.inheritedAttributes}
+      aria-autocomplete="list"
+      aria-haspopup="listbox"
+      role="combobox"
     >
       {params.customIconSlot ? <slot name="custom-icon" /> : undefined}
     </modus-wc-text-input>
@@ -800,13 +820,14 @@ interface RenderMenuItemsParams {
   items?: IAutocompleteItem[];
   noResults?: IAutocompleteNoResults;
   hasSlottedContent: boolean;
+  listboxId?: string;
   onItemSelect: (value: string) => void;
 }
 
-export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
+export function renderMenuItems(params: RenderMenuItemsParams) {
   if (params.showSpinner) {
     return (
-      <li>
+      <li role="presentation">
         <modus-wc-loader variant="spinner" size={params.size}></modus-wc-loader>
       </li>
     );
@@ -828,6 +849,11 @@ export function renderMenuItems(params: RenderMenuItemsParams): JSX.Element {
               disabled={item.disabled}
               focused={item.focused}
               label={item.label}
+              optionId={
+                params.listboxId
+                  ? getAutocompleteOptionId(params.listboxId, item.value)
+                  : undefined
+              }
               onItemSelect={(e: CustomEvent) => {
                 e.stopPropagation();
                 params.onItemSelect(item.value);
