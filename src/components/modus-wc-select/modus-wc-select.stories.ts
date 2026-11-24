@@ -83,6 +83,27 @@ const meta: Meta<SelectArgs> = {
     actions: {
       handles: ['inputBlur', 'inputChange', 'inputFocus'],
     },
+    docs: {
+      description: {
+        component: `
+A customizable select component used to pick a value from a list of options.
+
+### Allowing users to clear the selection
+
+The select follows native \`<select>\` behavior: it has no clear button and Escape does not clear it.
+To let users reset to no selection, include an option with an empty value that is neither \`disabled\` nor \`hidden\`,
+for example \`{ label: 'None', value: '' }\`. Choosing it sets \`value\` to \`''\` and emits \`inputChange\`.
+
+- Keyboard and pointer users both reach this option natively (arrow keys, type-ahead, Enter, or a click).
+- A placeholder such as \`{ label: 'Select an account', value: '', disabled: true, hidden: true }\` cannot be chosen again,
+  so once a value is selected it can't be reset. Use it only when clearing is not allowed.
+- With \`required\`, the first empty-value option acts as the placeholder label option. Users can still choose it,
+  but the field then fails constraint validation (\`valueMissing\`).
+
+See the Clearable story for an example.
+        `,
+      },
+    },
   },
 };
 
@@ -141,6 +162,45 @@ export const WithErrorFeedback: Story = {
       // const select = document.getElementById('error-select');
       // select.feedback = { level: 'error', message: 'Value is required.' };
     </script>
+  `,
+};
+
+const clearableOptions: ISelectOption[] = [
+  { label: 'None', value: '' },
+  { label: 'Option 1', value: '1' },
+  { label: 'Option 2', value: '2' },
+  { label: 'Option 3', value: '3' },
+];
+
+export const Clearable: Story = {
+  args: {
+    options: clearableOptions,
+    value: '2',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The first option, "None", has an empty value and is neither disabled nor hidden. Choose it with the keyboard or pointer to reset `value` to `\'\'`.',
+      },
+    },
+  },
+  render: (args) => html`
+    <modus-wc-select
+      ?bordered=${args.bordered}
+      custom-class=${ifDefined(args['custom-class'])}
+      ?disabled=${args.disabled}
+      .feedback=${args.feedback}
+      input-aria-invalid=${ifDefined(args['input-aria-invalid'])}
+      input-id=${ifDefined(args['input-id'])}
+      input-tab-index=${ifDefined(args['input-tab-index'])}
+      label=${ifDefined(args.label)}
+      name=${ifDefined(args.name)}
+      .options=${args.options}
+      ?required=${args.required}
+      size=${ifDefined(args.size)}
+      .value=${args.value}
+    ></modus-wc-select>
   `,
 };
 

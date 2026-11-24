@@ -219,6 +219,75 @@ describe('modus-wc-select', () => {
     expect(renderedOptions?.[1]).not.toHaveAttribute('selected');
   });
 
+  describe('clearing via a selectable empty option', () => {
+    const clearableOptions = [
+      { label: 'None', value: '' },
+      { label: 'Option 1', value: '1' },
+      { label: 'Option 2', value: '2' },
+    ];
+
+    it('should reset value to empty and emit inputChange when the user chooses the empty option', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcSelect],
+        html: '<modus-wc-select aria-label="Clearable select"></modus-wc-select>',
+      });
+
+      const component = page.rootInstance as ModusWcSelect;
+      component.options = clearableOptions;
+      component.value = '2';
+      await page.waitForChanges();
+
+      const select = page.root!.querySelector('select') as HTMLSelectElement;
+      const changeSpy = jest.fn();
+      page.root!.addEventListener('inputChange', changeSpy);
+
+      select.value = '';
+      select.dispatchEvent(new Event('input'));
+      await page.waitForChanges();
+
+      expect(component.value).toBe('');
+      expect(changeSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should render the empty option as selected after clearing', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcSelect],
+        html: '<modus-wc-select aria-label="Clearable select"></modus-wc-select>',
+      });
+
+      const component = page.rootInstance as ModusWcSelect;
+      component.options = clearableOptions;
+      component.value = '2';
+      await page.waitForChanges();
+
+      const select = page.root!.querySelector('select') as HTMLSelectElement;
+      select.value = '';
+      select.dispatchEvent(new Event('input'));
+      await page.waitForChanges();
+
+      const renderedOptions = select.querySelectorAll('option');
+      expect(renderedOptions[0]).toHaveAttribute('selected');
+      expect(renderedOptions[0]).not.toHaveAttribute('disabled');
+      expect(renderedOptions[0]).not.toHaveAttribute('hidden');
+      expect(renderedOptions[2]).not.toHaveAttribute('selected');
+    });
+
+    it('should keep the native select required when value is empty', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcSelect],
+        html: '<modus-wc-select aria-label="Clearable select" required="true"></modus-wc-select>',
+      });
+
+      const component = page.rootInstance as ModusWcSelect;
+      component.options = clearableOptions;
+      await page.waitForChanges();
+
+      const select = page.root!.querySelector('select') as HTMLSelectElement;
+      expect(component.value).toBe('');
+      expect(select).toHaveAttribute('required');
+    });
+  });
+
   it('should apply xs size class when size is xs', async () => {
     const page = await newSpecPage({
       components: [ModusWcSelect],

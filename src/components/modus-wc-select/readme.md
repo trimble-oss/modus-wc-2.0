@@ -1,6 +1,28 @@
 # modus-wc-select
 
+## Allowing users to clear the selection
 
+The select follows native `<select>` behavior: it has no clear button and Escape does not clear it.
+To let users reset to no selection, include an option with an empty value that is neither `disabled`
+nor `hidden`, for example `{ label: 'None', value: '' }`. Choosing it sets `value` to `''` and emits
+`inputChange`.
+
+- Keyboard and pointer users both reach this option natively (arrow keys, type-ahead, Enter, or a click).
+- A placeholder such as `{ label: 'Select an account', value: '', disabled: true, hidden: true }`
+  cannot be chosen again, so once a value is selected it can't be reset. Use it only when clearing
+  is not allowed.
+- With `required`, the first empty-value option acts as the placeholder label option. Users can still
+  choose it, but the field then fails constraint validation (`valueMissing`).
+
+```js
+const select = document.querySelector('modus-wc-select');
+select.options = [
+  { label: 'None', value: '' },
+  { label: 'Option 1', value: '1' },
+  { label: 'Option 2', value: '2' },
+];
+select.value = '2';
+```
 
 <!-- Auto Generated Below -->
 
