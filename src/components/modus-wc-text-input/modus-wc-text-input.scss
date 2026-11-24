@@ -36,6 +36,7 @@ modus-wc-text-input .modus-wc-input {
 
 modus-wc-text-input {
   @include input-disabled-overlay;
+  @include input-character-count;
 
   max-width: 100%;
   min-width: 0;

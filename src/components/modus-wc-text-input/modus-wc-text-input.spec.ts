@@ -832,4 +832,112 @@ describe('modus-wc-text-input', () => {
     expect(input.getAttribute('aria-invalid')).toBe('spelling');
     expect(input.getAttribute('aria-describedby')).toBe('hint');
   });
+
+  describe('character count', () => {
+    it('should not render the counter by default', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTextInput],
+        html: '<modus-wc-text-input max-length="10"></modus-wc-text-input>',
+      });
+
+      expect(page.root!.querySelector('.modus-wc-character-count')).toBeNull();
+      expect(page.root!.querySelector('[aria-live]')).toBeNull();
+    });
+
+    it('should not render the counter when maxLength is not set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTextInput],
+        html: '<modus-wc-text-input show-character-count></modus-wc-text-input>',
+      });
+
+      expect(page.root!.querySelector('.modus-wc-character-count')).toBeNull();
+      expect(
+        page.root!.querySelector('input')!.hasAttribute('aria-describedby')
+      ).toBe(false);
+    });
+
+    it('should render the counter outside the label and update on input', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTextInput],
+        html: '<modus-wc-text-input input-id="name" max-length="10" show-character-count></modus-wc-text-input>',
+      });
+      const input = page.root!.querySelector('input')!;
+      const counter = page.root!.querySelector('.modus-wc-character-count')!;
+
+      expect(page.root).toMatchSnapshot();
+      expect(counter.id).toBe('name-character-count');
+      expect(counter.textContent).toBe('0/10');
+      expect(counter.closest('label')).toBeNull();
+      expect(input.getAttribute('aria-describedby')).toBe(
+        'name-character-count'
+      );
+
+      input.value = 'Hello';
+      input.dispatchEvent(new Event('input'));
+      await page.waitForChanges();
+
+      expect(counter.textContent).toBe('5/10');
+      expect(
+        counter.classList.contains('modus-wc-character-count--limit')
+      ).toBe(false);
+      expect(page.root!.querySelector('[aria-live]')!.textContent).toBe('');
+    });
+
+    it('should mark the counter and announce when the limit is reached', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTextInput],
+        html: '<modus-wc-text-input max-length="5" show-character-count value="Hell"></modus-wc-text-input>',
+      });
+      const input = page.root!.querySelector('input')!;
+      const liveRegion = page.root!.querySelector('[aria-live="polite"]')!;
+
+      expect(liveRegion.textContent).toBe('');
+
+      input.value = 'Hello';
+      input.dispatchEvent(new Event('input'));
+      await page.waitForChanges();
+
+      const counter = page.root!.querySelector('.modus-wc-character-count')!;
+      expect(counter.textContent).toBe('5/5');
+      expect(
+        counter.classList.contains('modus-wc-character-count--limit')
+      ).toBe(true);
+      expect(liveRegion.classList.contains('modus-wc-sr-only')).toBe(true);
+      expect(liveRegion.textContent).toBe('Character limit reached');
+    });
+
+    it('should count an unset value as zero', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTextInput],
+        html: '<modus-wc-text-input max-length="3" show-character-count></modus-wc-text-input>',
+      });
+      const component = page.rootInstance as ModusWcTextInput;
+
+      component.value = null as unknown as string;
+      await page.waitForChanges();
+
+      expect(
+        page.root!.querySelector('.modus-wc-character-count')!.textContent
+      ).toBe('0/3');
+    });
+
+    it('should merge the counter id with inherited, describedBy, and feedback ids', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTextInput, ModusWcInputFeedback],
+        html: '<modus-wc-text-input input-id="email" aria-describedby="hint" described-by="external" max-length="20" show-character-count></modus-wc-text-input>',
+      });
+      const component = page.rootInstance as ModusWcTextInput;
+      const input = page.root!.querySelector('input')!;
+
+      component.feedback = { level: 'error', message: 'Value is required.' };
+      await page.waitForChanges();
+
+      expect(input.getAttribute('aria-describedby')).toBe(
+        'hint email-feedback external email-character-count'
+      );
+      const footer = page.root!.querySelector('.modus-wc-input-footer')!;
+      expect(footer.querySelector('modus-wc-input-feedback')).not.toBeNull();
+      expect(footer.querySelector('.modus-wc-character-count')).not.toBeNull();
+    });
+  });
 });

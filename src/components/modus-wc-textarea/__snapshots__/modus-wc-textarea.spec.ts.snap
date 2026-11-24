@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-textarea character count should render the counter and update on input 1`] = `
+<modus-wc-textarea input-id="notes" max-length="10" show-character-count="" value=""><textarea aria-describedby="notes-character-count" aria-placeholder="" class="modus-wc-textarea modus-wc-textarea-bordered modus-wc-textarea-md modus-wc-w-full" id="notes" maxlength="10" placeholder="" value=""></textarea>
+  <div class="modus-wc-input-footer">
+    <div class="modus-wc-character-count" id="notes-character-count">
+      0/10
+    </div>
+    <div aria-atomic="true" aria-live="polite" class="modus-wc-sr-only" role="status"></div>
+  </div>
+</modus-wc-textarea>
+`;
+
 exports[`modus-wc-textarea renders with default props 1`] = `
 <modus-wc-textarea value=""><textarea aria-placeholder="" class="modus-wc-textarea modus-wc-textarea-bordered modus-wc-textarea-md modus-wc-w-full" id="mwc_id_0" placeholder="" value=""></textarea>
 </modus-wc-textarea>

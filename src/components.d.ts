@@ -2472,6 +2472,11 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * Whether to display the current character count and maximum length. Only shown when maxLength is set.
+          * @default false
+         */
+        "showCharacterCount"?: boolean;
+        /**
           * The size of the input.
           * @default 'md'
          */
@@ -2495,6 +2500,11 @@ export namespace Components {
           * Controls automatic correction in inputted text. Support by browser varies.
          */
         "autoCorrect"?: 'on' | 'off';
+        /**
+          * Grow the textarea height to fit its content, starting from `rows`. Use this instead of Angular CDK `cdkTextareaAutosize`, which measures the host element rather than the inner textarea.
+          * @default false
+         */
+        "autoResize"?: boolean;
         /**
           * Indicates that the input should have a border.
           * @default true
@@ -2567,6 +2577,11 @@ export namespace Components {
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * Whether to display the current character count and maximum length. Only shown when maxLength is set.
+          * @default false
+         */
+        "showCharacterCount"?: boolean;
         /**
           * The size of the input.
           * @default 'md'
@@ -7236,6 +7251,11 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * Whether to display the current character count and maximum length. Only shown when maxLength is set.
+          * @default false
+         */
+        "showCharacterCount"?: boolean;
+        /**
           * The size of the input.
           * @default 'md'
          */
@@ -7259,6 +7279,11 @@ declare namespace LocalJSX {
           * Controls automatic correction in inputted text. Support by browser varies.
          */
         "autoCorrect"?: 'on' | 'off';
+        /**
+          * Grow the textarea height to fit its content, starting from `rows`. Use this instead of Angular CDK `cdkTextareaAutosize`, which measures the host element rather than the inner textarea.
+          * @default false
+         */
+        "autoResize"?: boolean;
         /**
           * Indicates that the input should have a border.
           * @default true
@@ -7343,6 +7368,11 @@ declare namespace LocalJSX {
           * The number of visible text lines for the textarea.
          */
         "rows"?: number;
+        /**
+          * Whether to display the current character count and maximum length. Only shown when maxLength is set.
+          * @default false
+         */
+        "showCharacterCount"?: boolean;
         /**
           * The size of the input.
           * @default 'md'

@@ -210,6 +210,32 @@
   }
 }
 
+@mixin input-character-count {
+  .modus-wc-input-footer {
+    align-items: flex-start;
+    display: flex;
+    gap: var(--modus-wc-spacing-sm);
+
+    > modus-wc-input-feedback {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+
+  .modus-wc-character-count {
+    color: var(--modus-wc-color-base-content);
+    flex-shrink: 0;
+    font-size: var(--modus-wc-font-size-sm);
+    margin-inline-start: auto;
+    padding-top: var(--modus-wc-spacing-xs);
+    text-align: end;
+
+    &.modus-wc-character-count--limit {
+      color: var(--modus-wc-color-error);
+    }
+  }
+}
+
 @mixin btn-state-colors {
   &.modus-wc-btn-primary {
     &[aria-pressed='true']:not(:disabled):not(.modus-wc-btn-disabled) {

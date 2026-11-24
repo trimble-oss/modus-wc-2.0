@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`modus-wc-text-input character count should render the counter outside the label and update on input 1`] = `
+<modus-wc-text-input input-id="name" inputmode="text" max-length="10" show-character-count="" value="">
+  <!---->
+  <label class="modus-wc-flex modus-wc-gap-1 modus-wc-input modus-wc-input-bordered modus-wc-input-md modus-wc-items-center modus-wc-text-input modus-wc-w-full">
+    <input aria-describedby="name-character-count" class="modus-wc-grow" id="name" maxlength="10" placeholder="" type="text" value="">
+  </label>
+  <div class="modus-wc-input-footer">
+    <div class="modus-wc-character-count" id="name-character-count">
+      0/10
+    </div>
+    <div aria-atomic="true" aria-live="polite" class="modus-wc-sr-only" role="status"></div>
+  </div>
+</modus-wc-text-input>
+`;
+
 exports[`modus-wc-text-input should render with custom props 1`] = `
 <modus-wc-text-input auto-capitalize="words" auto-complete="on" auto-focus="true" clear-aria-label="Clear input" custom-class="test-class" disabled="true" include-clear="true" include-search="true" input-aria-invalid="grammar" input-id="test-id" input-mode="numeric" input-spellcheck="true" input-tab-index="1" inputmode="text" label="Test label" max-length="50" min-length="5" name="test-name" pattern="[A-Za-z]{3}" placeholder="Test placeholder" readonly="true" required="true" size="lg" type="email" value="test@example.com">
   <!---->
