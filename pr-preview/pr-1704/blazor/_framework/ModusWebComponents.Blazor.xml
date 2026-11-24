@@ -3450,11 +3450,6 @@
             Allowed values: "on", "off"
             </summary>
         </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTextarea.AutoResize">
-            <summary>
-            Grow the textarea height to fit its content, starting from rows. Use this instead of Angular CDK cdkTextareaAutosize, which measures the host element rather than the inner textarea.
-            </summary>
-        </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextarea.Bordered">
             <summary>
             Indicates that the input should have a border.
@@ -3523,11 +3518,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTextarea.Rows">
             <summary>
             The number of visible text lines for the textarea.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTextarea.ShowCharacterCount">
-            <summary>
-            Whether to display the current character count and maximum length. Only shown when maxLength is set.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextarea.Size">
@@ -3694,11 +3684,6 @@
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.Required">
             <summary>
             A value is required for the form to be submittable.
-            </summary>
-        </member>
-        <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.ShowCharacterCount">
-            <summary>
-            Whether to display the current character count and maximum length. Only shown when maxLength is set.
             </summary>
         </member>
         <member name="P:ModusWebComponents.Blazor.ModusWcTextInput.Size">
