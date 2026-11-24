@@ -22,10 +22,12 @@ import {
   TextFieldTypes,
 } from '../types';
 import {
+  assignFeedbackAria,
   Attributes,
   createEffectiveIdResolver,
   inheritAriaAttributes,
   inheritAttributes,
+  resolveControlFeedbackAria,
 } from '../utils';
 
 /**
@@ -69,6 +71,9 @@ export class ModusWcTextInput {
   /** Custom CSS class to apply to the input. */
   @Prop() customClass?: string = '';
 
+  /** Ids appended to the input's aria-describedby. Use when feedback is rendered outside this component. */
+  @Prop() describedBy?: string;
+
   /** Whether the form control is disabled. */
   @Prop() disabled?: boolean = false;
 
@@ -93,6 +98,9 @@ export class ModusWcTextInput {
 
   /** The ID of the input element. */
   @Prop() inputId?: string;
+
+  /** Sets aria-invalid on the input. Error feedback overrides this with "true". */
+  @Prop() inputAriaInvalid?: string;
 
   /** Determine the control's relative ordering for sequential focus navigation (typically with the Tab key). */
   @Prop() inputTabIndex?: number;
@@ -289,6 +297,20 @@ export class ModusWcTextInput {
     const showClear = this.shouldIncludeClear();
     const showPasswordToggle = this.shouldShowPasswordToggle();
     const effectiveId = this.resolveEffectiveId(this.inputId);
+    const feedbackAria = resolveControlFeedbackAria(
+      this.feedback,
+      effectiveId,
+      this.inheritedAttributes,
+      {
+        extraDescribedBy: this.describedBy,
+        ariaInvalid: this.inputAriaInvalid,
+      }
+    );
+    const controlAttributes = assignFeedbackAria(
+      this.inheritedAttributes,
+      feedbackAria.describedBy,
+      feedbackAria.ariaInvalid
+    );
     const hasCustomIcon = !!this.el.querySelector('[slot="custom-icon"]');
 
     return (
@@ -341,7 +363,7 @@ export class ModusWcTextInput {
             tabIndex={this.inputTabIndex}
             type={this.getEffectiveInputType()}
             value={this.value}
-            {...this.inheritedAttributes}
+            {...controlAttributes}
           />
           {showPasswordToggle && (
             <div class="modus-wc-password-toggle-container">
@@ -382,6 +404,7 @@ export class ModusWcTextInput {
           <modus-wc-input-feedback
             level={this.feedback.level}
             message={this.feedback.message}
+            messageId={feedbackAria.messageId}
             size={this.getLabelSize()}
           />
         )}

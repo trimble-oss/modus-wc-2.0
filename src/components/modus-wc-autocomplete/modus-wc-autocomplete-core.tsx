@@ -753,6 +753,8 @@ interface RenderInputParams {
   size?: ModusSize;
   value: string;
   inheritedAttributes: Attributes;
+  describedBy?: string;
+  inputAriaInvalid?: string;
   customIconSlot?: boolean;
   onBlur: (event: CustomEvent<FocusEvent>) => void;
   onChange: (event: CustomEvent<Event>) => void;
@@ -780,6 +782,8 @@ export function renderInput(params: RenderInputParams): JSX.Element {
       placeholder={params.placeholder}
       readOnly={params.readOnly}
       required={params.required}
+      describedBy={params.describedBy}
+      inputAriaInvalid={params.inputAriaInvalid}
       size={params.size}
       value={params.value}
       {...params.inheritedAttributes}

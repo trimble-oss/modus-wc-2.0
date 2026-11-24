@@ -48,21 +48,19 @@ export default meta;
 type Story = StoryObj<RadioArgs>;
 
 export const Default: Story = {
-  render: (args) => {
-    return html`
-      <modus-wc-radio
-        custom-class=${ifDefined(args['custom-class'])}
-        ?disabled=${args.disabled}
-        input-id=${ifDefined(args['input-id'])}
-        input-tab-index=${ifDefined(args['input-tab-index'])}
-        label=${ifDefined(args.label)}
-        name=${ifDefined(args.name)}
-        ?required=${args.required}
-        size=${ifDefined(args.size)}
-        .value=${args.value}
-      ></modus-wc-radio>
-    `;
-  },
+  render: (args) => html`
+    <modus-wc-radio
+      custom-class=${ifDefined(args['custom-class'])}
+      ?disabled=${args.disabled}
+      input-id=${ifDefined(args['input-id'])}
+      input-tab-index=${ifDefined(args['input-tab-index'])}
+      label=${ifDefined(args.label)}
+      name=${ifDefined(args.name)}
+      ?required=${args.required}
+      size=${ifDefined(args.size)}
+      .value=${args.value}
+    ></modus-wc-radio>
+  `,
 };
 
 export const RadioGroup: Story = {
