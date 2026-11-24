@@ -241,6 +241,10 @@ exports[`modus-wc-autocomplete should pass feedback to text-input when both show
           <div class="label">
             No results found
           </div>
+        </div>
+        <div class="sub-label">
+          Check spelling or try a different keyword
+        </div>
       </div>
     </li>
   </modus-wc-menu>
