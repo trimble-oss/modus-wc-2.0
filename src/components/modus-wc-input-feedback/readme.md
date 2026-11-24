@@ -16,6 +16,7 @@ A customizable feedback component used to provide additional context related to 
 | Property             | Attribute      | Description                                                   | Type                                          | Default     |
 | -------------------- | -------------- | ------------------------------------------------------------- | --------------------------------------------- | ----------- |
 | `customClass`        | `custom-class` | Custom CSS class to apply to the outer div element.           | `string \| undefined`                         | `''`        |
+| `disableIcon`        | `disable-icon` | Whether to disable the icon                                   | `boolean \| undefined`                        | `false`     |
 | `icon`               | `icon`         | The Modus icon to use instead of the pre-defined icons.       | `string \| undefined`                         | `''`        |
 | `level` _(required)_ | `level`        | The level informs which icon and color that will be rendered. | `"error" \| "info" \| "success" \| "warning"` | `undefined` |
 | `message`            | `message`      | The message.                                                  | `string \| undefined`                         | `''`        |

@@ -3,7 +3,7 @@
 * Only add styles here that should not be applied by Tailwind, Daisy, or the theme.
 */
 
-.modus-wc-input {
+modus-wc-time-input .modus-wc-time-input.modus-wc-input {
   @include feedback-levels;
   @include sizing-tokens;
 }
@@ -72,6 +72,7 @@ modus-wc-time-input {
 [data-theme='connect-light'] modus-wc-time-input .modus-wc-time-input,
 [data-theme='connect-dark'] modus-wc-time-input .modus-wc-time-input {
   @include connect-input-styles;
+  @include connect-text-input-feedback;
 }
 
 // Modern only: 2px primary focus halo for mouse and keyboard focus, including the clock icon click.

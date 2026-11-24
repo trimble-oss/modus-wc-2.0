@@ -7,6 +7,7 @@ import { ModusSize } from '../types';
 
 interface InputFeedbackArgs {
   'custom-class'?: string;
+  'disable-icon'?: boolean;
   icon?: string;
   level: IInputFeedbackLevel;
   message?: string;
@@ -17,6 +18,7 @@ const meta: Meta<InputFeedbackArgs> = {
   title: 'Components/Forms/Input Feedback',
   component: 'modus-wc-input-feedback',
   args: {
+    'disable-icon': false,
     level: 'error',
     message: 'Uh oh. You done messed up.',
     size: 'md',
@@ -43,6 +45,7 @@ const Template: Story = {
     return html`
 <modus-wc-input-feedback
   custom-class=${ifDefined(args['custom-class'])}
+  ?disable-icon=${args['disable-icon']}
   icon=${ifDefined(args.icon)}
   level=${args.level}
   message=${ifDefined(args.message)}
@@ -61,6 +64,7 @@ export const WithCustomModusIcon: Story = {
     return html`
 <modus-wc-input-feedback
   custom-class=${ifDefined(args['custom-class'])}
+  ?disable-icon=${args['disable-icon']}
   icon='calendar_check'
   level='success'
   message='Event added to calendar!'
@@ -80,12 +84,14 @@ export const ShadowDomParent: Story = {
         propsMapper: (v: InputFeedbackArgs, el: HTMLElement) => {
           const inputFeedbackEl = el as unknown as {
             customClass: string;
+            disableIcon: boolean;
             icon: string;
             level: string;
             message: string;
             size: string;
           };
           inputFeedbackEl.customClass = v['custom-class'] || '';
+          inputFeedbackEl.disableIcon = Boolean(v['disable-icon']);
           inputFeedbackEl.icon = v.icon ?? '';
           inputFeedbackEl.level = v.level;
           inputFeedbackEl.message = v.message ?? '';
