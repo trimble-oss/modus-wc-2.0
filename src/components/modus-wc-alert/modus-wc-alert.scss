@@ -109,6 +109,8 @@ modus-wc-alert .modus-wc-alert {
   .title {
     font-size: var(--modus-wc-font-size-md);
     font-weight: var(--modus-wc-font-weight-bold);
+    line-height: inherit;
+    margin: 0;
   }
 
   .description {

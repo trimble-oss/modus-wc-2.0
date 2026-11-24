@@ -1150,6 +1150,69 @@ describe('modus-wc-alert', () => {
     });
   });
 
+  describe('titleHeadingLevel', () => {
+    it('should render the title as a div when title-heading-level is not set', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert],
+        html: '<modus-wc-alert alert-title="Title"></modus-wc-alert>',
+      });
+
+      const title = page.root?.querySelector('.title');
+      expect(title?.tagName).toBe('DIV');
+    });
+
+    it('should render the title as an h2 when title-heading-level is 2', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert],
+        html: '<modus-wc-alert alert-title="Title" title-heading-level="2"></modus-wc-alert>',
+      });
+
+      const title = page.root?.querySelector('.modus-wc-alert-content > h2');
+      expect(title).not.toBeNull();
+      expect(title?.classList.contains('title')).toBe(true);
+      expect(title?.textContent).toBe('Title');
+      expect(page.root?.querySelector('div.title')).toBeNull();
+    });
+
+    it('should update the title tag when titleHeadingLevel changes', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert],
+        html: '<modus-wc-alert alert-title="Title"></modus-wc-alert>',
+      });
+
+      page.root?.setAttribute('title-heading-level', '4');
+      await page.waitForChanges();
+
+      expect(page.root?.querySelector('.title')?.tagName).toBe('H4');
+    });
+
+    it('should render the heading title outside the collapsed body when expandable', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert, ModusWcIcon, ModusWcButton],
+        html: '<modus-wc-alert alert-title="Title" alert-description="Description" content-display-mode="expandable" title-heading-level="3"></modus-wc-alert>',
+      });
+
+      const title = page.root?.querySelector('.modus-wc-alert-content > h3');
+      expect(title?.classList.contains('title')).toBe(true);
+      expect(title?.textContent).toBe('Title');
+      expect(
+        title?.classList.contains('modus-wc-alert-body-text--collapsed')
+      ).toBe(false);
+      expect(
+        page.root?.querySelector('.modus-wc-alert-expandable-body .title')
+      ).toBeNull();
+    });
+
+    it('should not render a heading when alert-title is empty', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAlert],
+        html: '<modus-wc-alert title-heading-level="2"><div slot="content">Slot content</div></modus-wc-alert>',
+      });
+
+      expect(page.root?.querySelector('h2')).toBeNull();
+    });
+  });
+
   describe('convertPropsToClasses', () => {
     it('should return the variant-specific class when a semantic variant is provided', () => {
       expect(convertPropsToClasses({ variant: 'error' })).toBe(

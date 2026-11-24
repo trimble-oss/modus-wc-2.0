@@ -63,6 +63,9 @@ export class ModusWcAlert {
   /** The Modus icon to render. */
   @Prop() icon?: string;
 
+  /** The heading level of the alert title. When unset, the title renders as a div. */
+  @Prop() titleHeadingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+
   /** The variant of the alert. */
   @Prop() variant?: 'error' | 'info' | 'neutral' | 'success' | 'warning' =
     'info';
@@ -392,13 +395,16 @@ export class ModusWcAlert {
     const hasTitle = Boolean(this.alertTitle);
     const hasDescription = Boolean(this.alertDescription);
     const usesContentSlot = !hasTitle && !hasDescription;
+    const TitleTag = this.titleHeadingLevel
+      ? `h${this.titleHeadingLevel}`
+      : 'div';
 
     return (
       <Host>
         <div class={this.getClasses()} {...this.inheritedAttributes}>
           {!this.disableIcon && this.getLeadingIcon()}
           <div class={this.getContentClasses()}>
-            {hasTitle && <div class="title">{this.alertTitle}</div>}
+            {hasTitle && <TitleTag class="title">{this.alertTitle}</TitleTag>}
             {hasDescription &&
               this.renderBodyContent('description', this.alertDescription)}
             {usesContentSlot &&

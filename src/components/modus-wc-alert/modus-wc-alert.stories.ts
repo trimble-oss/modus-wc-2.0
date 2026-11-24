@@ -15,6 +15,7 @@ interface AlertArgs {
   dismissClick?: () => void;
   contentExpandedChange?: () => void;
   icon?: string;
+  'title-heading-level'?: 1 | 2 | 3 | 4 | 5 | 6;
   variant: 'error' | 'info' | 'neutral' | 'success' | 'warning';
   role: 'alert' | 'log' | 'marquee' | 'status' | 'timer';
 }
@@ -35,6 +36,14 @@ const meta: Meta<AlertArgs> = {
     role: {
       control: { type: 'select' },
       options: ['', 'alert', 'log', 'marquee', 'status', 'timer'],
+    },
+    'title-heading-level': {
+      control: { type: 'select' },
+      options: [undefined, 1, 2, 3, 4, 5, 6],
+      table: {
+        category: 'attributes',
+        type: { summary: '1 | 2 | 3 | 4 | 5 | 6' },
+      },
     },
     variant: {
       control: { type: 'select' },
@@ -84,6 +93,7 @@ const Template: Story = {
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
+  title-heading-level=${ifDefined(args['title-heading-level'])}
   variant=${ifDefined(args.variant)}
 >
 </modus-wc-alert>
@@ -105,6 +115,21 @@ export const Expandable: Story = {
   },
 };
 
+export const WithHeadingTitle: Story = {
+  ...Template,
+  args: {
+    'title-heading-level': 2,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'By default the title renders as a `div`. Set `title-heading-level` to render it as an `h1`-`h6` element so the title is exposed as a heading (WCAG 1.3.1). Choose the level that fits the surrounding page outline; the visual style is unchanged.',
+      },
+    },
+  },
+};
+
 export const CustomButton: Story = {
   render: (args) => {
     // prettier-ignore
@@ -119,6 +144,7 @@ export const CustomButton: Story = {
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
+  title-heading-level=${ifDefined(args['title-heading-level'])}
   variant=${ifDefined(args.variant)}
 >
   <modus-wc-button
@@ -145,6 +171,7 @@ export const WithCustomContent: Story = {
   dismissible=${ifDefined(args.dismissible)}
   icon=${ifDefined(args.icon)}
   role=${args.role}
+  title-heading-level=${ifDefined(args['title-heading-level'])}
   variant=${ifDefined(args.variant)}
 >
   <div slot="content">New custom message!</div>
@@ -168,6 +195,7 @@ export const ShadowDomParent: Story = {
             disableIcon: boolean;
             dismissible: boolean;
             icon: string;
+            titleHeadingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
             variant: string;
           };
           alertEl.alertDescription = v['alert-description'] ?? '';
@@ -178,6 +206,7 @@ export const ShadowDomParent: Story = {
           alertEl.disableIcon = Boolean(v['disable-icon']);
           alertEl.dismissible = Boolean(v.dismissible);
           alertEl.icon = v.icon ?? '';
+          alertEl.titleHeadingLevel = v['title-heading-level'];
           alertEl.variant = v.variant;
         },
       });
