@@ -657,7 +657,6 @@ export class ModusWcTable {
         asc: !!isAsc,
         desc: !!isDesc,
       },
-      tabIndex: canSort ? 0 : undefined,
       'aria-sort': !canSort
         ? undefined
         : isAsc
@@ -667,13 +666,6 @@ export class ModusWcTable {
             : ('none' as const),
     };
   }
-
-  private handleHeaderKeyDown = (event: KeyboardEvent, columnId: string) => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
-
-    event.preventDefault();
-    this.handleHeaderClick(columnId);
-  };
 
   private renderSortIcon(sortStatus: false | 'asc' | 'desc' | undefined) {
     const isAsc = sortStatus === 'asc';
@@ -1379,18 +1371,20 @@ export class ModusWcTable {
                   }}
                   style={{ width: column.width }}
                   scope="col"
-                  onClick={() => this.handleHeaderClick(column.id)}
-                  onKeyDown={
-                    canSort
-                      ? (event: KeyboardEvent) =>
-                          this.handleHeaderKeyDown(event, column.id)
-                      : undefined
-                  }
-                  tabIndex={sortProps.tabIndex}
                   aria-sort={sortProps['aria-sort']}
                 >
-                  {column.header}
-                  {canSort && this.renderSortIcon(sortStatus)}
+                  {canSort ? (
+                    <button
+                      type="button"
+                      class="sort-button"
+                      onClick={() => this.handleHeaderClick(column.id)}
+                    >
+                      {column.header}
+                      {this.renderSortIcon(sortStatus)}
+                    </button>
+                  ) : (
+                    column.header
+                  )}
                 </th>
               );
             })}

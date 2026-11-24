@@ -154,6 +154,37 @@ modus-wc-table .modus-wc-overflow-x-auto {
       &:hover {
         background-color: var(--modus-wc-color-alt-silver-light);
       }
+
+      .sort-button {
+        appearance: none;
+        background: transparent;
+        border: 0;
+        color: inherit;
+        cursor: pointer;
+        display: block;
+        font: inherit;
+        letter-spacing: inherit;
+        margin: 0;
+        padding: 0;
+        text-align: inherit;
+        width: 100%;
+
+        // Stretch the hit area and focus ring over the whole header cell.
+        &::after {
+          content: '';
+          inset: 0;
+          position: absolute;
+        }
+
+        &:focus-visible {
+          outline: none;
+
+          &::after {
+            outline: 2px solid var(--modus-wc-color-primary);
+            outline-offset: -2px;
+          }
+        }
+      }
     }
   }
 
@@ -292,10 +323,4 @@ tr.selected {
 .modus-wc-table td.editing > * {
   margin: 0; /* strip default margins (e.g., Host blocks) */
   width: 100%;
-}
-
-// Modern only: 2px primary focus halo on sortable headers.
-[data-theme^='modus-modern'] .modus-wc-table th.sortable:focus-visible {
-  outline: 2px solid var(--modus-wc-color-primary);
-  outline-offset: -2px;
 }

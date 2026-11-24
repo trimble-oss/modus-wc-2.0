@@ -3112,12 +3112,6 @@ describe('modus-wc-date', () => {
 
       const grid = page.root!.querySelector('[role="grid"]');
       expect(grid).not.toBeNull();
-      expect(grid!.getAttribute('aria-label')).toBe(
-        new Intl.DateTimeFormat(component['locale'], {
-          month: 'long',
-          year: 'numeric',
-        }).format(new Date(2025, 9, 1))
-      );
 
       const rows = grid!.querySelectorAll('[role="row"]');
       expect(rows.length).toBe(7);
@@ -3125,7 +3119,6 @@ describe('modus-wc-date', () => {
       const columnHeaders = rows[0].querySelectorAll('[role="columnheader"]');
       expect(columnHeaders.length).toBe(7);
       expect(columnHeaders[0].textContent).toBe('Su');
-      expect(columnHeaders[0].getAttribute('aria-label')).toBe('Sunday');
 
       Array.from(rows)
         .slice(1)
@@ -3138,7 +3131,7 @@ describe('modus-wc-date', () => {
         });
     });
 
-    it('should mark only the selected day with aria-selected and label days with the full date', async () => {
+    it('should mark only the selected day with aria-selected', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Grid selection test" value="2025-10-15"></modus-wc-date>',
@@ -3154,14 +3147,6 @@ describe('modus-wc-date', () => {
 
       const selectedButton = selectedCells[0].querySelector('.calendar-day');
       expect(selectedButton?.getAttribute('data-iso-date')).toBe('2025-10-15');
-      expect(selectedButton?.getAttribute('aria-label')).toBe(
-        new Intl.DateTimeFormat(component['locale'], {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        }).format(new Date(2025, 9, 15))
-      );
 
       expect(
         page.root!.querySelectorAll('[role="gridcell"][aria-selected="false"]')
@@ -3188,6 +3173,9 @@ describe('modus-wc-date', () => {
         .forEach((row) => {
           expect(row.firstElementChild?.getAttribute('role')).toBe('rowheader');
           expect(row.firstElementChild?.className).toBe('week-number');
+          expect(row.firstElementChild?.getAttribute('aria-label')).toBe(
+            `Week ${row.firstElementChild?.textContent}`
+          );
         });
     });
 

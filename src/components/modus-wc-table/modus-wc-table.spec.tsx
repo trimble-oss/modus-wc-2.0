@@ -2140,10 +2140,10 @@ describe('modus-wc-table', () => {
     await page.waitForChanges();
 
     // Get the first sortable header (Name column)
-    const sortableHeader = page.root?.querySelector('th.sortable');
+    const sortableHeader = page.root?.querySelector('th.sortable button');
     expect(sortableHeader).not.toBeNull();
 
-    // Trigger the click event directly on the header element
+    // Trigger the click event on the header's sort button
     if (sortableHeader) {
       (sortableHeader as HTMLElement).click();
       await page.waitForChanges();
@@ -2183,24 +2183,12 @@ describe('modus-wc-table', () => {
     const [selectionHeader, nameHeader, emailHeader] = headers;
     expect(selectionHeader.getAttribute('aria-sort')).toBeNull();
     expect(nameHeader.getAttribute('aria-sort')).toBe('none');
-    expect(nameHeader.getAttribute('tabindex')).toBe('0');
+    expect(nameHeader.getAttribute('tabindex')).toBeNull();
     expect(emailHeader.getAttribute('aria-sort')).toBeNull();
     expect(emailHeader.getAttribute('tabindex')).toBeNull();
-
-    nameHeader.click();
-    await page.waitForChanges();
-    expect(
-      page.root?.querySelector('th.sortable')?.getAttribute('aria-sort')
-    ).toBe('ascending');
-
-    nameHeader.click();
-    await page.waitForChanges();
-    expect(
-      page.root?.querySelector('th.sortable')?.getAttribute('aria-sort')
-    ).toBe('descending');
   });
 
-  it('should sort simple headers with Enter and Space keys', async () => {
+  it('should render a native button inside sortable headers per the APG sortable table pattern', async () => {
     const page = await newSpecPage({
       components: [ModusWcTable],
       html: `<modus-wc-table aria-label="Sortable table" sortable="true"></modus-wc-table>`,
@@ -2217,33 +2205,36 @@ describe('modus-wc-table', () => {
     const sortableHeader = page.root?.querySelector(
       'th.sortable'
     ) as HTMLElement;
+    expect(sortableHeader.getAttribute('role')).toBeNull();
+    expect(sortableHeader.getAttribute('tabindex')).toBeNull();
 
-    const enterEvent = new KeyboardEvent('keydown', {
-      key: 'Enter',
-      cancelable: true,
-    });
-    sortableHeader.dispatchEvent(enterEvent);
-    await page.waitForChanges();
-    expect(enterEvent.defaultPrevented).toBe(true);
-    expect(component['sorting']).toEqual([{ id: 'name', desc: false }]);
+    const sortButton = sortableHeader.querySelector(
+      'button'
+    ) as HTMLButtonElement;
+    expect(sortButton).not.toBeNull();
+    expect(sortButton.getAttribute('type')).toBe('button');
+    expect(sortButton.textContent).toContain('Name');
+    expect(sortButton.querySelector('.sort-icon')).not.toBeNull();
 
-    const spaceEvent = new KeyboardEvent('keydown', {
-      key: ' ',
-      cancelable: true,
-    });
-    sortableHeader.dispatchEvent(spaceEvent);
-    await page.waitForChanges();
-    expect(spaceEvent.defaultPrevented).toBe(true);
-    expect(component['sorting']).toEqual([{ id: 'name', desc: true }]);
+    const plainHeader = page.root?.querySelectorAll('thead th')[1];
+    expect(plainHeader?.querySelector('button')).toBeNull();
+    expect(plainHeader?.textContent).toBe('Email');
 
-    const tabEvent = new KeyboardEvent('keydown', {
-      key: 'Tab',
-      cancelable: true,
-    });
-    sortableHeader.dispatchEvent(tabEvent);
+    sortableHeader.click();
     await page.waitForChanges();
-    expect(tabEvent.defaultPrevented).toBe(false);
-    expect(component['sorting']).toEqual([{ id: 'name', desc: true }]);
+    expect(sortableHeader.getAttribute('aria-sort')).toBe('none');
+
+    sortButton.click();
+    await page.waitForChanges();
+    expect(
+      page.root?.querySelector('th.sortable')?.getAttribute('aria-sort')
+    ).toBe('ascending');
+
+    (page.root?.querySelector('th.sortable button') as HTMLElement).click();
+    await page.waitForChanges();
+    expect(
+      page.root?.querySelector('th.sortable')?.getAttribute('aria-sort')
+    ).toBe('descending');
   });
 
   it('should call commitEdit when handleCommit function is called (line 774)', async () => {

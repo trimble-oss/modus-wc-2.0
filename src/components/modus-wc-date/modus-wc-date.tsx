@@ -1616,7 +1616,6 @@ export class ModusWcDate {
 
   private renderDayButton(
     date: Date,
-    label: string,
     flags: {
       isToday: boolean;
       isCurrentMonth: boolean;
@@ -1651,7 +1650,6 @@ export class ModusWcDate {
           'other-month': !isCurrentMonth,
           disabled: isDisabled,
         }}
-        aria-label={label}
         data-iso-date={formatISODate(date)}
         disabled={isDisabled}
         onClick={() =>
@@ -1741,18 +1739,6 @@ export class ModusWcDate {
         isInHighlightRun(d, previewStart, previewEnd, dMonth === currentMonth);
       return inConfirmed || inPreview;
     };
-
-    const dayLabelFormat = new Intl.DateTimeFormat(this.locale, {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-    const gridLabel = new Intl.DateTimeFormat(this.locale, {
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date(cal.selectedYear, currentMonth, 1));
-    const weekdayNames = cal.getDaysOfWeek('default', weekStartNum, 'long');
 
     const renderDateCell = (date: Date, index: number) => {
       if (!date) {
@@ -1873,7 +1859,7 @@ export class ModusWcDate {
               : { 'calendar-day-cell': true }
           }
         >
-          {this.renderDayButton(date, dayLabelFormat.format(date), {
+          {this.renderDayButton(date, {
             isToday,
             isCurrentMonth,
             isDisabled,
@@ -1902,25 +1888,17 @@ export class ModusWcDate {
           }
         }
       >
-        <div role="grid" aria-label={gridLabel} class="calendar-grid">
+        <div role="grid" class="calendar-grid">
           <div
             role="row"
             class={`calendar-days-week${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
           >
             {this.showWeekNumbers && (
-              <div
-                role="columnheader"
-                aria-label="Week"
-                class="week-number-header"
-              ></div>
+              <div role="columnheader" class="week-number-header"></div>
             )}
-            {cal.getDaysOfWeek('default', weekStartNum).map((d, index) => {
+            {cal.getDaysOfWeek('default', weekStartNum).map((d) => {
               return (
-                <div
-                  role="columnheader"
-                  aria-label={weekdayNames[index]}
-                  class="day-header"
-                >
+                <div role="columnheader" class="day-header">
                   {d}
                 </div>
               );
