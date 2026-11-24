@@ -521,6 +521,24 @@ describe('modus-wc-tooltip', () => {
       expect(document.body.contains(getFloatingElement(page))).toBe(true);
     });
 
+    it('should close on mouseleave after being moved from a focused ancestor', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcTooltip],
+        html: `<ul><li id="old" tabindex="0"><modus-wc-tooltip content="Item tip"><div>Label</div></modus-wc-tooltip></li><li id="new" tabindex="0"></li></ul>`,
+      });
+      page.body.querySelector('#old')?.dispatchEvent(new Event('focus'));
+      await page.waitForChanges();
+      expect(page.rootInstance.isVisible).toBe(true);
+
+      await moveTooltip(page, '#new');
+      page.root?.dispatchEvent(new MouseEvent('mouseenter'));
+      await page.waitForChanges();
+      page.root?.dispatchEvent(new MouseEvent('mouseleave'));
+      await page.waitForChanges();
+
+      expect(page.rootInstance.isVisible).toBe(false);
+    });
+
     it('should hide a visible tooltip after being moved', async () => {
       const page = await newSpecPage({
         components: [ModusWcTooltip],
