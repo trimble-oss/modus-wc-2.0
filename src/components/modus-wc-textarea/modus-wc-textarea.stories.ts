@@ -168,11 +168,17 @@ so use this CSS approach instead. Browsers without \`field-sizing\` support keep
   },
   render: () => html`
     <style>
+      modus-wc-textarea {
+        display: block;
+        width: 300px;
+      }
+
       .textarea-auto-resize {
+        box-sizing: border-box;
         field-sizing: content;
         min-block-size: 4lh;
         resize: none;
-        width: 300px;
+        width: 100%;
       }
     </style>
     <modus-wc-textarea
