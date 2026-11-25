@@ -4,7 +4,7 @@ exports[`modus-wc-alert contentDisplayMode should render with expandable content
 <modus-wc-alert alert-description="A very long description that should be truncated when displayed in expandable mode." alert-title="Title" content-display-mode="expandable">
   <!---->
   <div class="modus-wc-alert modus-wc-alert--expandable modus-wc-alert-info" role="status">
-    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center" custom-class="modus-wc-alert-icon">
       <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
         info
       </i>
@@ -27,7 +27,7 @@ exports[`modus-wc-alert contentDisplayMode should wrap slot content in expandabl
 <modus-wc-alert content-display-mode="expandable">
   <!---->
   <div class="modus-wc-alert modus-wc-alert--expandable modus-wc-alert-info" role="status">
-    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center" custom-class="modus-wc-alert-icon">
       <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
         info
       </i>
@@ -49,7 +49,7 @@ exports[`modus-wc-alert should render error variant with alert icon 1`] = `
 <modus-wc-alert alert-title="Custom title" variant="error">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-error" role="status">
-    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center" custom-class="modus-wc-alert-icon">
       <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
         alert
       </i>
@@ -67,7 +67,7 @@ exports[`modus-wc-alert should render info variant with info icon 1`] = `
 <modus-wc-alert alert-title="Custom title" variant="info">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-info" role="status">
-    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center" custom-class="modus-wc-alert-icon">
       <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
         info
       </i>
@@ -85,7 +85,7 @@ exports[`modus-wc-alert should render neutral variant with neutral styling and i
 <modus-wc-alert alert-title="Custom title" variant="neutral">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-neutral" role="status">
-    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center" custom-class="modus-wc-alert-icon">
       <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
         info
       </i>
@@ -103,7 +103,7 @@ exports[`modus-wc-alert should render success variant with check_circle icon 1`]
 <modus-wc-alert alert-title="Custom title" variant="success">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-success" role="status">
-    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center" custom-class="modus-wc-alert-icon">
       <i aria-hidden="true" class="modus-icons modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
         check_circle
       </i>
@@ -121,7 +121,7 @@ exports[`modus-wc-alert should render warning variant with info icon 1`] = `
 <modus-wc-alert alert-title="Custom title" variant="warning">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-warning" role="status">
-    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center" custom-class="modus-wc-alert-icon">
       <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
         warning
       </i>
@@ -156,7 +156,7 @@ exports[`modus-wc-alert should render with default props 1`] = `
 <modus-wc-alert alerttitle="Custom title">
   <!---->
   <div class="modus-wc-alert modus-wc-alert-info" role="status">
-    <modus-wc-icon class="modus-wc-flex modus-wc-items-center" custom-class="modus-wc-alert-icon">
+    <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center" custom-class="modus-wc-alert-icon">
       <i aria-hidden="true" class="modus-icons-outlined modus-wc-alert-icon modus-wc-icon modus-wc-icon--md" tabindex="-1">
         info
       </i>

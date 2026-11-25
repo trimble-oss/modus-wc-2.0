@@ -36,14 +36,6 @@ modus-wc-input-label .modus-wc-input-label {
   }
 }
 
-[data-theme='modus-modern-light'] modus-wc-input-label .modus-wc-input-label {
-  color: var(--modus-wc-color-gray-6); // #6A6E79
-}
-
-[data-theme='modus-modern-dark'] modus-wc-input-label .modus-wc-input-label {
-  color: var(--modus-wc-color-gray-3); // #A3A6B1
-}
-
 [data-theme='modus-classic-light'] modus-wc-input-label .modus-wc-input-label {
   color: var(--modus-wc-color-gray-8);
 }
@@ -53,16 +45,15 @@ modus-wc-input-label .modus-wc-input-label {
 }
 
 [data-theme='connect-light'] modus-wc-input-label .modus-wc-input-label {
-  color: oklch(var(--s));
-}
-
-[data-theme='connect-light'] modus-wc-input-label .modus-wc-input-label,
-[data-theme='connect-dark'] modus-wc-input-label .modus-wc-input-label {
+  color: var(--color-secondary);
   font-weight: var(--modus-wc-font-weight-normal);
   margin-bottom: 0;
+  min-height: var(--modus-wc-line-height-md);
 }
 
-[data-theme='connect-light'],
-[data-theme='connect-dark'] {
-  @include connect-form-label-host-spacing;
+[data-theme='connect-dark'] modus-wc-input-label .modus-wc-input-label {
+  color: var(--modus-wc-color-white);
+  font-weight: var(--modus-wc-font-weight-normal);
+  margin-bottom: 0;
+  min-height: var(--modus-wc-line-height-md);
 }

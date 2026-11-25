@@ -9,7 +9,9 @@ export const convertPropsToClasses = ({
 }): string => {
   let classes = '';
 
-  if (bordered) {
+  if (bordered === false) {
+    classes = `${classes} moduswc:input-ghost`;
+  } else {
     classes = `${classes} modus-wc-input-bordered`;
   }
 
@@ -18,7 +20,7 @@ export const convertPropsToClasses = ({
   }
 
   if (size) {
-    classes = `${classes} modus-wc-input-${size}`;
+    classes = `${classes} moduswc:input-${size} modus-wc-input-${size}`;
   }
 
   return classes.trim();

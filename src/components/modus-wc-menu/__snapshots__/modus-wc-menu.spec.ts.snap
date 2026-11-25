@@ -3,7 +3,7 @@
 exports[`modus-wc-menu renders with default props 1`] = `
 <modus-wc-menu selection-mode="single">
   <!---->
-  <ul aria-label="Default menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md modus-wc-w-full" role="menu"></ul>
+  <ul aria-label="Default menu" aria-orientation="vertical" class="modus-wc-menu modus-wc-menu-md moduswc:menu moduswc:menu-md moduswc:w-full" role="menu"></ul>
 </modus-wc-menu>
 `;
 
@@ -17,6 +17,6 @@ exports[`modus-wc-menu should add customClass to classList in submenu mode 1`] =
 exports[`modus-wc-menu should render with custom props 1`] = `
 <modus-wc-menu bordered="true" custom-class="test-class" orientation="horizontal" selection-mode="single" size="lg">
   <!---->
-  <ul aria-label="Test menu" aria-orientation="horizontal" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-horizontal modus-wc-menu-lg modus-wc-w-full test-class" role="menubar"></ul>
+  <ul aria-label="Test menu" aria-orientation="horizontal" class="modus-wc-menu modus-wc-menu--bordered modus-wc-menu-horizontal modus-wc-menu-lg moduswc:menu moduswc:menu-horizontal moduswc:menu-lg moduswc:w-full test-class" role="menubar"></ul>
 </modus-wc-menu>
 `;

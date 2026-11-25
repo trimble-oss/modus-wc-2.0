@@ -6,8 +6,8 @@ exports[`modus-wc-dock should render with custom props 1`] = `
     <div class="modus-wc-dock-item">
       <modus-wc-button aria-label="Home">
         <!---->
-        <button aria-label="Home" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button" tabindex="0" type="button">
-          <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <button aria-label="Home" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button moduswc:btn moduswc:btn-base-inverted moduswc:btn-block moduswc:btn-md" tabindex="0" type="button">
+          <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center">
             <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
               home
             </i>
@@ -18,8 +18,8 @@ exports[`modus-wc-dock should render with custom props 1`] = `
     <div class="modus-wc-dock-item modus-wc-dock-item-active">
       <modus-wc-button aria-current="page" aria-label="Inbox">
         <!---->
-        <button aria-current="page" aria-label="Inbox" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button" tabindex="0" type="button">
-          <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <button aria-current="page" aria-label="Inbox" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button moduswc:btn moduswc:btn-base-inverted moduswc:btn-block moduswc:btn-md" tabindex="0" type="button">
+          <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center">
             <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
               email
             </i>
@@ -30,8 +30,8 @@ exports[`modus-wc-dock should render with custom props 1`] = `
     <div class="modus-wc-dock-item">
       <modus-wc-button aria-label="Settings">
         <!---->
-        <button aria-label="Settings" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button" tabindex="0" type="button">
-          <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <button aria-label="Settings" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-md modus-wc-dock-item-button moduswc:btn moduswc:btn-base-inverted moduswc:btn-block moduswc:btn-md" tabindex="0" type="button">
+          <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center">
             <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--md" tabindex="-1">
               settings
             </i>
@@ -49,8 +49,8 @@ exports[`modus-wc-dock should render with default props 1`] = `
     <div class="modus-wc-dock-item modus-wc-dock-item-active">
       <modus-wc-button aria-current="page">
         <!---->
-        <button aria-current="page" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-sm modus-wc-dock-item-button" tabindex="0" type="button">
-          <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <button aria-current="page" class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-sm modus-wc-dock-item-button moduswc:btn moduswc:btn-base-inverted moduswc:btn-block moduswc:btn-sm" tabindex="0" type="button">
+          <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center">
             <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
               home
             </i>
@@ -64,8 +64,8 @@ exports[`modus-wc-dock should render with default props 1`] = `
     <div class="modus-wc-dock-item">
       <modus-wc-button>
         <!---->
-        <button class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-sm modus-wc-dock-item-button" tabindex="0" type="button">
-          <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <button class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-sm modus-wc-dock-item-button moduswc:btn moduswc:btn-base-inverted moduswc:btn-block moduswc:btn-sm" tabindex="0" type="button">
+          <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center">
             <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
               email
             </i>
@@ -79,8 +79,8 @@ exports[`modus-wc-dock should render with default props 1`] = `
     <div class="modus-wc-dock-item">
       <modus-wc-button>
         <!---->
-        <button class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-sm modus-wc-dock-item-button" tabindex="0" type="button">
-          <modus-wc-icon class="modus-wc-flex modus-wc-items-center">
+        <button class="modus-wc-btn modus-wc-btn-base-inverted modus-wc-btn-block modus-wc-btn-borderless modus-wc-btn-sm modus-wc-dock-item-button moduswc:btn moduswc:btn-base-inverted moduswc:btn-block moduswc:btn-sm" tabindex="0" type="button">
+          <modus-wc-icon class="modus-wc-flex modus-wc-items-center moduswc:flex moduswc:items-center">
             <i aria-hidden="true" class="modus-icons modus-wc-icon modus-wc-icon--sm" tabindex="-1">
               settings
             </i>

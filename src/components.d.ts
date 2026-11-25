@@ -1354,6 +1354,9 @@ export namespace Components {
     }
     /**
      * A customizable link component used to navigate to URLs.
+     * This component supports a 'start-icon' `<slot>` for a start icon, an
+     * 'end-icon' `<slot>` for an end icon, and a default slot for the link
+     * text. Either icon, both, or neither may be provided.
      */
     interface ModusWcLink {
         /**
@@ -3667,6 +3670,9 @@ declare global {
     };
     /**
      * A customizable link component used to navigate to URLs.
+     * This component supports a 'start-icon' `<slot>` for a start icon, an
+     * 'end-icon' `<slot>` for an end icon, and a default slot for the link
+     * text. Either icon, both, or neither may be provided.
      */
     interface HTMLModusWcLinkElement extends Components.ModusWcLink, HTMLStencilElement {
     }
@@ -5904,6 +5910,9 @@ declare namespace LocalJSX {
     }
     /**
      * A customizable link component used to navigate to URLs.
+     * This component supports a 'start-icon' `<slot>` for a start icon, an
+     * 'end-icon' `<slot>` for an end icon, and a default slot for the link
+     * text. Either icon, both, or neither may be provided.
      */
     interface ModusWcLink {
         /**
@@ -7952,6 +7961,9 @@ declare module "@stencil/core" {
             "modus-wc-input-label": LocalJSX.ModusWcInputLabel & JSXBase.HTMLAttributes<HTMLModusWcInputLabelElement>;
             /**
              * A customizable link component used to navigate to URLs.
+             * This component supports a 'start-icon' `<slot>` for a start icon, an
+             * 'end-icon' `<slot>` for an end icon, and a default slot for the link
+             * text. Either icon, both, or neither may be provided.
              */
             "modus-wc-link": LocalJSX.ModusWcLink & JSXBase.HTMLAttributes<HTMLModusWcLinkElement>;
             /**

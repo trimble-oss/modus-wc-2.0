@@ -84,7 +84,11 @@ export class ModusWcRating {
 
   private getClasses(): { ratingClasses: string; ratingItemClasses: string } {
     const ratingClassList = ['modus-wc-rating'];
-    const ratingItemClassList = ['modus-wc-rating-item', 'modus-wc-mask'];
+    const ratingItemClassList = [
+      'modus-wc-rating-item',
+      'moduswc:mask',
+      'modus-wc-mask',
+    ];
 
     const { ratingPropClasses, ratingItemPropClasses } = convertPropsToClasses({
       allowHalf: this.allowHalf,

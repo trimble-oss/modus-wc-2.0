@@ -591,8 +591,12 @@ describe('modus-wc-pagination', () => {
   });
 
   it('should map pagination sizes to button classes', () => {
-    expect(convertPropsToClasses({ size: 'xs' })).toBe('modus-wc-btn-xs');
-    expect(convertPropsToClasses({ size: 'xl' })).toBe('modus-wc-btn-xl');
+    expect(convertPropsToClasses({ size: 'xs' })).toBe(
+      'moduswc:btn-xs modus-wc-btn-xs'
+    );
+    expect(convertPropsToClasses({ size: 'xl' })).toBe(
+      'moduswc:btn-xl modus-wc-btn-xl'
+    );
   });
 
   it('should use square classes for icon buttons and padded classes for page buttons', async () => {

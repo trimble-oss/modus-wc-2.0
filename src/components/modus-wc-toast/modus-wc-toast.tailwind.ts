@@ -19,22 +19,22 @@ export const convertPropsToClasses = ({
         classes = `${classes} modus-wc-toast-top modus-wc-toast-end`;
         break;
       case 'middle-start':
-        classes = `${classes} modus-wc-toast-start modus-wc-toast-middle`;
+        classes = `${classes} modus-wc-toast-middle modus-wc-toast-start`;
         break;
       case 'middle-center':
-        classes = `${classes} modus-wc-toast-center modus-wc-toast-middle`;
+        classes = `${classes} modus-wc-toast-middle modus-wc-toast-center`;
         break;
       case 'middle-end':
-        classes = `${classes} modus-wc-toast-end modus-wc-toast-middle`;
+        classes = `${classes} modus-wc-toast-middle modus-wc-toast-end`;
         break;
       case 'bottom-start':
-        classes = `${classes} modus-wc-toast-start`;
+        classes = `${classes} modus-wc-toast-bottom modus-wc-toast-start`;
         break;
       case 'bottom-center':
-        classes = `${classes} modus-wc-toast-center`;
+        classes = `${classes} modus-wc-toast-bottom modus-wc-toast-center`;
         break;
       case 'bottom-end':
-        classes = `${classes} modus-wc-toast-end`;
+        classes = `${classes} modus-wc-toast-bottom modus-wc-toast-end`;
         break;
     }
   }

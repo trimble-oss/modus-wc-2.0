@@ -1,0 +1,10 @@
+/**
+ * Tailwind CSS v4 + DaisyUI v5 entry.
+ * Themes come only from src/styles/generated/daisyui-themes.css
+ * (@plugin "daisyui/theme"), imported by tailwind-v4-core.css.
+ */
+@import './global.css';
+@import './variables.css';
+@import './fonts.css';
+@import './tailwind-v4-core.css';
+@import './tailwind-v4-button-overrides.css';

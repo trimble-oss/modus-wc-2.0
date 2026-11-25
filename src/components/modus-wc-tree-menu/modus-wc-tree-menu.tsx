@@ -73,12 +73,20 @@ export class ModusWcTreeMenu {
 
   private getClasses(): string {
     if (this.isSubMenu) {
-      const classList: string[] = ['modus-wc-menu-dropdown'];
+      const classList: string[] = [
+        'moduswc:menu-dropdown',
+        'modus-wc-menu-dropdown',
+      ];
       if (this.customClass) classList.push(this.customClass);
       return classList.join(' ');
     }
 
-    const classList: string[] = ['modus-wc-menu modus-wc-w-full'];
+    const classList: string[] = [
+      'modus-wc-menu',
+      'moduswc:menu',
+      'modus-wc-w-full',
+      'moduswc:w-full',
+    ];
 
     const propClasses = convertPropsToClasses({
       bordered: this.bordered,

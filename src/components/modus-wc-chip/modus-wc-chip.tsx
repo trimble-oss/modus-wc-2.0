@@ -105,7 +105,11 @@ export class ModusWcChip {
   };
 
   private getClasses(): string {
-    const classList: string[] = ['modus-wc-chip', 'modus-wc-btn'];
+    const classList: string[] = [
+      'modus-wc-chip',
+      'moduswc:btn',
+      'modus-wc-btn',
+    ];
 
     const propClasses = convertPropsToClasses({
       active: this.active,

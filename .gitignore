@@ -9,6 +9,7 @@ dist/
 www/
 storybook-static/
 .wireit/
+.cache/
 src/styles/output.css
 src/styles/modus-icons-2.css
 src/styles/modus-icons-2-base.css

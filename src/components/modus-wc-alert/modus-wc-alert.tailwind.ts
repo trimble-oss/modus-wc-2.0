@@ -5,7 +5,9 @@ export const convertPropsToClasses = ({
 }): string => {
   let classes = '';
 
-  if (variant) {
+  if (variant === 'neutral') {
+    classes = `${classes} modus-wc-alert-neutral`;
+  } else if (variant) {
     classes = `${classes} modus-wc-alert-${variant}`;
   }
 

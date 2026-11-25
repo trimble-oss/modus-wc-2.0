@@ -1,0 +1,62 @@
+/**
+ * Shared Tailwind v4 + DaisyUI v5 core (no relative @imports).
+ * Imported by tailwind-v4.css (CLI) and readFileSync for Stencil plugin.
+ */
+@import 'tailwindcss' source(none) prefix(moduswc);
+
+/* Phase 3: full catalog. SCSS hooks stay modus-wc-*; do not scan SCSS for utilities. */
+@source '../components/**/*.{ts,tsx}';
+@source './tailwind-v4-themeable.ts';
+@source './tailwind-themeable.ts';
+
+@plugin 'daisyui' {
+  themes:
+    modus-modern-light --default,
+    modus-modern-dark,
+    modus-classic-light,
+    modus-classic-dark,
+    connect-light,
+    connect-dark;
+  root: ':root';
+  logs: false;
+}
+
+@import './generated/daisyui-themes.css';
+
+@layer base {
+  h1 {
+    font-size: var(--modus-wc-font-size-3xl);
+    font-weight: var(--modus-wc-font-weight-normal);
+    line-height: var(--modus-wc-line-height-h1);
+  }
+
+  h2 {
+    font-size: var(--modus-wc-font-size-2xl);
+    font-weight: var(--modus-wc-font-weight-normal);
+    line-height: var(--modus-wc-line-height-h2);
+  }
+
+  h3 {
+    font-size: var(--modus-wc-font-size-xl);
+    font-weight: var(--modus-wc-font-weight-semibold);
+    line-height: var(--modus-wc-line-height-h3);
+  }
+
+  h4 {
+    font-size: var(--modus-wc-font-size-lg);
+    font-weight: var(--modus-wc-font-weight-semibold);
+    line-height: var(--modus-wc-line-height-md);
+  }
+
+  h5 {
+    font-size: var(--modus-wc-font-size-md);
+    font-weight: var(--modus-wc-font-weight-bold);
+    line-height: var(--modus-wc-line-height-md);
+  }
+
+  h6 {
+    font-size: var(--modus-wc-font-size-sm);
+    font-weight: var(--modus-wc-font-weight-bold);
+    line-height: var(--modus-wc-line-height-h6);
+  }
+}

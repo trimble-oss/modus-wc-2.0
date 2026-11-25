@@ -51,6 +51,7 @@ export class ModusWcBadge {
   }
 
   private getClasses(): string {
+    // Modus SCSS owns badge chrome; Daisy `badge` utilities force a fixed height and tight padding.
     const classList = ['modus-wc-badge'];
     const propClasses = convertPropsToClasses({
       color: this.color,

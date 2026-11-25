@@ -25,7 +25,7 @@ exports[`modus-wc-toast should render with default props 1`] = `
 exports[`modus-wc-toast should render with position bottom-center 1`] = `
 <modus-wc-toast position="bottom-center">
   <!---->
-  <div class="modus-wc-toast modus-wc-toast-center">
+  <div class="modus-wc-toast modus-wc-toast-bottom modus-wc-toast-center">
     <div>
       Custom content
     </div>
@@ -36,7 +36,7 @@ exports[`modus-wc-toast should render with position bottom-center 1`] = `
 exports[`modus-wc-toast should render with position bottom-end 1`] = `
 <modus-wc-toast position="bottom-end">
   <!---->
-  <div class="modus-wc-toast modus-wc-toast-end">
+  <div class="modus-wc-toast modus-wc-toast-bottom modus-wc-toast-end">
     <div>
       Custom content
     </div>
@@ -47,7 +47,7 @@ exports[`modus-wc-toast should render with position bottom-end 1`] = `
 exports[`modus-wc-toast should render with position bottom-start 1`] = `
 <modus-wc-toast position="bottom-start">
   <!---->
-  <div class="modus-wc-toast modus-wc-toast-start">
+  <div class="modus-wc-toast modus-wc-toast-bottom modus-wc-toast-start">
     <div>
       Custom content
     </div>

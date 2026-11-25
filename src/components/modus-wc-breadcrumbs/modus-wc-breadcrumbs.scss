@@ -33,6 +33,20 @@ modus-wc-breadcrumbs .modus-wc-breadcrumbs {
   &.modus-wc-text-lg {
     font-size: var(--modus-wc-font-size-lg);
   }
+
+  a,
+  .modus-wc-breadcrumb-button {
+    color: var(--modus-wc-color-primary);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  span {
+    color: var(--modus-wc-color-base-content);
+  }
 }
 
 [data-theme='modus-classic-light'] modus-wc-breadcrumbs .modus-wc-breadcrumbs,

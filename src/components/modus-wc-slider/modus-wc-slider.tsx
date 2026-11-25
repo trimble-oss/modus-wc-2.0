@@ -84,7 +84,7 @@ export class ModusWcSlider {
   }
 
   private getClasses(): string {
-    const classList = ['modus-wc-range'];
+    const classList = ['modus-wc-range', 'moduswc:range'];
 
     const propClasses = convertPropsToClasses({ size: this.size });
 
