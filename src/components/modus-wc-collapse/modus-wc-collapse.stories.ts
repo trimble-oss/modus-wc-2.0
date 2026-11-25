@@ -105,7 +105,23 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
+export const Default: Story = {
+  ...Template,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Accessibility
+
+- The collapse is a native \`<details>\` disclosure. The \`<summary>\` toggles with Enter or Space, and the content panel is labelled by it through \`aria-labelledby\`.
+- The summary is not a heading. To give the collapse a heading relationship, place a real heading before it, outside the \`<details>\`. For groups of collapses, see the [Accordion](?path=/docs/components-accordion--docs) docs.
+- Use the \`header\` slot for label content only, such as text or \`modus-wc-typography\`. Don't put buttons, links, or other interactive controls there.
+- Keep a custom \`collapse-id\` unique on the page.
+        `,
+      },
+    },
+  },
+};
 
 export const WithStartAndEndIcons: Story = {
   render: (args) => {
@@ -227,27 +243,6 @@ export const ShadowDomParent: Story = {
       .props=${{ ...args }}
     ></collapse-shadow-host>`;
   },
-};
-
-export const Accessibility: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: `
-#### Accessibility
-
-  - The collapse is a disclosure built on a native \`<details>\` element. The \`<summary>\` is the toggle and is operated with Enter or Space. It has the id \`{collapseId}-title\`, and the content panel (\`{collapseId}-content\`) references it with \`aria-labelledby\`.
-  - Use the \`header\` slot for label content only, such as text or \`modus-wc-typography\`. Content in the slot is part of the toggle, so don't place buttons, links, or other interactive controls there.
-  - The summary is not exposed as a heading. It must stay the first child of \`<details>\`, so it can't be wrapped in a heading, and heading elements inside it are not reliably announced as headings by screen readers.
-  - To give a collapse a heading relationship, place a real heading (for example \`<h2>\`) before it, outside the \`<details>\`. For a group of collapses, see the [Accordion](?path=/docs/components-accordion--docs) docs. If every section must appear as a heading in the page outline, the native \`<details>\` pattern can't provide that.
-  - \`collapseId\` builds the ids used by \`aria-controls\` and \`aria-labelledby\`. A random id is generated when it is not set. If you set it, keep it unique on the page.
-        `,
-      },
-    },
-    controls: { disable: true },
-    canvas: { disable: true },
-  },
-  render: () => html`<div></div>`,
 };
 
 export const Migration: Story = {

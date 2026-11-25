@@ -96,29 +96,45 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
+export const Default: Story = {
+  ...Template,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Accessibility
+
+- Each section is a native \`<details>\` / \`<summary>\` toggle: Tab moves between sections, and Enter or Space opens one. It is not an [APG accordion](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/), so there are no arrow-key shortcuts.
+- Summaries are not headings. For a heading relationship, place a real heading before the accordion and reference it with \`aria-labelledby\`, plus \`role="group"\` on \`modus-wc-accordion\`. See WithSectionHeading.
+- Use the \`header\` slot for label content only, such as text or \`modus-wc-typography\`. Don't put buttons or links there.
+- Give each collapse a unique \`collapse-id\`.
+        `,
+      },
+    },
+  },
+};
 
 export const WithSectionHeading: Story = {
   render: (args) => {
     // prettier-ignore
     return html`
 <div style="padding: 20px;">
-  <h2 id="accordion-faq-heading">Frequently asked questions</h2>
+  <modus-wc-typography hierarchy="h2" id="accordion-faq-heading">Frequently asked questions</modus-wc-typography>
   <modus-wc-accordion
     aria-labelledby="accordion-faq-heading"
     custom-class=${ifDefined(args['custom-class'])}
     role="group"
   >
     <modus-wc-collapse collapse-id="accordion-faq-shipping">
-      <span slot="header">Shipping</span>
+      <modus-wc-typography slot="header" hierarchy="p" weight="semibold">Shipping</modus-wc-typography>
       <div slot="content">Orders ship within two business days.</div>
     </modus-wc-collapse>
     <modus-wc-collapse collapse-id="accordion-faq-returns">
-      <span slot="header">Returns</span>
+      <modus-wc-typography slot="header" hierarchy="p" weight="semibold">Returns</modus-wc-typography>
       <div slot="content">Items can be returned within 30 days.</div>
     </modus-wc-collapse>
     <modus-wc-collapse collapse-id="accordion-faq-warranty">
-      <span slot="header">Warranty</span>
+      <modus-wc-typography slot="header" hierarchy="p" weight="semibold">Warranty</modus-wc-typography>
       <div slot="content">Products include a one-year warranty.</div>
     </modus-wc-collapse>
   </modus-wc-accordion>
@@ -133,27 +149,6 @@ export const WithSectionHeading: Story = {
       },
     },
   },
-};
-
-export const Accessibility: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: `
-#### Accessibility
-
-  - The accordion groups \`modus-wc-collapse\` disclosures. It is not an [APG accordion](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/): each section is a native \`<details>\` / \`<summary>\` toggle reached with Tab, and there is no arrow-key navigation between headers.
-  - The \`<summary>\` must stay the toggle. It is not exposed as a heading, and heading elements in the \`header\` slot are not reliably announced as headings by screen readers.
-  - Use the \`header\` slot for label content only, such as text or \`modus-wc-typography\`. Don't place buttons, links, or other interactive controls there.
-  - To provide a heading relationship, place a real heading before the accordion, outside the \`<details>\` elements, and reference it with \`aria-labelledby\` plus a \`role\` such as \`group\` on \`modus-wc-accordion\`. See the WithSectionHeading example. Each panel is already labelled by its summary through \`aria-labelledby\`. If every section must appear as a heading in the page outline, the native \`<details>\` pattern can't provide that.
-  - Give each collapse a unique \`collapse-id\`, or leave it unset to get a random id, so the \`{id}-title\` and \`{id}-content\` ids stay unique.
-        `,
-      },
-    },
-    controls: { disable: true },
-    canvas: { disable: true },
-  },
-  render: () => html`<div></div>`,
 };
 
 export const ShadowDomParent: Story = {
