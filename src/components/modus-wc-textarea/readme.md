@@ -1,6 +1,27 @@
 # modus-wc-textarea
 
+## Resizing to fit content
 
+The component renders its `<textarea>` in light DOM, so it can be sized with CSS. To grow the
+textarea with its content, apply `field-sizing: content` to the inner element, either through
+`custom-class` or a selector such as `modus-wc-textarea textarea`. Set a `min-block-size` for the
+starting height, because `rows` no longer controls the height once `field-sizing` is applied.
+
+```css
+.textarea-auto-resize {
+  field-sizing: content;
+  min-block-size: 4lh;
+  resize: none;
+}
+```
+
+```html
+<modus-wc-textarea custom-class="textarea-auto-resize"></modus-wc-textarea>
+```
+
+Angular CDK `cdkTextareaAutosize` does not work on `modus-wc-textarea`, because the directive
+attaches to the host element instead of the inner `<textarea>`. Use the CSS approach above instead.
+Browsers without `field-sizing` support keep the regular `rows` height.
 
 <!-- Auto Generated Below -->
 
