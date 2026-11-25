@@ -38,6 +38,12 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     emblemPath: 'logos/emblems/advanced-image-manager-emblem.svg',
     category: 'trimble',
   },
+  agent_studio: {
+    displayName: 'Trimble Agent Studio',
+    path: 'logos/trimble/agent-studio.svg',
+    emblemPath: 'logos/emblems/ai-emblem.svg',
+    category: 'trimble',
+  },
   analytics: {
     displayName: 'Analytics',
     path: 'logos/trimble/analytics.svg',
@@ -54,6 +60,12 @@ export const LOGO_VARIANTS: Record<LogoName, ILogoInfo> = {
     displayName: 'Appian',
     path: 'logos/trimble/appian.svg',
     emblemPath: 'logos/emblems/appian-emblem.svg',
+    category: 'trimble',
+  },
+  assist: {
+    displayName: 'Trimble Assist',
+    path: 'logos/trimble/assist.svg',
+    emblemPath: 'logos/emblems/ai-emblem.svg',
     category: 'trimble',
   },
   atlas: {
