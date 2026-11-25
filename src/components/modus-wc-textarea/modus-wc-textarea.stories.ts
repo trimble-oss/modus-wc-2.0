@@ -151,6 +151,38 @@ export const WithErrorFeedback: Story = {
   `,
 };
 
+export const AutoResize: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+The inner \`<textarea>\` renders in light DOM, so \`field-sizing: content\` applied through \`custom-class\`
+(or a selector such as \`modus-wc-textarea textarea\`) grows it with its content. Set \`min-block-size\`
+for the starting height, since \`rows\` no longer controls the height once \`field-sizing\` is applied.
+
+Angular CDK \`cdkTextareaAutosize\` attaches to the host element instead of the inner \`<textarea>\`,
+so use this CSS approach instead. Browsers without \`field-sizing\` support keep the regular \`rows\` height.
+        `,
+      },
+    },
+  },
+  render: () => html`
+    <style>
+      .textarea-auto-resize {
+        field-sizing: content;
+        min-block-size: 4lh;
+        resize: none;
+        width: 300px;
+      }
+    </style>
+    <modus-wc-textarea
+      custom-class="textarea-auto-resize"
+      label="Auto-resizing textarea"
+      placeholder="Placeholder text"
+    ></modus-wc-textarea>
+  `,
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     // Create a unique shadow host for textarea component
@@ -204,37 +236,6 @@ export const ShadowDomParent: Story = {
     ></textarea-shadow-host>`;
   },
 };
-export const AutoResize: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: `
-The inner \`<textarea>\` renders in light DOM, so \`field-sizing: content\` applied through \`custom-class\`
-(or a selector such as \`modus-wc-textarea textarea\`) grows it with its content. Set \`min-block-size\`
-for the starting height, since \`rows\` no longer controls the height once \`field-sizing\` is applied.
-
-Angular CDK \`cdkTextareaAutosize\` attaches to the host element instead of the inner \`<textarea>\`,
-so use this CSS approach instead. Browsers without \`field-sizing\` support keep the regular \`rows\` height.
-        `,
-      },
-    },
-  },
-  render: () => html`
-    <style>
-      .textarea-auto-resize {
-        field-sizing: content;
-        min-block-size: 4lh;
-        resize: none;
-      }
-    </style>
-    <modus-wc-textarea
-      custom-class="textarea-auto-resize"
-      label="Auto-resizing textarea"
-      placeholder="Type several lines to see the textarea grow"
-    ></modus-wc-textarea>
-  `,
-};
-
 export const Migration: Story = {
   parameters: {
     docs: {
