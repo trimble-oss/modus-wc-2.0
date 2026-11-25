@@ -186,10 +186,10 @@ const Template: Story = {
   .textOverrides=${ifDefined(args['text-overrides'])}
   .userCard=${args['user-card']}
   ?user-menu-open=${args['user-menu-open']}
-  .visibility=${{ ...args.visibility, logo: false }}
+  .visibility=${args.visibility}
   logo-name=${args['logo-name']}
 >
-  <modus-wc-logo slot="start" name=${args['logo-name']}></modus-wc-logo>
+ 
   <div slot="main-menu">Main menu contents</div>
   <div slot="notifications">Notification contents</div>
   <div slot="apps">App drawer contents</div>
@@ -228,7 +228,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'The built-in logo button is switched off with visibility.logo set to false. A modus-wc-logo in the start slot supplies the logo without wrapping it in a button.',
+          'The built-in logo button can be disabled by setting visibility.logo to false. To display the logo without wrapping it in a button, provide the logo through the start slot.',
       },
     },
   },
