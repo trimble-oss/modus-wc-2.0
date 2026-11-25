@@ -160,8 +160,7 @@ The inner \`<textarea>\` renders in light DOM, so \`field-sizing: content\` appl
 (or a selector such as \`modus-wc-textarea textarea\`) grows it with its content. Set \`min-block-size\`
 for the starting height, since \`rows\` no longer controls the height once \`field-sizing\` is applied.
 
-Angular CDK \`cdkTextareaAutosize\` attaches to the host element instead of the inner \`<textarea>\`,
-so use this CSS approach instead. Browsers without \`field-sizing\` support keep the regular \`rows\` height.
+Browsers without \`field-sizing\` support keep the regular \`rows\` height.
         `,
       },
     },
