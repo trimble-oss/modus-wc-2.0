@@ -3177,6 +3177,52 @@ describe('modus-wc-date', () => {
       ]);
     });
 
+    it('should give one gridcell the Tab stop and focus gridcells rather than day buttons', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Tab stop test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const tabStops = page.root!.querySelectorAll(
+        '[role="gridcell"][tabindex="0"]'
+      );
+      expect(tabStops.length).toBe(1);
+      expect(tabStops[0].getAttribute('data-iso-date')).toBe('2025-10-15');
+
+      const focusSpy = jest.spyOn(tabStops[0] as HTMLElement, 'focus');
+      component['focusCalendarDay'](
+        component['calendarRef'],
+        new Date(2025, 9, 15)
+      );
+      expect(focusSpy).toHaveBeenCalled();
+    });
+
+    it('should select the day when Enter is pressed on its gridcell', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Enter test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const selectSpy = jest.spyOn(
+        component as unknown as { handleDateSelect: (date: Date) => void },
+        'handleDateSelect'
+      );
+      const cell = page.root!.querySelector(
+        '[role="gridcell"][data-iso-date="2025-10-16"]'
+      ) as HTMLElement;
+      cell.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+      );
+
+      expect(selectSpy).toHaveBeenCalledWith(new Date(2025, 9, 16));
+    });
+
     it('should mark only the selected day with aria-selected', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
@@ -3225,7 +3271,7 @@ describe('modus-wc-date', () => {
         });
     });
 
-    it('should mark range start and end as selected in range mode', async () => {
+    it('should mark every day in the confirmed range as selected in range mode', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
         html: '<modus-wc-date aria-label="Grid range test" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
@@ -3239,7 +3285,19 @@ describe('modus-wc-date', () => {
       ).map((cell) =>
         cell.querySelector('.calendar-day')?.getAttribute('data-iso-date')
       );
-      expect(selectedDates).toEqual(['2026-06-10', '2026-06-20']);
+      expect(selectedDates).toEqual([
+        '2026-06-10',
+        '2026-06-11',
+        '2026-06-12',
+        '2026-06-13',
+        '2026-06-14',
+        '2026-06-15',
+        '2026-06-16',
+        '2026-06-17',
+        '2026-06-18',
+        '2026-06-19',
+        '2026-06-20',
+      ]);
       expect(
         page
           .root!.querySelector('[role="grid"]')
@@ -5193,10 +5251,10 @@ describe('modus-wc-date', () => {
         expect(june10Button).not.toBeNull();
 
         const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
+          component as unknown as { focusCalendarDay: jest.Mock },
+          'focusCalendarDay'
         );
-        component['focusCalendarDayButton'](
+        component['focusCalendarDay'](
           component['calendarRef'],
           new Date(2026, 5, 10)
         );
@@ -5220,8 +5278,8 @@ describe('modus-wc-date', () => {
         await page.waitForChanges();
 
         const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
+          component as unknown as { focusCalendarDay: jest.Mock },
+          'focusCalendarDay'
         );
 
         component['handleArrowKeys'](
@@ -5296,8 +5354,8 @@ describe('modus-wc-date', () => {
         const monthSpy = jest.fn();
         page.root!.addEventListener('calendarMonthChange', monthSpy);
         const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
+          component as unknown as { focusCalendarDay: jest.Mock },
+          'focusCalendarDay'
         );
 
         component['handleArrowKeys'](
@@ -5338,8 +5396,8 @@ describe('modus-wc-date', () => {
         await page.waitForChanges();
 
         const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
+          component as unknown as { focusCalendarDay: jest.Mock },
+          'focusCalendarDay'
         );
 
         component['handleArrowKeys'](
@@ -5378,8 +5436,8 @@ describe('modus-wc-date', () => {
         ) as HTMLButtonElement;
 
         const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
+          component as unknown as { focusCalendarDay: jest.Mock },
+          'focusCalendarDay'
         );
 
         const downEvent = {
@@ -5481,7 +5539,7 @@ describe('modus-wc-date', () => {
         const { component } = await createRangePage('value="2026-06-10"');
 
         expect(() =>
-          component['focusCalendarDayButton'](undefined, new Date(2026, 5, 10))
+          component['focusCalendarDay'](undefined, new Date(2026, 5, 10))
         ).not.toThrow();
       });
     });

@@ -410,7 +410,7 @@ export class ModusWcDate {
     if (this.pendingCalendarDayFocus) {
       const { container, date } = this.pendingCalendarDayFocus;
       this.pendingCalendarDayFocus = null;
-      this.focusCalendarDayButton(container, date);
+      this.focusCalendarDay(container, date);
     }
   }
 
@@ -496,14 +496,33 @@ export class ModusWcDate {
     });
   }
 
-  private focusCalendarDayButton(
+  /** The one day in a grid that takes the Tab stop (roving tabindex). */
+  private getTabStopIso(cal: DatePickerCalendar): string | undefined {
+    const focusedDate =
+      this.focusedDateIndex >= 0 ? cal.dates[this.focusedDateIndex] : undefined;
+    const isShownAndEnabled = (date?: Date | null): date is Date =>
+      !!date &&
+      date.getFullYear() === cal.selectedYear &&
+      date.getMonth() === cal.selectedMonth &&
+      !this.isDateDisabled(date);
+    const target =
+      [
+        focusedDate,
+        this.parseISODate(this.value),
+        this.parsedStartDate,
+        this.parsedEndDate,
+      ].find(isShownAndEnabled) ?? cal.dates.find(isShownAndEnabled);
+    return target ? formatISODate(target) : undefined;
+  }
+
+  private focusCalendarDay(
     calendarContainer: HTMLElement | undefined,
     date: Date
   ): void {
-    const button = calendarContainer?.querySelector(
-      `.calendar-day[data-iso-date="${formatISODate(date)}"]`
+    const cell = calendarContainer?.querySelector(
+      `[role="gridcell"][data-iso-date="${formatISODate(date)}"]`
     ) as HTMLElement | undefined;
-    button?.focus();
+    cell?.focus();
   }
 
   private scheduleCalendarDayFocus(
@@ -1666,8 +1685,7 @@ export class ModusWcDate {
               }
             : undefined
         }
-        onKeyDown={(e) => this.handleDateKeyDown(e, date)}
-        tabIndex={isDisabled ? -1 : 0}
+        tabIndex={-1}
       >
         {date.getDate()}
       </button>
@@ -1739,6 +1757,8 @@ export class ModusWcDate {
         isInHighlightRun(d, previewStart, previewEnd, dMonth === currentMonth);
       return inConfirmed || inPreview;
     };
+
+    const tabStopIso = this.getTabStopIso(cal);
 
     const renderDateCell = (date: Date, index: number) => {
       if (!date) {
@@ -1836,12 +1856,16 @@ export class ModusWcDate {
         ((selectedDate && compareDate(date, selectedDate) === 0) || false);
 
       const isMarkedSelected =
-        isSelected || isRangeStart || isRangeEnd || isAnchor;
+        isSelected || isRangeStart || isRangeEnd || isAnchor || confirmed;
+      const isTabStop = !isDisabled && formatISODate(date) === tabStopIso;
 
       return (
         <div
           role="gridcell"
           aria-selected={isMarkedSelected ? 'true' : 'false'}
+          data-iso-date={formatISODate(date)}
+          tabIndex={isTabStop ? 0 : -1}
+          onKeyDown={(e) => this.handleDateKeyDown(e, date)}
           class={
             this.isRange
               ? getRangeDayCellClasses({
