@@ -2,6 +2,7 @@
 import { h } from '@stencil/core';
 import { newSpecPage } from '@stencil/core/testing';
 import { IAppMenuItem, ModusWcAppMenu } from './modus-wc-app-menu';
+import { ModusWcTooltip } from '../modus-wc-tooltip/modus-wc-tooltip';
 import { AppName } from '../types';
 import * as keyboardUtils from './utils/app-menu-keyboard';
 
@@ -2373,6 +2374,52 @@ describe('modus-wc-app-menu', () => {
 
     expect(orderChangeSpy).toHaveBeenCalledTimes(1);
     expect(orderChangeSpy.mock.calls[0][0].detail).toEqual([]);
+  });
+
+  describe('grid tooltip after reorder', () => {
+    it('should keep the grid tooltip showing on hover after its item is moved in the row', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcAppMenu, ModusWcTooltip],
+        template: () =>
+          h('modus-wc-app-menu', { apps: cloneApps(), layout: 'grid' }),
+      });
+
+      page.root
+        ?.querySelectorAll('.modus-wc-app-menu-grid-item')
+        .forEach((gridItem) => {
+          const mockLabel = document.createElement('span');
+          mockLabel.classList.add('modus-wc-app-menu-grid-item-label');
+          Object.defineProperty(mockLabel, 'scrollWidth', { value: 120 });
+          Object.defineProperty(mockLabel, 'clientWidth', { value: 80 });
+          Object.defineProperty(mockLabel, 'scrollHeight', { value: 16 });
+          Object.defineProperty(mockLabel, 'clientHeight', { value: 20 });
+          gridItem.querySelector('modus-wc-tooltip')?.appendChild(mockLabel);
+        });
+      (page.rootInstance as ModusWcAppMenu as any).updateGridTooltips();
+      await page.waitForChanges();
+
+      const row = page.root?.querySelector('.modus-wc-app-menu-grid-row');
+      const firstItem = page.root?.querySelector(
+        '.modus-wc-app-menu-grid-item'
+      ) as HTMLElement;
+      const tooltip = firstItem.querySelector(
+        'modus-wc-tooltip'
+      ) as HTMLElement;
+      expect(tooltip.hasAttribute('disabled')).toBe(false);
+
+      row?.appendChild(firstItem);
+      await page.waitForChanges();
+
+      tooltip.dispatchEvent(new MouseEvent('mouseenter'));
+      await page.waitForChanges();
+
+      const floating = Array.from(
+        document.body.querySelectorAll('.modus-wc-tooltip-content')
+      ).find((el) => el.textContent === 'Trimble Connect') as
+        | HTMLElement
+        | undefined;
+      expect(floating?.style.display).toBe('block');
+    });
   });
 
   describe('host class composition', () => {
