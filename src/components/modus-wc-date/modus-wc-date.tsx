@@ -1877,6 +1877,7 @@ export class ModusWcDate {
       { length: Math.ceil(cal.dates.length / 7) },
       (_, rowIndex) => cal.dates.slice(rowIndex * 7, rowIndex * 7 + 7)
     );
+    const longDayNames = cal.getDaysOfWeek('default', weekStartNum, 'long');
 
     return (
       <div
@@ -1900,9 +1901,13 @@ export class ModusWcDate {
             {this.showWeekNumbers && (
               <div role="columnheader" class="week-number-header"></div>
             )}
-            {cal.getDaysOfWeek('default', weekStartNum).map((d) => {
+            {cal.getDaysOfWeek('default', weekStartNum).map((d, index) => {
               return (
-                <div role="columnheader" class="day-header">
+                <div
+                  role="columnheader"
+                  aria-label={longDayNames[index]}
+                  class="day-header"
+                >
                   {d}
                 </div>
               );

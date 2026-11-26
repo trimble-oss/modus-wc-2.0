@@ -3145,6 +3145,38 @@ describe('modus-wc-date', () => {
       expect(grid!.hasAttribute('aria-multiselectable')).toBe(false);
     });
 
+    it('should label weekday column headers with full names and keep the short visible text', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Weekday names test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const headers = Array.from(page.root!.querySelectorAll('.day-header'));
+      expect(headers.map((header) => header.textContent)).toEqual([
+        'Su',
+        'Mo',
+        'Tu',
+        'We',
+        'Th',
+        'Fr',
+        'Sat',
+      ]);
+      expect(
+        headers.map((header) => header.getAttribute('aria-label'))
+      ).toEqual([
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ]);
+    });
+
     it('should mark only the selected day with aria-selected', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
