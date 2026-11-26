@@ -1,7 +1,5 @@
 # modus-wc-accordion
 
-
-
 <!-- Auto Generated Below -->
 
 

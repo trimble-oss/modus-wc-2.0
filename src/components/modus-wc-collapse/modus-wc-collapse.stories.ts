@@ -105,7 +105,23 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
+export const Default: Story = {
+  ...Template,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Accessibility
+
+- The collapse is a native \`<details>\` disclosure. The \`<summary>\` toggles with Enter or Space, and the content panel is labelled by it through \`aria-labelledby\`.
+- The summary is not a heading. To give the collapse a heading relationship, place a real heading before it, outside the \`<details>\`. For groups of collapses, see the [Accordion](?path=/docs/components-accordion--docs) docs.
+- Use the \`header\` slot for label content only, such as text or \`modus-wc-typography\`. Don't put buttons, links, or other interactive controls there.
+- Keep a custom \`collapse-id\` unique on the page.
+        `,
+      },
+    },
+  },
+};
 
 export const WithStartAndEndIcons: Story = {
   render: (args) => {
@@ -228,6 +244,7 @@ export const ShadowDomParent: Story = {
     ></collapse-shadow-host>`;
   },
 };
+
 export const Migration: Story = {
   parameters: {
     docs: {

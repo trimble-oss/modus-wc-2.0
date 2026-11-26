@@ -96,7 +96,60 @@ const Template: Story = {
   },
 };
 
-export const Default: Story = { ...Template };
+export const Default: Story = {
+  ...Template,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+#### Accessibility
+
+- Each section is a native \`<details>\` / \`<summary>\` toggle: Tab moves between sections, and Enter or Space opens one. It is not an [APG accordion](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/), so there are no arrow-key shortcuts.
+- Summaries are not headings. For a heading relationship, place a real heading before the accordion and reference it with \`aria-labelledby\`, plus \`role="group"\` on \`modus-wc-accordion\`. See WithSectionHeading.
+- Use the \`header\` slot for label content only, such as text or \`modus-wc-typography\`. Don't put buttons or links there.
+- Give each collapse a unique \`collapse-id\`.
+        `,
+      },
+    },
+  },
+};
+
+export const WithSectionHeading: Story = {
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<div style="padding: 20px;">
+  <modus-wc-typography hierarchy="h2" id="accordion-faq-heading">Frequently asked questions</modus-wc-typography>
+  <modus-wc-accordion
+    aria-labelledby="accordion-faq-heading"
+    custom-class=${ifDefined(args['custom-class'])}
+    role="group"
+  >
+    <modus-wc-collapse collapse-id="accordion-faq-shipping">
+      <modus-wc-typography slot="header" hierarchy="p" weight="semibold">Shipping</modus-wc-typography>
+      <div slot="content">Orders ship within two business days.</div>
+    </modus-wc-collapse>
+    <modus-wc-collapse collapse-id="accordion-faq-returns">
+      <modus-wc-typography slot="header" hierarchy="p" weight="semibold">Returns</modus-wc-typography>
+      <div slot="content">Items can be returned within 30 days.</div>
+    </modus-wc-collapse>
+    <modus-wc-collapse collapse-id="accordion-faq-warranty">
+      <modus-wc-typography slot="header" hierarchy="p" weight="semibold">Warranty</modus-wc-typography>
+      <div slot="content">Products include a one-year warranty.</div>
+    </modus-wc-collapse>
+  </modus-wc-accordion>
+</div>
+    `;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A heading placed before the accordion names the group. `role` and `aria-labelledby` set on `modus-wc-accordion` are forwarded to its inner element; a role is needed because `aria-labelledby` is not supported on a generic `div`. Header slots hold label text only, and each collapse has a unique `collapse-id`.',
+      },
+    },
+  },
+};
 
 export const ShadowDomParent: Story = {
   render: () => {

@@ -30,4 +30,17 @@ describe('modus-wc-accordion', () => {
     });
     expect(page.root).toMatchSnapshot();
   });
+
+  it('should forward role and aria-labelledby to the inner div when set on the host', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcAccordion],
+      html: '<h2 id="group-heading">Group</h2><modus-wc-accordion aria-labelledby="group-heading" role="group"></modus-wc-accordion>',
+    });
+
+    const host = page.body.querySelector('modus-wc-accordion');
+    const inner = host?.querySelector('div');
+    expect(inner?.getAttribute('role')).toBe('group');
+    expect(inner?.getAttribute('aria-labelledby')).toBe('group-heading');
+    expect(host?.hasAttribute('aria-labelledby')).toBe(false);
+  });
 });
