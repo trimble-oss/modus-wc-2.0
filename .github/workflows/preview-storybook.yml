@@ -8,9 +8,14 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch to deploy'
+        description: 'Folder name to publish under on GitHub Pages'
         required: true
         default: 'main'
+        type: string
+      ref:
+        description: 'Git ref (branch, tag, or commit SHA) to build. Leave empty to build the workflow ref.'
+        required: false
+        default: ''
         type: string
 
 permissions:
@@ -30,6 +35,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event.inputs.ref || github.sha }}
           persist-credentials: false
 
       - name: Setup Node.js

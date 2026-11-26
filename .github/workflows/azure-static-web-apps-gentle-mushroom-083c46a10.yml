@@ -2,7 +2,29 @@ name: Azure Static Web Apps CI/CD
 
 on:
   workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Git ref (branch, tag, or commit SHA) to build. Leave empty to build the workflow ref.'
+        required: false
+        default: ''
+        type: string
+      environment_name:
+        description: 'Static Web App preview environment name. Leave empty to deploy to production (main only).'
+        required: false
+        default: ''
+        type: string
   workflow_call:
+    inputs:
+      ref:
+        description: 'Git ref (branch, tag, or commit SHA) to build. Leave empty to build the caller ref.'
+        required: false
+        default: ''
+        type: string
+      environment_name:
+        description: 'Static Web App preview environment name. Leave empty to deploy to production (main only).'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: read
@@ -17,6 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.ref || github.sha }}
           lfs: false
           persist-credentials: false
           submodules: true
@@ -37,6 +60,17 @@ jobs:
         run: |
           cp src/styles/output.css storybook-static/public/output.css
 
+      # Without an environment_name, the upload goes to production, so only allow that from main.
+      - name: Guard production deploys
+        env:
+          ENVIRONMENT_NAME: ${{ inputs.environment_name }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ -z "$ENVIRONMENT_NAME" ] && [ "$REF_NAME" != "main" ]; then
+            echo "Refusing to deploy to production from '$REF_NAME'. Set environment_name to deploy a preview environment."
+            exit 1
+          fi
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@1a947af9992250f3bc2e68ad0754c0b0c11566c9 # v1
@@ -48,3 +82,4 @@ jobs:
           app_location: 'storybook-static' # App source code path (Storybook build output)
           api_location: '' # Api source code path - optional
           output_location: '' # Built app content directory - optional
+          deployment_environment: ${{ inputs.environment_name }} # Empty = production
