@@ -300,7 +300,7 @@ export const ShadowDomParent: Story = {
             dateEl.hideOverflowDates = v['hide-overflow-dates'];
           }
           dateEl.inputId = v['input-id'] ?? '';
-          dateEl.inputTabIndex = v['input-tab-index'] ?? -1;
+          dateEl.inputTabIndex = v['input-tab-index'] ?? 0;
           dateEl.label = v.label ?? '';
           dateEl.max = v.max ?? '';
           dateEl.min = v.min ?? '';
