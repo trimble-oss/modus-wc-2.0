@@ -410,7 +410,7 @@ export class ModusWcDate {
     if (this.pendingCalendarDayFocus) {
       const { container, date } = this.pendingCalendarDayFocus;
       this.pendingCalendarDayFocus = null;
-      this.focusCalendarDayButton(container, date);
+      this.focusCalendarDay(container, date);
     }
   }
 
@@ -496,14 +496,33 @@ export class ModusWcDate {
     });
   }
 
-  private focusCalendarDayButton(
+  /** The one day in a grid that takes the Tab stop (roving tabindex). */
+  private getTabStopIso(cal: DatePickerCalendar): string | undefined {
+    const focusedDate =
+      this.focusedDateIndex >= 0 ? cal.dates[this.focusedDateIndex] : undefined;
+    const isShownAndEnabled = (date?: Date | null): date is Date =>
+      !!date &&
+      date.getFullYear() === cal.selectedYear &&
+      date.getMonth() === cal.selectedMonth &&
+      !this.isDateDisabled(date);
+    const target =
+      [
+        focusedDate,
+        this.parseISODate(this.value),
+        this.parsedStartDate,
+        this.parsedEndDate,
+      ].find(isShownAndEnabled) ?? cal.dates.find(isShownAndEnabled);
+    return target ? formatISODate(target) : undefined;
+  }
+
+  private focusCalendarDay(
     calendarContainer: HTMLElement | undefined,
     date: Date
   ): void {
-    const button = calendarContainer?.querySelector(
-      `.calendar-day[data-iso-date="${formatISODate(date)}"]`
+    const cell = calendarContainer?.querySelector(
+      `[role="gridcell"][data-iso-date="${formatISODate(date)}"]`
     ) as HTMLElement | undefined;
-    button?.focus();
+    cell?.focus();
   }
 
   private scheduleCalendarDayFocus(
@@ -1666,8 +1685,7 @@ export class ModusWcDate {
               }
             : undefined
         }
-        onKeyDown={(e) => this.handleDateKeyDown(e, date)}
-        tabIndex={isDisabled ? -1 : 0}
+        tabIndex={-1}
       >
         {date.getDate()}
       </button>
@@ -1740,6 +1758,152 @@ export class ModusWcDate {
       return inConfirmed || inPreview;
     };
 
+    const tabStopIso = this.getTabStopIso(cal);
+
+    const renderDateCell = (date: Date, index: number) => {
+      if (!date) {
+        return null;
+      }
+
+      const isToday = compareDate(date, today) === 0;
+      const isCurrentMonth = date.getMonth() === currentMonth;
+      const isDisabled = this.isDateDisabled(date);
+
+      // Within a retained (mixed) row, blank out individual overflow
+      // cells while preserving the grid column alignment.
+      if (this.effectiveHideOverflowDates && !isCurrentMonth) {
+        return (
+          <div
+            role="gridcell"
+            class="calendar-day-cell calendar-day-cell--empty"
+          />
+        );
+      }
+
+      // Range-mode class calculations — only when both endpoints are set.
+      // isCurrentMonth guard prevents other-month overflow dates from inheriting range styles.
+      const isRangeStart =
+        !!rangeLo &&
+        !!rangeHi &&
+        isCurrentMonth &&
+        !!startDate &&
+        compareDate(date, startDate) === 0;
+      const isRangeEnd =
+        !!rangeLo &&
+        !!rangeHi &&
+        isCurrentMonth &&
+        !!endDate &&
+        compareDate(date, endDate) === 0;
+
+      // isAnchor covers both single-date (start only) and full-range cases
+      // so the anchor endpoint always appears darker.
+      const isAnchor =
+        this.isRange &&
+        isCurrentMonth &&
+        ((this.anchorEndpoint === 'start' &&
+          !!startDate &&
+          compareDate(date, startDate) === 0) ||
+          (this.anchorEndpoint === 'end' &&
+            !!endDate &&
+            compareDate(date, endDate) === 0));
+
+      // The confirmed range's own sorted boundary — always capped
+      // regardless of neighbor connectivity, even while an adjacent
+      // hover preview is active. Without this, a preview extending
+      // past the boundary would make computeCaps() treat the preview
+      // cell as a "connected" neighbor and flatten the confirmed
+      // range's edge into a square, flush join instead of keeping its
+      // own rounded cap.
+      const isAtRangeLo =
+        !!rangeLo && isCurrentMonth && compareDate(date, rangeLo) === 0;
+      const isAtRangeHi =
+        !!rangeHi && isCurrentMonth && compareDate(date, rangeHi) === 0;
+
+      // Confirmed selection and hover preview are both "highlighted
+      // runs" — a cell belongs to at most one of them (preview is
+      // already clipped to exclude cells inside the confirmed range).
+      const colIndex = index % 7;
+      const confirmed =
+        !!rangeLo &&
+        !!rangeHi &&
+        isInHighlightRun(date, rangeLo, rangeHi, isCurrentMonth);
+      const preview =
+        !!previewStart &&
+        !!previewEnd &&
+        isInHighlightRun(date, previewStart, previewEnd, isCurrentMonth);
+      // The actively hovered date gets a solid button fill; suppressed
+      // when it coincides with the anchor (anchor already renders its
+      // own selected circle). Compared against the actual cursor date
+      // (not previewEnd) since previewEnd is the anchor itself — not
+      // the hovered cell — whenever hovering backward past the anchor.
+      const isHoveredDay =
+        preview &&
+        !!hoverParsed &&
+        compareDate(date, hoverParsed) === 0 &&
+        !isAnchor;
+
+      // Connectivity is derived once, identically for confirmed and
+      // preview cells (and for the anchor), from a single shared
+      // "is this neighbor highlighted" predicate — no per-role
+      // row/month special-casing needed.
+      const caps =
+        confirmed || preview
+          ? computeCaps(date, colIndex, currentMonth, isHighlighted)
+          : null;
+
+      const isSelected =
+        !this.isRange &&
+        ((selectedDate && compareDate(date, selectedDate) === 0) || false);
+
+      const isMarkedSelected =
+        isSelected || isRangeStart || isRangeEnd || isAnchor || confirmed;
+      const isTabStop = !isDisabled && formatISODate(date) === tabStopIso;
+
+      return (
+        <div
+          role="gridcell"
+          aria-selected={isMarkedSelected ? 'true' : 'false'}
+          data-iso-date={formatISODate(date)}
+          aria-current={isToday ? 'date' : undefined}
+          tabIndex={isTabStop ? 0 : -1}
+          onKeyDown={(e) => this.handleDateKeyDown(e, date)}
+          class={
+            this.isRange
+              ? getRangeDayCellClasses({
+                  isRangeStart,
+                  isRangeEnd,
+                  isAnchor,
+                  confirmed,
+                  preview,
+                  caps,
+                  isAtRangeLo,
+                  isAtRangeHi,
+                  hoveringBeforeStart,
+                  hoveringAfterEnd,
+                })
+              : { 'calendar-day-cell': true }
+          }
+        >
+          {this.renderDayButton(date, {
+            isToday,
+            isCurrentMonth,
+            isDisabled,
+            isSelected,
+            isRangeStart,
+            isRangeEnd,
+            isAnchor,
+            isHoveredDay,
+          })}
+        </div>
+      );
+    };
+
+    const weeks = Array.from(
+      { length: Math.ceil(cal.dates.length / 7) },
+      (_, rowIndex) => cal.dates.slice(rowIndex * 7, rowIndex * 7 + 7)
+    );
+    const longDayNames = cal.getDaysOfWeek('default', weekStartNum, 'long');
+
     return (
       <div
         class="calendar-body"
@@ -1751,172 +1915,61 @@ export class ModusWcDate {
         }
       >
         <div
-          class={`calendar-days-week${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+          role="grid"
+          aria-multiselectable={this.isRange ? 'true' : undefined}
+          class="calendar-grid"
         >
-          {this.showWeekNumbers && <div class="week-number-header"></div>}
-          {cal.getDaysOfWeek('default', weekStartNum).map((d) => {
-            return <div class="day-header">{d}</div>;
-          })}
-        </div>
-        <div
-          class={`calendar-dates${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
-        >
-          {cal.dates.map((date, index) => {
-            const rowIndex = Math.floor(index / 7);
-            // A row is entirely overflow when none of its 7 dates belong to
-            // the displayed month — skip rendering it completely so the
-            // calendar height shrinks.
-            if (this.effectiveHideOverflowDates && date) {
-              const rowIsFullyOverflow = cal.dates
-                .slice(rowIndex * 7, rowIndex * 7 + 7)
-                .every((d) => !d || d.getMonth() !== currentMonth);
-              if (rowIsFullyOverflow) {
+          <div
+            role="row"
+            class={`calendar-days-week${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+          >
+            {this.showWeekNumbers && (
+              <div role="columnheader" class="week-number-header"></div>
+            )}
+            {cal.getDaysOfWeek('default', weekStartNum).map((d, index) => {
+              return (
+                <div
+                  role="columnheader"
+                  aria-label={longDayNames[index]}
+                  class="day-header"
+                >
+                  {d}
+                </div>
+              );
+            })}
+          </div>
+          <div
+            class={`calendar-dates${this.showWeekNumbers ? ' has-week-numbers' : ''}`}
+          >
+            {weeks.map((week, rowIndex) => {
+              // A row is entirely overflow when none of its 7 dates belong to
+              // the displayed month — skip rendering it completely so the
+              // calendar height shrinks.
+              if (
+                this.effectiveHideOverflowDates &&
+                week.every((d) => !d || d.getMonth() !== currentMonth)
+              ) {
                 return null;
               }
-            }
 
-            // Add week number at the start of each row (every 7 days)
-            const weekNumberElement =
-              this.showWeekNumbers && index % 7 === 0 ? (
-                <div
-                  class="week-number"
-                  aria-label={`Week ${cal.getWeekNumber(date, weekStartNum)}`}
-                >
-                  {cal.getWeekNumber(date, weekStartNum)}
-                </div>
-              ) : null;
-
-            if (!date) {
-              return weekNumberElement;
-            }
-
-            const isToday = compareDate(date, today) === 0;
-            const isCurrentMonth = date.getMonth() === currentMonth;
-            const isDisabled = this.isDateDisabled(date);
-
-            // Within a retained (mixed) row, blank out individual overflow
-            // cells while preserving the grid column alignment.
-            if (this.effectiveHideOverflowDates && !isCurrentMonth) {
-              const blankCell = (
-                <div class="calendar-day-cell calendar-day-cell--empty" />
-              );
-              return weekNumberElement
-                ? [weekNumberElement, blankCell]
-                : blankCell;
-            }
-
-            // Range-mode class calculations — only when both endpoints are set.
-            // isCurrentMonth guard prevents other-month overflow dates from inheriting range styles.
-            const isRangeStart =
-              !!rangeLo &&
-              !!rangeHi &&
-              isCurrentMonth &&
-              !!startDate &&
-              compareDate(date, startDate) === 0;
-            const isRangeEnd =
-              !!rangeLo &&
-              !!rangeHi &&
-              isCurrentMonth &&
-              !!endDate &&
-              compareDate(date, endDate) === 0;
-
-            // isAnchor covers both single-date (start only) and full-range cases
-            // so the anchor endpoint always appears darker.
-            const isAnchor =
-              this.isRange &&
-              isCurrentMonth &&
-              ((this.anchorEndpoint === 'start' &&
-                !!startDate &&
-                compareDate(date, startDate) === 0) ||
-                (this.anchorEndpoint === 'end' &&
-                  !!endDate &&
-                  compareDate(date, endDate) === 0));
-
-            // The confirmed range's own sorted boundary — always capped
-            // regardless of neighbor connectivity, even while an adjacent
-            // hover preview is active. Without this, a preview extending
-            // past the boundary would make computeCaps() treat the preview
-            // cell as a "connected" neighbor and flatten the confirmed
-            // range's edge into a square, flush join instead of keeping its
-            // own rounded cap.
-            const isAtRangeLo =
-              !!rangeLo && isCurrentMonth && compareDate(date, rangeLo) === 0;
-            const isAtRangeHi =
-              !!rangeHi && isCurrentMonth && compareDate(date, rangeHi) === 0;
-
-            // Confirmed selection and hover preview are both "highlighted
-            // runs" — a cell belongs to at most one of them (preview is
-            // already clipped to exclude cells inside the confirmed range).
-            const colIndex = index % 7;
-            const confirmed =
-              !!rangeLo &&
-              !!rangeHi &&
-              isInHighlightRun(date, rangeLo, rangeHi, isCurrentMonth);
-            const preview =
-              !!previewStart &&
-              !!previewEnd &&
-              isInHighlightRun(date, previewStart, previewEnd, isCurrentMonth);
-            // The actively hovered date gets a solid button fill; suppressed
-            // when it coincides with the anchor (anchor already renders its
-            // own selected circle). Compared against the actual cursor date
-            // (not previewEnd) since previewEnd is the anchor itself — not
-            // the hovered cell — whenever hovering backward past the anchor.
-            const isHoveredDay =
-              preview &&
-              !!hoverParsed &&
-              compareDate(date, hoverParsed) === 0 &&
-              !isAnchor;
-
-            // Connectivity is derived once, identically for confirmed and
-            // preview cells (and for the anchor), from a single shared
-            // "is this neighbor highlighted" predicate — no per-role
-            // row/month special-casing needed.
-            const caps =
-              confirmed || preview
-                ? computeCaps(date, colIndex, currentMonth, isHighlighted)
-                : null;
-
-            const isSelected =
-              !this.isRange &&
-              ((selectedDate && compareDate(date, selectedDate) === 0) ||
-                false);
-
-            const button = this.renderDayButton(date, {
-              isToday,
-              isCurrentMonth,
-              isDisabled,
-              isSelected,
-              isRangeStart,
-              isRangeEnd,
-              isAnchor,
-              isHoveredDay,
-            });
-
-            if (this.isRange) {
-              const cell = (
-                <div
-                  class={getRangeDayCellClasses({
-                    isRangeStart,
-                    isRangeEnd,
-                    isAnchor,
-                    confirmed,
-                    preview,
-                    caps,
-                    isAtRangeLo,
-                    isAtRangeHi,
-                    hoveringBeforeStart,
-                    hoveringAfterEnd,
-                  })}
-                >
-                  {button}
+              return (
+                <div role="row" class="calendar-week-row">
+                  {this.showWeekNumbers && (
+                    <div
+                      role="rowheader"
+                      class="week-number"
+                      aria-label={`Week ${cal.getWeekNumber(week[0], weekStartNum)}`}
+                    >
+                      {cal.getWeekNumber(week[0], weekStartNum)}
+                    </div>
+                  )}
+                  {week.map((date, dayIndex) =>
+                    renderDateCell(date, rowIndex * 7 + dayIndex)
+                  )}
                 </div>
               );
-              return weekNumberElement ? [weekNumberElement, cell] : cell;
-            }
-
-            // Only create array when week number exists
-            return weekNumberElement ? [weekNumberElement, button] : button;
-          })}
+            })}
+          </div>
         </div>
       </div>
     );

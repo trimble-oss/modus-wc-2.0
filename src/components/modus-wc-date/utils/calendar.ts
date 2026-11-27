@@ -34,13 +34,17 @@ export default class DatePickerCalendar {
     this.calculateDates();
   }
 
-  getDaysOfWeek(locale: string, firstDayOfWeek = 0) {
+  getDaysOfWeek(
+    locale: string,
+    firstDayOfWeek = 0,
+    weekday: 'short' | 'long' = 'short'
+  ) {
     /**
      * Nov 1st, 2020 starts on a Sunday,
      * assumes weeks start on Sunday,
      * but is configurable via `firstDayOfWeek`.
      */
-    const intl = new Intl.DateTimeFormat(locale, { weekday: 'short' });
+    const intl = new Intl.DateTimeFormat(locale, { weekday });
     const startDate = new Date('11/01/2020');
     const daysOfWeek: string[] = [];
 
@@ -52,7 +56,11 @@ export default class DatePickerCalendar {
       const currentDate = new Date(startDate);
       currentDate.setDate(currentDate.getDate() + i);
       const d = intl.format(currentDate);
-      daysOfWeek.push(d.toUpperCase().startsWith('SA') ? d : d.slice(0, 2));
+      daysOfWeek.push(
+        weekday === 'long' || d.toUpperCase().startsWith('SA')
+          ? d
+          : d.slice(0, 2)
+      );
     }
 
     return daysOfWeek;

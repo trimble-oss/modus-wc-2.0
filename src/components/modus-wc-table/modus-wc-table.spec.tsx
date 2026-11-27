@@ -2140,10 +2140,10 @@ describe('modus-wc-table', () => {
     await page.waitForChanges();
 
     // Get the first sortable header (Name column)
-    const sortableHeader = page.root?.querySelector('th.sortable');
+    const sortableHeader = page.root?.querySelector('th.sortable button');
     expect(sortableHeader).not.toBeNull();
 
-    // Trigger the click event directly on the header element
+    // Trigger the click event on the header's sort button
     if (sortableHeader) {
       (sortableHeader as HTMLElement).click();
       await page.waitForChanges();
@@ -2155,6 +2155,86 @@ describe('modus-wc-table', () => {
     // Verify sorting state was updated
     expect(component['sorting'].length).toBe(1);
     expect(component['sorting'][0].id).toBe('name');
+  });
+
+  it('should expose header scope and aria-sort state on simple headers', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Sortable table" sortable="true" selectable="multi"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [
+      { id: 'name', header: 'Name', accessor: 'name', sortable: true },
+      { id: 'email', header: 'Email', accessor: 'email', sortable: false },
+    ];
+    component.data = defaultData;
+    await page.waitForChanges();
+
+    const headers = Array.from(
+      page.root?.querySelectorAll<HTMLElement>('thead th') ?? []
+    );
+    expect(headers.length).toBe(3);
+    headers.forEach((header) => {
+      expect(header.getAttribute('scope')).toBe('col');
+      expect(header.getAttribute('role')).toBeNull();
+    });
+
+    const [selectionHeader, nameHeader, emailHeader] = headers;
+    expect(selectionHeader.getAttribute('aria-sort')).toBeNull();
+    expect(nameHeader.getAttribute('aria-sort')).toBe('none');
+    expect(nameHeader.getAttribute('tabindex')).toBeNull();
+    expect(emailHeader.getAttribute('aria-sort')).toBeNull();
+    expect(emailHeader.getAttribute('tabindex')).toBeNull();
+  });
+
+  it('should render a native button inside sortable headers per the APG sortable table pattern', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTable],
+      html: `<modus-wc-table aria-label="Sortable table" sortable="true"></modus-wc-table>`,
+    });
+
+    const component = page.rootInstance as ModusWcTable;
+    component.columns = [
+      { id: 'name', header: 'Name', accessor: 'name', sortable: true },
+      { id: 'email', header: 'Email', accessor: 'email', sortable: false },
+    ];
+    component.data = defaultData;
+    await page.waitForChanges();
+
+    const sortableHeader = page.root?.querySelector(
+      'th.sortable'
+    ) as HTMLElement;
+    expect(sortableHeader.getAttribute('role')).toBeNull();
+    expect(sortableHeader.getAttribute('tabindex')).toBeNull();
+
+    const sortButton = sortableHeader.querySelector(
+      'button'
+    ) as HTMLButtonElement;
+    expect(sortButton).not.toBeNull();
+    expect(sortButton.getAttribute('type')).toBe('button');
+    expect(sortButton.textContent).toContain('Name');
+    expect(sortButton.querySelector('.sort-icon')).not.toBeNull();
+
+    const plainHeader = page.root?.querySelectorAll('thead th')[1];
+    expect(plainHeader?.querySelector('button')).toBeNull();
+    expect(plainHeader?.textContent).toBe('Email');
+
+    sortableHeader.click();
+    await page.waitForChanges();
+    expect(sortableHeader.getAttribute('aria-sort')).toBe('none');
+
+    sortButton.click();
+    await page.waitForChanges();
+    expect(
+      page.root?.querySelector('th.sortable')?.getAttribute('aria-sort')
+    ).toBe('ascending');
+
+    (page.root?.querySelector('th.sortable button') as HTMLElement).click();
+    await page.waitForChanges();
+    expect(
+      page.root?.querySelector('th.sortable')?.getAttribute('aria-sort')
+    ).toBe('descending');
   });
 
   it('should call commitEdit when handleCommit function is called (line 774)', async () => {
@@ -4470,8 +4550,18 @@ describe('modus-wc-table', () => {
       headers?.forEach((header) => {
         expect(header.getAttribute('role')).toBeNull();
         expect(header.getAttribute('tabindex')).toBeNull();
+        expect(header.getAttribute('scope')).toBe('col');
+        expect(header.getAttribute('aria-sort')).toBe('none');
       });
       expect(page.root?.querySelector('.sort-icon')).toBeNull();
+
+      component['table']?.setSorting([{ id: 'name', desc: true }]);
+      component['tableRenderVersion']++;
+      await page.waitForChanges();
+
+      expect(
+        page.root?.querySelector('thead th')?.getAttribute('aria-sort')
+      ).toBe('descending');
     });
 
     it('should render grouped column headers with colSpan and placeholders', async () => {
@@ -4516,10 +4606,17 @@ describe('modus-wc-table', () => {
       expect(topHeaders?.length).toBe(2);
       expect(topHeaders?.[0].textContent).toContain('Name');
       expect(topHeaders?.[0].getAttribute('colspan')).toBe('2');
+      expect(topHeaders?.[0].getAttribute('scope')).toBe('col');
+      expect(topHeaders?.[0].getAttribute('aria-sort')).toBeNull();
       expect(topHeaders?.[1].textContent?.trim()).toBe('');
+      expect(topHeaders?.[1].getAttribute('scope')).toBe('col');
 
       const bottomHeaders = headerRows?.[1].querySelectorAll('th');
       expect(bottomHeaders?.length).toBe(3);
+      bottomHeaders?.forEach((header) => {
+        expect(header.getAttribute('scope')).toBe('col');
+        expect(header.getAttribute('aria-sort')).toBeNull();
+      });
       expect(bottomHeaders?.[0].textContent).toContain('First');
       expect(bottomHeaders?.[1].textContent).toContain('Last');
       expect(bottomHeaders?.[2].textContent).toContain('Age');

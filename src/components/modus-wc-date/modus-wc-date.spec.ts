@@ -3100,6 +3100,238 @@ describe('modus-wc-date', () => {
     expect(weekNumbers.length).toBeGreaterThan(0);
   });
 
+  describe('calendar grid semantics', () => {
+    it('should expose grid, rows and column headers when the calendar is open', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Grid test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const grid = page.root!.querySelector('[role="grid"]');
+      expect(grid).not.toBeNull();
+
+      const rows = grid!.querySelectorAll('[role="row"]');
+      expect(rows.length).toBe(7);
+
+      const columnHeaders = rows[0].querySelectorAll('[role="columnheader"]');
+      expect(columnHeaders.length).toBe(7);
+      expect(columnHeaders[0].textContent).toBe('Su');
+
+      Array.from(rows)
+        .slice(1)
+        .forEach((row) => {
+          const cells = Array.from(row.children);
+          expect(cells.length).toBe(7);
+          cells.forEach((cell) => {
+            expect(cell.getAttribute('role')).toBe('gridcell');
+          });
+        });
+    });
+
+    it('should not declare the grid multiselectable in single-date mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Single grid test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const grid = page.root!.querySelector('[role="grid"]');
+      expect(grid).not.toBeNull();
+      expect(grid!.hasAttribute('aria-multiselectable')).toBe(false);
+    });
+
+    it('should label weekday column headers with full names and keep the short visible text', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Weekday names test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const headers = Array.from(page.root!.querySelectorAll('.day-header'));
+      expect(headers.map((header) => header.textContent)).toEqual([
+        'Su',
+        'Mo',
+        'Tu',
+        'We',
+        'Th',
+        'Fr',
+        'Sat',
+      ]);
+      expect(
+        headers.map((header) => header.getAttribute('aria-label'))
+      ).toEqual([
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ]);
+    });
+
+    it('should give one gridcell the Tab stop and focus gridcells rather than day buttons', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Tab stop test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const tabStops = page.root!.querySelectorAll(
+        '[role="gridcell"][tabindex="0"]'
+      );
+      expect(tabStops.length).toBe(1);
+      expect(tabStops[0].getAttribute('data-iso-date')).toBe('2025-10-15');
+
+      const focusSpy = jest.spyOn(tabStops[0] as HTMLElement, 'focus');
+      component['focusCalendarDay'](
+        component['calendarRef'],
+        new Date(2025, 9, 15)
+      );
+      expect(focusSpy).toHaveBeenCalled();
+    });
+
+    it('should select the day when Enter is pressed on its gridcell', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Enter test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const selectSpy = jest.spyOn(
+        component as unknown as { handleDateSelect: (date: Date) => void },
+        'handleDateSelect'
+      );
+      const cell = page.root!.querySelector(
+        '[role="gridcell"][data-iso-date="2025-10-16"]'
+      ) as HTMLElement;
+      cell.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+      );
+
+      expect(selectSpy).toHaveBeenCalledWith(new Date(2025, 9, 16));
+    });
+
+    it('should mark only today with aria-current="date"', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Today test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const now = new Date();
+      const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      const current = page.root!.querySelectorAll('[aria-current="date"]');
+      expect(current.length).toBe(1);
+      expect(current[0].getAttribute('role')).toBe('gridcell');
+      expect(current[0].getAttribute('data-iso-date')).toBe(todayIso);
+    });
+
+    it('should mark only the selected day with aria-selected', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Grid selection test" value="2025-10-15"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const selectedCells = page.root!.querySelectorAll(
+        '[role="gridcell"][aria-selected="true"]'
+      );
+      expect(selectedCells.length).toBe(1);
+
+      const selectedButton = selectedCells[0].querySelector('.calendar-day');
+      expect(selectedButton?.getAttribute('data-iso-date')).toBe('2025-10-15');
+
+      expect(
+        page.root!.querySelectorAll('[role="gridcell"][aria-selected="false"]')
+          .length
+      ).toBe(41);
+    });
+
+    it('should render week numbers as row headers inside each row', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Grid week numbers test" value="2025-10-15" show-week-numbers="true"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const rows = page.root!.querySelectorAll('[role="grid"] [role="row"]');
+      expect(
+        rows[0].querySelector('.week-number-header')?.getAttribute('role')
+      ).toBe('columnheader');
+
+      Array.from(rows)
+        .slice(1)
+        .forEach((row) => {
+          expect(row.firstElementChild?.getAttribute('role')).toBe('rowheader');
+          expect(row.firstElementChild?.className).toBe('week-number');
+          expect(row.firstElementChild?.getAttribute('aria-label')).toBe(
+            `Week ${row.firstElementChild?.textContent}`
+          );
+        });
+    });
+
+    it('should mark every day in the confirmed range as selected in range mode', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Grid range test" type="range" value="2026-06-10" end-value="2026-06-20"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showStartCalendar'] = true;
+      await page.waitForChanges();
+
+      const selectedDates = Array.from(
+        page.root!.querySelectorAll('[role="gridcell"][aria-selected="true"]')
+      ).map((cell) =>
+        cell.querySelector('.calendar-day')?.getAttribute('data-iso-date')
+      );
+      expect(selectedDates).toEqual([
+        '2026-06-10',
+        '2026-06-11',
+        '2026-06-12',
+        '2026-06-13',
+        '2026-06-14',
+        '2026-06-15',
+        '2026-06-16',
+        '2026-06-17',
+        '2026-06-18',
+        '2026-06-19',
+        '2026-06-20',
+      ]);
+      expect(
+        page
+          .root!.querySelector('[role="grid"]')
+          ?.getAttribute('aria-multiselectable')
+      ).toBe('true');
+
+      const emptyCells = page.root!.querySelectorAll(
+        '.calendar-day-cell--empty'
+      );
+      expect(emptyCells.length).toBeGreaterThan(0);
+      emptyCells.forEach((cell) => {
+        expect(cell.getAttribute('role')).toBe('gridcell');
+        expect(cell.getAttribute('aria-selected')).toBeNull();
+      });
+    });
+  });
+
   // --- Tests for parseISODate anchored-regex fix ---
 
   it('should return undefined when value is a datetime string with time portion', async () => {
@@ -5036,10 +5268,10 @@ describe('modus-wc-date', () => {
         expect(june10Button).not.toBeNull();
 
         const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
+          component as unknown as { focusCalendarDay: jest.Mock },
+          'focusCalendarDay'
         );
-        component['focusCalendarDayButton'](
+        component['focusCalendarDay'](
           component['calendarRef'],
           new Date(2026, 5, 10)
         );
@@ -5063,8 +5295,8 @@ describe('modus-wc-date', () => {
         await page.waitForChanges();
 
         const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
+          component as unknown as { focusCalendarDay: jest.Mock },
+          'focusCalendarDay'
         );
 
         component['handleArrowKeys'](
@@ -5139,8 +5371,8 @@ describe('modus-wc-date', () => {
         const monthSpy = jest.fn();
         page.root!.addEventListener('calendarMonthChange', monthSpy);
         const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
+          component as unknown as { focusCalendarDay: jest.Mock },
+          'focusCalendarDay'
         );
 
         component['handleArrowKeys'](
@@ -5181,8 +5413,8 @@ describe('modus-wc-date', () => {
         await page.waitForChanges();
 
         const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
+          component as unknown as { focusCalendarDay: jest.Mock },
+          'focusCalendarDay'
         );
 
         component['handleArrowKeys'](
@@ -5221,8 +5453,8 @@ describe('modus-wc-date', () => {
         ) as HTMLButtonElement;
 
         const focusSpy = jest.spyOn(
-          component as unknown as { focusCalendarDayButton: jest.Mock },
-          'focusCalendarDayButton'
+          component as unknown as { focusCalendarDay: jest.Mock },
+          'focusCalendarDay'
         );
 
         const downEvent = {
@@ -5324,7 +5556,7 @@ describe('modus-wc-date', () => {
         const { component } = await createRangePage('value="2026-06-10"');
 
         expect(() =>
-          component['focusCalendarDayButton'](undefined, new Date(2026, 5, 10))
+          component['focusCalendarDay'](undefined, new Date(2026, 5, 10))
         ).not.toThrow();
       });
     });

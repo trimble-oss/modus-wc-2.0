@@ -148,6 +148,21 @@ modus-wc-date {
         column-gap: 0;
         row-gap: var(--modus-wc-spacing-xs);
 
+        // ARIA row wrapper; its cells stay direct items of the parent grid.
+        .calendar-week-row {
+          display: contents;
+        }
+
+        // Focus lands on the gridcell, so show the focused day on its button.
+        .calendar-day-cell:focus {
+          outline: none;
+        }
+
+        .calendar-day-cell:focus-visible .calendar-day {
+          background-color: var(--modus-wc-color-primary);
+          color: var(--modus-wc-color-white);
+        }
+
         .week-number {
           align-items: center;
           border-inline-end: 1px solid

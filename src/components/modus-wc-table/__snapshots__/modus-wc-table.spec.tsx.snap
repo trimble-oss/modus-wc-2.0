@@ -49,10 +49,10 @@ exports[`modus-wc-table should render with custom props 1`] = `
       <table class="modus-wc-table modus-wc-table-density-compact modus-wc-table-hover modus-wc-table-zebra test-class">
         <thead>
           <tr>
-            <th style="width: 200px;">
+            <th scope="col" style="width: 200px;">
               Name
             </th>
-            <th>
+            <th scope="col">
               Email
             </th>
           </tr>
