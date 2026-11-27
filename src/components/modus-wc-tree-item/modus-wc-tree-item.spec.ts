@@ -1034,6 +1034,36 @@ describe('modus-wc-tree-item', () => {
     expect(selections).not.toContain('parent');
   });
 
+  it('should not clear checkbox siblings when a plain item is selected in single mode', async () => {
+    const page = await newSpecPage({
+      components: [ModusWcTreeMenu, ModusWcTreeItem],
+      html: `
+        <modus-wc-tree-menu selection-mode="single">
+          <modus-wc-tree-item label="Select All" value="all"></modus-wc-tree-item>
+          <modus-wc-tree-item label="Other" value="other" selected="true"></modus-wc-tree-item>
+          <modus-wc-tree-item checkbox="true" label="Option A" value="a"></modus-wc-tree-item>
+          <modus-wc-tree-item checkbox="true" label="Option B" value="b" selected="true"></modus-wc-tree-item>
+        </modus-wc-tree-menu>
+      `,
+    });
+
+    const items = page.doc.querySelectorAll('modus-wc-tree-item');
+    const selectAll = items[0] as HTMLElement & { selected?: boolean };
+    const plainSibling = items[1] as HTMLElement & { selected?: boolean };
+    const unchecked = items[2] as HTMLElement & { selected?: boolean };
+    const checked = items[3] as HTMLElement & { selected?: boolean };
+
+    (
+      selectAll.querySelector('.modus-wc-menu-item-interactive') as HTMLElement
+    ).click();
+    await page.waitForChanges();
+
+    expect(selectAll.selected).toBe(true);
+    expect(plainSibling.selected).toBe(false);
+    expect(unchecked.selected).toBeFalsy();
+    expect(checked.selected).toBe(true);
+  });
+
   it('should ignore Space when the event target belongs to a nested tree-item', async () => {
     const page = await newSpecPage({
       components: [ModusWcTreeItem, ModusWcTreeMenu],
