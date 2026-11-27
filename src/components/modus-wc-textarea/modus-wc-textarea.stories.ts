@@ -151,6 +151,43 @@ export const WithErrorFeedback: Story = {
   `,
 };
 
+export const AutoResize: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+The inner \`<textarea>\` renders in light DOM, so \`field-sizing: content\` applied through \`custom-class\`
+(or a selector such as \`modus-wc-textarea textarea\`) grows it with its content. Set \`min-block-size\`
+for the starting height, since \`rows\` no longer controls the height once \`field-sizing\` is applied.
+
+Browsers without \`field-sizing\` support keep the regular \`rows\` height.
+        `,
+      },
+    },
+  },
+  render: () => html`
+    <style>
+      modus-wc-textarea {
+        display: block;
+        width: 300px;
+      }
+
+      .textarea-auto-resize {
+        box-sizing: border-box;
+        field-sizing: content;
+        min-block-size: 4lh;
+        resize: none;
+        width: 100%;
+      }
+    </style>
+    <modus-wc-textarea
+      custom-class="textarea-auto-resize"
+      label="Auto-resizing textarea"
+      placeholder="Placeholder text"
+    ></modus-wc-textarea>
+  `,
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     // Create a unique shadow host for textarea component

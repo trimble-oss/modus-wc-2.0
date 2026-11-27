@@ -153,6 +153,41 @@ export const WithCustomContent: Story = {
   },
 };
 
+export const WithHeadingTitle: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `
+\`alert-title\` renders as text, not as a heading. When the title should be a heading in the page outline,
+leave \`alert-title\` and \`alert-description\` unset and pass the content through the \`content\` slot,
+using \`modus-wc-typography\` with the heading level that fits the page. \`size="md"\` and \`weight="bold"\`
+match the default alert title styling.
+        `,
+      },
+    },
+  },
+  render: (args) => {
+    // prettier-ignore
+    return html`
+<modus-wc-alert
+  content-display-mode=${ifDefined(args['content-display-mode'])}
+  custom-class=${ifDefined(args['custom-class'])}
+  delay=${ifDefined(args.delay)}
+  disable-icon=${ifDefined(args['disable-icon'])}
+  dismissible=${ifDefined(args.dismissible)}
+  icon=${ifDefined(args.icon)}
+  role=${args.role}
+  variant=${ifDefined(args.variant)}
+>
+  <div slot="content">
+    <modus-wc-typography hierarchy="h3" size="md" weight="bold">New message!</modus-wc-typography>
+    <modus-wc-typography hierarchy="p" size="md">You have 3 new messages.</modus-wc-typography>
+  </div>
+</modus-wc-alert>
+    `;
+  },
+};
+
 export const ShadowDomParent: Story = {
   render: (args) => {
     if (!customElements.get('alert-shadow-host')) {
