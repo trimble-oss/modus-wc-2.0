@@ -1864,6 +1864,7 @@ export class ModusWcDate {
           role="gridcell"
           aria-selected={isMarkedSelected ? 'true' : 'false'}
           data-iso-date={formatISODate(date)}
+          aria-current={isToday ? 'date' : undefined}
           tabIndex={isTabStop ? 0 : -1}
           onKeyDown={(e) => this.handleDateKeyDown(e, date)}
           class={

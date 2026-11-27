@@ -3223,6 +3223,23 @@ describe('modus-wc-date', () => {
       expect(selectSpy).toHaveBeenCalledWith(new Date(2025, 9, 16));
     });
 
+    it('should mark only today with aria-current="date"', async () => {
+      const page = await newSpecPage({
+        components: [ModusWcDate],
+        html: '<modus-wc-date aria-label="Today test"></modus-wc-date>',
+      });
+      const component = page.rootInstance as ModusWcDate;
+      component['showCalendar'] = true;
+      await page.waitForChanges();
+
+      const now = new Date();
+      const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      const current = page.root!.querySelectorAll('[aria-current="date"]');
+      expect(current.length).toBe(1);
+      expect(current[0].getAttribute('role')).toBe('gridcell');
+      expect(current[0].getAttribute('data-iso-date')).toBe(todayIso);
+    });
+
     it('should mark only the selected day with aria-selected', async () => {
       const page = await newSpecPage({
         components: [ModusWcDate],
